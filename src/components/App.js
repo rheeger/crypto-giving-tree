@@ -11,7 +11,7 @@ class App extends React.Component {
 		});
 		console.log(response);
 
-		this.setState({ orgs: response.data.results });
+		this.setState({ orgs: response.data.organizations });
 	};
 
 	render() {
