@@ -6,19 +6,19 @@ class App extends React.Component {
 	state = { orgs: [] };
 
 	onSearchSubmit = async (term) => {
-		const response = await ProPublica.get('/search.json?', {
+		const response = await ProPublica.get('/search.json?c_code%5Bid%5D=3', {
 			params: { q: term }
 		});
 		console.log(response);
 
-		this.setState({ orgs: response.data.organizations });
+		this.setState({ orgs: response.data });
 	};
 
 	render() {
 		return (
 			<div className="ui container" style={{ marginTop: '10px' }}>
 				<SearchBar onSubmit={this.onSearchSubmit} />
-				Found: {this.state.orgs.length} orgs
+				Found: {this.state.orgs.total_results} orgs
 			</div>
 		);
 	}
