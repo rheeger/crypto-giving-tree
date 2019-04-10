@@ -9,7 +9,6 @@ export default () => {
 			<div route="/">
 				<a className="item">The Crypto Giving Tree</a>
 			</div>
-			<SearchBar />
 
 			<Menu.Menu position="right">
 				<div route="/">
