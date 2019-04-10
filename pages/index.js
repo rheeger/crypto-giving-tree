@@ -1,27 +1,38 @@
 import React from 'react';
-import ProPublica from '../src/apis/ProPublica';
+import _ from 'lodash';
+import ProPublica from '../src/apis/ProPublicaSearch';
 import Layout from '../src/components/Layout';
 import Header from '../src/components/Header';
 import SearchBar from '../src/components/SearchBar';
+import { timingSafeEqual } from 'crypto';
+import ProPublicaSearch from '../src/apis/ProPublicaSearch';
 
 class givingTreeIndex extends React.Component {
-	state = { orgs: [] };
+	constructor(props) {
+		super(props);
 
-	onSearchSubmit = async (term) => {
-		const response = await ProPublica.get('/search.json?c_code%5Bid%5D=3', {
-			params: { q: term }
+		this.state = {
+			orgs: [],
+			selectedOrg: null
+		};
+
+		this.onSearchSubmit('A');
+	}
+
+	onSearchSubmit(term) {
+		ProPublicaSearch({ term: term }, (orgs) => {
+			this.setState({
+				orgs: orgs,
+				selectedOrg: orgs[0]
+			});
 		});
-		console.log(response);
-
-		this.setState({ orgs: response.data });
-	};
+	}
 
 	render() {
 		return (
 			<Layout>
 				<Header>
-					<SearchBar onSubmit={this.onSearchSubmit} />
-					Found: {this.state.orgs.total_results} orgs
+					<SearchBar onSearchTermChange={(term) => this.onSearchSubmit(term)} />
 				</Header>
 			</Layout>
 		);
