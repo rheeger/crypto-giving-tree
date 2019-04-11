@@ -15,7 +15,7 @@ class SearchBar extends Component {
 				<input
 					value={this.state.term}
 					onChange={(event) => this.onInputChange(event.target.value)}
-					placeholder="Search YouTube:"
+					placeholder="Search for any 501c(3) organization..."
 				/>
 			</div>
 		);

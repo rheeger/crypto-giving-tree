@@ -1,6 +1,5 @@
 import React from 'react';
-import { Menu } from 'semantic-ui-react';
-import SearchBar from './SearchBar';
+import { Menu, Button } from 'semantic-ui-react';
 // import { Link } from '../routes';
 
 export default () => {
@@ -12,10 +11,19 @@ export default () => {
 
 			<Menu.Menu position="right">
 				<div route="/">
-					<a className="item">Branches</a>
+					<a>
+						<Button
+							style={{ marginTop: '2.5px', padding: '10px' }}
+							content="Create a Branch"
+							icon="add circle"
+							color="green"
+						/>
+					</a>
 				</div>
 				<div route="/">
-					<a className="item">Orgs</a>
+					<a>
+						<Button style={{ marginTop: '2.5px', padding: '10px' }}>Find a 501c(3)</Button>
+					</a>
 				</div>
 
 				<div route="/camdivaigns/new">

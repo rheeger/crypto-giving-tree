@@ -1,9 +1,12 @@
 const routes = require('next-routes')();
 
 routes
-	.add('/campaigns/new', '/campaigns/new')
-	.add('/campaigns/:address', '/campaigns/show')
-	.add('/campaigns/:address/requests', '/campaigns/requests/index')
-	.add('/campaigns/:address/requests/new', '/campaigns/requests/new');
+	.add('/branches/new', '/branches/new')
+	.add('/branches/:address/donate', '/branches/donate/index')
+	.add('/branches/:address/grants/new', '/branches/grants/new')
+	.add('/branches/:address', '/branches/show')
+	.add('/orgs', '/orgs/index')
+	.add('/orgs/:ein', '/orgs/show')
+	.add('/orgs/:ein/donate', '/orgs/donate/index');
 
 module.exports = routes;
