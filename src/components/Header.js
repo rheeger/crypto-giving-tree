@@ -1,16 +1,16 @@
 import React from 'react';
 import { Menu, Button } from 'semantic-ui-react';
-// import { Link } from '../routes';
+import { Link } from '../../routes';
 
 export default () => {
 	return (
 		<Menu style={{ marginTop: '10px' }}>
-			<div route="/">
+			<Link route="/">
 				<a className="item">The Crypto Giving Tree</a>
-			</div>
+			</Link>
 
 			<Menu.Menu position="right">
-				<div route="/">
+				<Link route="/branches">
 					<a>
 						<Button
 							style={{ marginTop: '2.5px', padding: '10px' }}
@@ -19,16 +19,12 @@ export default () => {
 							color="green"
 						/>
 					</a>
-				</div>
-				<div route="/">
+				</Link>
+				<Link route="/orgs">
 					<a>
 						<Button style={{ marginTop: '2.5px', padding: '10px' }}>Find a 501c(3)</Button>
 					</a>
-				</div>
-
-				<div route="/camdivaigns/new">
-					<a className="item">+</a>
-				</div>
+				</Link>
 			</Menu.Menu>
 		</Menu>
 	);

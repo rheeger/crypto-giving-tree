@@ -1,80 +1,54 @@
 import React from 'react';
 import _ from 'lodash';
-import { Button, Card, Icon } from 'semantic-ui-react';
+import { Container, Button, Card, Grid } from 'semantic-ui-react';
 import ProPublica from '../src/apis/ProPublica';
 import Layout from '../src/components/Layout';
-import Header from '../src/components/Header';
 import SearchBar from '../src/components/SearchBar';
-import { timingSafeEqual } from 'crypto';
 import { Link } from '../routes';
 
-class givingTreeIndex extends React.Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			orgs: [],
-			selectedOrg: null
-		};
-		this.orgSearch(null);
-	}
-
-	orgSearch = async (term) => {
-		const response = await ProPublica.get('/search.json?c_code%5Bid%5D=3', {
-			params: { q: term }
-		}).catch(function(error) {
-			console.error(error);
-		});
-
-		console.log(response);
-
-		this.setState({ orgs: response.data });
-		console.log(this.state.orgs.organizations);
-	};
-
-	renderOrgs() {
-		if (!this.state.orgs.organizations) {
-			return <div> Loading... </div>;
-		}
-
-		const items = this.state.orgs.organizations.map((index, name) => {
-			return {
-				header: index.name,
-				description: (
-					<div>
-						{index.city}, {index.state}
-					</div>
-				),
-				meta: <Card.Meta>TAX-ID: {index.strein}</Card.Meta>,
-				extra: (
-					<Link route={`/orgs/${index.ein}`} className="ui two-buttons">
-						<a>
-							<Button floated="right" basic color="green">
-								view details
-							</Button>
-						</a>
-					</Link>
-				)
-			};
-		});
-		return <Card.Group items={items} />;
-	}
-
+class Index extends React.Component {
 	render() {
-		const orgSearch = _.debounce((term) => {
-			this.orgSearch(term);
-		}, 300);
-
 		return (
-			<div>
-				<Layout>
-					<SearchBar onSearchTermChange={orgSearch} />
-					<p>Found {this.state.orgs.total_results} organizations</p>
-					{this.renderOrgs()}
-				</Layout>
-			</div>
+			<Layout>
+				<Grid className="Container">
+					<Grid.Row>
+						<Grid.Column width={8}>
+							<div style={{ margin: '0 auto', textAlign: 'center' }}>
+								<h2>Grow the Tree</h2>
+								<p>Create a fund now, give grants at your leisure.</p>
+								<Link route="/branches">
+									<a>
+										<Button
+											style={{ marginTop: '2.5px', padding: '10px' }}
+											content="Create a Branch"
+											icon="add circle"
+											color="green"
+										/>
+									</a>
+								</Link>
+							</div>
+						</Grid.Column>
+						<Grid.Column width={8}>
+							<div style={{ margin: '0 auto', textAlign: 'center' }}>
+								<h2>Give Instantly</h2>
+								<p>Find any 501c(3) and send them a donation.</p>
+								<Link route="/orgs">
+									<a>
+										<Button
+											style={{ marginTop: '2.5px', padding: '10px' }}
+											content="Donate Direct"
+											icon="dollar"
+											color="blue"
+										/>
+									</a>
+								</Link>
+							</div>
+						</Grid.Column>
+					</Grid.Row>
+				</Grid>
+			</Layout>
 		);
 	}
 }
 
-export default givingTreeIndex;
+export default Index;
