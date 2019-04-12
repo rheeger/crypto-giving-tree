@@ -1,73 +1,60 @@
 pragma solidity ^0.4.25;
 
-contract DAFfactory {
-    DAF[] public deployedDAFs;
+contract GivingTree {
+    Branch[] public deployedBranches;
 
-    function createDAF(uint minimum, string memory name) public {
-        DAF newDAF = new DAF(minimum, msg.sender, name);
-        deployedDAFs.push(newDAF);
+    function createBranch(uint suggestedContribution, string memory name) public {
+        Branch newBranch = new Branch(suggestedContribution, msg.sender, name);
+        deployedBranches.push(newBranch);
     }
 
-    function getDeployedDAFs() public view returns (DAF[] memory) {
-        return deployedDAFs;
+    function getDeployedBranches() public view returns (Branch[] memory) {
+        return deployedBranches;
     }
-
-
-//     function createA501c3(string memory name, string memory taxId) public {
-//         A501c3 newA501c3 = new A501c3(name, taxId);
-//         deployed501c3s.push(new501c3);
-//     }
-
-//     function getDeployed501c3s() public view returns (A501c3[] memory) {
-//         return deployed501c3s;
-//     }
-
 }
 
-// contract A501c3 {}
-    
-
-contract DAF {
+contract Branch {
     struct Grant {
         string description;
         uint value;
         address recipient;
         bool complete;
-        uint approvalCount;
-        mapping(address => bool) approvals;
+        uint challengeCount;
+        mapping(address => bool) challenges;
     }
     
     address public manager;
-    uint public minimumContribution;
+    uint public contribution;
     mapping(address => bool) public approvers;
     Grant[] public grants;
     uint public approversCount;
-    string public dafName;
+    string public branchName;
+
 
     modifier restricted() {
         require(msg.sender == manager);
         _;
     }
     
-    constructor(uint minimum, address creator, string memory name) public {
+    constructor(uint suggestedContribution, address creator, string memory name) public {
+        contribution = suggestedContribution;
         manager = creator;
-        minimumContribution = minimum;
-        dafName = name;
+        branchName = name;
+
     }
     
     function contribute() public payable {
-        require(msg.value > minimumContribution); 
         approvers[msg.sender] = true;
         approversCount++;
     }
     
-    function createGrant(string memory description, uint value, address recipient) public restricted {
+    function createGrant(string memory description, uint value, address recipient)  public restricted {
         Grant memory newGrant = Grant({
             description: description,
             value: value,
             recipient: recipient,
             complete: false,
-            approvalCount: 0
+            challengeCount: 0
         });
 
         grants.push(newGrant);
@@ -77,25 +64,25 @@ contract DAF {
         Grant storage grant = grants[index];
 
         require(approvers[msg.sender]);
-        require(!grant.approvals[msg.sender]);
+        require(!grant.challenges[msg.sender]);
 
-        grant.approvals[msg.sender] = true;
-        grant.approvalCount++;
+        grant.challenges[msg.sender] = true;
+        grant.challengeCount++;
     }
 
     function finalizeGrant(uint index) public restricted {
         Grant storage grant = grants[index];
 
-        require(grant.approvalCount > (approversCount/2));
+        require(grant.challengeCount < (approversCount/2));
         require(!grant.complete);
 
         grant.recipient.transfer(grant.value);
         grant.complete = true;
     }
 
-    function getSummary() public view returns (uint, uint, uint, uint, address) {
+    function getSummary() public view returns (string memory, uint, uint, uint, address) {
         return (
-            minimumContribution,
+            branchName,
             address(this).balance,
             grants.length,
             approversCount,

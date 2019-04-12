@@ -1,9 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
-import { Container, Button, Card, Grid } from 'semantic-ui-react';
-import ProPublica from '../src/apis/ProPublica';
+import { Button, Grid } from 'semantic-ui-react';
 import Layout from '../src/components/Layout';
-import SearchBar from '../src/components/SearchBar';
 import { Link } from '../routes';
 
 class Index extends React.Component {

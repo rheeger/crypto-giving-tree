@@ -5,8 +5,8 @@ const solc = require('solc');
 const buildPath = path.resolve(__dirname, 'build');
 fs.removeSync(buildPath);
 
-const campaignPath = path.resolve(__dirname, 'contracts', 'campaign.sol');
-const source = fs.readFileSync(campaignPath, 'utf8');
+const givingTreePath = path.resolve(__dirname, 'contracts', 'givingTree.sol');
+const source = fs.readFileSync(givingTreePath, 'utf8');
 const output = solc.compile(source, 1).contracts;
 
 fs.ensureDirSync(buildPath);
