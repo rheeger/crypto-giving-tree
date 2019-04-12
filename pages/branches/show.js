@@ -1,54 +1,88 @@
 import React, { Component } from 'react';
-import { Form, Button, Input, Message } from 'semantic-ui-react';
-import Layout from '../../src/components/layout';
-import factory from '../../src/ethereum/factory';
-import web3 from '../../src/ethereum/web3';
-import { Router } from '../../routes';
+import Layout from '../../components/layout';
+import Campaign from '../../ethereum/campaign';
+import { Container, Button, Card, Grid } from 'semantic-ui-react';
+import web3 from '../../ethereum/web3';
+import ContributeForm from '../../components/contribute';
+import { Link } from '../../routes';
 
-class CampaignNew extends Component {
-	state = {
-		minimumContribution: '',
-		errorMessage: '',
-		loading: false
-	};
+class BranchShow extends Component {
+	static async getInitialProps(props) {
+		const branch = Branch(props.query.address);
 
-	onSubmit = async (event) => {
-		event.preventDefault();
+		const summary = await campaign.methods.getSummary().call();
 
-		this.setState({ loading: true, errorMessage: '' });
-		try {
-			const accounts = await web3.eth.getAccounts();
-			await factory.methods.createCampaign(this.state.minimumContribution).send({ from: accounts[0] });
+		return {
+			address: props.query.address,
+			minimumContribution: summary[0],
+			balance: summary[1],
+			requestsCount: summary[2],
+			approversCount: summary[3],
+			manager: summary[4]
+		};
+	}
 
-			Router.pushRoute('/');
-		} catch (err) {
-			this.setState({ errorMessage: err.message });
-		}
-		this.setState({ loading: false });
-	};
+	renderCards() {
+		const { minimumContribution, balance, requestsCount, approversCount, manager } = this.props;
+
+		const items = [
+			{
+				style: { overflowWrap: 'break-word' },
+				header: manager,
+				meta: 'Address of Manager',
+				description: 'The manager created this campaign, and can request withdrawls'
+			},
+			{
+				header: web3.utils.fromWei(minimumContribution, 'ether'),
+				meta: 'Minimum Contribution',
+				description: 'Show your commmitment!'
+			},
+			{
+				header: web3.utils.fromWei(balance, 'ether'),
+				meta: 'Ether Contributed',
+				description: 'Look at all dis cash homie!'
+			},
+			{
+				header: requestsCount,
+				meta: 'Vendors',
+				description: 'These people are yet to get paid'
+			},
+			{
+				header: approversCount,
+				meta: 'Contributors',
+				description: 'These idiots thought this was a good ideaa'
+			}
+		];
+
+		return <Card.Group items={items} />;
+	}
 
 	render() {
 		return (
 			<Layout>
-				<h3>Create a Branch</h3>
-				<Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
-					<Form.Field>
-						<label>Minimum Contribution</label>
-						<Input
-							label="wei"
-							labelPosition="right"
-							value={this.state.minimumContribution}
-							onChange={(event) => this.setState({ minimumContribution: event.target.value })}
-						/>
-					</Form.Field>
-					<Message error header="Oops!" content={this.state.errorMessage} />
-					<Button primary loading={this.state.loading}>
-						Create!
-					</Button>
-				</Form>
+				<h3>Campaign Summary</h3>
+				<Grid className="Container">
+					<Grid.Row>
+						<Grid.Column width={10}>{this.renderCards()}</Grid.Column>
+						<Grid.Column width={3}>
+							<ContributeForm address={this.props.address} />
+						</Grid.Column>
+					</Grid.Row>
+
+					<Link route={`/campaigns/${this.props.address}/requests`}>
+						<a>
+							<Button primary>View Requests</Button>
+						</a>
+					</Link>
+					<Link route={`/`}>
+						<a>
+							<Button secondary>See All</Button>
+						</a>
+					</Link>
+				</Grid>
 			</Layout>
 		);
 	}
 }
 
-export default CampaignNew;
+export default BranchShow;

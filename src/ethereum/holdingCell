@@ -1,0 +1,59 @@
+	<Layout>
+			<Grid class="Container">
+				<Grid.Column width={8}>
+					<Card style={{ margin: '0 auto' }}>
+						<Card.Header>Start a Branch </Card.Header>
+
+						<Card.description>Create your own fund to issue grants to 501c(3)s.</Card.description>
+						<Card.Extra>
+							{' '}
+							<Link route="/branches">
+								<a>
+									<Button
+										style={{ marginTop: '2.5px', padding: '10px' }}
+										content="Create a Branch"
+										icon="add circle"
+										color="green"
+									/>
+								</a>
+							</Link>
+						</Card.Extra>
+					</Card>
+				</Grid.Column>
+				<Grid.Column width={8}>
+					<Card style={{ margin: '0 auto' }}>
+						<Card.Header>Donate Direct</Card.Header>
+
+						<Card.description>Send a donation directly to any non-profit.</Card.description>
+						<Card.Extra>
+							{' '}
+							<Link route="/orgs">
+								<a>
+									<Button
+										style={{ marginTop: '2.5px', padding: '10px' }}
+										content="Donate Direct"
+										icon="add circle"
+										color="blue"
+									/>
+								</a>
+							</Link>
+						</Card.Extra>
+					</Card>
+				</Grid.Column>
+			</Grid>
+		</Layout>
+
+
+
+//     function createA501c3(string memory name, string memory taxId) public {
+//         A501c3 newA501c3 = new A501c3(name, taxId);
+//         deployed501c3s.push(new501c3);
+//     }
+
+//     function getDeployed501c3s() public view returns (A501c3[] memory) {
+//         return deployed501c3s;
+//     }
+
+}
+
+// contract A501c3 {}
