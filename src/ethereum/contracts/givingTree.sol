@@ -3,7 +3,7 @@ pragma solidity ^0.4.25;
 contract GivingTree {
     Branch[] public deployedBranches;
 
-    function createBranch(uint suggestedContribution, string memory name) public {
+    function createBranch(uint suggestedContribution, bytes32 name) public {
         Branch newBranch = new Branch(suggestedContribution, msg.sender, name);
         deployedBranches.push(newBranch);
     }
@@ -28,7 +28,7 @@ contract Branch {
     mapping(address => bool) public approvers;
     Grant[] public grants;
     uint public approversCount;
-    string public branchName;
+    bytes32 public branchName;
 
 
     modifier restricted() {
@@ -36,7 +36,7 @@ contract Branch {
         _;
     }
     
-    constructor(uint suggestedContribution, address creator, string memory name) public {
+    constructor(uint suggestedContribution, address creator, bytes32 name) public {
         contribution = suggestedContribution;
         manager = creator;
         branchName = name;
@@ -48,7 +48,7 @@ contract Branch {
         approversCount++;
     }
     
-    function createGrant(string memory description, uint value, address recipient)  public restricted {
+    function createGrant(string memory description, uint value, address recipient) public restricted {
         Grant memory newGrant = Grant({
             description: description,
             value: value,
@@ -80,7 +80,7 @@ contract Branch {
         grant.complete = true;
     }
 
-    function getSummary() public view returns (string memory, uint, uint, uint, address) {
+    function getSummary() public view returns (bytes32, uint, uint, uint, address) {
         return (
             branchName,
             address(this).balance,
