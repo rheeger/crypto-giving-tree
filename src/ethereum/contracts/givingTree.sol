@@ -2,6 +2,8 @@ pragma solidity ^0.4.25;
 
 contract GivingTree {
     Branch[] public deployedBranches;
+    Org[] public deployedOrgs;
+    mapping(address => bool) public allowedOrgs;
 
     function createBranch(uint suggestedContribution, bytes32 name) public {
         Branch newBranch = new Branch(suggestedContribution, msg.sender, name);
@@ -11,6 +13,19 @@ contract GivingTree {
     function getDeployedBranches() public view returns (Branch[] memory) {
         return deployedBranches;
     }
+
+    function createOrg(uint ein) public {
+        Org newOrg = new Org(ein);
+        deployedOrgs.push(newOrg);
+        allowedOrgs[newOrg] = true;
+    }
+
+    function getDeployedOrgs() public view returns (Org[] memory) {
+        return deployedOrgs;
+    }
+
+    function getAllowedOrgs(address)
+        return allowedOrgs(address)
 }
 
 contract Branch {
@@ -40,6 +55,10 @@ contract Branch {
         contribution = suggestedContribution;
         manager = creator;
         branchName = name;
+
+    }
+
+    function addAlllowedOrg(uint ein) public {
 
     }
     
