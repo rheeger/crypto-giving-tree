@@ -2,11 +2,9 @@ pragma solidity ^0.4.25;
 
 contract GivingTree {
     Branch[] public deployedBranches;
-    Org[] public deployedOrgs;
-    mapping(address => bool) public allowedOrgs;
 
-    function createBranch(uint suggestedContribution, bytes32 name) public {
-        Branch newBranch = new Branch(suggestedContribution, msg.sender, name);
+    function createBranch(uint suggestedContribution) public {
+        Branch newBranch = new Branch(suggestedContribution, msg.sender);
         deployedBranches.push(newBranch);
     }
 
@@ -14,18 +12,10 @@ contract GivingTree {
         return deployedBranches;
     }
 
-    function createOrg(uint ein) public {
-        Org newOrg = new Org(ein);
-        deployedOrgs.push(newOrg);
-        allowedOrgs[newOrg] = true;
-    }
+}
 
-    function getDeployedOrgs() public view returns (Org[] memory) {
-        return deployedOrgs;
-    }
-
-    function getAllowedOrgs(address)
-        return allowedOrgs(address)
+contract AbstractOrgFactory {
+    function getAllowedOrgs(address recipient) public view returns (bool);
 }
 
 contract Branch {
@@ -43,7 +33,8 @@ contract Branch {
     mapping(address => bool) public approvers;
     Grant[] public grants;
     uint public approversCount;
-    bytes32 public branchName;
+    // bytes32 public branchName;
+    
 
 
     modifier restricted() {
@@ -51,14 +42,17 @@ contract Branch {
         _;
     }
     
-    constructor(uint suggestedContribution, address creator, bytes32 name) public {
+    constructor(uint suggestedContribution, address creator) public {
         contribution = suggestedContribution;
         manager = creator;
-        branchName = name;
+        // branchName = name;
 
     }
 
-    function addAlllowedOrg(uint ein) public {
+    function checkRecipient(address recipient) public view returns (bool) {
+        AbstractOrgFactory x = AbstractOrgFactory ( 0x5173aF4f53D9c3dB1303c662624a2B50c2e4B5f1 );
+    
+        return x.getAllowedOrgs(recipient);
 
     }
     
@@ -68,6 +62,8 @@ contract Branch {
     }
     
     function createGrant(string memory description, uint value, address recipient) public restricted {
+        require(!checkRecipient(recipient) == false);
+
         Grant memory newGrant = Grant({
             description: description,
             value: value,
@@ -75,6 +71,8 @@ contract Branch {
             complete: false,
             challengeCount: 0
         });
+
+       
 
         grants.push(newGrant);
     }
@@ -99,9 +97,9 @@ contract Branch {
         grant.complete = true;
     }
 
-    function getSummary() public view returns (bytes32, uint, uint, uint, address) {
+    function getSummary() public view returns (uint, uint, uint, address) {
         return (
-            branchName,
+            // branchName,
             address(this).balance,
             grants.length,
             approversCount,
