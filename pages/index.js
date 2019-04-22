@@ -4,6 +4,9 @@ import { Button, Grid } from 'semantic-ui-react';
 import Layout from '../src/components/Layout';
 import { Link } from '../routes';
 
+import withRedux from 'next-redux-wrapper';
+import initializeStore from '../src/reducers/initializeStore';
+
 class Index extends React.Component {
 	render() {
 		return (
