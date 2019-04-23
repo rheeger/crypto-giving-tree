@@ -27,13 +27,22 @@ class orgIndex extends React.Component {
 				),
 				meta: <Card.Meta>TAX-ID: {index.strein}</Card.Meta>,
 				extra: (
-					<Link route={`/orgs/${index.ein}`} className="ui two-buttons">
-						<a>
-							<Button floated="right" basic color="green">
-								view details
-							</Button>
-						</a>
-					</Link>
+					<div>
+						<Link route={`/orgs/${index.ein}`} className="ui two-buttons">
+							<a>
+								<Button floated="right" basic color="green">
+									view details
+								</Button>
+							</a>
+						</Link>
+						<Link route={`/orgs/${index.ein}/donate`} className="ui two-buttons">
+							<a>
+								<Button floated="left" basic color="red">
+									donate
+								</Button>
+							</a>
+						</Link>
+					</div>
 				)
 			};
 		});

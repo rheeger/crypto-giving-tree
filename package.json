@@ -3,6 +3,8 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
+		"@zeit/next-sass": "^1.0.1",
+		"acorn": "^6.1.1",
 		"axios": "^0.18.0",
 		"axios-jsonp": "^1.0.2",
 		"axios-jsonp-pro": "^1.1.4",
@@ -11,13 +13,17 @@
 		"fs-extra": "^7.0.1",
 		"lodash": "^4.17.11",
 		"next": "^8.1.0",
+		"next-images": "^1.1.1",
 		"next-redux-wrapper": "^3.0.0-alpha.2",
 		"next-routes": "^1.4.2",
 		"prop-types": "^15.7.2",
 		"react": "^16.8.6",
 		"react-dom": "^16.8.6",
+		"react-ga": "^2.5.7",
 		"react-redux": "^6.0.1",
+		"react-responsive": "^6.1.1",
 		"react-scripts": "2.1.8",
+		"react-transition-group": "^4.0.0",
 		"recompose": "^0.30.0",
 		"redux": "^4.0.1",
 		"redux-thunk": "^2.3.0",
@@ -41,5 +47,9 @@
 		"not dead",
 		"not ie <= 11",
 		"not op_mini all"
-	]
+	],
+	"devDependencies": {
+		"node-sass": "^4.11.0",
+		"sass-loader": "^7.1.0"
+	}
 }

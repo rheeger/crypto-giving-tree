@@ -7,6 +7,6 @@ routes
 	.add('/branches/:address', '/branches/show')
 	.add('/orgs', '/orgs/index')
 	.add('/orgs/:ein', '/orgs/show')
-	.add('/orgs/:ein/donate', '/orgs/donate/index');
+	.add('/orgs/:ein/donate', '/orgs/donate');
 
 module.exports = routes;
