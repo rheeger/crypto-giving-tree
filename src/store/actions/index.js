@@ -7,7 +7,6 @@ export const selectOrg = (ein) => async (dispatch) => {
 		console.error(error);
 	});
 
-	console.log(response);
 	dispatch({
 		type: ORG_SELECT,
 		payload: response.data
