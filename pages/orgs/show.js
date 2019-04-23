@@ -8,44 +8,28 @@ import SearchBar from '../../src/components/SearchBar';
 import { timingSafeEqual } from 'crypto';
 import { Link, Router } from '../../routes';
 import { isFulfilled } from 'q';
+import { selectOrg } from '../../src/store/actions';
+import { connect } from 'react-redux';
 
 class orgShow extends React.Component {
 	static async getInitialProps(props) {
 		const ein = props.query.ein;
-
+		console.log(props.query);
 		return {
 			ein
 		};
 	}
 
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			orgs: [],
-			selectedOrg: null
-		};
-		this.orgSearch(null);
-		console.log(this.props);
+	componentDidMount() {
+		this.props.selectOrg(this.props.ein);
 	}
 
-	orgSearch = async (term) => {
-		const response = await ProPublica.get(`/organizations/${this.props.ein}.json`).catch(function(error) {
-			console.error(error);
-		});
-
-		console.log(response);
-
-		this.setState({ orgs: response.data });
-		console.log(this.state.orgs.organization);
-	};
-
 	renderOrgDetails() {
-		if (!this.state.orgs.organization) {
+		if (!this.props.org.organization) {
 			return <div> Loading... </div>;
 		}
 
-		const { name, ruling_date, address, city, state, zipcode, updated_at } = this.state.orgs.organization;
+		const { name, ruling_date, address, city, state, zipcode, updated_at } = this.props.org.organization;
 
 		const items = [
 			{
@@ -74,7 +58,7 @@ class orgShow extends React.Component {
 
 	render() {
 		const orgSearch = _.debounce((term) => {
-			this.orgSearch(term);
+			this.selectOrg(term);
 		}, 300);
 
 		return (
@@ -105,4 +89,8 @@ class orgShow extends React.Component {
 	}
 }
 
-export default orgShow;
+const mapStateToProps = (state) => {
+	return { org: state.org };
+};
+
+export default connect(mapStateToProps, { selectOrg })(orgShow);

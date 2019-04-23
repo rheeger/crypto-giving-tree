@@ -2,14 +2,16 @@ import ProPublica from '../../apis/ProPublica';
 import { ORG_SELECT, ORG_SEARCH } from './types';
 
 //Action creator
-export const selectOrg = async (ein) => {
+export const selectOrg = (ein) => async (dispatch) => {
 	const response = await ProPublica.get(`/organizations/${ein}.json`).catch(function(error) {
 		console.error(error);
 	});
-	return {
+
+	console.log(response);
+	dispatch({
 		type: ORG_SELECT,
 		payload: response.data
-	};
+	});
 };
 
 export const searchOrgs = (term) => async (dispatch) => {
