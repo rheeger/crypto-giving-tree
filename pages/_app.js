@@ -1,30 +1,19 @@
-import React from 'react';
-import { initializeStore } from '../src/reducers/initializeStore';
-import { Provider } from 'react-redux';
 import App, { Container } from 'next/app';
-import withRedux from 'next-redux-wrapper';
-import Index from './index';
+import React from 'react';
+import withReduxStore from '../lib/with-redux-store';
+import { Provider } from 'react-redux';
 
 class MyApp extends App {
-	static async getInitialProps({ Component, ctx }) {
-		// we can dispatch from here too
-		ctx.store.dispatch({ type: 'FOO', payload: 'foo' });
-
-		const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
-
-		return { pageProps };
-	}
-
 	render() {
-		const { Component, pageProps, store } = this.props;
+		const { Component, pageProps, reduxStore } = this.props;
 		return (
 			<Container>
-				<Provider store={store}>
-					<Index {...pageProps} />
+				<Provider store={reduxStore}>
+					<Component {...pageProps} />
 				</Provider>
 			</Container>
 		);
 	}
 }
 
-export default withRedux(initializeStore)(MyApp);
+export default withReduxStore(MyApp);

@@ -1,41 +1,23 @@
 import React from 'react';
 import _ from 'lodash';
 import { Button, Card } from 'semantic-ui-react';
-import ProPublica from '../../src/apis/ProPublica';
 import Layout from '../../src/components/Layout';
 import SearchBar from '../../src/components/SearchBar';
 import { Link } from '../../routes';
+import { connect } from 'react-redux';
+import { searchOrgs } from '../../src/store/actions/index';
 
 class orgIndex extends React.Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			orgs: [],
-			selectedOrg: null
-		};
-		this.orgSearch(null);
+	componentDidMount() {
+		this.props.searchOrgs(null);
 	}
 
-	orgSearch = async (term) => {
-		const response = await ProPublica.get('/search.json?c_code%5Bid%5D=3', {
-			params: { q: term }
-		}).catch(function(error) {
-			console.error(error);
-		});
-
-		console.log(response);
-
-		this.setState({ orgs: response.data });
-		console.log(this.state.orgs.organizations);
-	};
-
 	renderOrgs() {
-		if (!this.state.orgs.organizations) {
+		if (!this.props.orgs.organizations) {
 			return <div> Loading... </div>;
 		}
 
-		const items = this.state.orgs.organizations.map((index, name) => {
+		const items = this.props.orgs.organizations.map((index, name) => {
 			return {
 				header: index.name,
 				description: (
@@ -60,17 +42,21 @@ class orgIndex extends React.Component {
 
 	render() {
 		const orgSearch = _.debounce((term) => {
-			this.orgSearch(term);
+			this.props.searchOrgs(term);
 		}, 300);
 
 		return (
 			<Layout>
 				<SearchBar onSearchTermChange={orgSearch} />
-				<p>Found {this.state.orgs.total_results} organizations</p>
+				<p>Found {this.props.orgs.total_results} organizations</p>
 				{this.renderOrgs()}
 			</Layout>
 		);
 	}
 }
 
-export default orgIndex;
+const mapStateToProps = (state) => {
+	return { orgs: state.orgs };
+};
+
+export default connect(mapStateToProps, { searchOrgs })(orgIndex);
