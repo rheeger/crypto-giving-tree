@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { Button, Grid } from 'semantic-ui-react';
 import Layout from '../src/components/Layout';
 import { Link } from '../routes';
+
 class Index extends React.Component {
 	render() {
 		return (
