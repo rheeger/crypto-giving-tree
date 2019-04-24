@@ -14,7 +14,7 @@ import ArrowDownGrey from '../../static/assets/images/arrow-down-grey.svg';
 import { getBlockDeadline } from '../helpers/web3-utils';
 import { retry } from '../helpers/promise-utils';
 import EXCHANGE_ABI from '../ethereum/uniSwap/abi/exchange';
-import Modal from './Modal';
+// import Modal from './Modal';
 
 import '../../static/css/send.scss';
 import MediaQuery from 'react-responsive';
@@ -730,84 +730,76 @@ class Send extends Component {
 		const { inputError, outputError, isValid } = this.validate();
 
 		return (
-			<Modal>
+			<div className="send">
+				<MediaQuery query="(max-width: 767px)" />
 				<Web3Connect />
-				<div className="send">
-					<MediaQuery query="(max-width: 767px)" />
-					<div
-						className={classnames('swap__content', {
-							'swap--inactive': !this.props.isConnected
-						})}
-					>
-						<NavigationTabs
-							className={classnames('header__navigation', {
-								'header--inactive': !this.props.isConnected
-							})}
-						/>
-
-						<CurrencyInputPanel
-							title={t('input')}
-							description={lastEditedField === OUTPUT ? estimatedText : ''}
-							extraText={this.renderBalance(inputCurrency, inputBalance, inputDecimals)}
-							onCurrencySelected={(inputCurrency) => this.setState({ inputCurrency }, this.recalcForm)}
-							onValueChange={this.updateInput}
-							selectedTokens={[ inputCurrency, outputCurrency ]}
-							selectedTokenAddress={inputCurrency}
-							value={inputValue}
-							errorMessage={inputError}
-						/>
-						<OversizedPanel>
-							<div className="swap__down-arrow-background">
-								<img
-									onClick={this.flipInputOutput}
-									className="swap__down-arrow swap__down-arrow--clickable"
-									alt="arrow"
-									src={isValid ? ArrowDownBlue : ArrowDownGrey}
-								/>
-							</div>
-						</OversizedPanel>
-						<CurrencyInputPanel
-							title={t('output')}
-							description={lastEditedField === INPUT ? estimatedText : ''}
-							extraText={this.renderBalance(outputCurrency, outputBalance, outputDecimals)}
-							onCurrencySelected={(outputCurrency) => this.setState({ outputCurrency }, this.recalcForm)}
-							onValueChange={this.updateOutput}
-							selectedTokens={[ inputCurrency, outputCurrency ]}
-							value={outputValue}
-							selectedTokenAddress={outputCurrency}
-							errorMessage={outputError}
-							disableUnlock
-						/>
-						<OversizedPanel>
-							<div className="swap__down-arrow-background">
-								<img
-									className="swap__down-arrow"
-									src={isValid ? ArrowDownBlue : ArrowDownGrey}
-									alt="arrow"
-								/>
-							</div>
-						</OversizedPanel>
-						<AddressInputPanel
-							t={this.props.t}
-							value={recipient}
-							onChange={(address) => this.setState({ recipient: address })}
-						/>
-						{this.renderExchangeRate()}
-						{this.renderSummary(inputError, outputError)}
-						<div className="swap__cta-container">
-							<button
-								className={classnames('swap__cta-btn', {
-									'swap--inactive': !this.props.isConnected
-								})}
-								disabled={!isValid}
-								onClick={this.onSend}
-							>
-								{t('send')}
-							</button>
+				<div
+					className={classnames('swap__content', {
+						'swap--inactive': !this.props.isConnected
+					})}
+				>
+					<CurrencyInputPanel
+						title={t('input')}
+						description={lastEditedField === OUTPUT ? estimatedText : ''}
+						extraText={this.renderBalance(inputCurrency, inputBalance, inputDecimals)}
+						onCurrencySelected={(inputCurrency) => this.setState({ inputCurrency }, this.recalcForm)}
+						onValueChange={this.updateInput}
+						selectedTokens={[ inputCurrency, outputCurrency ]}
+						selectedTokenAddress={inputCurrency}
+						value={inputValue}
+						errorMessage={inputError}
+					/>
+					<OversizedPanel>
+						<div className="swap__down-arrow-background">
+							<img
+								onClick={this.flipInputOutput}
+								className="swap__down-arrow swap__down-arrow--clickable"
+								alt="arrow"
+								src={isValid ? ArrowDownBlue : ArrowDownGrey}
+							/>
 						</div>
+					</OversizedPanel>
+					<CurrencyInputPanel
+						title={t('output')}
+						description={lastEditedField === INPUT ? estimatedText : ''}
+						extraText={this.renderBalance(outputCurrency, outputBalance, outputDecimals)}
+						onCurrencySelected={(outputCurrency) => this.setState({ outputCurrency }, this.recalcForm)}
+						onValueChange={this.updateOutput}
+						selectedTokens={[ inputCurrency, outputCurrency ]}
+						value={outputValue}
+						selectedTokenAddress={outputCurrency}
+						errorMessage={outputError}
+						disableUnlock
+					/>
+					<OversizedPanel>
+						<div className="swap__down-arrow-background">
+							<img
+								className="swap__down-arrow"
+								src={isValid ? ArrowDownBlue : ArrowDownGrey}
+								alt="arrow"
+							/>
+						</div>
+					</OversizedPanel>
+					<AddressInputPanel
+						t={this.props.t}
+						value={recipient}
+						onChange={(address) => this.setState({ recipient: address })}
+					/>
+					{this.renderExchangeRate()}
+					{this.renderSummary(inputError, outputError)}
+					<div className="swap__cta-container">
+						<button
+							className={classnames('swap__cta-btn', {
+								'swap--inactive': !this.props.isConnected
+							})}
+							disabled={!isValid}
+							onClick={this.onSend}
+						>
+							{t('send')}
+						</button>
 					</div>
 				</div>
-			</Modal>
+			</div>
 		);
 	}
 }
