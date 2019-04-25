@@ -5,6 +5,7 @@ import history from '../history';
 import HomePage from './HomePage';
 import OrgIndex from '../components/orgs';
 import OrgShow from '../components/orgs/show';
+import Donate from '../components/orgs/donate';
 
 const App = () => {
 	return (
@@ -21,7 +22,7 @@ const App = () => {
 						<Route path="/branches/:address" exact component={BranchShow} /> */}
 						<Route path="/orgs" exact component={OrgIndex} />
 						<Route path="/orgs/:ein" exact component={OrgShow} />
-						{/* <Route path="/orgs/:ein/donate" exact component={StreamShow} /> */}
+						<Route path="/orgs/:ein/donate" exact component={Donate} />
 					</Switch>
 				</div>
 			</Router>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 // import ContributionForm from '../../src/components/ContributionForm';
-import { Web3Connect, startWatching, initialize } from '../../src/store/reducers/web3connect';
-import { setAddresses } from '../../src/store/reducers/swapAddresses';
+import { Web3Connect, startWatching, initialize } from '../../store/reducers/web3connect';
+import { setAddresses } from '../../store/reducers/swapAddresses';
 
 class Donate extends React.Component {
 	componentWillMount() {
