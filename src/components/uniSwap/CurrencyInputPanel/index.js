@@ -3,19 +3,19 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { CSSTransitionGroup } from 'react-transition-group';
 import classnames from 'classnames';
-import Fuse from '../../helpers/fuse';
+import Fuse from '../../../helpers/fuse';
 import Modal from '../Modal';
 import TokenLogo from '../TokenLogo';
-import SearchIcon from '../../../static/assets/images/magnifying-glass.svg';
-import { selectors, addPendingTx } from '../../store/reducers/web3connect';
-import { addApprovalTx } from '../../store/reducers/pending';
-import { addExchange } from '../../store/reducers/swapAddresses';
+import SearchIcon from '../../../assets/images/magnifying-glass.svg';
+import { selectors, addPendingTx } from '../../../store/reducers/web3connect';
+import { addApprovalTx } from '../../../store/reducers/pending';
+import { addExchange } from '../../../store/reducers/swapAddresses';
 import { BigNumber as BN } from 'bignumber.js';
 
-import '../../../static/css/currency-panel.scss';
+import './currency-panel.scss';
 
-import ERC20_ABI from '../../ethereum/uniSwap/abi/erc20';
-import FACTORY_ABI from '../../ethereum/uniSwap/abi/factory';
+import ERC20_ABI from '../../../ethereum/uniSwap/abi/erc20';
+import FACTORY_ABI from '../../../ethereum/uniSwap/abi/factory';
 
 const FUSE_OPTIONS = {
 	includeMatches: false,

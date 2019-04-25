@@ -1,6 +1,6 @@
 import React from 'react';
 
-import '../../../static/css/oversized-panel.scss';
+import './oversized-panel.scss';
 
 export default function OversizedPanel(props) {
 	return (

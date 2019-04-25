@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { CSSTransitionGroup } from 'react-transition-group';
 
 import Modal from '../Modal';
-import QrCodeSVG from '../../../static/assets/images/qr-code.svg';
+import QrCodeSVG from '../../../assets/images/qr-code.svg';
 import QrScanner from '../../../lib/qr-scanner';
-import '../../../static/css/qr-code.scss';
+import './qr-code.scss';
 
 class QrCode extends Component {
 	static propTypes = {

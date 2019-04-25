@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import EthereumLogo from '../../../static/assets/images/ethereum-logo.svg';
+import EthereumLogo from '../../../assets/images/ethereum-logo.svg';
 
 const RINKEBY_TOKEN_MAP = {
 	'0xDA5B056Cfb861282B4b59d29c9B395bcC238D29B': '0x0d8775f648430679a709e98d2b0cb6250d2887ef',

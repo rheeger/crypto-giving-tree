@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import c from 'classnames';
 
 import QrCode from '../QrCode';
-import '../../../static/css/address-input-panel.scss';
+import './address-input-panel.scss';
 
 class AddressInputPanel extends Component {
 	static propTypes = {

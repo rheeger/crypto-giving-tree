@@ -3,20 +3,20 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { BigNumber as BN } from 'bignumber.js';
-import { Web3Connect, startWatching, initialize, selectors, addPendingTx } from '../store/reducers/web3connect';
+import { startWatching, initialize, selectors, addPendingTx } from '../store/reducers/web3connect';
 import { setAddresses } from '../store/reducers/swapAddresses';
-import AddressInputPanel from './AddressInputPanel';
-import CurrencyInputPanel from './CurrencyInputPanel';
-import ContextualInfo from './ContextualInfo';
-import OversizedPanel from './OversizedPanel';
-import ArrowDownBlue from '../../static/assets/images/arrow-down-blue.svg';
-import ArrowDownGrey from '../../static/assets/images/arrow-down-grey.svg';
+import AddressInputPanel from './uniSwap/AddressInputPanel';
+import CurrencyInputPanel from './uniSwap/CurrencyInputPanel';
+import ContextualInfo from './uniSwap/ContextualInfo';
+import OversizedPanel from './uniSwap/OversizedPanel';
+import ArrowDownBlue from '../assets/images/arrow-down-blue.svg';
+import ArrowDownGrey from '../assets/images/arrow-down-grey.svg';
 import { getBlockDeadline } from '../helpers/web3-utils';
 import { retry } from '../helpers/promise-utils';
 import EXCHANGE_ABI from '../ethereum/uniSwap/abi/exchange';
 // import Modal from './Modal';
 
-import '../../static/css/send.scss';
+import './send.scss';
 import MediaQuery from 'react-responsive';
 
 const INPUT = 0;
@@ -39,26 +39,6 @@ class Send extends Component {
 		lastEditedField: '',
 		recipient: ''
 	};
-
-	componentWillMount() {
-		const { initialize, startWatching } = this.props;
-		initialize().then(startWatching);
-	}
-
-	componentWillUpdate() {
-		const { web3, setAddresses } = this.props;
-
-		if (this.hasSetNetworkId || !web3 || !web3.eth || !web3.eth.net || !web3.eth.net.getId) {
-			return;
-		}
-
-		web3.eth.net.getId((err, networkId) => {
-			if (!err && !this.hasSetNetworkId) {
-				setAddresses(networkId);
-				this.hasSetNetworkId = true;
-			}
-		});
-	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		return true;
@@ -106,11 +86,11 @@ class Send extends Component {
 		const { value: inputBalance, decimals: inputDecimals } = selectors().getBalance(account, inputCurrency);
 
 		if (inputBalance.isLessThan(BN(inputValue * 10 ** inputDecimals))) {
-			inputError = this.props.t('insufficientBalance');
+			inputError = 'insufficientBalance';
 		}
 
 		if (inputValue === 'N/A') {
-			inputError = this.props.t('inputNotValid');
+			inputError = 'inputNotValid';
 		}
 
 		return {
@@ -563,7 +543,7 @@ class Send extends Component {
 
 	renderSummary(inputError, outputError) {
 		const { inputValue, inputCurrency, outputValue, outputCurrency, recipient } = this.state;
-		const { t, web3 } = this.props;
+		const { web3 } = this.props;
 
 		const { selectors, account } = this.props;
 		const { label: inputLabel } = selectors().getBalance(account, inputCurrency);
@@ -579,26 +559,26 @@ class Send extends Component {
 			contextualInfo = inputError || outputError;
 			isError = true;
 		} else if (!inputCurrency || !outputCurrency) {
-			contextualInfo = t('selectTokenCont');
+			contextualInfo = 'selectTokenCont';
 		} else if (inputCurrency === outputCurrency) {
-			contextualInfo = t('differentToken');
+			contextualInfo = 'differentToken';
 		} else if (!inputValue || !outputValue) {
 			const missingCurrencyValue = !inputValue ? inputLabel : outputLabel;
-			contextualInfo = t('enterValueCont', { missingCurrencyValue });
+			contextualInfo = ('enterValueCont', { missingCurrencyValue });
 		} else if (inputIsZero || outputIsZero) {
-			contextualInfo = t('noLiquidity');
+			contextualInfo = 'noLiquidity';
 		} else if (this.isUnapproved()) {
-			contextualInfo = t('unlockTokenCont');
+			contextualInfo = 'unlockTokenCont';
 		} else if (!recipient) {
-			contextualInfo = t('noRecipient');
+			contextualInfo = 'noRecipient';
 		} else if (!validRecipientAddress) {
-			contextualInfo = t('invalidRecipient');
+			contextualInfo = 'invalidRecipient';
 		}
 
 		return (
 			<ContextualInfo
-				openDetailsText={t('transactionDetails')}
-				closeDetailsText={t('hideDetails')}
+				openDetailsText={'transactionDetails'}
+				closeDetailsText={'hideDetails'}
 				contextualInfo={contextualInfo}
 				isError={isError}
 				renderTransactionDetails={this.renderTransactionDetails}
@@ -608,7 +588,7 @@ class Send extends Component {
 
 	renderTransactionDetails = () => {
 		const { inputValue, inputCurrency, outputValue, outputCurrency, recipient, lastEditedField } = this.state;
-		const { t, selectors, account } = this.props;
+		const { selectors, account } = this.props;
 
 		const ALLOWED_SLIPPAGE = 0.025;
 		const TOKEN_ALLOWED_SLIPPAGE = 0.04;
@@ -658,10 +638,10 @@ class Send extends Component {
 			return (
 				<div>
 					<div>
-						{t('youAreSending')} {b(`${+inputValue} ${inputLabel}`)}.
+						{'youAreSending'} {b(`${+inputValue} ${inputLabel}`)}.
 					</div>
 					<div className="send__last-summary-text">
-						{recipientText} {t('willReceive')} {b(`${+minOutput} ${outputLabel}`)} {t('orTransFail')}
+						{recipientText} {'willReceive'} {b(`${+minOutput} ${outputLabel}`)} {'orTransFail'}
 					</div>
 				</div>
 			);
@@ -669,12 +649,12 @@ class Send extends Component {
 			return (
 				<div>
 					<div>
-						{t('youAreSending')} {b(`${+outputValue} ${outputLabel}`)} {t('to')} {recipientText}.
+						{'youAreSending'} {b(`${+outputValue} ${outputLabel}`)} {'to'} {recipientText}.
 						{/*You are selling between {b(`${+inputValue} ${inputLabel}`)} to {b(`${+maxInput} ${inputLabel}`)}.*/}
 					</div>
 					<div className="send__last-summary-text">
 						{/*{b(`${recipient.slice(0, 6)}...${recipient.slice(-4)}`)} will receive {b(`${+outputValue} ${outputLabel}`)}.*/}
-						{t('itWillCost')} {b(`${+maxInput} ${inputLabel}`)} {t('orTransFail')}
+						{'itWillCost'} {b(`${+maxInput} ${inputLabel}`)} {'orTransFail'}
 					</div>
 				</div>
 			);
@@ -682,7 +662,7 @@ class Send extends Component {
 	};
 
 	renderExchangeRate() {
-		const { t, account, selectors } = this.props;
+		const { account, selectors } = this.props;
 		const { exchangeRate, inputCurrency, outputCurrency } = this.state;
 		const { label: inputLabel } = selectors().getBalance(account, inputCurrency);
 		const { label: outputLabel } = selectors().getBalance(account, outputCurrency);
@@ -691,7 +671,7 @@ class Send extends Component {
 			return (
 				<OversizedPanel hideBottom>
 					<div className="swap__exchange-rate-wrapper">
-						<span className="swap__exchange-rate">{t('exchangeRate')}</span>
+						<span className="swap__exchange-rate">{'exchangeRate'}</span>
 						<span> - </span>
 					</div>
 				</OversizedPanel>
@@ -701,7 +681,7 @@ class Send extends Component {
 		return (
 			<OversizedPanel hideBottom>
 				<div className="swap__exchange-rate-wrapper">
-					<span className="swap__exchange-rate">{t('exchangeRate')}</span>
+					<span className="swap__exchange-rate">{'exchangeRate'}</span>
 					<span>{`1 ${inputLabel} = ${exchangeRate.toFixed(7)} ${outputLabel}`}</span>
 				</div>
 			</OversizedPanel>
@@ -713,17 +693,17 @@ class Send extends Component {
 			return '';
 		}
 		const balanceInput = balance.dividedBy(BN(10 ** decimals)).toFixed(4);
-		return this.props.t('balance', { balanceInput });
+		return 'balance', { balanceInput };
 	}
 
 	render() {
 		if (!this.props.initialized) {
-			return <noscript />;
+			return <div>Initializing MetaMask</div>;
 		}
 
-		const { t, selectors, account } = this.props;
+		const { selectors, account } = this.props;
 		const { lastEditedField, inputCurrency, outputCurrency, inputValue, outputValue, recipient } = this.state;
-		const estimatedText = `(${t('estimated')})`;
+		const estimatedText = `(${'estimated'})`;
 
 		const { value: inputBalance, decimals: inputDecimals } = selectors().getBalance(account, inputCurrency);
 		const { value: outputBalance, decimals: outputDecimals } = selectors().getBalance(account, outputCurrency);
@@ -732,14 +712,13 @@ class Send extends Component {
 		return (
 			<div className="send">
 				<MediaQuery query="(max-width: 767px)" />
-				<Web3Connect />
 				<div
 					className={classnames('swap__content', {
 						'swap--inactive': !this.props.isConnected
 					})}
 				>
 					<CurrencyInputPanel
-						title={t('input')}
+						title={'input'}
 						description={lastEditedField === OUTPUT ? estimatedText : ''}
 						extraText={this.renderBalance(inputCurrency, inputBalance, inputDecimals)}
 						onCurrencySelected={(inputCurrency) => this.setState({ inputCurrency }, this.recalcForm)}
@@ -760,7 +739,7 @@ class Send extends Component {
 						</div>
 					</OversizedPanel>
 					<CurrencyInputPanel
-						title={t('output')}
+						title={'output'}
 						description={lastEditedField === INPUT ? estimatedText : ''}
 						extraText={this.renderBalance(outputCurrency, outputBalance, outputDecimals)}
 						onCurrencySelected={(outputCurrency) => this.setState({ outputCurrency }, this.recalcForm)}
@@ -795,7 +774,7 @@ class Send extends Component {
 							disabled={!isValid}
 							onClick={this.onSend}
 						>
-							{t('send')}
+							{'send'}
 						</button>
 					</div>
 				</div>
@@ -803,24 +782,26 @@ class Send extends Component {
 		);
 	}
 }
-
-export default connect(
-	(state) => ({
+const mapStateToProps = (state) => {
+	return {
+		orgs: state.orgs,
+		org: state.org,
 		balances: state.web3connect.balances,
 		isConnected:
 			!!state.web3connect.account && state.web3connect.networkId === (process.env.REACT_APP_NETWORK_ID || 1),
 		account: state.web3connect.account,
 		web3: state.web3connect.web3,
 		exchangeAddresses: state.addresses.exchangeAddresses
-	}),
-	(dispatch) => ({
-		setAddresses: (networkId) => dispatch(setAddresses(networkId)),
-		initialize: () => dispatch(initialize()),
-		startWatching: () => dispatch(startWatching()),
-		selectors: () => dispatch(selectors()),
-		addPendingTx: (id) => dispatch(addPendingTx(id))
-	})
-)(Send);
+	};
+};
+
+export default connect(mapStateToProps, (dispatch) => ({
+	setAddresses: (networkId) => dispatch(setAddresses(networkId)),
+	initialize: () => dispatch(initialize()),
+	startWatching: () => dispatch(startWatching()),
+	selectors: () => dispatch(selectors()),
+	addPendingTx: (id) => dispatch(addPendingTx(id))
+}))(Send);
 
 const b = (text) => <span className="swap__highlight-text">{text}</span>;
 

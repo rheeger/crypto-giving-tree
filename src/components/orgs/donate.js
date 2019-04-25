@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 // import ContributionForm from '../../src/components/ContributionForm';
 import { Web3Connect, startWatching, initialize } from '../../store/reducers/web3connect';
 import { setAddresses } from '../../store/reducers/swapAddresses';
+import ContributionForm from '../ContributionForm';
 
 class Donate extends React.Component {
 	componentWillMount() {
@@ -34,7 +35,7 @@ class Donate extends React.Component {
 		return (
 			<div>
 				<Web3Connect />
-				Hello
+				<ContributionForm />
 			</div>
 		);
 	}

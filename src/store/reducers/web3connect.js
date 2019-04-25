@@ -63,9 +63,9 @@ export const selectors = () => (dispatch, getState) => {
 	};
 
 	const getBalance = (address, tokenAddress) => {
-		if (process.env.NODE_ENV !== 'production' && !tokenAddress) {
-			console.warn('No token address found - return ETH balance');
-		}
+		// if (process.env.NODE_ENV !== 'production' && !tokenAddress) {
+		// 	console.warn('No token address found - return ETH balance');
+		// }
 
 		if (!tokenAddress || tokenAddress === 'ETH') {
 			const balance = state.balances.ethereum[address];
