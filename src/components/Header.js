@@ -1,29 +1,21 @@
 import React from 'react';
-import { Menu, Button } from 'semantic-ui-react';
-import { Link } from '../../routes';
+import { Menu } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 export default () => {
 	return (
 		<Menu style={{ marginTop: '10px' }}>
-			<Link route="/">
-				<a className="item">The Crypto Giving Tree</a>
+			<Link to="/" className="item">
+				The Crypto Giving Tree
 			</Link>
 
 			<Menu.Menu position="right">
-				<Link route="/branches">
-					<a>
-						<Button
-							style={{ marginTop: '2.5px', padding: '10px' }}
-							content="Create a Branch"
-							icon="add circle"
-							color="green"
-						/>
-					</a>
+				<Link to="/branches" style={{ marginTop: '2.5px', padding: '10px' }} className="ui button green">
+					<i className="plus circle icon" />Branch
 				</Link>
-				<Link route="/orgs">
-					<a>
-						<Button style={{ marginTop: '2.5px', padding: '10px' }}>Find a 501c(3)</Button>
-					</a>
+				<Link to="/orgs" style={{ marginTop: '2.5px', padding: '10px' }} className="ui button blue
+				">
+					<i className="search" />Find
 				</Link>
 			</Menu.Menu>
 		</Menu>
