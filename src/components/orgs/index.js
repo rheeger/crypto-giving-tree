@@ -1,11 +1,11 @@
 import React from 'react';
 import _ from 'lodash';
+import { Link } from 'react-router-dom';
 import { Button, Card } from 'semantic-ui-react';
-import Layout from '../../src/components/Layout';
-import SearchBar from '../../src/components/SearchBar';
-import { Link } from '../../routes';
+import Header from '../Header';
+import SearchBar from '../SearchBar';
 import { connect } from 'react-redux';
-import { searchOrgs } from '../../src/store/actions/index';
+import { searchOrgs } from '../../store/actions/index';
 
 class orgIndex extends React.Component {
 	componentDidMount() {
@@ -55,11 +55,11 @@ class orgIndex extends React.Component {
 		}, 300);
 
 		return (
-			<Layout>
+			<Header>
 				<SearchBar onSearchTermChange={orgSearch} />
 				<p>Found {this.props.orgs.total_results} organizations</p>
 				{this.renderOrgs()}
-			</Layout>
+			</Header>
 		);
 	}
 }

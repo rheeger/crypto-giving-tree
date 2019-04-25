@@ -1,27 +1,14 @@
 import React from 'react';
 import _ from 'lodash';
-import { Button, Card, Icon, Grid } from 'semantic-ui-react';
-import ProPublica from '../../src/apis/ProPublica';
-import Layout from '../../src/components/Layout';
-import Header from '../../src/components/Header';
-import SearchBar from '../../src/components/SearchBar';
-import { timingSafeEqual } from 'crypto';
-import { Link, Router } from '../../routes';
-import { isFulfilled } from 'q';
-import { selectOrg } from '../../src/store/actions';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Button, Card, Icon, Grid } from 'semantic-ui-react';
+import Header from '../../Header';
+import { selectOrg } from '../../store/actions';
 
 class orgShow extends React.Component {
-	static async getInitialProps(props) {
-		const ein = props.query.ein;
-		console.log(props.query);
-		return {
-			ein
-		};
-	}
-
 	componentDidMount() {
-		this.props.selectOrg(this.props.ein);
+		this.props.selectOrg(props.query.ein);
 	}
 
 	renderOrgDetails() {
@@ -63,18 +50,18 @@ class orgShow extends React.Component {
 
 		return (
 			<div>
-				<Layout>
+				<Header>
 					<Grid style={{ margin: '0 auto' }} className="Container">
 						<Grid.Column width={11}>{this.renderOrgDetails()}</Grid.Column>
 						<Grid.Column width={5}>
 							<h3>Actions:</h3>
-							<Link route={`/orgs/${this.props.ein}/claim`}>
+							<Link to={`/orgs/${this.props.ein}/claim`}>
 								<a>
 									<Button color="yellow">Claim This Org</Button>
 								</a>
 							</Link>
 							<br />
-							<Link route={`/orgs/${this.props.ein}/donate`}>
+							<Link to={`/orgs/${this.props.ein}/donate`}>
 								<a>
 									<Button style={{ margin: '10px auto' }} color="green">
 										Donate Now!
@@ -83,7 +70,7 @@ class orgShow extends React.Component {
 							</Link>
 						</Grid.Column>
 					</Grid>
-				</Layout>
+				</Header>
 			</div>
 		);
 	}
