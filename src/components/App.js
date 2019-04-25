@@ -3,6 +3,8 @@ import { Router, Route, Switch } from 'react-router-dom';
 import Header from './Header';
 import history from '../history';
 import HomePage from './HomePage';
+import OrgIndex from '../components/orgs';
+import OrgShow from '../components/orgs/show';
 
 const App = () => {
 	return (
@@ -16,10 +18,10 @@ const App = () => {
 						<Route path="/branches/new" exact component={BranchCreate} />
 						<Route path="/branches/:address/donate" exact component={BranchDonate} />
 						<Route path="/branches/:address/grants/new" exact component={BranchGrant} />
-						<Route path="/branches/:address" exact component={BranchShow} />
+						<Route path="/branches/:address" exact component={BranchShow} /> */}
 						<Route path="/orgs" exact component={OrgIndex} />
-						<Route path="/orgs/:ein" exact component={StreamShow} />
-						<Route path="/orgs/:ein/donate" exact component={StreamShow} /> */}
+						<Route path="/orgs/:ein" exact component={OrgShow} />
+						{/* <Route path="/orgs/:ein/donate" exact component={StreamShow} /> */}
 					</Switch>
 				</div>
 			</Router>

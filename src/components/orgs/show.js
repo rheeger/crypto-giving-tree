@@ -1,14 +1,13 @@
 import React from 'react';
-import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Button, Card, Icon, Grid } from 'semantic-ui-react';
-import Header from '../../Header';
+import { Button, Card, Grid } from 'semantic-ui-react';
 import { selectOrg } from '../../store/actions';
 
-class orgShow extends React.Component {
+class OrgShow extends React.Component {
 	componentDidMount() {
-		this.props.selectOrg(props.query.ein);
+		console.log(this.props);
+		this.props.selectOrg(this.props.match.params.ein);
 	}
 
 	renderOrgDetails() {
@@ -44,33 +43,23 @@ class orgShow extends React.Component {
 	}
 
 	render() {
-		const orgSearch = _.debounce((term) => {
-			this.selectOrg(term);
-		}, 300);
-
 		return (
 			<div>
-				<Header>
-					<Grid style={{ margin: '0 auto' }} className="Container">
-						<Grid.Column width={11}>{this.renderOrgDetails()}</Grid.Column>
-						<Grid.Column width={5}>
-							<h3>Actions:</h3>
-							<Link to={`/orgs/${this.props.ein}/claim`}>
-								<a>
-									<Button color="yellow">Claim This Org</Button>
-								</a>
-							</Link>
-							<br />
-							<Link to={`/orgs/${this.props.ein}/donate`}>
-								<a>
-									<Button style={{ margin: '10px auto' }} color="green">
-										Donate Now!
-									</Button>
-								</a>
-							</Link>
-						</Grid.Column>
-					</Grid>
-				</Header>
+				<Grid style={{ margin: '0 auto' }} className="Container">
+					<Grid.Column width={11}>{this.renderOrgDetails()}</Grid.Column>
+					<Grid.Column width={5}>
+						<h3>Actions:</h3>
+						<Link to={`/orgs/${this.props.ein}/claim`}>
+							<Button color="yellow">Claim This Org</Button>
+						</Link>
+						<br />
+						<Link to={`/orgs/${this.props.ein}/donate`}>
+							<Button style={{ margin: '10px auto' }} color="green">
+								Donate Now!
+							</Button>
+						</Link>
+					</Grid.Column>
+				</Grid>
 			</div>
 		);
 	}
@@ -80,4 +69,4 @@ const mapStateToProps = (state) => {
 	return { org: state.org };
 };
 
-export default connect(mapStateToProps, { selectOrg })(orgShow);
+export default connect(mapStateToProps, { selectOrg })(OrgShow);
