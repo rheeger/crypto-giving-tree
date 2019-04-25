@@ -12,10 +12,6 @@ class Donate extends React.Component {
 	}
 
 	componentWillUpdate() {
-		const { initialize, startWatching } = this.props;
-
-		initialize().then(startWatching);
-
 		const { web3, setAddresses } = this.props;
 
 		if (this.hasSetNetworkId || !web3 || !web3.eth || !web3.eth.net || !web3.eth.net.getId) {
