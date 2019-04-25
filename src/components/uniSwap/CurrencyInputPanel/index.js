@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { CSSTransitionGroup } from 'react-transition-group';
 import classnames from 'classnames';
+import { withTranslation } from 'react-i18next';
+import { withRouter } from 'react-router-dom';
 import Fuse from '../../../helpers/fuse';
 import Modal from '../Modal';
 import TokenLogo from '../TokenLogo';
@@ -160,7 +162,7 @@ class CurrencyInputPanel extends Component {
 					key="token-modal-no-exchange"
 					className="token-modal__token-row token-modal__token-row--no-exchange"
 				>
-					<div>{'noExchange'}</div>
+					<div>{t('noExchange')}</div>
 				</div>,
 				<div
 					key="token-modal-create-exchange"
@@ -178,7 +180,7 @@ class CurrencyInputPanel extends Component {
 		if (!results.length) {
 			return (
 				<div className="token-modal__token-row token-modal__token-row--no-exchange">
-					<div>{'noExchange'}</div>
+					<div>{t('noExchange')}</div>
 				</div>
 			);
 		}
@@ -220,7 +222,7 @@ class CurrencyInputPanel extends Component {
 						<div className="token-modal__search-container">
 							<input
 								type="text"
-								placeholder="searchOrPaste"
+								placeholder={this.props.t('searchOrPaste')}
 								className="token-modal__search-input"
 								onChange={(e) => {
 									this.setState({ searchQuery: e.target.value });
@@ -272,7 +274,7 @@ class CurrencyInputPanel extends Component {
 			return (
 				<button className="currency-input-panel__sub-currency-select currency-input-panel__sub-currency-select--pending">
 					<div className="loader" />
-					{'pending'}
+					{t('pending')}
 				</button>
 			);
 		}
@@ -293,7 +295,7 @@ class CurrencyInputPanel extends Component {
 						});
 				}}
 			>
-				{'unlock'}
+				{t('unlock')}
 			</button>
 		);
 	}
@@ -352,7 +354,7 @@ class CurrencyInputPanel extends Component {
 							address={selectedTokenAddress}
 						/>
 					) : null}
-					{TOKEN_ADDRESS_TO_LABEL[selectedTokenAddress] || 'selectToken'}
+					{TOKEN_ADDRESS_TO_LABEL[selectedTokenAddress] || t('selectToken')}
 					<span className="currency-input-panel__dropdown-icon" />
 				</button>
 			</div>
@@ -390,22 +392,24 @@ class CurrencyInputPanel extends Component {
 	}
 }
 
-export default connect(
-	(state) => ({
-		factoryAddress: state.addresses.factoryAddress,
-		exchangeAddresses: state.addresses.exchangeAddresses,
-		tokenAddresses: state.addresses.tokenAddresses,
-		contracts: state.contracts,
-		account: state.web3connect.account,
-		approvals: state.web3connect.approvals,
-		transactions: state.web3connect.transactions,
-		web3: state.web3connect.web3
-		// pendingApprovals: state.pending.approvals
-	}),
-	(dispatch) => ({
-		selectors: () => dispatch(selectors()),
-		addExchange: (opts) => dispatch(addExchange(opts)),
-		addPendingTx: (opts) => dispatch(addPendingTx(opts)),
-		addApprovalTx: (opts) => dispatch(addApprovalTx(opts))
-	})
-)(CurrencyInputPanel);
+export default withRouter(
+	connect(
+		(state) => ({
+			factoryAddress: state.addresses.factoryAddress,
+			exchangeAddresses: state.addresses.exchangeAddresses,
+			tokenAddresses: state.addresses.tokenAddresses,
+			contracts: state.contracts,
+			account: state.web3connect.account,
+			approvals: state.web3connect.approvals,
+			transactions: state.web3connect.transactions,
+			web3: state.web3connect.web3
+			// pendingApprovals: state.pending.approvals
+		}),
+		(dispatch) => ({
+			selectors: () => dispatch(selectors()),
+			addExchange: (opts) => dispatch(addExchange(opts)),
+			addPendingTx: (opts) => dispatch(addPendingTx(opts)),
+			addApprovalTx: (opts) => dispatch(addApprovalTx(opts))
+		})
+	)(withTranslation()(CurrencyInputPanel))
+);

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import c from 'classnames';
 
@@ -31,7 +32,9 @@ class AddressInputPanel extends Component {
 					<div className="address-input-panel__input-container">
 						<div className="currency-input-panel__label-row">
 							<div className="currency-input-panel__label-container">
-								<span className="currency-input-panel__label">{title || 'recipientAddress'}</span>
+								<span className="currency-input-panel__label">
+									{(title || t('Sending to: '), this.props.org.organization.name)}
+								</span>
 							</div>
 						</div>
 						<div className="currency-input-panel__input-row">
@@ -55,4 +58,8 @@ class AddressInputPanel extends Component {
 	}
 }
 
-export default AddressInputPanel;
+const mapStateToProps = (state) => {
+	return { org: state.org };
+};
+
+export default connect(mapStateToProps, null)(AddressInputPanel);

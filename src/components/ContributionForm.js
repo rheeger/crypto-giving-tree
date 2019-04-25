@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import { BigNumber as BN } from 'bignumber.js';
 import { startWatching, initialize, selectors, addPendingTx } from '../store/reducers/web3connect';
 import { setAddresses } from '../store/reducers/swapAddresses';
+import { withTranslation } from 'react-i18next';
 import AddressInputPanel from './uniSwap/AddressInputPanel';
 import CurrencyInputPanel from './uniSwap/CurrencyInputPanel';
 import ContextualInfo from './uniSwap/ContextualInfo';
@@ -17,7 +18,6 @@ import EXCHANGE_ABI from '../ethereum/uniSwap/abi/exchange';
 // import Modal from './Modal';
 
 import './send.scss';
-import MediaQuery from 'react-responsive';
 
 const INPUT = 0;
 const OUTPUT = 1;
@@ -33,7 +33,7 @@ class Send extends Component {
 	state = {
 		inputValue: '',
 		outputValue: '',
-		inputCurrency: '',
+		inputCurrency: 'ETH',
 		outputCurrency: '',
 		inputAmountB: '',
 		lastEditedField: '',
@@ -43,6 +43,7 @@ class Send extends Component {
 	componentDidMount() {
 		console.log(this.props);
 	}
+
 	shouldComponentUpdate(nextProps, nextState) {
 		return true;
 	}
@@ -89,11 +90,11 @@ class Send extends Component {
 		const { value: inputBalance, decimals: inputDecimals } = selectors().getBalance(account, inputCurrency);
 
 		if (inputBalance.isLessThan(BN(inputValue * 10 ** inputDecimals))) {
-			inputError = 'insufficientBalance';
+			inputError = this.props.t('insufficientBalance');
 		}
 
 		if (inputValue === 'N/A') {
-			inputError = 'inputNotValid';
+			inputError = this.props.t('inputNotValid');
 		}
 
 		return {
@@ -472,6 +473,7 @@ class Send extends Component {
 
 		if (lastEditedField === OUTPUT) {
 			// send output
+
 			switch (type) {
 				case 'ETH_TO_TOKEN':
 					new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
@@ -546,7 +548,7 @@ class Send extends Component {
 
 	renderSummary(inputError, outputError) {
 		const { inputValue, inputCurrency, outputValue, outputCurrency, recipient } = this.state;
-		const { web3 } = this.props;
+		const { t, web3 } = this.props;
 
 		const { selectors, account } = this.props;
 		const { label: inputLabel } = selectors().getBalance(account, inputCurrency);
@@ -562,26 +564,26 @@ class Send extends Component {
 			contextualInfo = inputError || outputError;
 			isError = true;
 		} else if (!inputCurrency || !outputCurrency) {
-			contextualInfo = 'selectTokenCont';
+			contextualInfo = t('selectTokenCont');
 		} else if (inputCurrency === outputCurrency) {
-			contextualInfo = 'differentToken';
+			contextualInfo = t('differentToken');
 		} else if (!inputValue || !outputValue) {
 			const missingCurrencyValue = !inputValue ? inputLabel : outputLabel;
-			contextualInfo = ('enterValueCont', { missingCurrencyValue });
+			contextualInfo = t('enterValueCont', { missingCurrencyValue });
 		} else if (inputIsZero || outputIsZero) {
-			contextualInfo = 'noLiquidity';
+			contextualInfo = t('noLiquidity');
 		} else if (this.isUnapproved()) {
-			contextualInfo = 'unlockTokenCont';
+			contextualInfo = t('unlockTokenCont');
 		} else if (!recipient) {
-			contextualInfo = 'noRecipient';
+			contextualInfo = t('noRecipient');
 		} else if (!validRecipientAddress) {
-			contextualInfo = 'invalidRecipient';
+			contextualInfo = t('invalidRecipient');
 		}
 
 		return (
 			<ContextualInfo
-				openDetailsText={'transactionDetails'}
-				closeDetailsText={'hideDetails'}
+				openDetailsText={t('transactionDetails')}
+				closeDetailsText={t('hideDetails')}
 				contextualInfo={contextualInfo}
 				isError={isError}
 				renderTransactionDetails={this.renderTransactionDetails}
@@ -591,7 +593,7 @@ class Send extends Component {
 
 	renderTransactionDetails = () => {
 		const { inputValue, inputCurrency, outputValue, outputCurrency, recipient, lastEditedField } = this.state;
-		const { selectors, account } = this.props;
+		const { t, selectors, account } = this.props;
 
 		const ALLOWED_SLIPPAGE = 0.025;
 		const TOKEN_ALLOWED_SLIPPAGE = 0.04;
@@ -641,10 +643,10 @@ class Send extends Component {
 			return (
 				<div>
 					<div>
-						{'youAreSending'} {b(`${+inputValue} ${inputLabel}`)}.
+						{t('youAreSending')} {b(`${+inputValue} ${inputLabel}`)}.
 					</div>
 					<div className="send__last-summary-text">
-						{recipientText} {'willReceive'} {b(`${+minOutput} ${outputLabel}`)} {'orTransFail'}
+						{recipientText} {t('willReceive')} {b(`${+minOutput} ${outputLabel}`)} {t('orTransFail')}
 					</div>
 				</div>
 			);
@@ -652,12 +654,12 @@ class Send extends Component {
 			return (
 				<div>
 					<div>
-						{'youAreSending'} {b(`${+outputValue} ${outputLabel}`)} {'to'} {recipientText}.
+						{t('youAreSending')} {b(`${+outputValue} ${outputLabel}`)} {t('to')} {recipientText}.
 						{/*You are selling between {b(`${+inputValue} ${inputLabel}`)} to {b(`${+maxInput} ${inputLabel}`)}.*/}
 					</div>
 					<div className="send__last-summary-text">
 						{/*{b(`${recipient.slice(0, 6)}...${recipient.slice(-4)}`)} will receive {b(`${+outputValue} ${outputLabel}`)}.*/}
-						{'itWillCost'} {b(`${+maxInput} ${inputLabel}`)} {'orTransFail'}
+						{t('itWillCost')} {b(`${+maxInput} ${inputLabel}`)} {t('orTransFail')}
 					</div>
 				</div>
 			);
@@ -665,7 +667,7 @@ class Send extends Component {
 	};
 
 	renderExchangeRate() {
-		const { account, selectors } = this.props;
+		const { t, account, selectors } = this.props;
 		const { exchangeRate, inputCurrency, outputCurrency } = this.state;
 		const { label: inputLabel } = selectors().getBalance(account, inputCurrency);
 		const { label: outputLabel } = selectors().getBalance(account, outputCurrency);
@@ -674,7 +676,7 @@ class Send extends Component {
 			return (
 				<OversizedPanel hideBottom>
 					<div className="swap__exchange-rate-wrapper">
-						<span className="swap__exchange-rate">{'exchangeRate'}</span>
+						<span className="swap__exchange-rate">{t('exchangeRate')}</span>
 						<span> - </span>
 					</div>
 				</OversizedPanel>
@@ -684,7 +686,7 @@ class Send extends Component {
 		return (
 			<OversizedPanel hideBottom>
 				<div className="swap__exchange-rate-wrapper">
-					<span className="swap__exchange-rate">{'exchangeRate'}</span>
+					<span className="swap__exchange-rate">{t('exchangeRate')}</span>
 					<span>{`1 ${inputLabel} = ${exchangeRate.toFixed(7)} ${outputLabel}`}</span>
 				</div>
 			</OversizedPanel>
@@ -696,17 +698,16 @@ class Send extends Component {
 			return '';
 		}
 		const balanceInput = balance.dividedBy(BN(10 ** decimals)).toFixed(4);
-		return 'balance', { balanceInput };
+		return this.props.t('balance', { balanceInput });
 	}
 
 	render() {
-		if (!this.props.initialize) {
-			return <div>Initializing MetaMask</div>;
+		if (!this.props.org.organization) {
+			return <div>Loading Organization Details</div>;
 		}
-
-		const { selectors, account } = this.props;
+		const { t, selectors, account } = this.props;
 		const { lastEditedField, inputCurrency, outputCurrency, inputValue, outputValue, recipient } = this.state;
-		const estimatedText = `(${'estimated'})`;
+		const estimatedText = `(${t('estimated')})`;
 
 		const { value: inputBalance, decimals: inputDecimals } = selectors().getBalance(account, inputCurrency);
 		const { value: outputBalance, decimals: outputDecimals } = selectors().getBalance(account, outputCurrency);
@@ -714,14 +715,13 @@ class Send extends Component {
 
 		return (
 			<div className="send">
-				<MediaQuery query="(max-width: 767px)" />
 				<div
 					className={classnames('swap__content', {
 						'swap--inactive': !this.props.isConnected
 					})}
 				>
 					<CurrencyInputPanel
-						title={'input'}
+						title={t('input')}
 						description={lastEditedField === OUTPUT ? estimatedText : ''}
 						extraText={this.renderBalance(inputCurrency, inputBalance, inputDecimals)}
 						onCurrencySelected={(inputCurrency) => this.setState({ inputCurrency }, this.recalcForm)}
@@ -742,7 +742,7 @@ class Send extends Component {
 						</div>
 					</OversizedPanel>
 					<CurrencyInputPanel
-						title={'output'}
+						title={t('output')}
 						description={lastEditedField === INPUT ? estimatedText : ''}
 						extraText={this.renderBalance(outputCurrency, outputBalance, outputDecimals)}
 						onCurrencySelected={(outputCurrency) => this.setState({ outputCurrency }, this.recalcForm)}
@@ -777,7 +777,7 @@ class Send extends Component {
 							disabled={!isValid}
 							onClick={this.onSend}
 						>
-							{'send'}
+							{t('send')}
 						</button>
 					</div>
 				</div>
@@ -785,6 +785,7 @@ class Send extends Component {
 		);
 	}
 }
+
 const mapStateToProps = (state) => {
 	return {
 		org: state.org,
@@ -803,7 +804,7 @@ export default connect(mapStateToProps, (dispatch) => ({
 	startWatching: () => dispatch(startWatching()),
 	selectors: () => dispatch(selectors()),
 	addPendingTx: (id) => dispatch(addPendingTx(id))
-}))(Send);
+}))(withTranslation()(Send));
 
 const b = (text) => <span className="swap__highlight-text">{text}</span>;
 
