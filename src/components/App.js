@@ -6,6 +6,7 @@ import HomePage from './HomePage';
 import OrgIndex from '../components/orgs';
 import OrgShow from '../components/orgs/show';
 import Donate from '../components/orgs/donate';
+import { Web3Connect } from '../store/reducers/web3connect';
 
 const App = () => {
 	return (
@@ -13,6 +14,7 @@ const App = () => {
 			<Router history={history}>
 				<div>
 					<Header />
+					<Web3Connect />
 					<Switch>
 						<Route path="/" exact component={HomePage} />
 						{/* <Route path="/branches" exact component={BranchIndex} />

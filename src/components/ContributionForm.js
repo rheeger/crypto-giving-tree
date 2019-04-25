@@ -34,12 +34,15 @@ class Send extends Component {
 		inputValue: '',
 		outputValue: '',
 		inputCurrency: '',
-		outputCurrency: 'DAI',
+		outputCurrency: '',
 		inputAmountB: '',
 		lastEditedField: '',
 		recipient: ''
 	};
 
+	componentDidMount() {
+		console.log(this.props);
+	}
 	shouldComponentUpdate(nextProps, nextState) {
 		return true;
 	}
@@ -697,7 +700,7 @@ class Send extends Component {
 	}
 
 	render() {
-		if (!this.props.initialized) {
+		if (!this.props.initialize) {
 			return <div>Initializing MetaMask</div>;
 		}
 
@@ -784,7 +787,6 @@ class Send extends Component {
 }
 const mapStateToProps = (state) => {
 	return {
-		orgs: state.orgs,
 		org: state.org,
 		balances: state.web3connect.balances,
 		isConnected:

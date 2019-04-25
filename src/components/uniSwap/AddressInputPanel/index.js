@@ -31,7 +31,7 @@ class AddressInputPanel extends Component {
 					<div className="address-input-panel__input-container">
 						<div className="currency-input-panel__label-row">
 							<div className="currency-input-panel__label-container">
-								<span className="currency-input-panel__label">{title || t('recipientAddress')}</span>
+								<span className="currency-input-panel__label">{title || 'recipientAddress'}</span>
 							</div>
 						</div>
 						<div className="currency-input-panel__input-row">

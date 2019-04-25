@@ -160,7 +160,7 @@ class CurrencyInputPanel extends Component {
 					key="token-modal-no-exchange"
 					className="token-modal__token-row token-modal__token-row--no-exchange"
 				>
-					<div>{t('noExchange')}</div>
+					<div>{'noExchange'}</div>
 				</div>,
 				<div
 					key="token-modal-create-exchange"
@@ -178,7 +178,7 @@ class CurrencyInputPanel extends Component {
 		if (!results.length) {
 			return (
 				<div className="token-modal__token-row token-modal__token-row--no-exchange">
-					<div>{t('noExchange')}</div>
+					<div>{'noExchange'}</div>
 				</div>
 			);
 		}
@@ -220,7 +220,7 @@ class CurrencyInputPanel extends Component {
 						<div className="token-modal__search-container">
 							<input
 								type="text"
-								placeholder={this.props.t('searchOrPaste')}
+								placeholder="searchOrPaste"
 								className="token-modal__search-input"
 								onChange={(e) => {
 									this.setState({ searchQuery: e.target.value });
@@ -272,7 +272,7 @@ class CurrencyInputPanel extends Component {
 			return (
 				<button className="currency-input-panel__sub-currency-select currency-input-panel__sub-currency-select--pending">
 					<div className="loader" />
-					{t('pending')}
+					{'pending'}
 				</button>
 			);
 		}
@@ -293,7 +293,7 @@ class CurrencyInputPanel extends Component {
 						});
 				}}
 			>
-				{t('unlock')}
+				{'unlock'}
 			</button>
 		);
 	}
@@ -352,7 +352,7 @@ class CurrencyInputPanel extends Component {
 							address={selectedTokenAddress}
 						/>
 					) : null}
-					{TOKEN_ADDRESS_TO_LABEL[selectedTokenAddress] || t('selectToken')}
+					{TOKEN_ADDRESS_TO_LABEL[selectedTokenAddress] || 'selectToken'}
 					<span className="currency-input-panel__dropdown-icon" />
 				</button>
 			</div>
@@ -399,8 +399,8 @@ export default connect(
 		account: state.web3connect.account,
 		approvals: state.web3connect.approvals,
 		transactions: state.web3connect.transactions,
-		web3: state.web3connect.web3,
-		pendingApprovals: state.pending.approvals
+		web3: state.web3connect.web3
+		// pendingApprovals: state.pending.approvals
 	}),
 	(dispatch) => ({
 		selectors: () => dispatch(selectors()),

@@ -6,7 +6,6 @@ import { selectOrg } from '../../store/actions';
 
 class OrgShow extends React.Component {
 	componentDidMount() {
-		console.log(this.props);
 		this.props.selectOrg(this.props.match.params.ein);
 	}
 
