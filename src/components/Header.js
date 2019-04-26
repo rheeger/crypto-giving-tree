@@ -4,16 +4,24 @@ import { Link } from 'react-router-dom';
 
 export default () => {
 	return (
-		<Menu style={{ marginTop: '10px' }}>
+		<Menu style={{ marginTop: '1rem' }}>
 			<Link to="/" className="item">
 				The Crypto Giving Tree
 			</Link>
 
 			<Menu.Menu position="right">
-				<Link to="/branches" style={{ margin: '2.5px', padding: '10px' }} className="ui button green">
+				<Link
+					to="/branches"
+					style={{ margin: '2.5px 2.5px 2.5px 5px', padding: '10px' }}
+					className="ui button green"
+				>
 					<i className="plus circle icon" />Branch
 				</Link>
-				<Link to="/orgs" style={{ margin: '2.5px', padding: '10px' }} className="ui button blue">
+				<Link
+					to="/orgs"
+					style={{ margin: '2.5px 10px 2.5px 2.5px', padding: '10px' }}
+					className="ui button blue"
+				>
 					<i className="sistrix medium icon" />Find
 				</Link>
 			</Menu.Menu>

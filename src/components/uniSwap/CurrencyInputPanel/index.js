@@ -315,6 +315,10 @@ class CurrencyInputPanel extends Component {
 			return renderInput();
 		}
 
+		if (this.props.outputPanel == true) {
+			return (disableTokenSelect: true);
+		}
+
 		return (
 			<div className="currency-input-panel__input-row">
 				<input

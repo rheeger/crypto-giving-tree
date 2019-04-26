@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { BigNumber as BN } from 'bignumber.js';
+import { Button } from 'semantic-ui-react';
 import { startWatching, initialize, selectors, addPendingTx } from '../store/reducers/web3connect';
 import { setAddresses } from '../store/reducers/swapAddresses';
 import { withTranslation } from 'react-i18next';
@@ -15,7 +16,6 @@ import ArrowDownGrey from '../assets/images/arrow-down-grey.svg';
 import { getBlockDeadline } from '../helpers/web3-utils';
 import { retry } from '../helpers/promise-utils';
 import EXCHANGE_ABI from '../ethereum/uniSwap/abi/exchange';
-// import Modal from './Modal';
 
 import './send.scss';
 
@@ -220,7 +220,7 @@ class Send extends Component {
 				outputReserve: outputReserveB
 			});
 
-			const outputValue = outputAmountB.dividedBy(BN(10 ** outputDecimalsB)).toFixed(7);
+			const outputValue = outputAmountB.dividedBy(BN(10 ** outputDecimalsB)).toFixed(2).toLocaleString('en');
 			const exchangeRate = BN(outputValue).dividedBy(BN(oldInputValue));
 
 			const appendState = {};
@@ -316,7 +316,7 @@ class Send extends Component {
 
 			const inputAmount = BN(oldInputValue).multipliedBy(10 ** inputDecimals);
 			const outputAmount = calculateEtherTokenOutput({ inputAmount, inputReserve, outputReserve });
-			const outputValue = outputAmount.dividedBy(BN(10 ** outputDecimals)).toFixed(7);
+			const outputValue = outputAmount.dividedBy(BN(10 ** outputDecimals)).toFixed(2).toLocaleString('en');
 			const exchangeRate = BN(outputValue).dividedBy(BN(oldInputValue));
 
 			const appendState = {};
@@ -571,7 +571,8 @@ class Send extends Component {
 			contextualInfo = t('differentToken');
 		} else if (!inputValue || !outputValue) {
 			const missingCurrencyValue = !inputValue ? inputLabel : outputLabel;
-			contextualInfo = t('enterValueCont', { missingCurrencyValue });
+			contextualInfo = t('enter a donation amount', { missingCurrencyValue });
+			isError = true;
 		} else if (inputIsZero || outputIsZero) {
 			contextualInfo = t('noLiquidity');
 		} else if (this.isUnapproved()) {
@@ -677,9 +678,8 @@ class Send extends Component {
 		if (!exchangeRate || exchangeRate.isNaN() || !inputCurrency || !outputCurrency) {
 			return (
 				<OversizedPanel hideBottom>
-					<div className="swap__exchange-rate-wrapper">
-						<span className="swap__exchange-rate">{t('exchangeRate')}</span>
-						<span> - </span>
+					<div className="swap__exchange-rate-wrapper" style={{ margin: '2.5px', padding: '10px' }}>
+						<span className="swap__exchange-rate">{t(' ')}</span>
 					</div>
 				</OversizedPanel>
 			);
@@ -687,11 +687,42 @@ class Send extends Component {
 
 		return (
 			<OversizedPanel hideBottom>
-				<div className="swap__exchange-rate-wrapper">
-					<span className="swap__exchange-rate">{t('exchangeRate')}</span>
-					<span>{`1 ${inputLabel} = ${exchangeRate.toFixed(7)} ${outputLabel}`}</span>
+				<div className="swap__exchange-rate-wrapper" style={{ margin: '2.5px', padding: '10px' }}>
+					<span className="swap__exchange-rate">{t(' ')}</span>
+					<span>{`${inputLabel} = ${exchangeRate.toFixed(7)} ${outputLabel}`}</span>
 				</div>
 			</OversizedPanel>
+		);
+	}
+
+	renderDonateButton() {
+		const { isValid } = this.validate();
+		const { outputValue } = this.state;
+
+		if (!outputValue) {
+			return (
+				<Button
+					className={classnames('primary centered', {
+						inactive: !this.props.isConnected
+					})}
+					disabled={!isValid}
+					onClick={this.onSend}
+				>
+					Donate
+				</Button>
+			);
+		}
+
+		return (
+			<Button
+				className={classnames('primary centered', {
+					inactive: !this.props.isConnected
+				})}
+				disabled={!isValid}
+				onClick={this.onSend}
+			>
+				Donate ~${outputValue.toLocaleString('en')}
+			</Button>
 		);
 	}
 
@@ -733,37 +764,46 @@ class Send extends Component {
 						value={inputValue}
 						errorMessage={inputError}
 					/>
-					<OversizedPanel />
+					<OversizedPanel>
+						<div className="swap__down-arrow-background" style={{ margin: '0 auto', padding: '10px' }}>
+							<div>
+								<i className="arrow down small icon" />equivalent to{' '}
+								<i className="arrow down small icon" />
+							</div>
+						</div>
+					</OversizedPanel>
 					<CurrencyInputPanel
-						disabled
-						title={t('estimated USD value:')}
+						disableTokenSelect="true"
+						title={t('dollar value:')}
 						description={lastEditedField === INPUT ? estimatedText : ''}
 						extraText={this.renderBalance(outputCurrency, outputBalance, outputDecimals)}
 						onValueChange={this.updateOutput}
 						selectedTokens={[ inputCurrency, outputCurrency ]}
-						value={outputValue}
+						value={outputValue.toLocaleString()}
 						selectedTokenAddress="0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359"
 						errorMessage={outputError}
 						disableUnlock
 					/>
-					<OversizedPanel />
+					<OversizedPanel>
+						<div className="swap__down-arrow-background" style={{ margin: '0 auto', padding: '10px' }}>
+							<div>
+								<i className="arrow down small icon" />will be sent to{' '}
+								<i className="arrow down small icon" />
+							</div>
+						</div>
+					</OversizedPanel>
 					<AddressInputPanel
+						disabled
 						t={this.props.t}
 						value={recipient}
 						onChange={(address) => this.setState({ recipient: address })}
 					/>
+
 					{this.renderExchangeRate()}
 					{this.renderSummary(inputError, outputError)}
-					<div className="swap__cta-container">
-						<button
-							className={classnames('swap__cta-btn', {
-								'swap--inactive': !this.props.isConnected
-							})}
-							disabled={!isValid}
-							onClick={this.onSend}
-						>
-							{t('send')}
-						</button>
+
+					<div style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+						{this.renderDonateButton()}
 					</div>
 				</div>
 			</div>

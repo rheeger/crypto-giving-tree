@@ -12,9 +12,16 @@ class Donate extends React.Component {
 	}
 
 	render() {
+		if (!this.props.org.organization) {
+			return <div>Loading Organization Details</div>;
+		}
 		return (
-			<div>
-				<ContributionForm />
+			<div className="ui container">
+				<div style={{ padding: '1rem', marginBottom: '1rem' }}>
+					<h4>You're making a donation to:</h4>
+					<h1>{this.props.org.organization.name}</h1>
+				</div>
+				<ContributionForm style={{ maxWdith: '700px' }} />
 			</div>
 		);
 	}

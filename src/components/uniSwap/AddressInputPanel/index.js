@@ -33,12 +33,13 @@ class AddressInputPanel extends Component {
 						<div className="currency-input-panel__label-row">
 							<div className="currency-input-panel__label-container">
 								<span className="currency-input-panel__label">
-									{(title || t('Sending to: '), this.props.org.organization.name)}
+									{this.props.org.organization.name} (TAX ID: {this.props.org.organization.ein})
 								</span>
 							</div>
 						</div>
 						<div className="currency-input-panel__input-row">
 							<input
+								disabled
 								type="text"
 								className={c('address-input-panel__input', {
 									'address-input-panel__input--error': errorMessage
