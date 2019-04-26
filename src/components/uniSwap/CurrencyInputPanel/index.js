@@ -354,7 +354,7 @@ class CurrencyInputPanel extends Component {
 							address={selectedTokenAddress}
 						/>
 					) : null}
-					{TOKEN_ADDRESS_TO_LABEL[selectedTokenAddress] || t('selectToken')}
+					{TOKEN_ADDRESS_TO_LABEL[selectedTokenAddress] || t('DAI')}
 					<span className="currency-input-panel__dropdown-icon" />
 				</button>
 			</div>

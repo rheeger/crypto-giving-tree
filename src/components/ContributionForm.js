@@ -34,7 +34,7 @@ class Send extends Component {
 		inputValue: '',
 		outputValue: '',
 		inputCurrency: 'ETH',
-		outputCurrency: '',
+		outputCurrency: '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359',
 		inputAmountB: '',
 		lastEditedField: '',
 		recipient: ''
@@ -42,6 +42,7 @@ class Send extends Component {
 
 	componentDidMount() {
 		console.log(this.props);
+		this.state.outputCurrency = '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359';
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -54,7 +55,8 @@ class Send extends Component {
 			outputValue: '',
 			inputAmountB: '',
 			lastEditedField: '',
-			recipient: ''
+			recipient: '',
+			outputCurrency: '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359'
 		});
 	}
 
@@ -721,7 +723,7 @@ class Send extends Component {
 					})}
 				>
 					<CurrencyInputPanel
-						title={t('input')}
+						title={t('tokens to be donated:')}
 						description={lastEditedField === OUTPUT ? estimatedText : ''}
 						extraText={this.renderBalance(inputCurrency, inputBalance, inputDecimals)}
 						onCurrencySelected={(inputCurrency) => this.setState({ inputCurrency }, this.recalcForm)}
@@ -731,37 +733,20 @@ class Send extends Component {
 						value={inputValue}
 						errorMessage={inputError}
 					/>
-					<OversizedPanel>
-						<div className="swap__down-arrow-background">
-							<img
-								onClick={this.flipInputOutput}
-								className="swap__down-arrow swap__down-arrow--clickable"
-								alt="arrow"
-								src={isValid ? ArrowDownBlue : ArrowDownGrey}
-							/>
-						</div>
-					</OversizedPanel>
+					<OversizedPanel />
 					<CurrencyInputPanel
-						title={t('output')}
+						disabled
+						title={t('estimated USD value:')}
 						description={lastEditedField === INPUT ? estimatedText : ''}
 						extraText={this.renderBalance(outputCurrency, outputBalance, outputDecimals)}
-						onCurrencySelected={(outputCurrency) => this.setState({ outputCurrency }, this.recalcForm)}
 						onValueChange={this.updateOutput}
 						selectedTokens={[ inputCurrency, outputCurrency ]}
 						value={outputValue}
-						selectedTokenAddress={outputCurrency}
+						selectedTokenAddress="0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359"
 						errorMessage={outputError}
 						disableUnlock
 					/>
-					<OversizedPanel>
-						<div className="swap__down-arrow-background">
-							<img
-								className="swap__down-arrow"
-								src={isValid ? ArrowDownBlue : ArrowDownGrey}
-								alt="arrow"
-							/>
-						</div>
-					</OversizedPanel>
+					<OversizedPanel />
 					<AddressInputPanel
 						t={this.props.t}
 						value={recipient}
