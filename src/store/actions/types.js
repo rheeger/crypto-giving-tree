@@ -1,7 +1,12 @@
 export const ORG_SEARCH = 'ORG_SEARCH';
 export const ORG_SELECT = 'ORG_SELECT';
-export const CREATE_ORG = 'CREATE_ORG';
-export const DONATE = 'DONATE';
 export const CREATE_BRANCH = 'CREATE_BRANCH';
-export const CREATE_GRANT = 'CREATE_GRANT';
-export const VALIDATE_GRANT = 'VALIDATE_GRANT';
+export const FETCH_BRANCHES = 'FETCH_BRANCHES';
+export const FETCH_BRANCH = 'FETCH_BRANCH';
+export const EDIT_BRANCH = 'EDIT_BRANCH';
+export const DELETE_BRANCH = 'DELETE_BRANCH';
+export const CREATE_ORG = 'CREATE_ORG';
+export const FETCH_ORGS = 'FETCH_ORGS';
+export const FETCH_ORG = 'FETCH_ORG';
+export const EDIT_ORG = 'EDIT_ORG';
+export const DELETE_ORG = 'DELETE_ORG';
