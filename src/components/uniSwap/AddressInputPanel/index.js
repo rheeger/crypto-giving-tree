@@ -20,7 +20,7 @@ class AddressInputPanel extends Component {
 	};
 
 	render() {
-		const { t, title, onChange, value, errorMessage } = this.props;
+		const { onChange, value, errorMessage } = this.props;
 
 		return (
 			<div className="currency-input-panel">

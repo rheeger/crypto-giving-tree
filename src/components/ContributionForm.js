@@ -11,8 +11,6 @@ import AddressInputPanel from './uniSwap/AddressInputPanel';
 import CurrencyInputPanel from './uniSwap/CurrencyInputPanel';
 import ContextualInfo from './uniSwap/ContextualInfo';
 import OversizedPanel from './uniSwap/OversizedPanel';
-import ArrowDownBlue from '../assets/images/arrow-down-blue.svg';
-import ArrowDownGrey from '../assets/images/arrow-down-grey.svg';
 import { getBlockDeadline } from '../helpers/web3-utils';
 import { retry } from '../helpers/promise-utils';
 import EXCHANGE_ABI from '../ethereum/uniSwap/abi/exchange';
@@ -42,7 +40,7 @@ class Send extends Component {
 
 	componentDidMount() {
 		console.log(this.props);
-		this.state.outputCurrency = '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359';
+		this.setState({ outputCurrency: '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359' });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -744,7 +742,7 @@ class Send extends Component {
 
 		const { value: inputBalance, decimals: inputDecimals } = selectors().getBalance(account, inputCurrency);
 		const { value: outputBalance, decimals: outputDecimals } = selectors().getBalance(account, outputCurrency);
-		const { inputError, outputError, isValid } = this.validate();
+		const { inputError, outputError } = this.validate();
 
 		return (
 			<div className="send">
@@ -779,7 +777,7 @@ class Send extends Component {
 						extraText={this.renderBalance(outputCurrency, outputBalance, outputDecimals)}
 						onValueChange={this.updateOutput}
 						selectedTokens={[ inputCurrency, outputCurrency ]}
-						value={outputValue.toLocaleString()}
+						value={outputValue.toLocaleString('en')}
 						selectedTokenAddress="0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359"
 						errorMessage={outputError}
 						disableUnlock
