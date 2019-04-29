@@ -32,6 +32,7 @@
 		"react-transition-group": "^1.2.1",
 		"recompose": "^0.30.0",
 		"redux": "^4.0.1",
+		"redux-form": "^8.2.0",
 		"redux-subscriber": "^1.1.0",
 		"redux-thunk": "^2.3.0",
 		"semantic-ui-react": "^0.86.0",

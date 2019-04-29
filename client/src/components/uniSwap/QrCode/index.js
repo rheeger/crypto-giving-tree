@@ -4,7 +4,7 @@ import { CSSTransitionGroup } from 'react-transition-group';
 
 import Modal from '../Modal';
 import QrCodeSVG from '../../../assets/images/qr-code.svg';
-import QrScanner from '../../../lib/qr-scanner';
+import QrScanner from '../../../helpers/qr-scanner';
 import './qr-code.scss';
 
 class QrCode extends Component {

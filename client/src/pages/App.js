@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Router, Route, Switch } from 'react-router-dom';
-import Header from './Header';
+import Header from '../components/Header';
 import history from '../history';
-import HomePage from './HomePage';
-import OrgIndex from '../components/orgs';
-import OrgShow from '../components/orgs/show';
-import Donate from '../components/orgs/donate';
+import HomePage from '../components/HomePage';
+import OrgIndex from '../pages/orgs';
+import OrgShow from '../pages/orgs/show';
+import Donate from '../pages/orgs/donate';
 import { Web3Connect, startWatching, initialize } from '../store/reducers/web3connect';
 import { setAddresses } from '../store/reducers/swapAddresses';
 

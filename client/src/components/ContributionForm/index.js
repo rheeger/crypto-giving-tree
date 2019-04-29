@@ -4,18 +4,18 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { BigNumber as BN } from 'bignumber.js';
 import { Button } from 'semantic-ui-react';
-import { startWatching, initialize, selectors, addPendingTx } from '../store/reducers/web3connect';
-import { setAddresses } from '../store/reducers/swapAddresses';
+import { startWatching, initialize, selectors, addPendingTx } from '../../store/reducers/web3connect';
+import { setAddresses } from '../../store/reducers/swapAddresses';
 import { withTranslation } from 'react-i18next';
-import AddressInputPanel from './uniSwap/AddressInputPanel';
-import CurrencyInputPanel from './uniSwap/CurrencyInputPanel';
-import ContextualInfo from './uniSwap/ContextualInfo';
-import OversizedPanel from './uniSwap/OversizedPanel';
-import { getBlockDeadline } from '../helpers/web3-utils';
-import { retry } from '../helpers/promise-utils';
-import EXCHANGE_ABI from '../ethereum/uniSwap/abi/exchange';
+import AddressInputPanel from '../uniSwap/AddressInputPanel';
+import CurrencyInputPanel from '../uniSwap/CurrencyInputPanel';
+import ContextualInfo from '../uniSwap/ContextualInfo';
+import OversizedPanel from '../uniSwap/OversizedPanel';
+import { getBlockDeadline } from '../../helpers/web3-utils';
+import { retry } from '../../helpers/promise-utils';
+import EXCHANGE_ABI from '../../ethereum/uniSwap/abi/exchange';
 
-import './send.scss';
+import './contributionForm.scss';
 
 const INPUT = 0;
 const OUTPUT = 1;

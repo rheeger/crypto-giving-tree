@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import { Button, Card } from 'semantic-ui-react';
 
-import SearchBar from '../SearchBar';
+import SearchBar from '../../components/SearchBar';
 import { connect } from 'react-redux';
 import { searchOrgs } from '../../store/actions/index';
 

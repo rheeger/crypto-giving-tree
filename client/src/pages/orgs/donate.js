@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 // import ContributionForm from '../../src/components/ContributionForm';
 // import { Web3Connect, startWatching, initialize } from '../../store/reducers/web3connect';
 // import { setAddresses } from '../../store/reducers/swapAddresses';
-import ContributionForm from '../ContributionForm';
+import ContributionForm from '../../components/ContributionForm';
 import { selectOrg } from '../../store/actions';
 
 class Donate extends React.Component {
