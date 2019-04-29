@@ -15,6 +15,7 @@ import {
 	DELETE_ORG
 } from './types';
 import history from '../../history';
+
 //PRO PUBLICA ACTIONS
 export const selectOrg = (ein) => async (dispatch) => {
 	const response = await ProPublica.get(`/organizations/${ein}.json`).catch(function(error) {
@@ -43,8 +44,8 @@ export const searchOrgs = (term) => async (dispatch) => {
 
 //LOCAL DB ACTIONS: BRANCHES
 export const createBranch = (formValues) => async (dispatch, getState) => {
-	const { userId } = getState().auth;
-	const response = await localDB.post('/branches', { ...formValues, userId });
+	const creatorWallet = getState().web3connect.account;
+	const response = await localDB.post('/branches', { ...formValues, creatorWallet });
 
 	dispatch({ type: CREATE_BRANCH, payload: response.data });
 	history.push('/');

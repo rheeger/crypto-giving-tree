@@ -12,7 +12,7 @@ class HomePage extends React.Component {
 							<div style={{ margin: '0 auto', textAlign: 'center' }}>
 								<h2>Grow the Tree</h2>
 								<p>Create a fund now, give grants at your leisure.</p>
-								<Link to="/branches" className="ui button green">
+								<Link to="/branches/new" className="ui button green">
 									<i className="plus circle icon" />Create Branch
 								</Link>
 							</div>

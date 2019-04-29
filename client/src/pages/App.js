@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import { Router, Route, Switch } from 'react-router-dom';
 import Header from '../components/Header';
 import history from '../history';
-import HomePage from '../components/HomePage';
+import HomePage from './HomePage';
 import OrgIndex from '../pages/orgs';
 import OrgShow from '../pages/orgs/show';
 import Donate from '../pages/orgs/donate';
+import NewBranch from '../pages/branches/new';
 import { Web3Connect, startWatching, initialize } from '../store/reducers/web3connect';
 import { setAddresses } from '../store/reducers/swapAddresses';
 
@@ -39,9 +40,9 @@ class App extends React.Component {
 						<Web3Connect />
 						<Switch>
 							<Route path="/" exact component={HomePage} />
-							{/* <Route path="/branches" exact component={BranchIndex} />
-							  <Route path="/branches/new" exact component={BranchCreate} />
-							  <Route path="/branches/:address/donate" exact component={BranchDonate} />
+							{/* <Route path="/branches" exact component={BranchIndex} /> */}
+							<Route path="/branches/new" exact component={NewBranch} />
+							{/* <Route path="/branches/:address/donate" exact component={BranchDonate} />
 							  <Route path="/branches/:address/grants/new" exact component={BranchGrant} />
 							  <Route path="/branches/:address" exact component={BranchShow} /> */}
 							<Route path="/orgs" exact component={OrgIndex} />
