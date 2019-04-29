@@ -4,10 +4,11 @@ contract OrgFactory {
     Org[] public deployedOrgs;
     mapping(address => bool) public allowedOrgs;
 
-    function createOrg(uint ein) public {
+    function createOrg(uint ein) public returns (address){
         Org newOrg = new Org(ein);
         deployedOrgs.push(newOrg);
         allowedOrgs[newOrg] = true;
+        return newOrg;
     }
 
     function getDeployedOrgs() public view returns (Org[] memory) {
@@ -37,7 +38,7 @@ contract Org {
     Claim[] public claims;
 
     function checkAdmin() public view returns (address) {
-        AbstractAdmin x = AbstractAdmin ( 0x5173aF4f53D9c3dB1303c662624a2B50c2e4B5f1 );
+        AbstractAdmin x = AbstractAdmin ( 0xfb4536335bd7ee65ee7bb4ef9aaafa689c3c2606 );
     
         return x.getAdmin();
     }

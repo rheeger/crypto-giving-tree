@@ -5,11 +5,12 @@ import { Button, Card } from 'semantic-ui-react';
 
 import SearchBar from '../../components/SearchBar';
 import { connect } from 'react-redux';
-import { searchOrgs } from '../../store/actions/index';
+import { searchOrgs, fetchOrgs } from '../../store/actions/index';
 
 class OrgIndex extends React.Component {
 	componentDidMount() {
 		this.props.searchOrgs(null);
+		this.props.fetchOrgs();
 	}
 
 	renderOrgs() {
@@ -17,7 +18,7 @@ class OrgIndex extends React.Component {
 			return <div> Loading... </div>;
 		}
 
-		const items = this.props.orgs.organizations.map((index, name) => {
+		const items = this.props.orgs.organizations.map((index) => {
 			return {
 				header: index.name,
 				description: (
@@ -64,4 +65,4 @@ const mapStateToProps = (state) => {
 	return { orgs: state.orgs };
 };
 
-export default connect(mapStateToProps, { searchOrgs })(OrgIndex);
+export default connect(mapStateToProps, { searchOrgs, fetchOrgs })(OrgIndex);

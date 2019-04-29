@@ -4,16 +4,36 @@ import { connect } from 'react-redux';
 // import { Web3Connect, startWatching, initialize } from '../../store/reducers/web3connect';
 // import { setAddresses } from '../../store/reducers/swapAddresses';
 import ContributionForm from '../../components/ContributionForm';
-import { selectOrg } from '../../store/actions';
+import { selectOrg, fetchOrg, createOrg } from '../../store/actions';
+import orgFactory from '../../ethereum/orgFactory';
 
 class Donate extends React.Component {
 	componentDidMount() {
 		this.props.selectOrg(this.props.match.params.ein);
+		this.props.fetchOrg(this.props.match.params.ein);
 	}
 
 	render() {
 		if (!this.props.org.organization) {
 			return <div>Loading Organization Details</div>;
+		}
+
+		if (!this.props.GTorgs.id) {
+			// const generateContract = async () => {
+			// 	const accounts = this.props.web3connect.account;
+			// 	const contractAddress = await orgFactory.methods.createOrg().send({ from: accounts });
+			// 	return contractAddress;
+			// };
+			return (
+				<div className="ui container">
+					<h4>Nice! You're the first to donate to {this.props.org.organization.name}.</h4>
+					<p>
+						The Giving Tree needs your help. Please initiate this organization's GivingTree account by
+						approving the transaction.
+					</p>
+					{this.props.createOrg(this.props.match.params.ein)}
+				</div>
+			);
 		}
 		return (
 			<div className="ui container">
@@ -28,7 +48,10 @@ class Donate extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	return { org: state.org };
+	return {
+		org: state.org,
+		GTorgs: state.GTorgs
+	};
 };
 
-export default connect(mapStateToProps, { selectOrg })(Donate);
+export default connect(mapStateToProps, { selectOrg, fetchOrg, createOrg })(Donate);
