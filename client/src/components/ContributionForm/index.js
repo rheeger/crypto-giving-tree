@@ -32,7 +32,7 @@ class Send extends Component {
 		inputValue: '',
 		outputValue: '',
 		inputCurrency: 'ETH',
-		outputCurrency: '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359',
+		outputCurrency: '0x2448eE2641d78CC42D7AD76498917359D961A783',
 		inputAmountB: '',
 		lastEditedField: '',
 		recipient: ''
@@ -40,7 +40,7 @@ class Send extends Component {
 
 	componentDidMount() {
 		console.log(this.props);
-		this.setState({ outputCurrency: '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359' });
+		this.setState({ outputCurrency: '0x2448eE2641d78CC42D7AD76498917359D961A783' });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -54,7 +54,7 @@ class Send extends Component {
 			inputAmountB: '',
 			lastEditedField: '',
 			recipient: '',
-			outputCurrency: '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359'
+			outputCurrency: '0x2448eE2641d78CC42D7AD76498917359D961A783'
 		});
 	}
 
@@ -771,14 +771,14 @@ class Send extends Component {
 						</div>
 					</OversizedPanel>
 					<CurrencyInputPanel
-						disableTokenSelect="true"
+						disableTokenSelect
 						title={t('dollar value:')}
 						description={lastEditedField === INPUT ? estimatedText : ''}
 						extraText={this.renderBalance(outputCurrency, outputBalance, outputDecimals)}
 						onValueChange={this.updateOutput}
 						selectedTokens={[ inputCurrency, outputCurrency ]}
 						value={outputValue.toLocaleString('en')}
-						selectedTokenAddress="0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359"
+						selectedTokenAddress="0x2448eE2641d78CC42D7AD76498917359D961A783"
 						errorMessage={outputError}
 						disableUnlock
 					/>

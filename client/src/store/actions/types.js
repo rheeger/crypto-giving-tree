@@ -6,6 +6,7 @@ export const FETCH_BRANCH = 'FETCH_BRANCH';
 export const EDIT_BRANCH = 'EDIT_BRANCH';
 export const DELETE_BRANCH = 'DELETE_BRANCH';
 export const CREATE_ORG = 'CREATE_ORG';
+export const CREATE_CONTRACT_ADDRESS = 'CREATE_CONTRACT_ADDRESS';
 export const FETCH_ORGS = 'FETCH_ORGS';
 export const FETCH_ORG = 'FETCH_ORG';
 export const EDIT_ORG = 'EDIT_ORG';

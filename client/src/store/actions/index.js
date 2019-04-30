@@ -1,6 +1,4 @@
 import ProPublica from '../../apis/ProPublica';
-import _ from 'lodash';
-import orgFactory from '../../ethereum/orgFactory';
 import localDB from '../../apis/localDB';
 import {
 	ORG_SELECT,
@@ -11,12 +9,15 @@ import {
 	EDIT_BRANCH,
 	DELETE_BRANCH,
 	CREATE_ORG,
+	CREATE_CONTRACT_ADDRESS,
 	FETCH_ORGS,
 	FETCH_ORG,
 	EDIT_ORG,
 	DELETE_ORG
 } from './types';
 import history from '../../history';
+import orgFactory from '../../ethereum/orgFactory';
+import _ from 'lodash';
 
 //PRO PUBLICA ACTIONS
 export const selectOrg = (ein) => async (dispatch) => {
@@ -36,7 +37,6 @@ export const searchOrgs = (term) => async (dispatch) => {
 	}).catch(function(error) {
 		console.error(error);
 	});
-	console.log(response);
 
 	dispatch({
 		type: ORG_SEARCH,
@@ -82,11 +82,12 @@ export const deleteBranch = (id) => async (dispatch) => {
 //LOCAL DB ACTIONS: ORGS
 export const createOrg = (id) => async (dispatch, getState) => {
 	const account = getState().web3connect.account;
-	const contractAddress = await orgFactory.methods.createOrg(id).send({ from: account });
+	const contractAddress = await orgFactory.methods
+		.createOrg(id)
+		.send({ from: account })
+		.then(localDB.post('/orgs', { id, contractAddress }));
 
-	const response = await localDB.post('/orgs', { id, contractAddress });
-
-	dispatch({ type: CREATE_ORG, payload: response.data });
+	dispatch({ type: CREATE_ORG, payload: contractAddress.data });
 	history.push('/');
 };
 
