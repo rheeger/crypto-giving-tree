@@ -118,11 +118,12 @@
   ],
   "orgs": [
     {
-      "id": "464744976",
-      "contractAddress": {}
+      "id": "272620044",
+      "contractAddress": "0x2691C0D7C516d63fdf71C21Bb05FA484d72a303A"
     },
     {
-      "id": "272620044"
+      "id": "474146355",
+      "contractAddress": "0x1788ef31c7A5B062df4a8A822B264d693526ef3a"
     }
   ]
 }

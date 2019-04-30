@@ -12,7 +12,8 @@ import {
 	FETCH_ORGS,
 	FETCH_ORG,
 	EDIT_ORG,
-	DELETE_ORG
+	DELETE_ORG,
+	CREATE_CONTRACT_ADDRESS
 } from './types';
 import history from '../../history';
 import orgFactory from '../../ethereum/orgFactory';
@@ -78,11 +79,12 @@ export const deleteBranch = (id) => async (dispatch) => {
 };
 
 //LOCAL DB ACTIONS: ORGS
-export const createOrg = (id, contractAddress) => async (dispatch) => {
-	const response = await localDB.post('/orgs', { id, contractAddress });
+export const createOrgAndContract = (id, account) => async (dispatch) => {
+	const createContract = await orgFactory.methods.createOrg(id).send({ from: `${account}` });
+	const contractAddress = createContract.events.orgCreated.returnValues.newAddress;
+	const response = await localDB.post(`/orgs`, { id, contractAddress });
 
-	dispatch({ type: CREATE_ORG, payload: response.data });
-	history.push('/');
+	dispatch({ type: CREATE_CONTRACT_ADDRESS, payload: response.data });
 };
 
 export const fetchOrgs = () => async (dispatch) => {

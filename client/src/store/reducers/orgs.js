@@ -19,7 +19,7 @@ export const org = (state = [], action) => {
 	}
 };
 
-export const givingTreeOrgs = (state = {}, action) => {
+export const gtOrgs = (state = {}, action) => {
 	switch (action.type) {
 		case FETCH_ORG:
 			return { ...state, [action.payload.id]: action.payload };

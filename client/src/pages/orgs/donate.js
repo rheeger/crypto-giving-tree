@@ -1,21 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ContributionForm from '../../components/ContributionForm';
-import { selectOrg, fetchOrg, createOrg } from '../../store/actions';
-import orgFactory from '../../ethereum/orgFactory';
-import { create } from 'domain';
+import { selectOrg, fetchOrgs, createOrgAndContract } from '../../store/actions';
+import { Web3Connect } from '../../store/reducers/web3connect';
 
 class Donate extends React.Component {
 	componentDidMount() {
-		this.props.fetchOrg(this.props.match.params.ein);
 		this.props.selectOrg(this.props.match.params.ein);
+		this.props.fetchOrgs();
 	}
 
-	createContractAddress = async (id) => {
-		const account = this.props.web3connect.account;
-		const createContract = orgFactory.methods.createOrg(id).send({ from: account });
-		console.log(createContract.events);
-		return createContract.events;
+	setupOrg = async () => {
+		await this.props.createOrgAndContract(this.props.match.params.ein, this.props.web3connect.account);
+
+		return this.props.fetchOrgs();
 	};
 
 	render() {
@@ -23,12 +21,25 @@ class Donate extends React.Component {
 			return <div>Loading Organization Details</div>;
 		}
 
-		if (!this.props.GTorgs) {
-			this.createContractAddress(this.props.match.params.ein);
-			return <div>No local Org found</div>;
+		if (!this.props.gtOrgs) {
+			return <div>Loading Local Org Details</div>;
 		}
 
-		console.log(this.props.GTorgs);
+		if (!this.props.gtOrgs[`${this.props.match.params.ein}`]) {
+			this.setupOrg();
+			return (
+				<div style={{ display: 'flex', justifyContent: 'center' }}>
+					<h4>The Giving Tree needs your help!</h4>
+					<h1>You're the frist!</h1>
+					<p>Looks like you'll be the first to donate to: {this.props.org.organization.name}</p>
+					<br />
+					<h6>
+						Help us initiate their account by approving this *FREE* transaction. We'll process your donation
+						next.
+					</h6>
+				</div>
+			);
+		}
 
 		return (
 			<div className="ui container">
@@ -36,18 +47,18 @@ class Donate extends React.Component {
 					<h4>You're making a donation to:</h4>
 					<h1>{this.props.org.organization.name}</h1>
 				</div>
-				<ContributionForm style={{ maxWdith: '400px' }} />
+				{/* <ContributionForm style={{ maxWdith: '400px' }} /> */}
 			</div>
 		);
 	}
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
 	return {
 		org: state.org,
-		GTorgs: state.GTorgs[ownProps.match.params.ein],
+		gtOrgs: state.gtOrgs,
 		web3connect: state.web3connect
 	};
 };
 
-export default connect(mapStateToProps, { selectOrg, fetchOrg, createOrg })(Donate);
+export default connect(mapStateToProps, { selectOrg, fetchOrgs, createOrgAndContract })(Donate);
