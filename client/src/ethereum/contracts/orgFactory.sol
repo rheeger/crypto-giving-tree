@@ -3,12 +3,13 @@ pragma solidity ^0.4.25;
 contract OrgFactory {
     Org[] public deployedOrgs;
     mapping(address => bool) public allowedOrgs;
+    event orgCreated(address newAddress);
 
-    function createOrg(uint ein) public returns (address){
+    function createOrg(uint ein) public {
         Org newOrg = new Org(ein);
         deployedOrgs.push(newOrg);
         allowedOrgs[newOrg] = true;
-        return newOrg;
+        emit orgCreated(newOrg);
     }
 
     function getDeployedOrgs() public view returns (Org[] memory) {

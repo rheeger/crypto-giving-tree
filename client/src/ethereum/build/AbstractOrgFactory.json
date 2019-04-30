@@ -1,12 +1,1 @@
-{
-	"assembly": null,
-	"bytecode": "",
-	"functionHashes": { "getAllowedOrgs(address)": "4149a40a" },
-	"gasEstimates": { "creation": {}, "external": {}, "internal": {} },
-	"interface": "[{\"constant\":true,\"inputs\":[{\"name\":\"recipient\",\"type\":\"address\"}],\"name\":\"getAllowedOrgs\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}]",
-	"metadata": "",
-	"opcodes": "",
-	"runtimeBytecode": "",
-	"srcmap": "",
-	"srcmapRuntime": ""
-}
+{"assembly":null,"bytecode":"","functionHashes":{"getAllowedOrgs(address)":"4149a40a"},"gasEstimates":{"creation":{},"external":{},"internal":{}},"interface":"[{\"constant\":true,\"inputs\":[{\"name\":\"recipient\",\"type\":\"address\"}],\"name\":\"getAllowedOrgs\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}]","metadata":"","opcodes":"","runtimeBytecode":"","srcmap":"","srcmapRuntime":""}

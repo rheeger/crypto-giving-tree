@@ -9,7 +9,6 @@ import {
 	EDIT_BRANCH,
 	DELETE_BRANCH,
 	CREATE_ORG,
-	CREATE_CONTRACT_ADDRESS,
 	FETCH_ORGS,
 	FETCH_ORG,
 	EDIT_ORG,
@@ -17,7 +16,6 @@ import {
 } from './types';
 import history from '../../history';
 import orgFactory from '../../ethereum/orgFactory';
-import _ from 'lodash';
 
 //PRO PUBLICA ACTIONS
 export const selectOrg = (ein) => async (dispatch) => {
@@ -80,14 +78,10 @@ export const deleteBranch = (id) => async (dispatch) => {
 };
 
 //LOCAL DB ACTIONS: ORGS
-export const createOrg = (id) => async (dispatch, getState) => {
-	const account = getState().web3connect.account;
-	const contractAddress = await orgFactory.methods
-		.createOrg(id)
-		.send({ from: account })
-		.then(localDB.post('/orgs', { id, contractAddress }));
+export const createOrg = (id, contractAddress) => async (dispatch) => {
+	const response = await localDB.post('/orgs', { id, contractAddress });
 
-	dispatch({ type: CREATE_ORG, payload: contractAddress.data });
+	dispatch({ type: CREATE_ORG, payload: response.data });
 	history.push('/');
 };
 
