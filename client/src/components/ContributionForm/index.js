@@ -35,12 +35,13 @@ class Send extends Component {
 		outputCurrency: '0x2448eE2641d78CC42D7AD76498917359D961A783',
 		inputAmountB: '',
 		lastEditedField: '',
-		recipient: ''
+		recipient: this.props.gtOrgs[`${this.props.org.organization.ein}`].contractAddress
 	};
 
 	componentDidMount() {
 		console.log(this.props);
 		this.setState({ outputCurrency: '0x2448eE2641d78CC42D7AD76498917359D961A783' });
+		this.setState({ recipient: this.props.gtOrgs[`${this.props.org.organization.ein}`].contractAddress });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -53,7 +54,7 @@ class Send extends Component {
 			outputValue: '',
 			inputAmountB: '',
 			lastEditedField: '',
-			recipient: '',
+			recipient: this.props.gtOrgs[`${this.props.org.organization.ein}`].contractAddress,
 			outputCurrency: '0x2448eE2641d78CC42D7AD76498917359D961A783'
 		});
 	}
@@ -817,7 +818,9 @@ const mapStateToProps = (state) => {
 			!!state.web3connect.account && state.web3connect.networkId === (process.env.REACT_APP_NETWORK_ID || 1),
 		account: state.web3connect.account,
 		web3: state.web3connect.web3,
-		exchangeAddresses: state.addresses.exchangeAddresses
+		exchangeAddresses: state.addresses.exchangeAddresses,
+		gtOrgs: state.gtOrgs,
+		org: state.org
 	};
 };
 

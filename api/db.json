@@ -124,6 +124,10 @@
     {
       "id": "474146355",
       "contractAddress": "0x1788ef31c7A5B062df4a8A822B264d693526ef3a"
+    },
+    {
+      "id": "814045228",
+      "contractAddress": "0x30160DA0021D0A277eAcF1cd8490fA26d73A1184"
     }
   ]
 }

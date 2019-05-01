@@ -10,8 +10,8 @@ class Donate extends React.Component {
 		this.props.fetchOrgs();
 	}
 
-	setupOrg = async () => {
-		await this.props.createOrgAndContract(this.props.match.params.ein, this.props.web3connect.account);
+	setupOrg = async (id, address) => {
+		await this.props.createOrgAndContract(id, address);
 
 		return this.props.fetchOrgs();
 	};
@@ -25,29 +25,30 @@ class Donate extends React.Component {
 			return <div>Loading Local Org Details</div>;
 		}
 
-		if (!this.props.gtOrgs[`${this.props.match.params.ein}`]) {
-			this.setupOrg();
+		if (this.props.gtOrgs[`${this.props.match.params.ein}`]) {
 			return (
-				<div style={{ display: 'flex', justifyContent: 'center' }}>
-					<h4>The Giving Tree needs your help!</h4>
-					<h1>You're the frist!</h1>
-					<p>Looks like you'll be the first to donate to: {this.props.org.organization.name}</p>
-					<br />
-					<h6>
-						Help us initiate their account by approving this *FREE* transaction. We'll process your donation
-						next.
-					</h6>
+				<div className="ui container">
+					<div style={{ padding: '1rem', marginBottom: '1rem' }}>
+						<h4>You're making a donation to:</h4>
+						<h1>{this.props.org.organization.name}</h1>
+					</div>
+					<ContributionForm style={{ maxWdith: '400px' }} />
 				</div>
 			);
 		}
 
+		this.setupOrg(this.props.match.params.ein, this.props.web3connect.account);
+
 		return (
-			<div className="ui container">
-				<div style={{ padding: '1rem', marginBottom: '1rem' }}>
-					<h4>You're making a donation to:</h4>
-					<h1>{this.props.org.organization.name}</h1>
-				</div>
-				{/* <ContributionForm style={{ maxWdith: '400px' }} /> */}
+			<div style={{ display: 'flex-flow', alignContent: 'center' }}>
+				<h4>The Giving Tree needs your help!</h4>
+				<h1>You're the frist!</h1>
+				<p>Looks like you'll be the first to donate to: {this.props.org.organization.name}</p>
+				<br />
+				<h6>
+					Help us initiate their account by approving this *FREE* transaction. We'll process your donation
+					next.
+				</h6>
 			</div>
 		);
 	}
