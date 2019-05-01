@@ -12,8 +12,8 @@ class Donate extends React.Component {
 
 	setupOrg = async (id, address) => {
 		await this.props.createOrgAndContract(id, address);
-
-		return this.props.fetchOrgs();
+		await this.props.fetchOrgs();
+		return <div>Transaction pending...</div>;
 	};
 
 	render() {
@@ -37,18 +37,17 @@ class Donate extends React.Component {
 			);
 		}
 
-		this.setupOrg(this.props.match.params.ein, this.props.web3connect.account);
+		const { ein } = this.props.match.params;
+		const { account } = this.props.web3connect;
+		this.setupOrg(ein, account);
 
 		return (
-			<div style={{ display: 'flex-flow', alignContent: 'center' }}>
+			<div style={{ textAlign: 'center', display: 'flex-flow', alignContent: 'center' }}>
 				<h4>The Giving Tree needs your help!</h4>
-				<h1>You're the frist!</h1>
-				<p>Looks like you'll be the first to donate to: {this.props.org.organization.name}</p>
-				<br />
-				<h6>
-					Help us initiate their account by approving this *FREE* transaction. We'll process your donation
-					next.
-				</h6>
+				<h1>You're the first!</h1>
+				<p>Looks like you'll be the first to donate to: </p>
+				<h3>{this.props.org.organization.name}</h3>
+				<h6>Help us initiate their account by approving this transaction. We'll process your donation next.</h6>
 			</div>
 		);
 	}

@@ -80,7 +80,9 @@ export const deleteBranch = (id) => async (dispatch) => {
 
 //LOCAL DB ACTIONS: ORGS
 export const createOrgAndContract = (id, account) => async (dispatch, getState) => {
-	const createContract = await orgFactory.methods.createOrg(id).send({ from: account });
+	const createContract = await orgFactory.methods
+		.createOrg(id)
+		.send({ from: '0xB59EaB6A9C3AAC2dba42491502A0699c7b03A857' });
 	const contractAddress = createContract.events.orgCreated.returnValues.newAddress;
 	const response = await localDB.post(`/orgs`, { id, contractAddress });
 

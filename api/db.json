@@ -128,6 +128,14 @@
     {
       "id": "814045228",
       "contractAddress": "0x30160DA0021D0A277eAcF1cd8490fA26d73A1184"
+    },
+    {
+      "id": "116037894",
+      "contractAddress": "0x49EC2ce0334b0d5476689852f8966FB0866CDd34"
+    },
+    {
+      "id": "363540706",
+      "contractAddress": "0x362cd5F805b7025f566B23a86B390d3E6C4B6d1f"
     }
   ]
 }
