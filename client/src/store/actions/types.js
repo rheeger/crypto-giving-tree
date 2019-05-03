@@ -11,3 +11,5 @@ export const FETCH_ORGS = 'FETCH_ORGS';
 export const FETCH_ORG = 'FETCH_ORG';
 export const EDIT_ORG = 'EDIT_ORG';
 export const DELETE_ORG = 'DELETE_ORG';
+export const GT_ADMIN = '0xB59EaB6A9C3AAC2dba42491502A0699c7b03A857';
+export const GT_ORG_FACTORY = '0x3131e87e33ea1237a89add3f07136f01902a46c8';

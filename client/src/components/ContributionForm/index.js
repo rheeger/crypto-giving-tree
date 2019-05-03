@@ -819,8 +819,7 @@ const mapStateToProps = (state) => {
 		account: state.web3connect.account,
 		web3: state.web3connect.web3,
 		exchangeAddresses: state.addresses.exchangeAddresses,
-		gtOrgs: state.gtOrgs,
-		org: state.org
+		gtOrgs: state.gtOrgs
 	};
 };
 

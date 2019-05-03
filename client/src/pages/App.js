@@ -15,6 +15,8 @@ class App extends React.Component {
 	componentWillMount() {
 		const { initialize, startWatching } = this.props;
 		initialize().then(startWatching);
+
+		require('dotenv').config();
 	}
 
 	componentWillUpdate() {

@@ -29,6 +29,7 @@ contract Branch {
     }
     
     address public manager;
+    address public admin;
     uint public contribution;
     mapping(address => bool) public approvers;
     Grant[] public grants;
@@ -38,13 +39,19 @@ contract Branch {
 
 
     modifier restricted() {
-        require(msg.sender == manager);
+        require(msg.sender == manager || msg.sender == admin);
+        _;
+    }
+    
+    modifier adminRestricted() {
+        require(msg.sender == manager || msg.sender == admin);
         _;
     }
     
     constructor(uint suggestedContribution, address creator) public {
         contribution = suggestedContribution;
         manager = creator;
+        admin = '0x5173aF4f53D9c3dB1303c662624a2B50c2e4B5f1'
         // branchName = name;
 
     }
@@ -87,7 +94,7 @@ contract Branch {
         grant.challengeCount++;
     }
 
-    function finalizeGrant(uint index) public restricted {
+    function finalizeGrant(uint index) public adminRestricted {
         Grant storage grant = grants[index];
 
         require(grant.challengeCount < (approversCount/2));

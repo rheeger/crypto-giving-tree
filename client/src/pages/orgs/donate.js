@@ -2,17 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ContributionForm from '../../components/ContributionForm';
 import { selectOrg, fetchOrgs, createOrgAndContract } from '../../store/actions';
-import { Web3Connect } from '../../store/reducers/web3connect';
 
 class Donate extends React.Component {
 	componentDidMount() {
 		this.props.selectOrg(this.props.match.params.ein);
 		this.props.fetchOrgs();
+		if (this.props.gtOrgs && !this.props.gtOrgs[`${this.props.match.params.ein}`]) {
+			const { ein } = this.props.match.params;
+			this.setupOrg(ein);
+		}
 	}
 
 	setupOrg = async (id, address) => {
 		await this.props.createOrgAndContract(id, address);
-		await this.props.fetchOrgs();
 		return <div>Transaction pending...</div>;
 	};
 
@@ -36,10 +38,6 @@ class Donate extends React.Component {
 				</div>
 			);
 		}
-
-		const { ein } = this.props.match.params;
-		const { account } = this.props.web3connect;
-		this.setupOrg(ein, account);
 
 		return (
 			<div style={{ textAlign: 'center', display: 'flex-flow', alignContent: 'center' }}>

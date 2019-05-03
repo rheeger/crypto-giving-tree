@@ -8,12 +8,13 @@ import {
 	FETCH_BRANCH,
 	EDIT_BRANCH,
 	DELETE_BRANCH,
-	CREATE_ORG,
 	FETCH_ORGS,
 	FETCH_ORG,
 	EDIT_ORG,
 	DELETE_ORG,
-	CREATE_CONTRACT_ADDRESS
+	GT_ADMIN,
+	CREATE_CONTRACT_ADDRESS,
+	GT_ORG_FACTORY
 } from './types';
 import history from '../../history';
 import orgFactory from '../../ethereum/orgFactory';
@@ -79,10 +80,34 @@ export const deleteBranch = (id) => async (dispatch) => {
 };
 
 //LOCAL DB ACTIONS: ORGS
-export const createOrgAndContract = (id, account) => async (dispatch, getState) => {
-	const createContract = await orgFactory.methods
-		.createOrg(id)
-		.send({ from: '0xB59EaB6A9C3AAC2dba42491502A0699c7b03A857' });
+
+export const createOrgAndContract = (id) => async (dispatch, getState) => {
+	const { web3 } = getState().web3connect;
+	const networkId = getState().web3connect.networkId;
+	const EthereumTx = require('ethereumjs-tx');
+	const privateKey = new Buffer(process.env.REACT_APP_METAMASK_PKEY, 'hex');
+	const transCount = await web3.eth.getTransactionCount(GT_ADMIN);
+	console.log(parseInt().transCount);
+	const nonce = await new Buffer(transCount.toString(), 'hex');
+	console.log(nonce);
+	const createContractData = await new Buffer(orgFactory.methods.createOrg(id), 'hex');
+
+	const txParams = {
+		nonce: nonce,
+		gasPrice: new Buffer('100000', 'hex'),
+		gasLimit: new Buffer('210000', 'hex'),
+		to: GT_ORG_FACTORY,
+		from: GT_ADMIN,
+		data: createContractData,
+		// EIP 155 chainId - mainnet: 1, ropsten: 3
+		chainId: networkId
+	};
+
+	const tx = new EthereumTx(txParams);
+	tx.sign(privateKey);
+	const serializedTx = tx.serialize();
+	const createContract = await web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'));
+	console.log(createContract);
 	const contractAddress = createContract.events.orgCreated.returnValues.newAddress;
 	const response = await localDB.post(`/orgs`, { id, contractAddress });
 
