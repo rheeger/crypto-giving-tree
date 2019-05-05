@@ -87,15 +87,18 @@ export const createOrgAndContract = (id) => async (dispatch, getState) => {
 	const EthereumTx = require('ethereumjs-tx');
 	const privateKey = new Buffer(process.env.REACT_APP_METAMASK_PKEY, 'hex');
 	const transCount = await web3.eth.getTransactionCount(GT_ADMIN);
+
 	console.log(transCount);
+	const nonce = '0x' + transCount.toString(16);
+	console.log(nonce);
 
 	const createContractData = await orgFactory.methods.createOrg(id).encodeABI();
 	console.log(createContractData);
 
 	const txParams = {
-		nonce: new Buffer(transCount.toString(), 'hex'),
+		nonce: nonce,
 		gasLimit: '0xB72B9',
-		gasPrice: '0x1312D00',
+		gasPrice: '0x4e3b29200',
 		to: GT_ORG_FACTORY,
 		from: GT_ADMIN,
 		data: createContractData,
@@ -108,9 +111,15 @@ export const createOrgAndContract = (id) => async (dispatch, getState) => {
 	const serializedTx = tx.serialize();
 	const transdata = serializedTx.toString('hex');
 	console.log(transdata);
-	const createContract = await web3.eth.sendSignedTransaction('0x' + transdata).on('receipt', console.log);
-	console.log(createContract);
-	const contractAddress = createContract.events.orgCreated.returnValues.newAddress;
+	const result = await web3.eth
+		.sendSignedTransaction('0x' + transdata)
+		.on('transactionHash', (transactionHash) => {
+			console.log('TX Hash: ' + transactionHash);
+		})
+		.on('receipt', console.log)
+		.on('error', console.error);
+	const receipt = await web3.eth.getTransactionReciept(result.transactionHash);
+	const contractAddress = receipt.events.orgCreated.returnValues.newAddress;
 	const response = await localDB.post(`/orgs`, { id, contractAddress });
 
 	dispatch({ type: CREATE_CONTRACT_ADDRESS, payload: response.data });
