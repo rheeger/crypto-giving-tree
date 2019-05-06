@@ -84,8 +84,7 @@ export const deleteBranch = (id) => async (dispatch) => {
 export const createOrgAndContract = (id) => async (dispatch, getState) => {
 	const { web3 } = getState().web3connect;
 	const networkId = getState().web3connect.networkId;
-	const EthereumTx = require('ethereumjs-tx');
-	const privateKey = new Buffer(process.env.REACT_APP_METAMASK_PKEY, 'hex');
+	const privateKey = process.env.REACT_APP_METAMASK_PKEY;
 	const transCount = await web3.eth.getTransactionCount(GT_ADMIN);
 
 	console.log(transCount);
@@ -106,19 +105,24 @@ export const createOrgAndContract = (id) => async (dispatch, getState) => {
 		chainId: networkId
 	};
 
-	const tx = new EthereumTx(txParams);
-	tx.sign(privateKey);
-	const serializedTx = tx.serialize();
-	const transdata = serializedTx.toString('hex');
-	console.log(transdata);
-	const result = await web3.eth
-		.sendSignedTransaction('0x' + transdata)
-		.on('transactionHash', (transactionHash) => {
-			console.log('TX Hash: ' + transactionHash);
+	// Signs the transaction with the wallet's private key and sends it
+	const signedTransaction = await web3.eth.accounts.signTransaction(txParams, privateKey);
+	console.log(signedTransaction.rawTransaction);
+
+	await web3.eth
+		.sendSignedTransaction(signedTransaction.rawTransaction, async (err, data) => {
+			if (err) {
+				console.error('sendSignedTransaction error', err);
+			}
+			if (data) {
+				console.log('txHash: ' + data);
+			}
 		})
-		.on('receipt', console.log)
-		.on('error', console.error);
-	const receipt = await web3.eth.getTransactionReciept(result.transactionHash);
+		.on('receipt', (receipt) => console.log('receipt', receipt));
+
+	const receipt = await web3.eth.getTransactionReceipt();
+	console.log(receipt);
+
 	const contractAddress = receipt.events.orgCreated.returnValues.newAddress;
 	const response = await localDB.post(`/orgs`, { id, contractAddress });
 
