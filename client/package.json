@@ -42,7 +42,7 @@
 		"truffle-hdwallet-provider": "0.0.3",
 		"ua-parser-js": "^0.7.19",
 		"url-loader": "^1.1.2",
-		"web3": "^1.0.0-beta.54",
+		"web3": "^1.0.0-beta.35",
 		"web3-react": "^4.0.0"
 	},
 	"scripts": {

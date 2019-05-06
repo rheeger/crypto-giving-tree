@@ -15,6 +15,8 @@ class Donate extends React.Component {
 
 	setupOrg = async (id, address) => {
 		await this.props.createOrgAndContract(id, address);
+		await this.props.fetchOrgs();
+
 		return <div>Transaction pending...</div>;
 	};
 

@@ -140,6 +140,18 @@
     {
       "id": "203287404",
       "contractAddress": "0x99165d16f5db305676cf3F4378DfFd1dd022619e"
+    },
+    {
+      "id": "824704419",
+      "contractAddress": "0xB96eF526A5eD65dD244cC53Db958184E2d83dc90"
+    },
+    {
+      "id": "582260264",
+      "contractAddress": "0x9893b70bc622AFCbE1B5cC651c76A6BB65aa7eF6"
+    },
+    {
+      "id": "742730665",
+      "contractAddress": "0xc2AB52d66239A8710Be8cb2dCC0a7eDd999F0901"
     }
   ]
 }

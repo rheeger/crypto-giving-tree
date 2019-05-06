@@ -9,7 +9,7 @@ contract OrgFactory {
         Org newOrg = new Org(ein);
         deployedOrgs.push(newOrg);
         allowedOrgs[newOrg] = true;
-        emit orgCreated;
+        emit orgCreated(newOrg);
     }
 
     function getDeployedOrgs() public view returns (Org[] memory) {
