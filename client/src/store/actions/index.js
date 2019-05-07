@@ -12,9 +12,7 @@ import {
 	FETCH_ORG,
 	EDIT_ORG,
 	DELETE_ORG,
-	CREATE_CONTRACT_ADDRESS,
-	GT_ADMIN,
-	GT_ORG_FACTORY
+	CREATE_CONTRACT_ADDRESS
 } from './types';
 import history from '../../history';
 import OrgFactory from '../../ethereum/build/OrgFactory.json';
