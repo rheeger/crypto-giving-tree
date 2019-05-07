@@ -117,7 +117,7 @@ export const initialize = () => (dispatch, getState) => {
 
 		if (typeof window.ethereum !== 'undefined') {
 			try {
-				const web3 = new Web3(window.ethereum);
+				const web3 = new Web3(window.ethereum, null, { transactionConfirmationBlocks: 1 });
 				await window.ethereum.enable();
 				dispatch({
 					type: INITIALIZE,
@@ -134,7 +134,7 @@ export const initialize = () => (dispatch, getState) => {
 		}
 
 		if (typeof window.web3 !== 'undefined') {
-			const web3 = new Web3(window.web3.currentProvider);
+			const web3 = new Web3(window.web3.currentProvider, null, { transactionConfirmationBlocks: 1 });
 			dispatch({
 				type: INITIALIZE,
 				payload: web3

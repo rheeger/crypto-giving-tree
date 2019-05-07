@@ -12,8 +12,8 @@ import {
 	FETCH_ORG,
 	EDIT_ORG,
 	DELETE_ORG,
-	GT_ADMIN,
 	CREATE_CONTRACT_ADDRESS,
+	GT_ADMIN,
 	GT_ORG_FACTORY
 } from './types';
 import history from '../../history';
@@ -81,14 +81,58 @@ export const deleteBranch = (id) => async (dispatch) => {
 
 //LOCAL DB ACTIONS: ORGS
 
-export const createOrgAndContract = (id) => async (dispatch) => {
-	const createContract = await orgFactory.methods.createOrg(id).send({ from: GT_ADMIN });
-	console.log('transcomplete' + createContract);
-	const contractAddress = createContract.events.orgCreated.returnValues.newAddress;
+export const createOrgAndContract = (id) => async (dispatch, getState) => {
+	// const createContract = await orgFactory.methods.createOrg(id).send({ from: GT_ADMIN });
+	// console.log('transcomplete' + createContract);
+	// const contractAddress = createContract.events.orgCreated.returnValues.newAddress;
+
+	const { web3 } = getState().web3connect;
+	const networkId = getState().web3connect.networkId;
+	const privateKey = process.env.REACT_APP_METAMASK_PKEY;
+	const transCount = await web3.eth.getTransactionCount(GT_ADMIN);
+
+	console.log(transCount);
+	const nonce = '0x' + transCount.toString(16);
+	console.log(nonce);
+
+	const createContractData = await orgFactory.methods.createOrg(id).encodeABI();
+	console.log(createContractData);
+
+	const txParams = {
+		nonce: nonce,
+		gasLimit: '0xB7279',
+		gasPrice: '0x3B9ACA00',
+		to: GT_ORG_FACTORY,
+		from: GT_ADMIN,
+		data: createContractData,
+		// EIP 155 chainId - mainnet: 1, ropsten: 3
+		chainId: networkId
+	};
+	// Signs the transaction with the wallet's private key and sends it
+	const signedTransaction = await web3.eth.accounts.signTransaction(txParams, privateKey);
+	console.log(signedTransaction.rawTransaction);
+
+	await web3.eth
+		.sendSignedTransaction(signedTransaction.rawTransaction, async (err, data) => {
+			if (err) {
+				console.error('sendSignedTransaction error', err);
+			}
+			if (data) {
+				console.log('txHash: ' + data);
+			}
+		})
+		.on('receipt', (receipt) => console.log('receipt', receipt));
+
+	const receipt = await web3.eth.getTransactionReceipt();
+	console.log(receipt);
+
+	const contractAddress = receipt.events.orgCreated.returnValues.newAddress;
+
 	const response = await localDB.post(`/orgs`, { id, contractAddress });
 
 	dispatch({ type: CREATE_CONTRACT_ADDRESS, payload: response.data });
 };
+
 export const fetchOrgs = () => async (dispatch) => {
 	const response = await localDB.get('/orgs');
 
