@@ -8,6 +8,7 @@ import OrgIndex from '../pages/orgs';
 import OrgShow from '../pages/orgs/show';
 import Donate from '../pages/orgs/donate';
 import NewBranch from '../pages/branches/new';
+import Manager from '../pages/branches/manager';
 import { Web3Connect, startWatching, initialize } from '../store/reducers/web3connect';
 import { setAddresses } from '../store/reducers/swapAddresses';
 
@@ -44,6 +45,7 @@ class App extends React.Component {
 							<Route path="/" exact component={HomePage} />
 							{/* <Route path="/branches" exact component={BranchIndex} /> */}
 							<Route path="/branches/new" exact component={NewBranch} />
+							<Route path="/branches/manage" exact component={Manager} />
 							{/* <Route path="/branches/:address/donate" exact component={BranchDonate} />
 							  <Route path="/branches/:address/grants/new" exact component={BranchGrant} />
 							  <Route path="/branches/:address" exact component={BranchShow} /> */}

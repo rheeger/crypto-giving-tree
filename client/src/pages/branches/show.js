@@ -60,7 +60,7 @@ class BranchShow extends Component {
 	render() {
 		return (
 			<Layout>
-				<h3>Campaign Summary</h3>
+				<h3>Your Giving Tree</h3>
 				<Grid className="Container">
 					<Grid.Row>
 						<Grid.Column width={10}>{this.renderCards()}</Grid.Column>

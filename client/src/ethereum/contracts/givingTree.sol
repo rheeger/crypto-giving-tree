@@ -1,15 +1,25 @@
 pragma solidity ^0.4.25;
 
-contract GivingTree {
-    Branch[] public deployedBranches;
+contract treeNursery {
+    Tree[] public plantedTrees;
+    address public admin;
 
-    function createBranch(uint suggestedContribution) public {
-        Branch newBranch = new Branch(suggestedContribution, msg.sender);
-        deployedBranches.push(newBranch);
+    constructor() public {
+        admin='0x5173aF4f53D9c3dB1303c662624a2B50c2e4B5f1'
+    }
+    
+    modifier adminRestricted() {
+        require(msg.sender == manager || msg.sender == admin);
+        _;
     }
 
-    function getDeployedBranches() public view returns (Branch[] memory) {
-        return deployedBranches;
+    function plantTree(uint suggestedContribution) public adminRestricted {
+        Tree newTree = new Branch(suggestedContribution, msg.sender);
+        plantedTrees.push(newTree);
+    }
+
+    function getPlantedTrees() public view returns (Branch[] memory) {
+        return plantedTrees;
     }
 
 }
@@ -18,7 +28,7 @@ contract AbstractOrgFactory {
     function getAllowedOrgs(address recipient) public view returns (bool);
 }
 
-contract Branch {
+contract Tree {
     struct Grant {
         string description;
         uint value;
@@ -30,10 +40,12 @@ contract Branch {
     
     address public manager;
     address public admin;
-    uint public contribution;
+    uint public contributionThreshold;
     mapping(address => bool) public approvers;
+    mapping(address => bool) public contributors;
     Grant[] public grants;
     uint public approversCount;
+    uint public totalContributors;
     // bytes32 public branchName;
     
 
@@ -48,10 +60,10 @@ contract Branch {
         _;
     }
     
-    constructor(uint suggestedContribution, address creator) public {
-        contribution = suggestedContribution;
+    constructor(address creator) public {
         manager = creator;
         admin = '0x5173aF4f53D9c3dB1303c662624a2B50c2e4B5f1'
+        contributionThreshold = 0
         // branchName = name;
 
     }
@@ -64,8 +76,15 @@ contract Branch {
     }
     
     function contribute() public payable {
+        if (msg.value > contributionThreshold && !approvers[msg.sender] == true) {
         approvers[msg.sender] = true;
         approversCount++;
+        }
+
+    }
+
+    function setContributionThreshold(uint suggestedContribution) public restricted {
+        contributionThreshold = suggestedContribution
     }
     
     function createGrant(string memory description, uint value, address recipient) public restricted {

@@ -11,11 +11,11 @@ export default () => {
 			</Link>
 
 			<Menu.Menu position="right">
-				<Link to="/branches" style={{ margin: '1rem auto', padding: '10px' }} className="ui button green">
-					<i className="plus circle icon" />Plant
+				<Link to="/branches/new" style={{ margin: '1rem auto', padding: '10px' }} className="ui button green">
+					<i className="tree icon" />Get Started
 				</Link>
 				<Link to="/orgs" style={{ margin: '1rem', padding: '10px' }} className="ui button blue">
-					<i className="sistrix medium icon" />Find
+					<i className="sistrix medium icon" />Find Org
 				</Link>
 			</Menu.Menu>
 		</Menu>
