@@ -34,16 +34,9 @@ export default class Modal extends Component {
 	render() {
 		return ReactDOM.createPortal(
 			<div>
-				<CSSTransitionGroup
-					transitionName="modal-container"
-					transitionAppear={true}
-					transitionLeave={true}
-					transitionAppearTimeout={200}
-					transitionLeaveTimeout={200}
-					transitionEnterTimeout={200}
-				>
+				<div className="ui dimmer modals visible active">
 					<div className="modal-container" onClick={this.props.onClose} key="modal" />
-				</CSSTransitionGroup>
+				</div>
 				{this.props.children}
 			</div>,
 			modalRoot

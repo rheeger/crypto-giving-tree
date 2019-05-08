@@ -12,7 +12,7 @@ export default () => {
 
 			<Menu.Menu position="right">
 				<Link to="/branches" style={{ margin: '1rem auto', padding: '10px' }} className="ui button green">
-					<i className="plus circle icon" />Branch
+					<i className="plus circle icon" />Plant
 				</Link>
 				<Link to="/orgs" style={{ margin: '1rem', padding: '10px' }} className="ui button blue">
 					<i className="sistrix medium icon" />Find

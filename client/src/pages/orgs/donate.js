@@ -33,7 +33,7 @@ class Donate extends React.Component {
 			return (
 				<div className="ui container">
 					<div style={{ padding: '1rem', marginBottom: '1rem' }}>
-						<h4>You're making a donation to:</h4>
+						<h4>You're reccomending a grant to:</h4>
 						<h1>{this.props.org.organization.name}</h1>
 					</div>
 					<ContributionForm style={{ maxWdith: '400px' }} />
@@ -43,11 +43,10 @@ class Donate extends React.Component {
 
 		return (
 			<div style={{ textAlign: 'center', display: 'flex-flow', alignContent: 'center' }}>
-				<h4>The Giving Tree needs your help!</h4>
 				<h1>You're the first!</h1>
-				<p>Looks like you'll be the first to donate to: </p>
+				<p>Looks like you'll be the first to reccomend a grant to: </p>
 				<h3>{this.props.org.organization.name}</h3>
-				<h6>Help us initiate their account by approving this transaction. We'll process your donation next.</h6>
+				<h6>Hang tight while we set up their account. We'll process your grant reccomendation next.</h6>
 			</div>
 		);
 	}

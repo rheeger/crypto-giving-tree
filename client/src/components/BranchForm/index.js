@@ -38,13 +38,15 @@ class BranchForm extends React.Component {
 				<Field name="primaryAdvisorState" component={this.renderInput} label="State:" />
 				<Field name="primaryAdvisorZip" component={this.renderInput} type="number" label="ZIP" />
 				<Field name="primaryAdvisorBirthday" component={this.renderInput} type="date" label="Birthdate:" />
-				<Field name="publicityConsent" component={this.renderInput} type="radio" label="Publicity Consent:" />
 				<Field
-					name="description"
+					name="tncconsent"
 					component={this.renderInput}
-					type="textarea"
-					label="Layout some goals for your branch:"
-				/>
+					value="null"
+					type="radio"
+					label="Terms and Conditions:"
+				>
+					I Agree
+				</Field>
 				<button className="ui button primary">Submit</button>
 			</form>
 		);

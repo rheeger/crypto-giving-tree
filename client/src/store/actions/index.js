@@ -95,7 +95,7 @@ export const createOrgAndContract = (id) => async (dispatch, getState) => {
 	const orgFactory = new web3.eth.Contract(JSON.parse(OrgFactory.interface), address);
 
 	const createContract = await orgFactory.methods.createOrg(id).send({ from: accounts[0], gas: '1000000' });
-	console.log('transcomplete' + createContract);
+	console.log('Created contract:' + createContract.events.orgCreated.returnValues.newAddress);
 	const contractAddress = createContract.events.orgCreated.returnValues.newAddress;
 
 	const response = await localDB.post(`/orgs`, { id, contractAddress });

@@ -11,7 +11,7 @@ class NewBranch extends React.Component {
 	render() {
 		return (
 			<div>
-				<h3>Create a Branch</h3>
+				<h1>Plant Your Tree</h1>
 				<BranchForm onSubmit={this.onSubmit} />
 			</div>
 		);
