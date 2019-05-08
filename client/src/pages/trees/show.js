@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
 import Layout from '../../components/layout';
-import Campaign from '../../ethereum/campaign';
+import Tree from '../../ethereum/tree';
 import { Container, Button, Card, Grid } from 'semantic-ui-react';
 import web3 from '../../ethereum/web3';
 import ContributeForm from '../../components/contribute';
 import { Link } from '../../routes';
 
-class BranchShow extends Component {
-	static async getInitialProps(props) {
-		const branch = Branch(props.query.address);
+class TreeShow extends Component {
+	componentDidMount() {
+		const tree = Tree(props.query.address);
 
-		const summary = await campaign.methods.getSummary().call();
+		const summary = tree.methods.getSummary(tree).call();
 
-		return {
+		state = {
 			address: props.query.address,
-			minimumContribution: summary[0],
 			balance: summary[1],
 			requestsCount: summary[2],
 			approversCount: summary[3],
@@ -23,7 +22,7 @@ class BranchShow extends Component {
 	}
 
 	renderCards() {
-		const { minimumContribution, balance, requestsCount, approversCount, manager } = this.props;
+		const { balance, requestsCount, approversCount, manager } = this.props;
 
 		const items = [
 			{
@@ -33,7 +32,7 @@ class BranchShow extends Component {
 				description: 'The manager created this campaign, and can request withdrawls'
 			},
 			{
-				header: web3.utils.fromWei(minimumContribution, 'ether'),
+				header: web3.utils.fromWei(contributionThreshold, 'ether'),
 				meta: 'Minimum Contribution',
 				description: 'Show your commmitment!'
 			},
@@ -44,13 +43,13 @@ class BranchShow extends Component {
 			},
 			{
 				header: requestsCount,
-				meta: 'Vendors',
+				meta: 'Grants',
 				description: 'These people are yet to get paid'
 			},
 			{
 				header: approversCount,
-				meta: 'Contributors',
-				description: 'These idiots thought this was a good ideaa'
+				meta: 'Grant Committee',
+				description: 'Made donations above the minimum contribution'
 			}
 		];
 
@@ -69,9 +68,9 @@ class BranchShow extends Component {
 						</Grid.Column>
 					</Grid.Row>
 
-					<Link route={`/campaigns/${this.props.address}/requests`}>
+					<Link route={`/trees/${this.props.address}/grants`}>
 						<a>
-							<Button primary>View Requests</Button>
+							<Button primary>View Grants</Button>
 						</a>
 					</Link>
 					<Link route={`/`}>
@@ -85,4 +84,4 @@ class BranchShow extends Component {
 	}
 }
 
-export default BranchShow;
+export default TreeShow;

@@ -135,13 +135,15 @@ contract Tree {
         grant.complete = true;
     }
 
-    function getSummary() public view returns (uint, uint, uint, address) {
+    function getSummary() public view returns (uint, uint, uint, address, uint) {
         return (
             // branchName,
             address(this).balance,
             grants.length,
             approversCount,
-            manager
+            manager,
+            contributionThreshold
+
         );
     }
 
