@@ -1,10 +1,10 @@
 export const ORG_SEARCH = 'ORG_SEARCH';
 export const ORG_SELECT = 'ORG_SELECT';
-export const CREATE_BRANCH = 'CREATE_BRANCH';
-export const FETCH_BRANCHES = 'FETCH_BRANCHES';
-export const FETCH_BRANCH = 'FETCH_BRANCH';
-export const EDIT_BRANCH = 'EDIT_BRANCH';
-export const DELETE_BRANCH = 'DELETE_BRANCH';
+export const PLANT_TREE = 'PLANT_TREE';
+export const FETCH_TREES = 'FETCH_TREES';
+export const FETCH_TREE = 'FETCH_TREE';
+export const EDIT_TREE = 'EDIT_TREE';
+export const DELETE_TREE = 'DELETE_TREE';
 export const CREATE_ORG = 'CREATE_ORG';
 export const CREATE_CONTRACT_ADDRESS = 'CREATE_CONTRACT_ADDRESS';
 export const FETCH_ORGS = 'FETCH_ORGS';

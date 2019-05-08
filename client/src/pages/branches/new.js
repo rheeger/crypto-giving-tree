@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { createBranch } from '../../store/actions';
+import { plantTreeAndContract } from '../../store/actions';
 import { Link } from 'react-router-dom';
 
 class NewBranch extends React.Component {
@@ -42,4 +42,4 @@ class NewBranch extends React.Component {
 const mapStateToProps = (state) => {
 	return { web3connect: state.web3connect };
 };
-export default connect(null, { createBranch })(NewBranch);
+export default connect(null, { plantTreeAndContract })(NewBranch);

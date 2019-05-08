@@ -1,31 +1,43 @@
 pragma solidity ^0.4.25;
 
-contract treeNursery {
+contract AbstractOrgFactory {
+    function getAllowedOrgs(address recipient) public view returns (bool);
+}
+
+contract AbstractAdmin {
+    function getAdmin() public view returns (address);
+}
+
+contract TreeNursery {
     Tree[] public plantedTrees;
     address public admin;
+    event treePlanted(address newAddress);
 
     constructor() public {
-        admin='0x5173aF4f53D9c3dB1303c662624a2B50c2e4B5f1'
+        admin = checkAdmin();
+    }
+
+    function checkAdmin() public view returns (address) {
+        AbstractAdmin x = AbstractAdmin ( 0xfb4536335bd7ee65ee7bb4ef9aaafa689c3c2606 );
+    
+        return x.getAdmin();
     }
     
     modifier adminRestricted() {
-        require(msg.sender == manager || msg.sender == admin);
+        require(msg.sender == admin);
         _;
     }
 
-    function plantTree(uint suggestedContribution) public adminRestricted {
-        Tree newTree = new Branch(suggestedContribution, msg.sender);
+    function plantTree(address managerAddress) public adminRestricted {
+        Tree newTree = new Tree(managerAddress);
         plantedTrees.push(newTree);
+        emit treePlanted(newTree);
     }
 
-    function getPlantedTrees() public view returns (Branch[] memory) {
+    function getPlantedTrees() public view returns (Tree[] memory) {
         return plantedTrees;
     }
 
-}
-
-contract AbstractOrgFactory {
-    function getAllowedOrgs(address recipient) public view returns (bool);
 }
 
 contract Tree {
@@ -51,19 +63,19 @@ contract Tree {
 
 
     modifier restricted() {
-        require(msg.sender == manager || msg.sender == admin);
+        require(msg.sender == manager);
         _;
     }
     
     modifier adminRestricted() {
-        require(msg.sender == manager || msg.sender == admin);
+        require(msg.sender == admin);
         _;
     }
     
     constructor(address creator) public {
         manager = creator;
-        admin = '0x5173aF4f53D9c3dB1303c662624a2B50c2e4B5f1'
-        contributionThreshold = 0
+        admin = 0x5173aF4f53D9c3dB1303c662624a2B50c2e4B5f1;
+        contributionThreshold = 0;
         // branchName = name;
 
     }
@@ -84,7 +96,7 @@ contract Tree {
     }
 
     function setContributionThreshold(uint suggestedContribution) public restricted {
-        contributionThreshold = suggestedContribution
+        contributionThreshold = suggestedContribution;
     }
     
     function createGrant(string memory description, uint value, address recipient) public restricted {

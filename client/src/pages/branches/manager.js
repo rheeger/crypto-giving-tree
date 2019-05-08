@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { editBranch } from '../../store/actions';
+import { plantTreeAndContract } from '../../store/actions';
 import BranchForm from '../../components/BranchForm';
 
 class Manager extends React.Component {
 	onSubmit = (formValues) => {
-		this.props.editBranch(formValues);
+		this.props.plantTreeAndContract(formValues);
 	};
 
 	render() {
@@ -31,4 +31,4 @@ class Manager extends React.Component {
 	}
 }
 
-export default connect(null, { editBranch })(Manager);
+export default connect(null, { plantTreeAndContract })(Manager);

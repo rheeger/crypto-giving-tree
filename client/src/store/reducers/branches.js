@@ -1,17 +1,17 @@
-import { CREATE_BRANCH, FETCH_BRANCHES, FETCH_BRANCH, EDIT_BRANCH, DELETE_BRANCH } from '../actions/types';
+import { PLANT_TREE, FETCH_TREES, FETCH_TREE, EDIT_TREE, DELETE_TREE } from '../actions/types';
 import _ from 'lodash';
 
 export default (state = {}, action) => {
 	switch (action.type) {
-		case FETCH_BRANCH:
+		case FETCH_TREE:
 			return { ...state, [action.payload.id]: action.payload };
-		case CREATE_BRANCH:
+		case PLANT_TREE:
 			return { ...state, [action.payload.id]: action.payload };
-		case EDIT_BRANCH:
+		case EDIT_TREE:
 			return { ...state, [action.payload.id]: action.payload };
-		case FETCH_BRANCHES:
+		case FETCH_TREES:
 			return { ...state, ..._.mapKeys(action.payload, 'id') };
-		case DELETE_BRANCH:
+		case DELETE_TREE:
 			return _.omit(state, action.payload);
 		default:
 			return state;
