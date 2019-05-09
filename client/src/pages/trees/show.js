@@ -1,55 +1,53 @@
 import React, { Component } from 'react';
-import Layout from '../../components/layout';
-import Tree from '../../ethereum/tree';
-import { Container, Button, Card, Grid } from 'semantic-ui-react';
-import web3 from '../../ethereum/web3';
-import ContributeForm from '../../components/contribute';
-import { Link } from '../../routes';
+import { connect } from 'react-redux';
+import { fetchTree, fetchTreeSummary } from '../../store/actions';
+import { Button, Card, Grid } from 'semantic-ui-react';
 
 class TreeShow extends Component {
 	componentDidMount() {
-		const tree = Tree(props.query.address);
+		const { fetchTreeSummary, fetchTree, match } = this.props;
 
-		const summary = tree.methods.getSummary(tree).call();
-
-		state = {
-			address: props.query.address,
-			balance: summary[1],
-			requestsCount: summary[2],
-			approversCount: summary[3],
-			manager: summary[4]
-		};
+		// fetchTreeSummary(match.params.address);
+		fetchTree(match.params.address);
 	}
 
 	renderCards() {
-		const { balance, requestsCount, approversCount, manager } = this.props;
+		const {
+			id,
+			branchName,
+			creationDate,
+			managerAddress,
+			primaryAdvisorFirstName,
+			primaryAdvisorLastName,
+			primaryAdvisorEmail,
+			primaryAdvisorAddress,
+			primaryAdvisorCity,
+			primaryAdvisorState,
+			primaryAdvisorZip
+		} = this.props.gtTrees[this.props.match.params.address];
 
 		const items = [
 			{
 				style: { overflowWrap: 'break-word' },
-				header: manager,
-				meta: 'Address of Manager',
-				description: 'The manager created this campaign, and can request withdrawls'
+				header: branchName,
+				meta: 'Planted' + creationDate,
+				description: 'Tree Overview'
 			},
 			{
-				header: web3.utils.fromWei(contributionThreshold, 'ether'),
-				meta: 'Minimum Contribution',
-				description: 'Show your commmitment!'
+				style: { overflowWrap: 'break-word' },
+				header: id,
+				meta: 'Contract Address',
+				description: 'Managed by:' + managerAddress
 			},
 			{
-				header: web3.utils.fromWei(balance, 'ether'),
-				meta: 'Ether Contributed',
-				description: 'Look at all dis cash homie!'
+				style: { overflowWrap: 'break-word' },
+				header: primaryAdvisorFirstName + ' ' + primaryAdvisorLastName,
+				meta: 'Primary Tree Manager',
+				description: 'e-Mail:' + primaryAdvisorEmail
 			},
 			{
-				header: requestsCount,
-				meta: 'Grants',
-				description: 'These people are yet to get paid'
-			},
-			{
-				header: approversCount,
-				meta: 'Grant Committee',
-				description: 'Made donations above the minimum contribution'
+				header: primaryAdvisorAddress,
+				description: primaryAdvisorCity + ', ' + primaryAdvisorState + ' ' + primaryAdvisorZip
 			}
 		];
 
@@ -57,17 +55,18 @@ class TreeShow extends Component {
 	}
 
 	render() {
+		if (!this.props.gtTrees[this.props.match.params.address]) {
+			return <div> Loading... </div>;
+		}
+
 		return (
-			<Layout>
+			<div>
 				<h3>Your Giving Tree</h3>
 				<Grid className="Container">
 					<Grid.Row>
 						<Grid.Column width={10}>{this.renderCards()}</Grid.Column>
-						<Grid.Column width={3}>
-							<ContributeForm address={this.props.address} />
-						</Grid.Column>
 					</Grid.Row>
-
+					{/* 
 					<Link route={`/trees/${this.props.address}/grants`}>
 						<a>
 							<Button primary>View Grants</Button>
@@ -77,11 +76,15 @@ class TreeShow extends Component {
 						<a>
 							<Button secondary>See All</Button>
 						</a>
-					</Link>
+					</Link> */}
 				</Grid>
-			</Layout>
+			</div>
 		);
 	}
 }
 
-export default TreeShow;
+const mapStateToProps = (state) => {
+	return { gtTrees: state.gtTrees };
+};
+
+export default connect(mapStateToProps, { fetchTreeSummary, fetchTree })(TreeShow);

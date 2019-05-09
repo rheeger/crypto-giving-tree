@@ -12,11 +12,13 @@ import {
 	FETCH_ORG,
 	EDIT_ORG,
 	DELETE_ORG,
-	CREATE_CONTRACT_ADDRESS
+	CREATE_CONTRACT_ADDRESS,
+	FETCH_TREE_SUMMARY
 } from './types';
 import history from '../../history';
 import { createOrg } from '../../ethereum/orgFactoryAdmin';
 import { plantTree } from '../../ethereum/treeNursreyAdmin';
+import Tree from '../../ethereum/tree';
 
 //PRO PUBLICA ACTIONS
 export const selectOrg = (ein) => async (dispatch) => {
@@ -58,6 +60,14 @@ export const fetchTrees = () => async (dispatch) => {
 	const response = await localDB.get('/trees');
 
 	dispatch({ type: FETCH_TREES, payload: response.data });
+};
+
+export const fetchTreeSummary = (id) => async (dispatch) => {
+	const contractSummary = await Tree.methods.getSummary(id).call();
+
+	const response = await localDB.patch(`/trees/${id}`, contractSummary);
+
+	dispatch({ type: FETCH_TREE_SUMMARY, payload: response.data });
 };
 
 export const fetchTree = (id) => async (dispatch) => {
