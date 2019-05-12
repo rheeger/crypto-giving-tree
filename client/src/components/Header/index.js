@@ -11,7 +11,7 @@ export default () => {
 			</Link>
 
 			<Menu.Menu position="right">
-				<Link to="/branches/new" style={{ margin: '1rem auto', padding: '10px' }} className="ui button green">
+				<Link to="/trees/new" style={{ margin: '1rem auto', padding: '10px' }} className="ui button green">
 					<i className="tree icon" />Get Started
 				</Link>
 				<Link to="/orgs" style={{ margin: '1rem', padding: '10px' }} className="ui button blue">

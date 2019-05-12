@@ -27,7 +27,7 @@ class HomePage extends React.Component {
 										organizations.
 									</h3>
 									<br />
-									<Link to="/branches/new" className="ui button green">
+									<Link to="/trees/new" className="ui button green">
 										<i className="tree icon" />Get Started
 									</Link>
 								</div>

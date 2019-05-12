@@ -31,7 +31,7 @@ class NewBranch extends React.Component {
 					</h3>
 					<br />
 
-					<Link floated="right" to="/branches/manage" className="ui button green">
+					<Link floated="right" to="/trees/manage" className="ui button green">
 						<i className="tree icon" />Plant Your Charity Tree
 					</Link>
 				</div>

@@ -33,7 +33,7 @@ class AddressInputPanel extends Component {
 						<div className="currency-input-panel__label-row">
 							<div className="currency-input-panel__label-container">
 								<span className="currency-input-panel__label">
-									{this.props.org.organization.name} (TAX ID: {this.props.org.organization.ein})
+									{this.props.gtTree[this.props.recievingTree].branchName}
 								</span>
 							</div>
 						</div>
@@ -60,7 +60,7 @@ class AddressInputPanel extends Component {
 }
 
 const mapStateToProps = (state) => {
-	return { org: state.org };
+	return { gtTree: state.gtTrees };
 };
 
 export default connect(mapStateToProps, null)(AddressInputPanel);

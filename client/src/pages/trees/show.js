@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchTree, fetchTreeSummary } from '../../store/actions';
 import { Button, Card, Grid } from 'semantic-ui-react';
+import ContributionForm from '../../components/ContributionForm';
 
 class TreeShow extends Component {
 	componentDidMount() {
@@ -60,13 +61,21 @@ class TreeShow extends Component {
 		}
 
 		return (
-			<div>
-				<h3>Your Giving Tree</h3>
-				<Grid className="Container">
-					<Grid.Row>
-						<Grid.Column width={10}>{this.renderCards()}</Grid.Column>
-					</Grid.Row>
-					{/* 
+			<div style={{ display: 'flex', justifyContent: 'center' }}>
+				<div style={{ maxWidth: '600px' }}>
+					<Grid className="Container">
+						<Grid.Row>
+							<Grid.Column width={10}>
+								<h3>Your Giving Tree:</h3>
+								{this.renderCards()}
+							</Grid.Column>
+
+							<Grid.Column width={6}>
+								<h3>Contribute Funds:</h3>
+								<ContributionForm recievingTree={this.props.match.params.address} />
+							</Grid.Column>
+						</Grid.Row>
+						{/* 
 					<Link route={`/trees/${this.props.address}/grants`}>
 						<a>
 							<Button primary>View Grants</Button>
@@ -77,7 +86,8 @@ class TreeShow extends Component {
 							<Button secondary>See All</Button>
 						</a>
 					</Link> */}
-				</Grid>
+					</Grid>
+				</div>
 			</div>
 		);
 	}

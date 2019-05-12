@@ -14,8 +14,11 @@ import OversizedPanel from '../uniSwap/OversizedPanel';
 import { getBlockDeadline } from '../../helpers/web3-utils';
 import { retry } from '../../helpers/promise-utils';
 import EXCHANGE_ABI from '../../ethereum/uniSwap/abi/exchange';
+import ERC20_ABI from '../../ethereum/uniSwap/abi/erc20';
 
 import './contributionForm.scss';
+import { GT_ADMIN } from '../../store/actions/types';
+import { getAdminWeb3 } from '../../ethereum/adminWallet';
 
 const INPUT = 0;
 const OUTPUT = 1;
@@ -35,13 +38,13 @@ class Send extends Component {
 		outputCurrency: '0x2448eE2641d78CC42D7AD76498917359D961A783',
 		inputAmountB: '',
 		lastEditedField: '',
-		recipient: this.props.gtOrgs[`${this.props.org.organization.ein}`].contractAddress
+		recipient: this.props.recievingTree
 	};
 
 	componentDidMount() {
 		console.log(this.props);
 		this.setState({ outputCurrency: '0x2448eE2641d78CC42D7AD76498917359D961A783' });
-		this.setState({ recipient: this.props.gtOrgs[`${this.props.org.organization.ein}`].contractAddress });
+		this.setState({ recipient: this.props.recievingTree });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -54,7 +57,7 @@ class Send extends Component {
 			outputValue: '',
 			inputAmountB: '',
 			lastEditedField: '',
-			recipient: this.props.gtOrgs[`${this.props.org.organization.ein}`].contractAddress,
+			recipient: this.props.recievingTree,
 			outputCurrency: '0x2448eE2641d78CC42D7AD76498917359D961A783'
 		});
 	}
@@ -378,8 +381,52 @@ class Send extends Component {
 		);
 	};
 
+	onContribution = async () => {
+		const { web3, account } = this.props;
+		const { inputValue, inputCurrency, outputCurrency } = this.state;
+
+		const type = getSendType(inputCurrency, outputCurrency);
+
+		switch (type) {
+			case 'ETH_TO_TOKEN':
+				await new web3.eth.sendTransaction({
+					from: account,
+					to: GT_ADMIN,
+					value: BN(inputValue).multipliedBy(10 ** 18).toFixed(0)
+				}).on('transactionHash', function(hash) {
+					console.log(hash);
+				});
+				break;
+			case 'TOKEN_TO_TOKEN':
+				await new web3.eth.Contract(ERC20_ABI, inputCurrency).methods
+					.transfer(GT_ADMIN, inputValue)
+					.send({ from: account })
+					.on('transactionHash', function(hash) {
+						console.log(hash);
+					});
+
+				break;
+
+			default:
+				break;
+		}
+	};
+
 	onSend = async () => {
-		const { exchangeAddresses: { fromToken }, account, web3, selectors, addPendingTx } = this.props;
+		await this.onContribution();
+		console.log('property transferred to GT_ADMIN');
+		const Web3 = require('web3');
+		const HDWalletProvider = require('truffle-hdwallet-provider');
+
+		const mnemonic = process.env.REACT_APP_METAMASK_MNEMONIC;
+		const infuraKey = process.env.REACT_APP_INFURA_KEY;
+		const infuraRinkebyEndpoint = 'https://rinkeby.infura.io/v3/' + infuraKey;
+
+		const provider = new HDWalletProvider(mnemonic, infuraRinkebyEndpoint);
+
+		const web3 = new Web3(provider);
+		const account = await web3.eth.getAccounts();
+		const { exchangeAddresses: { fromToken }, selectors, addPendingTx } = this.props;
 		const {
 			inputValue,
 			outputValue,
@@ -393,8 +440,8 @@ class Send extends Component {
 		const TOKEN_ALLOWED_SLIPPAGE = 0.04;
 
 		const type = getSendType(inputCurrency, outputCurrency);
-		const { decimals: inputDecimals } = selectors().getBalance(account, inputCurrency);
-		const { decimals: outputDecimals } = selectors().getBalance(account, outputCurrency);
+		const { decimals: inputDecimals } = selectors().getBalance(account[0], inputCurrency);
+		const { decimals: outputDecimals } = selectors().getBalance(account[0], outputCurrency);
 		let deadline;
 		try {
 			deadline = await retry(() => getBlockDeadline(web3, 600));
@@ -403,11 +450,13 @@ class Send extends Component {
 			return;
 		}
 
+		console.log('exchanging property...');
+
 		if (lastEditedField === INPUT) {
 			// send input
 			switch (type) {
 				case 'ETH_TO_TOKEN':
-					new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
+					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferInput(
 							BN(outputValue)
 								.multipliedBy(10 ** outputDecimals)
@@ -418,8 +467,9 @@ class Send extends Component {
 						)
 						.send(
 							{
-								from: account,
-								value: BN(inputValue).multipliedBy(10 ** 18).toFixed(0)
+								from: account[0],
+								value: BN(inputValue).multipliedBy(10 ** 18).toFixed(0),
+								gas: '1000000'
 							},
 							(err, data) => {
 								if (!err) {
@@ -428,27 +478,10 @@ class Send extends Component {
 								}
 							}
 						);
-					break;
-				case 'TOKEN_TO_ETH':
-					new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
-						.tokenToEthTransferInput(
-							BN(inputValue).multipliedBy(10 ** inputDecimals).toFixed(0),
-							BN(outputValue)
-								.multipliedBy(10 ** outputDecimals)
-								.multipliedBy(1 - ALLOWED_SLIPPAGE)
-								.toFixed(0),
-							deadline,
-							recipient
-						)
-						.send({ from: account }, (err, data) => {
-							if (!err) {
-								addPendingTx(data);
-								this.reset();
-							}
-						});
+					console.log('exchanged eth through uniswap');
 					break;
 				case 'TOKEN_TO_TOKEN':
-					new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
+					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 						.tokenToTokenTransferInput(
 							BN(inputValue).multipliedBy(10 ** inputDecimals).toFixed(0),
 							BN(outputValue)
@@ -460,12 +493,13 @@ class Send extends Component {
 							recipient,
 							outputCurrency
 						)
-						.send({ from: account }, (err, data) => {
+						.send({ from: account[0] }, (err, data) => {
 							if (!err) {
 								addPendingTx(data);
 								this.reset();
 							}
 						});
+					console.log('exchanged token through uniswap');
 					break;
 				default:
 					break;
@@ -477,7 +511,7 @@ class Send extends Component {
 
 			switch (type) {
 				case 'ETH_TO_TOKEN':
-					new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
+					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferOutput(
 							BN(outputValue).multipliedBy(10 ** outputDecimals).toFixed(0),
 							deadline,
@@ -485,7 +519,7 @@ class Send extends Component {
 						)
 						.send(
 							{
-								from: account,
+								from: account[0],
 								value: BN(inputValue)
 									.multipliedBy(10 ** inputDecimals)
 									.multipliedBy(1 + ALLOWED_SLIPPAGE)
@@ -498,31 +532,14 @@ class Send extends Component {
 								}
 							}
 						);
-					break;
-				case 'TOKEN_TO_ETH':
-					new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
-						.tokenToEthTransferOutput(
-							BN(outputValue).multipliedBy(10 ** outputDecimals).toFixed(0),
-							BN(inputValue)
-								.multipliedBy(10 ** inputDecimals)
-								.multipliedBy(1 + ALLOWED_SLIPPAGE)
-								.toFixed(0),
-							deadline,
-							recipient
-						)
-						.send({ from: account }, (err, data) => {
-							if (!err) {
-								addPendingTx(data);
-								this.reset();
-							}
-						});
+					console.log('exchanged eth through uniswap');
 					break;
 				case 'TOKEN_TO_TOKEN':
 					if (!inputAmountB) {
 						return;
 					}
 
-					new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
+					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 						.tokenToTokenTransferOutput(
 							BN(outputValue).multipliedBy(10 ** outputDecimals).toFixed(0),
 							BN(inputValue)
@@ -534,12 +551,13 @@ class Send extends Component {
 							recipient,
 							outputCurrency
 						)
-						.send({ from: account }, (err, data) => {
+						.send({ from: account[0] }, (err, data) => {
 							if (!err) {
 								addPendingTx(data);
 								this.reset();
 							}
 						});
+					console.log('exchanged token through uniswap');
 					break;
 				default:
 					break;
@@ -734,9 +752,6 @@ class Send extends Component {
 	}
 
 	render() {
-		if (!this.props.org.organization) {
-			return <div>Loading Organization Details</div>;
-		}
 		const { t, selectors, account } = this.props;
 		const { lastEditedField, inputCurrency, outputCurrency, inputValue, outputValue, recipient } = this.state;
 		const estimatedText = `(${t('estimated')})`;
@@ -796,6 +811,7 @@ class Send extends Component {
 						t={this.props.t}
 						value={recipient}
 						onChange={(address) => this.setState({ recipient: address })}
+						recievingTree={this.props.recievingTree}
 					/>
 
 					{this.renderExchangeRate()}
@@ -810,7 +826,7 @@ class Send extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
 	return {
 		org: state.org,
 		balances: state.web3connect.balances,
@@ -819,7 +835,7 @@ const mapStateToProps = (state) => {
 		account: state.web3connect.account,
 		web3: state.web3connect.web3,
 		exchangeAddresses: state.addresses.exchangeAddresses,
-		gtOrgs: state.gtOrgs
+		gtTree: state.gtTrees
 	};
 };
 
