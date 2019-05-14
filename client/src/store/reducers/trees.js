@@ -1,4 +1,12 @@
-import { PLANT_TREE, FETCH_TREES, FETCH_TREE, FETCH_TREE_SUMMARY, EDIT_TREE, DELETE_TREE } from '../actions/types';
+import {
+	EXTEND_GRANT,
+	PLANT_TREE,
+	FETCH_TREES,
+	FETCH_TREE,
+	FETCH_TREE_SUMMARY,
+	EDIT_TREE,
+	DELETE_TREE
+} from '../actions/types';
 import _ from 'lodash';
 
 export default (state = {}, action) => {
@@ -8,6 +16,8 @@ export default (state = {}, action) => {
 		case FETCH_TREE_SUMMARY:
 			return { ...state, [action.payload.id]: action.payload };
 		case PLANT_TREE:
+			return { ...state, [action.payload.id]: action.payload };
+		case EXTEND_GRANT:
 			return { ...state, [action.payload.id]: action.payload };
 		case EDIT_TREE:
 			return { ...state, [action.payload.id]: action.payload };

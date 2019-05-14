@@ -3,6 +3,7 @@ export const ORG_SELECT = 'ORG_SELECT';
 export const PLANT_TREE = 'PLANT_TREE';
 export const FETCH_TREES = 'FETCH_TREES';
 export const FETCH_TREE = 'FETCH_TREE';
+export const EXTEND_GRANT = 'EXTEND_GRANT';
 export const FETCH_TREE_SUMMARY = 'FETCH_TREE_SUMMARY';
 export const EDIT_TREE = 'EDIT_TREE';
 export const DELETE_TREE = 'DELETE_TREE';

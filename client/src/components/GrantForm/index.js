@@ -1,51 +1,83 @@
-import React from 'react';
-import { Field, reduxForm } from 'redux-form';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Input, Form, Button, Message } from 'semantic-ui-react';
+import Campaign from '../../../ethereum/campaign';
+import { Link, Router } from '../../../routes';
+import Layout from '../../../components/layout';
 
-class BranchForm extends React.Component {
-	renderError({ error, touched }) {
-		if (touched && error) {
-			return (
-				<div className="ui error message">
-					<div className="description">{error}</div>
-				</div>
-			);
-		}
-	}
-	renderInput = ({ input, label, meta }) => {
-		const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
-		return (
-			<div className={className}>
-				<label>{label}</label>
-				<input {...input} autoComplete="off" />
-				{this.renderError(meta)}
-			</div>
-		);
+class RequestNew extends Component {
+	state = {
+		value: '',
+		description: '',
+		recipient: '',
+		errorMessage: '',
+		loading: false
 	};
-	onSubmit = (formValues) => {
-		this.props.onSubmit(formValues);
+
+	onSubmit = async (event) => {
+		event.preventDefault();
+
+		const campaign = Campaign(this.props.address);
+		const { description, value, recipient } = this.state;
+
+		this.setState({ loading: true, errorMessage: '' });
+
+		try {
+			const accounts = await web3.eth.getAccounts();
+
+			await campaign.methods.createRequest(description, web3.utils.toWei(value, 'ether'), recipient).send({
+				from: accounts[0]
+			});
+
+			Router.pushRoute(`/campaigns/${this.props.address}/requests`);
+		} catch (err) {
+			this.setState({ errorMessage: err.message });
+		}
+
+		this.setState({ loading: false });
 	};
 
 	render() {
 		return (
-			<form className="ui form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
-				<Field name="title" component={this.renderInput} label="Title:" />
-				<Field name="description" component={this.renderInput} label="Description:" />
-				<button className="ui button primary">Submit</button>
-			</form>
+			<Layout>
+				<h3>Create a New Request</h3>
+				<Form onSubmit={this.onSubmit}>
+					<Form.Field>
+						<label>Description</label>
+						<Input
+							value={this.state.description}
+							onChange={(event) => this.setState({ description: event.target.value })}
+						/>
+					</Form.Field>
+					<Form.Field>
+						<label>Value</label>
+						<Input
+							label="ether"
+							labelPosition="right"
+							value={this.state.value}
+							onChange={(event) => this.setState({ value: event.target.value })}
+						/>
+					</Form.Field>
+					<Form.Field>
+						<label>Recipient</label>
+						<Input
+							value={this.state.recipient}
+							onChange={(event) => this.setState({ recipient: event.target.value })}
+						/>
+					</Form.Field>
+					<Message error header="Oops!" content={this.state.errorMessage} />
+					<Button primary loading={this.state.loading}>
+						Create!
+					</Button>
+					<Link route={`/campaigns/${this.props.address}/requests`}>
+						<a>
+							<Button secondary>View Requests</Button>
+						</a>
+					</Link>
+				</Form>
+			</Layout>
 		);
 	}
 }
 
-const validate = (formValues) => {
-	const errors = {};
-	if (!formValues.title) {
-		errors.title = 'You must enter a Title';
-	}
-	if (!formValues.description) {
-		errors.description = 'You must enter a description';
-	}
-
-	return errors;
-};
-
-export default reduxForm({ form: 'streamForm', validate })(BranchForm);
+export default connect(mapStateToProps, {null}) (RequestNew);

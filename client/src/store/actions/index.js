@@ -4,6 +4,7 @@ import {
 	ORG_SELECT,
 	ORG_SEARCH,
 	PLANT_TREE,
+	EXTEND_GRANT,
 	FETCH_TREES,
 	FETCH_TREE,
 	EDIT_TREE,
@@ -53,6 +54,13 @@ export const plantTreeAndContract = (formValues) => async (dispatch, getState) =
 	const response = await localDB.post('/trees', { ...formValues, managerAddress, id });
 
 	dispatch({ type: PLANT_TREE, payload: response.data });
+	history.push(`/trees/${id}`);
+};
+
+export const extendGrant = (formValues, responsibleTree, id) => async (dispatch, getState) => {
+	const response = await localDB.post('/trees', { ...formValues, responsibleTree, id });
+
+	dispatch({ type: EXTEND_GRANT, payload: response.data });
 	history.push(`/trees/${id}`);
 };
 

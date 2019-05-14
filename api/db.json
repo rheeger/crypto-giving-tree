@@ -119,6 +119,14 @@
       "tncconsent": "null",
       "managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
       "id": "0xC3d35BBfc205125FA7bA1964b0c27aa9DfD9817f"
+    },
+    {
+      "managerAddress": "",
+      "id": "0x4e85Bda32938bC2d54E62AcD33d8DF6cF76959D9"
+    },
+    {
+      "managerAddress": "",
+      "id": "0x729a13213A3Df331174aC6404DE7d51A8381Da95"
     }
   ],
   "orgs": [
