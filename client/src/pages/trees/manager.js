@@ -5,34 +5,50 @@ import { Link } from 'react-router-dom';
 import BranchForm from '../../components/BranchForm';
 
 class Manager extends React.Component {
-	componentDidMount() {
-		this.props.fetchTrees();
-	}
+	onSubmit = (formValues) => {
+		this.props.plantTreeAndContract(formValues);
+	};
 
 	renderList() {
-		return this.props.gtTrees.map((tree) => {
-			if (tree.managerAddress === this.props.web3.account) {
-				return (
-					<div className="item" key={tree.id}>
-						<div className="right floated content">
-							<Link to={`/trees/edit/${tree.id}`} className="ui button">
-								<i className="pencil alternate icon" />Edit
-							</Link>
-						</div>
-						<i className="large middle aligned icon camera" />
-						<div className="content">
-							<Link to={`trees/${tree.id}`}>{tree.branchName}</Link>
-							<div className="description">{tree.id}</div>
-						</div>
+		return Object.values(this.props.gtTrees).map(function(tree, index) {
+			return (
+				<div className="item" key={tree.id}>
+					<div className="right floated content">
+						<Link to={`/trees/edit/${tree.id}`} className="ui button">
+							<i className="pencil alternate icon" />Edit
+						</Link>
 					</div>
-				);
-			}
+					<i className="large middle aligned icon tree" />
+					<div className="content">
+						<Link to={`/trees/${tree.id}`}>{tree.branchName}</Link>
+						<div className="description">{tree.id}</div>
+					</div>
+				</div>
+			);
 		});
 	}
 
 	render() {
 		if (!this.props.gtTrees) {
-			return <div>Loading...</div>;
+			return (
+				<div
+					style={{
+						margin: '0px auto',
+						textAlign: 'left',
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+						height: 'auto',
+						maxWidth: '700px'
+					}}
+				>
+					<div>
+						<h1>Plant a Charity Tree:</h1>
+
+						<BranchForm onSubmit={this.onSubmit} />
+					</div>
+				</div>
+			);
 		}
 
 		return (
