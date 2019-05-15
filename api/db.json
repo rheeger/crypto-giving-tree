@@ -1,162 +1,154 @@
 {
-  "trees": [
-    {
-      "creationDate": "2019-05-08",
-      "branchName": "TEst",
-      "primaryAdvisorFirstName": "Robert",
-      "primaryAdvisorLastName": "Heeger",
-      "primaryAdvisorEmail": "rheeger@gmail.com",
-      "primaryAdvisorAddress": "887 Bush",
-      "primaryAdvisorCity": "San Francisco",
-      "primaryAdvisorState": "CA",
-      "primaryAdvisorZip": "94108",
-      "primaryAdvisorBirthday": "1990-11-05",
-      "tncconsent": "null",
-      "managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
-      "id": "0x4D7955D578C5Fd9E1991D27b1B64115311a1d144"
-    },
-    {
-      "creationDate": "2019-05-12",
-      "branchName": "Second Test",
-      "primaryAdvisorFirstName": "Robert",
-      "primaryAdvisorLastName": "Heeger",
-      "primaryAdvisorEmail": "rheeger@gmail.com",
-      "primaryAdvisorAddress": "887 Bush",
-      "primaryAdvisorCity": "San Francisco",
-      "primaryAdvisorState": "CA",
-      "primaryAdvisorZip": "94108",
-      "primaryAdvisorBirthday": "1990-11-05",
-      "tncconsent": "null",
-      "managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
-      "id": "0x4a6F1d47029fB5DDB37B8C65d991528b3c97F4ea"
-    },
-    {
-      "creationDate": "2019-05-12",
-      "branchName": "CONTRIBUTION WALKTHRU",
-      "primaryAdvisorFirstName": "Robert",
-      "primaryAdvisorLastName": "Heeger",
-      "primaryAdvisorEmail": "rheeger@gmail.com",
-      "primaryAdvisorAddress": "887 Bush",
-      "primaryAdvisorCity": "San Francisco",
-      "primaryAdvisorState": "CA",
-      "primaryAdvisorZip": "94108",
-      "primaryAdvisorBirthday": "1990-11-05",
-      "tncconsent": "null",
-      "managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
-      "id": "0xe26E98f969B5C67c4dA2Aeb44607B67Cc67304a0"
-    },
-    {
-      "creationDate": "2019-05-12",
-      "branchName": "Walk Through",
-      "primaryAdvisorFirstName": "Robert",
-      "primaryAdvisorLastName": "Heeger",
-      "primaryAdvisorEmail": "rheeger@gmail.com",
-      "primaryAdvisorAddress": "887 Bush",
-      "primaryAdvisorCity": "San Francisco",
-      "primaryAdvisorState": "CA",
-      "primaryAdvisorZip": "94108",
-      "primaryAdvisorBirthday": "1990-11-05",
-      "tncconsent": "null",
-      "managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
-      "id": "0xC38751FCE7f8e565a1F5b2b020b131Dac6e4844B"
-    },
-    {
-      "creationDate": "2019-05-12",
-      "branchName": "Walkthrough",
-      "primaryAdvisorFirstName": "Robert",
-      "primaryAdvisorLastName": "Heeger",
-      "primaryAdvisorEmail": "rheeger@gmail.com",
-      "primaryAdvisorAddress": "887 Bush",
-      "primaryAdvisorCity": "San Francisco",
-      "primaryAdvisorState": "CA",
-      "primaryAdvisorZip": "94108",
-      "primaryAdvisorBirthday": "1990-11-05",
-      "tncconsent": "null",
-      "managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
-      "id": "0xd68D8ffD9e2fB7BaB0c0dd892F98304D5Fd2d805"
-    },
-    {
-      "creationDate": "2019-05-12",
-      "branchName": "Walkthrough",
-      "primaryAdvisorFirstName": "Robert",
-      "primaryAdvisorLastName": "Heeger",
-      "primaryAdvisorEmail": "rheeger@gmail.com",
-      "primaryAdvisorAddress": "887 Bush",
-      "primaryAdvisorCity": "San Francisco",
-      "primaryAdvisorState": "CA",
-      "primaryAdvisorZip": "94108",
-      "primaryAdvisorBirthday": "1990-11-05",
-      "tncconsent": "null",
-      "managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
-      "id": "0x81794b5d531e3B1C17a1f3cba7275DAc5488D043"
-    },
-    {
-      "creationDate": "2019-05-12",
-      "branchName": "Walkthrough",
-      "primaryAdvisorFirstName": "Robert",
-      "primaryAdvisorLastName": "Heeger",
-      "primaryAdvisorEmail": "rheeger@gmail.com",
-      "primaryAdvisorAddress": "887 Bush",
-      "primaryAdvisorCity": "San Francisco",
-      "primaryAdvisorState": "CA",
-      "primaryAdvisorZip": "94108",
-      "primaryAdvisorBirthday": "1990-11-05",
-      "tncconsent": "null",
-      "managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
-      "id": "0xed08Af8C0794DB38bD64F7Aa41A7eeF751805F3C"
-    },
-    {
-      "creationDate": "2019-05-12",
-      "branchName": "Rel's Charity Tree",
-      "primaryAdvisorFirstName": "Ariel",
-      "primaryAdvisorLastName": "Freidman",
-      "primaryAdvisorEmail": "afriedman0720@gmail.com",
-      "primaryAdvisorAddress": "100 Danvers Street Apt 3",
-      "primaryAdvisorCity": "San Francisco",
-      "primaryAdvisorState": "CA",
-      "primaryAdvisorZip": "94114",
-      "primaryAdvisorBirthday": "1992-07-20",
-      "tncconsent": "null",
-      "managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
-      "id": "0xC3d35BBfc205125FA7bA1964b0c27aa9DfD9817f"
-    },
-    {
-      "managerAddress": "",
-      "id": "0x4e85Bda32938bC2d54E62AcD33d8DF6cF76959D9"
-    },
-    {
-      "managerAddress": "",
-      "id": "0x729a13213A3Df331174aC6404DE7d51A8381Da95"
-    }
-  ],
-  "orgs": [
-    {
-      "id": "831425901",
-      "contractAddress": "0xe8A7aFeC33B1d90739d2386645E57077401b856b"
-    },
-    {
-      "id": "262180370",
-      "contractAddress": "0xde88a7A303595f02F646f92eA3d6Df31deDdE3a2"
-    },
-    {
-      "id": "464744976",
-      "contractAddress": "0x6cBb3b511D90F4d7f1832bBb4c910ECE4A513Cbe"
-    },
-    {
-      "id": "203287404",
-      "contractAddress": "0x998d0B5B5E63F9A9C8718c1ec6F5341011044d82"
-    },
-    {
-      "id": "272620044",
-      "contractAddress": "0x157E26263CeEb6C4F264Fd7A85b4017E8DAe0a7e"
-    },
-    {
-      "id": "582260264",
-      "contractAddress": "0x284a7501CB932Ca9abE5636f4f93bfc3eee4D6CA"
-    },
-    {
-      "id": "260447525",
-      "contractAddress": "0x0cd42F8a3230EB65b24A9Dc72e79b94889A3f64D"
-    }
-  ]
+	"trees": [
+		{
+			"creationDate": "2019-05-08",
+			"branchName": "TEst",
+			"primaryAdvisorFirstName": "Robert",
+			"primaryAdvisorLastName": "Heeger",
+			"primaryAdvisorEmail": "rheeger@gmail.com",
+			"primaryAdvisorAddress": "887 Bush",
+			"primaryAdvisorCity": "San Francisco",
+			"primaryAdvisorState": "CA",
+			"primaryAdvisorZip": "94108",
+			"primaryAdvisorBirthday": "1990-11-05",
+			"tncconsent": "null",
+			"managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
+			"id": "0x4D7955D578C5Fd9E1991D27b1B64115311a1d144"
+		},
+		{
+			"creationDate": "2019-05-12",
+			"branchName": "Second Test",
+			"primaryAdvisorFirstName": "Robert",
+			"primaryAdvisorLastName": "Heeger",
+			"primaryAdvisorEmail": "rheeger@gmail.com",
+			"primaryAdvisorAddress": "887 Bush",
+			"primaryAdvisorCity": "San Francisco",
+			"primaryAdvisorState": "CA",
+			"primaryAdvisorZip": "94108",
+			"primaryAdvisorBirthday": "1990-11-05",
+			"tncconsent": "null",
+			"managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
+			"id": "0x4a6F1d47029fB5DDB37B8C65d991528b3c97F4ea"
+		},
+		{
+			"creationDate": "2019-05-12",
+			"branchName": "CONTRIBUTION WALKTHRU",
+			"primaryAdvisorFirstName": "Robert",
+			"primaryAdvisorLastName": "Heeger",
+			"primaryAdvisorEmail": "rheeger@gmail.com",
+			"primaryAdvisorAddress": "887 Bush",
+			"primaryAdvisorCity": "San Francisco",
+			"primaryAdvisorState": "CA",
+			"primaryAdvisorZip": "94108",
+			"primaryAdvisorBirthday": "1990-11-05",
+			"tncconsent": "null",
+			"managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
+			"id": "0xe26E98f969B5C67c4dA2Aeb44607B67Cc67304a0"
+		},
+		{
+			"creationDate": "2019-05-12",
+			"branchName": "Walk Through",
+			"primaryAdvisorFirstName": "Robert",
+			"primaryAdvisorLastName": "Heeger",
+			"primaryAdvisorEmail": "rheeger@gmail.com",
+			"primaryAdvisorAddress": "887 Bush",
+			"primaryAdvisorCity": "San Francisco",
+			"primaryAdvisorState": "CA",
+			"primaryAdvisorZip": "94108",
+			"primaryAdvisorBirthday": "1990-11-05",
+			"tncconsent": "null",
+			"managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
+			"id": "0xC38751FCE7f8e565a1F5b2b020b131Dac6e4844B"
+		},
+		{
+			"creationDate": "2019-05-12",
+			"branchName": "Walkthrough",
+			"primaryAdvisorFirstName": "Robert",
+			"primaryAdvisorLastName": "Heeger",
+			"primaryAdvisorEmail": "rheeger@gmail.com",
+			"primaryAdvisorAddress": "887 Bush",
+			"primaryAdvisorCity": "San Francisco",
+			"primaryAdvisorState": "CA",
+			"primaryAdvisorZip": "94108",
+			"primaryAdvisorBirthday": "1990-11-05",
+			"tncconsent": "null",
+			"managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
+			"id": "0xd68D8ffD9e2fB7BaB0c0dd892F98304D5Fd2d805"
+		},
+		{
+			"creationDate": "2019-05-12",
+			"branchName": "Walkthrough",
+			"primaryAdvisorFirstName": "Robert",
+			"primaryAdvisorLastName": "Heeger",
+			"primaryAdvisorEmail": "rheeger@gmail.com",
+			"primaryAdvisorAddress": "887 Bush",
+			"primaryAdvisorCity": "San Francisco",
+			"primaryAdvisorState": "CA",
+			"primaryAdvisorZip": "94108",
+			"primaryAdvisorBirthday": "1990-11-05",
+			"tncconsent": "null",
+			"managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
+			"id": "0x81794b5d531e3B1C17a1f3cba7275DAc5488D043"
+		},
+		{
+			"creationDate": "2019-05-12",
+			"branchName": "Walkthrough",
+			"primaryAdvisorFirstName": "Robert",
+			"primaryAdvisorLastName": "Heeger",
+			"primaryAdvisorEmail": "rheeger@gmail.com",
+			"primaryAdvisorAddress": "887 Bush",
+			"primaryAdvisorCity": "San Francisco",
+			"primaryAdvisorState": "CA",
+			"primaryAdvisorZip": "94108",
+			"primaryAdvisorBirthday": "1990-11-05",
+			"tncconsent": "null",
+			"managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
+			"id": "0xed08Af8C0794DB38bD64F7Aa41A7eeF751805F3C"
+		},
+		{
+			"creationDate": "2019-05-12",
+			"branchName": "Rel's Charity Tree",
+			"primaryAdvisorFirstName": "Ariel",
+			"primaryAdvisorLastName": "Freidman",
+			"primaryAdvisorEmail": "afriedman0720@gmail.com",
+			"primaryAdvisorAddress": "100 Danvers Street Apt 3",
+			"primaryAdvisorCity": "San Francisco",
+			"primaryAdvisorState": "CA",
+			"primaryAdvisorZip": "94114",
+			"primaryAdvisorBirthday": "1992-07-20",
+			"tncconsent": "null",
+			"managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
+			"id": "0xC3d35BBfc205125FA7bA1964b0c27aa9DfD9817f"
+		}
+	],
+	"orgs": [
+		{
+			"id": "831425901",
+			"contractAddress": "0xe8A7aFeC33B1d90739d2386645E57077401b856b"
+		},
+		{
+			"id": "262180370",
+			"contractAddress": "0xde88a7A303595f02F646f92eA3d6Df31deDdE3a2"
+		},
+		{
+			"id": "464744976",
+			"contractAddress": "0x6cBb3b511D90F4d7f1832bBb4c910ECE4A513Cbe"
+		},
+		{
+			"id": "203287404",
+			"contractAddress": "0x998d0B5B5E63F9A9C8718c1ec6F5341011044d82"
+		},
+		{
+			"id": "272620044",
+			"contractAddress": "0x157E26263CeEb6C4F264Fd7A85b4017E8DAe0a7e"
+		},
+		{
+			"id": "582260264",
+			"contractAddress": "0x284a7501CB932Ca9abE5636f4f93bfc3eee4D6CA"
+		},
+		{
+			"id": "260447525",
+			"contractAddress": "0x0cd42F8a3230EB65b24A9Dc72e79b94889A3f64D"
+		}
+	]
 }

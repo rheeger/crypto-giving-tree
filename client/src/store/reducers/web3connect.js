@@ -5,6 +5,7 @@ import { BigNumber as BN } from 'bignumber.js';
 import Web3 from 'web3';
 import ERC20_ABI from '../../ethereum/uniSwap/abi/erc20';
 import ERC20_WITH_BYTES_ABI from '../../ethereum/uniSwap/abi/erc20_symbol_bytes32';
+import { fetchTrees } from '../actions';
 
 export const INITIALIZE = 'we3connect/initialize';
 export const UPDATE_ACCOUNT = 'we3connect/updateAccount';
@@ -222,6 +223,7 @@ export const sync = () => async (dispatch, getState) => {
 	if (account !== accounts[0]) {
 		dispatch({ type: UPDATE_ACCOUNT, payload: accounts[0] });
 		dispatch(watchBalance({ balanceOf: accounts[0] }));
+		dispatch(fetchTrees(accounts[0]));
 	}
 
 	if (!networkId) {

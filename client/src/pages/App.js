@@ -23,7 +23,7 @@ class App extends React.Component {
 	}
 
 	componentWillUpdate() {
-		const { web3, setAddresses } = this.props;
+		const { web3, setAddresses, account, fetchTrees } = this.props;
 
 		if (this.hasSetNetworkId || !web3 || !web3.eth || !web3.eth.net || !web3.eth.net.getId) {
 			return;
@@ -35,6 +35,8 @@ class App extends React.Component {
 				this.hasSetNetworkId = true;
 			}
 		});
+		console.log(account);
+		fetchTrees(account);
 	}
 	render() {
 		return (
@@ -70,6 +72,7 @@ export default connect(
 	(dispatch) => ({
 		setAddresses: (networkId) => dispatch(setAddresses(networkId)),
 		initialize: () => dispatch(initialize()),
-		startWatching: () => dispatch(startWatching())
+		startWatching: () => dispatch(startWatching()),
+		fetchTrees: (account) => dispatch(fetchTrees(account))
 	})
 )(App);
