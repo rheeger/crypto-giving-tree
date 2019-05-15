@@ -36,19 +36,22 @@ class Donate extends React.Component {
 						<h4>You're reccomending a grant to:</h4>
 						<h1>{this.props.org.organization.name}</h1>
 					</div>
-					<ContributionForm style={{ maxWdith: '400px' }} />
 				</div>
 			);
 		}
 
-		return (
-			<div style={{ textAlign: 'center', display: 'flex-flow', alignContent: 'center' }}>
-				<h1>You're the first!</h1>
-				<p>Looks like you'll be the first to reccomend a grant to: </p>
-				<h3>{this.props.org.organization.name}</h3>
-				<h6>Hang tight while we set up their account. We'll process your grant reccomendation next.</h6>
-			</div>
-		);
+		if (this.props.gtOrgs && !this.props.gtOrgs[`${this.props.match.params.ein}`]) {
+			return (
+				<div style={{ textAlign: 'center', display: 'flex-flow', alignContent: 'center' }}>
+					<h1>You're the first!</h1>
+					<p>Looks like you'll be the first to reccomend a grant to: </p>
+					<h3>{this.props.org.organization.name}</h3>
+					<h6>Hang tight while we set up their account. We'll process your grant reccomendation next.</h6>
+				</div>
+			);
+		}
+
+		return;
 	}
 }
 

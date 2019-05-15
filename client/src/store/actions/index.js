@@ -68,7 +68,6 @@ export const fetchTrees = (address) => async (dispatch) => {
 	console.log('fetchin trees');
 	console.log(address);
 	const allTrees = await localDB.get('/trees');
-	console.log(allTrees.data);
 
 	const response = allTrees.data.filter((tree) => {
 		console.log(tree.managerAddress === address);
