@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Input, Form, Button, Message } from 'semantic-ui-react';
-import Campaign from '../../../ethereum/campaign';
+import Tree from '../../../ethereum/Tree';
 import { Link, Router } from '../../../routes';
 import Layout from '../../../components/layout';
 
@@ -79,5 +79,10 @@ class RequestNew extends Component {
 		);
 	}
 }
+const mapStateToProps = (state) => {
+	return {
+		gtTrees: state.gtTrees
+	};
+};
 
-export default connect(mapStateToProps, {null}) (RequestNew);
+export default connect(mapStateToProps)(RequestNew);

@@ -1,9 +1,41 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { plantTreeAndContract } from '../../store/actions';
-import { Link } from 'react-router-dom';
+import { plantTreeAndContract, fetchTrees } from '../../store/actions';
+import { Button } from 'semantic-ui-react';
+import BranchForm from '../../components/BranchForm';
 
-class NewBranch extends React.Component {
+class NewTree extends React.Component {
+	componentDidMount() {
+		console.log(this.props);
+		this.props.fetchTrees(this.props.web3connect.account);
+	}
+
+	onSubmit = (formValues) => {
+		this.props.plantTreeAndContract(formValues);
+	};
+
+	renderTreeForm() {
+		return (
+			<div
+				style={{
+					margin: '0px auto',
+					textAlign: 'left',
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center',
+					height: 'auto',
+					maxWidth: '700px'
+				}}
+			>
+				<div>
+					<h1>Plant a Charity Tree:</h1>
+
+					<BranchForm onSubmit={this.onSubmit} />
+				</div>
+			</div>
+		);
+	}
+
 	render() {
 		return (
 			<div
@@ -31,15 +63,18 @@ class NewBranch extends React.Component {
 					</h3>
 					<br />
 
-					<Link floated="right" to="/trees/manage" className="ui button green">
+					<Button floated="right" className="ui button green" onClick={this.renderTreeForm()}>
 						<i className="tree icon" />Plant Your Charity Tree
-					</Link>
+					</Button>
 				</div>
 			</div>
 		);
 	}
 }
 const mapStateToProps = (state) => {
-	return { web3connect: state.web3connect };
+	return {
+		web3connect: state.web3connect,
+		gtTrees: Object.values(state.gtTrees)
+	};
 };
-export default connect(null, { plantTreeAndContract })(NewBranch);
+export default connect(mapStateToProps, { plantTreeAndContract, fetchTrees })(NewTree);

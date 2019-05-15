@@ -57,17 +57,28 @@ export const plantTreeAndContract = (formValues) => async (dispatch, getState) =
 	history.push(`/trees/${id}`);
 };
 
-export const extendGrant = (formValues, responsibleTree, id) => async (dispatch, getState) => {
+export const extendGrant = (formValues, responsibleTree, id) => async (dispatch) => {
 	const response = await localDB.post('/trees', { ...formValues, responsibleTree, id });
 
 	dispatch({ type: EXTEND_GRANT, payload: response.data });
 	history.push(`/trees/${id}`);
 };
 
-export const fetchTrees = () => async (dispatch) => {
-	const response = await localDB.get('/trees');
+export const fetchTrees = (address) => async (dispatch) => {
+	console.log('fetchin trees');
+	console.log(address);
+	const allTrees = await localDB.get('/trees');
+	console.log(allTrees.data);
 
-	dispatch({ type: FETCH_TREES, payload: response.data });
+	const response = allTrees.data.filter((tree) => {
+		console.log(tree.managerAddress === address);
+		if (tree.managerAddress === address) {
+			return { tree };
+		}
+		return;
+	});
+
+	dispatch({ type: FETCH_TREES, payload: response });
 };
 
 export const fetchTreeSummary = (id) => async (dispatch) => {

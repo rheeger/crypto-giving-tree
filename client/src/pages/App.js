@@ -12,6 +12,7 @@ import Manager from '../pages/trees/manager';
 import TreeShow from '../pages/trees/show';
 import { Web3Connect, startWatching, initialize } from '../store/reducers/web3connect';
 import { setAddresses } from '../store/reducers/swapAddresses';
+import { fetchTrees } from '../store/actions';
 
 class App extends React.Component {
 	componentWillMount() {
