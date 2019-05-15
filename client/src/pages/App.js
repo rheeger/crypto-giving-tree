@@ -35,8 +35,6 @@ class App extends React.Component {
 				this.hasSetNetworkId = true;
 			}
 		});
-		console.log(account);
-		fetchTrees(account);
 	}
 	render() {
 		return (

@@ -5,11 +5,6 @@ import { Button } from 'semantic-ui-react';
 import BranchForm from '../../components/BranchForm';
 
 class NewTree extends React.Component {
-	componentDidMount() {
-		console.log(this.props);
-		this.props.fetchTrees(this.props.web3connect.account);
-	}
-
 	onSubmit = (formValues) => {
 		this.props.plantTreeAndContract(formValues);
 	};
