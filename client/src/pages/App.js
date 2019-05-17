@@ -70,7 +70,6 @@ export default connect(
 	(dispatch) => ({
 		setAddresses: (networkId) => dispatch(setAddresses(networkId)),
 		initialize: () => dispatch(initialize()),
-		startWatching: () => dispatch(startWatching()),
-		fetchTrees: (account) => dispatch(fetchTrees(account))
+		startWatching: () => dispatch(startWatching())
 	})
 )(App);
