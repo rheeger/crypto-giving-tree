@@ -4,6 +4,18 @@ import { Link } from 'react-router-dom';
 import { Button, Grid } from 'semantic-ui-react';
 
 class HomePage extends React.Component {
+	renderManager() {
+		if (!this.props.gtTrees.Object) {
+			console.log(this.props.gtTrees);
+			console.log(Object.keys(this.props.gtTrees).length);
+			return 'Plant a Tree';
+		}
+		if (Object.keys(this.props.gtTrees).length > 0) {
+			console.log(this.props.gtTrees.Object);
+			return 'View My Trees';
+		}
+	}
+
 	render() {
 		return (
 			<div>
@@ -29,7 +41,8 @@ class HomePage extends React.Component {
 									</h3>
 									<br />
 									<Link to="/trees/new" className="ui button green">
-										<i className="tree icon" />Get Started
+										<i className="plus circle icon" />
+										{this.renderManager()}
 									</Link>
 								</div>
 							</Grid.Column>
@@ -41,4 +54,8 @@ class HomePage extends React.Component {
 	}
 }
 
-export default HomePage;
+const mapStateToProps = (state) => {
+	return { gtTrees: state.gtTrees };
+};
+
+export default connect(mapStateToProps)(HomePage);

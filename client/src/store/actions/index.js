@@ -14,7 +14,13 @@ import {
 	EDIT_ORG,
 	DELETE_ORG,
 	CREATE_CONTRACT_ADDRESS,
-	FETCH_TREE_SUMMARY
+	FETCH_TREE_SUMMARY,
+	CREATE_GRANT,
+	FETCH_GRANTS,
+	FETCH_TREE_GRANTS,
+	FETCH_GRANT,
+	EDIT_GRANT,
+	DELETE_GRANT
 } from './types';
 import history from '../../history';
 import { createOrg } from '../../ethereum/orgFactoryAdmin';
@@ -141,5 +147,54 @@ export const deleteOrg = (id) => async (dispatch) => {
 	await localDB.delete(`/orgs/${id}`);
 
 	dispatch({ type: DELETE_ORG, payload: id });
+	history.push('/');
+};
+
+//LOCAL DB ACTIONS: GRANTS
+
+export const createGrant = (id) => async (dispatch, getState) => {
+	const contractAddress = await createOrg(id);
+
+	const response = await localDB.post(`/grants`, { id, contractAddress });
+
+	dispatch({ type: CREATE_GRANT, payload: response.data });
+};
+
+export const fetchGrants = () => async (dispatch) => {
+	const response = await localDB.get('/grants');
+
+	dispatch({ type: FETCH_GRANTS, payload: response.data });
+};
+
+export const fetchTreeGrants = (address) => async (dispatch) => {
+	const allTrees = await localDB.get('/grants');
+
+	const response = allTrees.data.filter((tree) => {
+		console.log(tree.managerAddress === address);
+		if (tree.managerAddress === address) {
+			return { tree };
+		}
+		return;
+	});
+	dispatch({ type: FETCH_TREE_GRANTS, payload: response.data });
+};
+
+export const fetchGrant = (id) => async (dispatch) => {
+	const response = await localDB.get(`/grants/${id}`);
+
+	dispatch({ type: FETCH_GRANT, payload: response.data });
+};
+
+export const editGrant = (id, formValues) => async (dispatch) => {
+	const response = await localDB.patch(`/grants/${id}`, formValues);
+
+	dispatch({ type: EDIT_GRANT, payload: response.data });
+	history.push('/');
+};
+
+export const deleteGrant = (id) => async (dispatch) => {
+	await localDB.delete(`/grants/${id}`);
+
+	dispatch({ type: DELETE_GRANT, payload: id });
 	history.push('/');
 };

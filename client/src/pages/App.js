@@ -10,6 +10,7 @@ import Donate from '../pages/orgs/donate';
 import NewTree from '../pages/trees/new';
 import Manager from '../pages/trees/manager';
 import TreeShow from '../pages/trees/show';
+import NewGrant from '../pages/trees/grants/new';
 import { Web3Connect, startWatching, initialize } from '../store/reducers/web3connect';
 import { setAddresses } from '../store/reducers/swapAddresses';
 import { fetchTrees } from '../store/actions';
@@ -45,12 +46,11 @@ class App extends React.Component {
 						<Web3Connect />
 						<Switch>
 							<Route path="/" exact component={HomePage} />
-							{/* <Route path="/trees" exact component={BranchIndex} /> */}
+							<Route path="/trees" exact component={Manager} />
 							<Route path="/trees/new" exact component={NewTree} />
-							<Route path="/trees/manage" exact component={Manager} />
-							{/* <Route path="/trees/:address/donate" exact component={BranchDonate} />
-							  <Route path="/trees/:address/grants/new" exact component={BranchGrant} /> */}
 							<Route path="/trees/:address" exact component={TreeShow} />
+							<Route path="/trees/:address/grants/new" exact component={NewGrant} />
+							{/* <Route path="/trees/:address/donate" exact component={BranchDonate} /> */}
 							<Route path="/orgs" exact component={OrgIndex} />
 							<Route path="/orgs/:ein" exact component={OrgShow} />
 							<Route path="/orgs/:ein/donate" exact component={Donate} />

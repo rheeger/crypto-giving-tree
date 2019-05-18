@@ -48,13 +48,15 @@ class OrgShow extends React.Component {
 					<Grid.Column width={11}>{this.renderOrgDetails()}</Grid.Column>
 					<Grid.Column width={5}>
 						<h3>Actions:</h3>
-						<Link to={`/orgs/${this.props.ein}/claim`}>
-							<Button color="yellow">Claim This Org</Button>
+						<Link to={`/orgs/${this.props.match.params.ein}/claim`}>
+							<Button basic color="yellow">
+								Claim This Org
+							</Button>
 						</Link>
-						<br />
-						<Link to={`/orgs/${this.props.ein}/donate`}>
-							<Button style={{ margin: '10px auto' }} color="green">
-								Donate Now!
+
+						<Link to={`/orgs/${this.props.match.params.ein}/donate`}>
+							<Button floated="left" basic color="red">
+								<i class="paper plane icon" />send grant
 							</Button>
 						</Link>
 					</Grid.Column>

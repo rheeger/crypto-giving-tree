@@ -119,6 +119,21 @@
       "tncconsent": "null",
       "managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
       "id": "0xC3d35BBfc205125FA7bA1964b0c27aa9DfD9817f"
+    },
+    {
+      "creationDate": "2019-05-17",
+      "branchName": "Robbie",
+      "primaryAdvisorFirstName": "Robert",
+      "primaryAdvisorLastName": "Heeger",
+      "primaryAdvisorEmail": "rheeger@apple.com",
+      "primaryAdvisorAddress": "1 Infinite Loop",
+      "primaryAdvisorCity": "Cupertino",
+      "primaryAdvisorState": "CA",
+      "primaryAdvisorZip": "94105",
+      "primaryAdvisorBirthday": "1990-11-05",
+      "tncconsent": "null",
+      "managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
+      "id": "0xb25e207f8499B44cc77016e1Db7d72b1B7156433"
     }
   ],
   "orgs": [
@@ -166,5 +181,8 @@
       "id": "61250781",
       "contractAddress": "0x2b1796b5324B709B311C9F9664822D76eE149F13"
     }
+  ],
+  "grants": [
+    {}
   ]
 }

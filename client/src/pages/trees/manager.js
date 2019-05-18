@@ -5,10 +5,6 @@ import { Link } from 'react-router-dom';
 import BranchForm from '../../components/BranchForm';
 
 class Manager extends React.Component {
-	onSubmit = (formValues) => {
-		this.props.plantTreeAndContract(formValues);
-	};
-
 	renderList() {
 		return Object.values(this.props.gtTrees).map(function(tree, index) {
 			return (
@@ -30,25 +26,7 @@ class Manager extends React.Component {
 
 	render() {
 		if (!this.props.gtTrees) {
-			return (
-				<div
-					style={{
-						margin: '0px auto',
-						textAlign: 'left',
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						height: 'auto',
-						maxWidth: '700px'
-					}}
-				>
-					<div>
-						<h1>Plant a Charity Tree:</h1>
-
-						<BranchForm onSubmit={this.onSubmit} />
-					</div>
-				</div>
-			);
+			return <div>Loading...</div>;
 		}
 
 		return (
@@ -67,4 +45,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { plantTreeAndContract })(Manager);
+export default connect(mapStateToProps)(Manager);
