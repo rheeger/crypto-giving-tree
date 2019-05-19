@@ -8,6 +8,11 @@ contract AbstractAdmin {
     function getAdmin() public view returns (address);
 }
 
+contract ERC20 { 
+      function balanceOf(address tokenOwner) public constant returns (uint balance);
+}
+
+
 contract TreeNursery {
     Tree[] public plantedTrees;
     address public admin;
@@ -135,9 +140,12 @@ contract Tree {
         grant.complete = true;
     }
 
-    function getSummary() public view returns (uint, uint, uint, address, uint) {
+    function getSummary(address tokenAddress) public view returns (uint, uint, uint, uint, address, uint) {
+            ERC20 t = ERC20(tokenAddress);
+            uint bal = t.balanceOf(address(this));
+
         return (
-            // branchName,
+            bal,
             address(this).balance,
             grants.length,
             approversCount,

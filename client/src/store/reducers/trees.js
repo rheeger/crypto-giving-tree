@@ -3,7 +3,7 @@ import {
 	PLANT_TREE,
 	FETCH_TREES,
 	FETCH_TREE,
-	FETCH_TREE_SUMMARY,
+	FETCH_TREE_DAI,
 	EDIT_TREE,
 	DELETE_TREE
 } from '../actions/types';
@@ -13,7 +13,7 @@ export default (state = {}, action) => {
 	switch (action.type) {
 		case FETCH_TREE:
 			return { ...state, [action.payload.id]: action.payload };
-		case FETCH_TREE_SUMMARY:
+		case FETCH_TREE_DAI:
 			return { ...state, [action.payload.id]: action.payload };
 		case PLANT_TREE:
 			return { ...state, [action.payload.id]: action.payload };

@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchTree, fetchTreeSummary } from '../../store/actions';
+import { fetchTree, fetchTreeDAIBalance } from '../../store/actions';
 import { Button, Card, Grid } from 'semantic-ui-react';
 import ContributionForm from '../../components/ContributionForm';
+import ERC20 from '../../ethereum/uniSwap/abi/erc20';
 
 class TreeShow extends Component {
-	componentDidMount() {
-		const { fetchTreeSummary, fetchTree, match } = this.props;
+	componentWillMount = () => {
+		const { fetchTreeDAIBalance, fetchTree, match } = this.props;
 
-		// fetchTreeSummary(match.params.address);
+		fetchTreeDAIBalance(match.params.address);
 		fetchTree(match.params.address);
-	}
+		// this.getTreeDAIBalance(match.params.address);
+	};
 
 	renderCards() {
 		const {
@@ -59,6 +61,9 @@ class TreeShow extends Component {
 		if (!this.props.gtTrees[this.props.match.params.address]) {
 			return <div> Loading... </div>;
 		}
+		if (this.props.web3 === 'null') {
+			return <div> Loading... </div>;
+		}
 
 		return (
 			<div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -94,7 +99,10 @@ class TreeShow extends Component {
 }
 
 const mapStateToProps = (state) => {
-	return { gtTrees: state.gtTrees };
+	return {
+		gtTrees: state.gtTrees,
+		web3: state.web3connect.web3
+	};
 };
 
-export default connect(mapStateToProps, { fetchTreeSummary, fetchTree })(TreeShow);
+export default connect(mapStateToProps, { fetchTreeDAIBalance, fetchTree })(TreeShow);

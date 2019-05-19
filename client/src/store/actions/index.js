@@ -14,13 +14,14 @@ import {
 	EDIT_ORG,
 	DELETE_ORG,
 	CREATE_CONTRACT_ADDRESS,
-	FETCH_TREE_SUMMARY,
+	FETCH_TREE_DAI,
 	CREATE_GRANT,
 	FETCH_GRANTS,
 	FETCH_TREE_GRANTS,
 	FETCH_GRANT,
 	EDIT_GRANT,
-	DELETE_GRANT
+	DELETE_GRANT,
+	RINKEBY_DAI
 } from './types';
 import history from '../../history';
 import { createOrg } from '../../ethereum/orgFactoryAdmin';
@@ -86,12 +87,13 @@ export const fetchTrees = (address) => async (dispatch) => {
 	dispatch({ type: FETCH_TREES, payload: response });
 };
 
-export const fetchTreeSummary = (id) => async (dispatch) => {
-	const contractSummary = await Tree.methods.getSummary(id).call();
+export const fetchTreeDAIBalance = (address) => async (dispatch) => {
+	const tree = Tree(address);
+	const treeDAIBalance = await tree.methods.getSummary(RINKEBY_DAI).call();
 
-	const response = await localDB.patch(`/trees/${id}`, contractSummary);
+	const response = await localDB.patch(`/trees/${address}`, { treeDAI: treeDAIBalance[0] });
 
-	dispatch({ type: FETCH_TREE_SUMMARY, payload: response.data });
+	dispatch({ type: FETCH_TREE_DAI, payload: response.data });
 };
 
 export const fetchTree = (id) => async (dispatch) => {
