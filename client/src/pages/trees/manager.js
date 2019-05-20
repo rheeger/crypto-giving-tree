@@ -27,7 +27,7 @@ class Manager extends React.Component {
 
 		return (
 			<div style={{ display: 'flex', justifyContent: 'center' }}>
-				<div style={{ maxWidth: '700px' }}>
+				<div style={{ width: '800px' }}>
 					<h2>My Charity Trees:</h2>
 					<div className="ui celled list">{this.renderList()}</div>
 				</div>

@@ -29,7 +29,7 @@ class HomePage extends React.Component {
 									display: 'flex',
 									justifyContent: 'center',
 									alignItems: 'center',
-									height: '75vh'
+									height: '50vh'
 								}}
 								width={16}
 							>

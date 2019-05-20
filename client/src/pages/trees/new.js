@@ -35,7 +35,7 @@ class NewTree extends React.Component {
 						width: '700px'
 					}}
 				>
-					<div style={{ width: '350px' }}>
+					<div style={{ width: '500px' }}>
 						<h1>Plant your Tree:</h1>
 
 						<BranchForm onSubmit={this.onSubmit} />

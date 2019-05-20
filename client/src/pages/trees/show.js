@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchTree, fetchTreeDAIBalance } from '../../store/actions';
 import { Button, Card, Grid } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import ContributionForm from '../../components/ContributionForm';
 import ERC20 from '../../ethereum/uniSwap/abi/erc20';
 
@@ -72,8 +73,17 @@ class TreeShow extends Component {
 							</Grid.Column>
 
 							<Grid.Column width={6}>
-								<h3>Tree Balance:</h3>
-								<div>${this.props.gtTrees[this.props.match.params.address].treeDAI}</div>
+								<div>
+									<h3>Tree Balance:</h3>
+									<Link to={`/orgs`} className="ui two-buttons">
+										<Button floated="right" basic color="red">
+											<i class="paper plane icon" /> send grant
+										</Button>
+									</Link>
+									<h1>${this.props.gtTrees[this.props.match.params.address].treeDAI}</h1>
+								</div>
+								<br />
+
 								<h3>Contribute Funds:</h3>
 								<ContributionForm recievingTree={this.props.match.params.address} />
 							</Grid.Column>
