@@ -34,7 +34,7 @@ class OrgIndex extends React.Component {
 								<i class="address card icon" />org details
 							</Button>
 						</Link>
-						<Link to={`/orgs/${index.ein}/donate`} className="ui two-buttons">
+						<Link to={`/orgs/${index.ein}/grants/new`} className="ui two-buttons">
 							<Button floated="left" basic color="red">
 								<i class="paper plane icon" />send grant
 							</Button>

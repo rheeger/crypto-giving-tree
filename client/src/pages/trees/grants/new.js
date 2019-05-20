@@ -1,87 +1,123 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Input, Form, Button, Message } from 'semantic-ui-react';
-import Tree from '../../../ethereum/tree';
-import { Link } from 'react-router-dom';
+import { Button } from 'semantic-ui-react';
+import { createGrant, selectOrg, fetchOrgs, createOrgAndContract } from '../../../store/actions';
+import BranchForm from '../../../components/BranchForm';
 
-class NewGrant extends Component {
+class NewGrant extends React.Component {
 	state = {
-		value: '',
-		description: '',
-		recipient: '',
-		errorMessage: '',
-		loading: false
+		ready: 'false'
 	};
 
-	onSubmit = async (event) => {
-		event.preventDefault();
+	componentDidMount() {
+		this.setState({ ready: 'false' });
+		console.log('not ready');
+		this.props.selectOrg(this.props.match.params.ein);
+		this.props.fetchOrgs();
+		console.log('selecting org' + this.props.match.params.ein);
+		if (this.props.gtOrgs && !this.props.gtOrgs[`${this.props.match.params.ein}`]) {
+			const { ein } = this.props.match.params;
+			this.setupOrg(ein);
+		}
+	}
 
-		const tree = Tree(this.props.address);
-		const { description, value, recipient } = this.state;
+	setupOrg = async (id, address) => {
+		await this.props.createOrgAndContract(id, address);
+		await this.props.fetchOrgs();
 
-		this.setState({ loading: true, errorMessage: '' });
+		return <div>Transaction pending...</div>;
+	};
 
-		try {
-			const accounts = await this.props.web3.eth.getAccounts();
+	onSubmit = (formValues) => {
+		this.props.createGrant(formValues);
+	};
 
-			await tree.methods.createRequest(description, this.props.web3.utils.toWei(value, 'ether'), recipient).send({
-				from: accounts[0]
-			});
+	renderBranchForm = () => {
+		this.setState({ ready: 'true' });
+	};
 
-			// Router.pushRoute(`/trees/${this.props.address}/requests`);
-		} catch (err) {
-			this.setState({ errorMessage: err.message });
+	render() {
+		if (!this.props.org.organization) {
+			return <div>Loading Organization Details</div>;
 		}
 
-		this.setState({ loading: false });
-	};
-	render() {
-		return (
-			<div>
-				<h3>Create a New Grant</h3>
-				<Form onSubmit={this.onSubmit}>
-					<Form.Field>
-						<label>Description</label>
-						<Input
-							value={this.state.description}
-							onChange={(event) => this.setState({ description: event.target.value })}
-						/>
-					</Form.Field>
-					<Form.Field>
-						<label>Value</label>
-						<Input
-							label="ether"
-							labelPosition="right"
-							value={this.state.value}
-							onChange={(event) => this.setState({ value: event.target.value })}
-						/>
-					</Form.Field>
-					<Form.Field>
-						<label>Recipient</label>
-						<Input
-							value={this.state.recipient}
-							onChange={(event) => this.setState({ recipient: event.target.value })}
-						/>
-					</Form.Field>
-					<Message error header="Oops!" content={this.state.errorMessage} />
-					<Button primary loading={this.state.loading}>
-						Create!
-					</Button>
-					<Link route={`/trees/${this.props.address}/requests`}>
-						<a>
-							<Button secondary>View Requests</Button>
-						</a>
-					</Link>
-				</Form>
-			</div>
-		);
+		if (!this.props.gtOrgs) {
+			return <div>Loading Local Org Details</div>;
+		}
+
+		if (this.state.ready == 'true' && this.props.gtOrgs[`${this.props.match.params.ein}`]) {
+			return (
+				<div className="ui container">
+					<div style={{ padding: '1rem', marginBottom: '1rem' }}>
+						<h4>You're reccomending a grant to:</h4>
+						<h1>{this.props.org.organization.name}</h1>
+
+						<BranchForm onSubmit={this.onSubmit} />
+					</div>
+				</div>
+			);
+		}
+
+		if (this.state.ready == 'true' && this.props.gtOrgs && !this.props.gtOrgs[`${this.props.match.params.ein}`]) {
+			return (
+				<div className="ui container">
+					<div style={{ textAlign: 'center', display: 'flex-flow', alignContent: 'center' }}>
+						<h1>Hang tight!</h1>
+						<p>Looks like you'll be the first to reccomend a grant to: </p>
+						<h3>{this.props.org.organization.name}</h3>
+						<h6>We're setting up their account. We'll process your grant reccomendation next.</h6>
+					</div>
+				</div>
+			);
+		}
+
+		if (this.state.ready == 'false' && this.props.gtOrgs[`${this.props.match.params.ein}`]) {
+			return (
+				<div
+					style={{
+						margin: '0px auto',
+						textAlign: 'left',
+						display: 'flex',
+						justifyContent: 'flex-start',
+						alignItems: 'center',
+						height: '50vh',
+						maxWidth: '350px'
+					}}
+				>
+					<div>
+						<h1>What is a Grant? </h1>
+						<p>some things to know...</p>
+						<h3>
+							1. Each grant represents an instruction for your Charity Tree to make a donation to a {' '}
+							<a href="https://en.wikipedia.org/wiki/Donor-advised_fund" target="blank">
+								qualifyiing 501(c)3 organziation.
+							</a>
+						</h3>
+						<h3>2. Set the amount to grant and provide a short description memo, if needed.</h3>
+						<h3>
+							3. The staff at the Chairty Tree will review the grant within 24 hours, finalize the
+							distribution of the DAI and notify the organziation.
+						</h3>
+						<br />
+
+						<Button onClick={this.renderBranchForm} floated="left" className="ui button green">
+							Got It!
+						</Button>
+					</div>
+				</div>
+			);
+		}
+		return <div />;
 	}
 }
 
 const mapStateToProps = (state) => {
 	return {
-		web3: state.web3connect
+		gtTrees: state.gtTrees,
+		web3: state.web3connect,
+		org: state.org,
+		gtOrgs: state.gtOrgs
 	};
 };
 
-export default connect(mapStateToProps)(NewGrant);
+export default connect(mapStateToProps, { selectOrg, fetchOrgs, createOrgAndContract, createGrant })(NewGrant);

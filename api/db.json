@@ -77,6 +77,26 @@
     {
       "id": "61250781",
       "contractAddress": "0x2b1796b5324B709B311C9F9664822D76eE149F13"
+    },
+    {
+      "id": "824704419",
+      "contractAddress": "0x4574B6f25BE30ECF94CaB4ED02e69aDc81d3e1Ff"
+    },
+    {
+      "id": "383915658",
+      "contractAddress": "0x7b6863C5df7Fb9547Fd9dE91982F938a5f17e265"
+    },
+    {
+      "id": "363540706",
+      "contractAddress": "0x903b1380De60d8BaaFb100394e663d62B2DF4dE5"
+    },
+    {
+      "id": "756061738",
+      "contractAddress": "0xe580109379CFDaDdBD36fD7BBfaCdF6f80B954A0"
+    },
+    {
+      "id": "474146355",
+      "contractAddress": "0xc461D1e3f4D7773A3Aaf278bA2F16a23454339e4"
     }
   ],
   "grants": [

@@ -73,8 +73,6 @@ export const extendGrant = (formValues, responsibleTree, id) => async (dispatch)
 };
 
 export const fetchTrees = (address) => async (dispatch) => {
-	console.log('fetchin trees');
-	console.log(address);
 	const allTrees = await localDB.get('/trees');
 
 	const response = allTrees.data.filter((tree) => {
@@ -157,10 +155,8 @@ export const deleteOrg = (id) => async (dispatch) => {
 
 //LOCAL DB ACTIONS: GRANTS
 
-export const createGrant = (id) => async (dispatch, getState) => {
-	const contractAddress = await createOrg(id);
-
-	const response = await localDB.post(`/grants`, { id, contractAddress });
+export const createGrant = (formValues) => async (dispatch, getState) => {
+	const response = await localDB.post(`/grants`, { ...formValues });
 
 	dispatch({ type: CREATE_GRANT, payload: response.data });
 };
@@ -172,15 +168,16 @@ export const fetchGrants = () => async (dispatch) => {
 };
 
 export const fetchTreeGrants = (address) => async (dispatch) => {
-	const allTrees = await localDB.get('/grants');
+	const allGrants = await localDB.get('/trees');
 
-	const response = allTrees.data.filter((tree) => {
+	const response = allGrants.data.filter((tree) => {
 		console.log(tree.managerAddress === address);
 		if (tree.managerAddress === address) {
 			return { tree };
 		}
 		return;
 	});
+
 	dispatch({ type: FETCH_TREE_GRANTS, payload: response.data });
 };
 

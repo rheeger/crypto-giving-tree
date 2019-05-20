@@ -6,7 +6,6 @@ import history from '../history';
 import HomePage from './HomePage';
 import OrgIndex from '../pages/orgs';
 import OrgShow from '../pages/orgs/show';
-import Donate from '../pages/orgs/donate';
 import NewTree from '../pages/trees/new';
 import Manager from '../pages/trees/manager';
 import TreeShow from '../pages/trees/show';
@@ -49,11 +48,9 @@ class App extends React.Component {
 							<Route path="/trees" exact component={Manager} />
 							<Route path="/trees/new" exact component={NewTree} />
 							<Route path="/trees/:address" exact component={TreeShow} />
-							<Route path="/trees/:address/grants/new" exact component={NewGrant} />
-							{/* <Route path="/trees/:address/donate" exact component={BranchDonate} /> */}
 							<Route path="/orgs" exact component={OrgIndex} />
 							<Route path="/orgs/:ein" exact component={OrgShow} />
-							<Route path="/orgs/:ein/donate" exact component={Donate} />
+							<Route path="/orgs/:ein/grants/new" exact component={NewGrant} />
 						</Switch>
 					</div>
 				</Router>
