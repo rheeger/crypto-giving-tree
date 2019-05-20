@@ -1,3 +1,4 @@
+import BN from 'bignumber.js';
 import ProPublica from '../../apis/ProPublica';
 import localDB from '../../apis/localDB';
 import {
@@ -58,7 +59,7 @@ export const plantTreeAndContract = (formValues) => async (dispatch, getState) =
 	const managerAddress = getState().web3connect.account;
 	const id = await plantTree(managerAddress);
 
-	const response = await localDB.post('/trees', { ...formValues, managerAddress, id });
+	const response = await localDB.post('/trees', { ...formValues, managerAddress, id, treeDAI: 0.0 });
 
 	dispatch({ type: PLANT_TREE, payload: response.data });
 	history.push(`/trees/${id}`);
@@ -90,8 +91,10 @@ export const fetchTrees = (address) => async (dispatch) => {
 export const fetchTreeDAIBalance = (address) => async (dispatch) => {
 	const tree = Tree(address);
 	const treeDAIBalance = await tree.methods.getSummary(RINKEBY_DAI).call();
+	console.log();
+	const treeDAI = (parseFloat(treeDAIBalance[0]) / 1000000000000000000).toFixed(2);
 
-	const response = await localDB.patch(`/trees/${address}`, { treeDAI: treeDAIBalance[0] });
+	const response = await localDB.patch(`/trees/${address}`, { treeDAI: treeDAI });
 
 	dispatch({ type: FETCH_TREE_DAI, payload: response.data });
 };

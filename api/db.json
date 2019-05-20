@@ -14,7 +14,23 @@
       "tncconsent": "null",
       "managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
       "id": "0x1f4Ddaaae9b89f551Bb561b11035E0165a6e0cC8",
-      "treeDAI": "1699513878071330489"
+      "treeDAI": "10.19"
+    },
+    {
+      "creationDate": "2019-05-19",
+      "branchName": "Robbie2",
+      "primaryAdvisorFirstName": "Robert",
+      "primaryAdvisorLastName": "Heeger",
+      "primaryAdvisorEmail": "rheeger@gmail.com",
+      "primaryAdvisorAddress": "1410 Arcadia Place",
+      "primaryAdvisorCity": "Palo Alto",
+      "primaryAdvisorState": "CA",
+      "primaryAdvisorZip": "94303",
+      "primaryAdvisorBirthday": "1990-11-05",
+      "tncconsent": "null",
+      "managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
+      "id": "0xc7a5e3228cAD9008fa1590D2c2abA2e65202DA9b",
+      "treeDAI": "13.57"
     }
   ],
   "orgs": [

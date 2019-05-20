@@ -15,10 +15,11 @@ import { getBlockDeadline } from '../../helpers/web3-utils';
 import { retry } from '../../helpers/promise-utils';
 import EXCHANGE_ABI from '../../ethereum/uniSwap/abi/exchange';
 import ERC20_ABI from '../../ethereum/uniSwap/abi/erc20';
-
+import history from '../../history';
 import './contributionForm.scss';
 import { GT_ADMIN } from '../../store/actions/types';
 import { getAdminWeb3 } from '../../ethereum/adminWallet';
+import { fetchTreeDAIBalance } from '../../store/actions';
 
 const INPUT = 0;
 const OUTPUT = 1;
@@ -426,7 +427,13 @@ class Send extends Component {
 
 		const web3 = new Web3(provider);
 		const account = await web3.eth.getAccounts();
-		const { exchangeAddresses: { fromToken }, selectors, addPendingTx } = this.props;
+		const {
+			exchangeAddresses: { fromToken },
+			selectors,
+			addPendingTx,
+			fetchTreeDAIBalance,
+			recievingTree
+		} = this.props;
 		const {
 			inputValue,
 			outputValue,
@@ -479,6 +486,8 @@ class Send extends Component {
 							}
 						);
 					console.log('exchanged eth through uniswap');
+					fetchTreeDAIBalance(recipient);
+					history.push(`/trees/${recievingTree}`);
 					break;
 				case 'TOKEN_TO_TOKEN':
 					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
@@ -500,6 +509,8 @@ class Send extends Component {
 							}
 						});
 					console.log('exchanged token through uniswap');
+					fetchTreeDAIBalance(recipient);
+					history.push(`/trees/${recievingTree}`);
 					break;
 				default:
 					break;
@@ -533,6 +544,8 @@ class Send extends Component {
 							}
 						);
 					console.log('exchanged eth through uniswap');
+					fetchTreeDAIBalance(recipient);
+					history.push(`/trees/${recievingTree}`);
 					break;
 				case 'TOKEN_TO_TOKEN':
 					if (!inputAmountB) {
@@ -558,6 +571,8 @@ class Send extends Component {
 							}
 						});
 					console.log('exchanged token through uniswap');
+					fetchTreeDAIBalance(recipient);
+					history.push(`/trees/${recievingTree}`);
 					break;
 				default:
 					break;
@@ -844,7 +859,8 @@ export default connect(mapStateToProps, (dispatch) => ({
 	initialize: () => dispatch(initialize()),
 	startWatching: () => dispatch(startWatching()),
 	selectors: () => dispatch(selectors()),
-	addPendingTx: (id) => dispatch(addPendingTx(id))
+	addPendingTx: (id) => dispatch(addPendingTx(id)),
+	fetchTreeDAIBalance: (address) => dispatch(fetchTreeDAIBalance(address))
 }))(withTranslation()(Send));
 
 const b = (text) => <span className="swap__highlight-text">{text}</span>;

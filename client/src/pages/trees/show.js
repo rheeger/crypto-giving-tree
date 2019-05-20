@@ -33,24 +33,20 @@ class TreeShow extends Component {
 			{
 				style: { overflowWrap: 'break-word' },
 				header: branchName,
-				meta: 'Planted' + creationDate,
-				description: 'Tree Overview'
-			},
-			{
-				style: { overflowWrap: 'break-word' },
-				header: id,
-				meta: 'Contract Address',
-				description: 'Managed by:' + managerAddress
+				meta: 'Planted: ' + creationDate,
+				description: 'Address: ' + id
 			},
 			{
 				style: { overflowWrap: 'break-word' },
 				header: primaryAdvisorFirstName + ' ' + primaryAdvisorLastName,
-				meta: 'Primary Tree Manager',
-				description: 'e-Mail:' + primaryAdvisorEmail
+				meta: 'Primary Advisor',
+				description: 'Managing Wallet: ' + managerAddress
 			},
 			{
+				style: { overflowWrap: 'break-word' },
 				header: primaryAdvisorAddress,
-				description: primaryAdvisorCity + ', ' + primaryAdvisorState + ' ' + primaryAdvisorZip
+				meta: primaryAdvisorCity + ', ' + primaryAdvisorState + ' ' + primaryAdvisorZip,
+				description: 'e-Mail: ' + primaryAdvisorEmail
 			}
 		];
 
@@ -67,15 +63,17 @@ class TreeShow extends Component {
 
 		return (
 			<div style={{ display: 'flex', justifyContent: 'center' }}>
-				<div style={{ maxWidth: '600px' }}>
+				<div style={{ maxWidth: '700px' }}>
 					<Grid className="Container">
 						<Grid.Row>
 							<Grid.Column width={10}>
-								<h3>Your Giving Tree:</h3>
+								<h3>Tree Details:</h3>
 								{this.renderCards()}
 							</Grid.Column>
 
 							<Grid.Column width={6}>
+								<h3>Tree Balance:</h3>
+								<div>${this.props.gtTrees[this.props.match.params.address].treeDAI}</div>
 								<h3>Contribute Funds:</h3>
 								<ContributionForm recievingTree={this.props.match.params.address} />
 							</Grid.Column>
