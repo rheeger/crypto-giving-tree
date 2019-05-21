@@ -153,7 +153,7 @@ export const deleteOrg = (id) => async (dispatch) => {
 
 //LOCAL DB ACTIONS: GRANTS
 
-export const createGrant = (formValues) => async (dispatch, getState) => {
+export const createGrant = (formValues) => async (dispatch) => {
 	const response = await localDB.post(`/grants`, { ...formValues });
 
 	dispatch({ type: CREATE_GRANT, payload: response.data });

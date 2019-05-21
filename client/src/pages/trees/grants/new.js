@@ -2,24 +2,25 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react';
 import { createGrant, selectOrg, fetchOrgs, createOrgAndContract } from '../../../store/actions';
-import BranchForm from '../../../components/BranchForm';
+import GrantForm from '../../../components/GrantForm';
 
 class NewGrant extends React.Component {
 	state = {
 		ready: 'false'
 	};
 
-	componentDidMount() {
+	componentWillMount = async () => {
 		this.setState({ ready: 'false' });
-		console.log('not ready');
 		this.props.selectOrg(this.props.match.params.ein);
-		this.props.fetchOrgs();
-		console.log('selecting org' + this.props.match.params.ein);
-		if (this.props.gtOrgs && !this.props.gtOrgs[`${this.props.match.params.ein}`]) {
+		await this.props.fetchOrgs();
+		console.log('selecting org ' + this.props.match.params.ein);
+		console.log(this.props.gtOrgs);
+		if (!this.props.gtOrgs[`${this.props.match.params.ein}`]) {
+			console.log('creating org address');
 			const { ein } = this.props.match.params;
 			this.setupOrg(ein);
 		}
-	}
+	};
 
 	setupOrg = async (id, address) => {
 		await this.props.createOrgAndContract(id, address);
@@ -52,7 +53,7 @@ class NewGrant extends React.Component {
 						<h4>You're reccomending a grant to:</h4>
 						<h1>{this.props.org.organization.name}</h1>
 
-						<BranchForm onSubmit={this.onSubmit} />
+						<GrantForm onSubmit={this.onSubmit} gtTrees={this.props.gtTrees} />
 					</div>
 				</div>
 			);
