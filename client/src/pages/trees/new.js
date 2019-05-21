@@ -22,7 +22,7 @@ class NewTree extends React.Component {
 	};
 
 	render() {
-		if (this.state.ready == 'true') {
+		if (this.state.ready === 'true') {
 			return (
 				<div
 					style={{

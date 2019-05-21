@@ -4,7 +4,6 @@ import { fetchTree, fetchTreeDAIBalance } from '../../store/actions';
 import { Button, Card, Grid } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import ContributionForm from '../../components/ContributionForm';
-import ERC20 from '../../ethereum/uniSwap/abi/erc20';
 
 class TreeShow extends Component {
 	componentWillMount = () => {

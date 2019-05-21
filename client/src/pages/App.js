@@ -12,7 +12,6 @@ import TreeShow from '../pages/trees/show';
 import NewGrant from '../pages/trees/grants/new';
 import { Web3Connect, startWatching, initialize } from '../store/reducers/web3connect';
 import { setAddresses } from '../store/reducers/swapAddresses';
-import { fetchTrees } from '../store/actions';
 
 class App extends React.Component {
 	componentWillMount() {
@@ -23,7 +22,7 @@ class App extends React.Component {
 	}
 
 	componentWillUpdate() {
-		const { web3, setAddresses, account, fetchTrees } = this.props;
+		const { web3, setAddresses } = this.props;
 
 		if (this.hasSetNetworkId || !web3 || !web3.eth || !web3.eth.net || !web3.eth.net.getId) {
 			return;

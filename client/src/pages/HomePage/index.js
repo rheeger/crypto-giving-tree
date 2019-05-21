@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Button, Grid } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 
 class HomePage extends React.Component {
 	renderManager() {

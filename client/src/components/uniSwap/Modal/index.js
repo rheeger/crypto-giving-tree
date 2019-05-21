@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { CSSTransitionGroup } from 'react-transition-group';
 import './modal.scss';
 
 const modalRoot = document.querySelector('#modal-root');

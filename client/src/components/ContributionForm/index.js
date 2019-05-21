@@ -18,7 +18,6 @@ import ERC20_ABI from '../../ethereum/uniSwap/abi/erc20';
 import history from '../../history';
 import './contributionForm.scss';
 import { GT_ADMIN } from '../../store/actions/types';
-import { getAdminWeb3 } from '../../ethereum/adminWallet';
 import { fetchTreeDAIBalance } from '../../store/actions';
 
 const INPUT = 0;

@@ -1,4 +1,3 @@
-import BN from 'bignumber.js';
 import ProPublica from '../../apis/ProPublica';
 import localDB from '../../apis/localDB';
 import {
@@ -76,11 +75,10 @@ export const fetchTrees = (address) => async (dispatch) => {
 	const allTrees = await localDB.get('/trees');
 
 	const response = allTrees.data.filter((tree) => {
-		console.log(tree.managerAddress === address);
 		if (tree.managerAddress === address) {
 			return { tree };
 		}
-		return;
+		return '';
 	});
 
 	dispatch({ type: FETCH_TREES, payload: response });
@@ -170,12 +168,11 @@ export const fetchGrants = () => async (dispatch) => {
 export const fetchTreeGrants = (address) => async (dispatch) => {
 	const allGrants = await localDB.get('/trees');
 
-	const response = allGrants.data.filter((tree) => {
-		console.log(tree.managerAddress === address);
-		if (tree.managerAddress === address) {
-			return { tree };
+	const response = allGrants.data.filter((grant) => {
+		if (grant.managerAddress === address) {
+			return { grant };
 		}
-		return;
+		return '';
 	});
 
 	dispatch({ type: FETCH_TREE_GRANTS, payload: response.data });

@@ -45,7 +45,7 @@ class NewGrant extends React.Component {
 			return <div>Loading Local Org Details</div>;
 		}
 
-		if (this.state.ready == 'true' && this.props.gtOrgs[`${this.props.match.params.ein}`]) {
+		if (this.state.ready === 'true' && this.props.gtOrgs[`${this.props.match.params.ein}`]) {
 			return (
 				<div className="ui container">
 					<div style={{ padding: '1rem', marginBottom: '1rem' }}>
@@ -58,7 +58,7 @@ class NewGrant extends React.Component {
 			);
 		}
 
-		if (this.state.ready == 'true' && this.props.gtOrgs && !this.props.gtOrgs[`${this.props.match.params.ein}`]) {
+		if (this.state.ready === 'true' && this.props.gtOrgs && !this.props.gtOrgs[`${this.props.match.params.ein}`]) {
 			return (
 				<div className="ui container">
 					<div style={{ textAlign: 'center', display: 'flex-flow', alignContent: 'center' }}>
@@ -71,7 +71,44 @@ class NewGrant extends React.Component {
 			);
 		}
 
-		if (this.state.ready == 'false' && this.props.gtOrgs[`${this.props.match.params.ein}`]) {
+		if (this.state.ready === 'false' && this.props.gtOrgs && !this.props.gtOrgs[`${this.props.match.params.ein}`]) {
+			return (
+				<div
+					style={{
+						margin: '0px auto',
+						textAlign: 'left',
+						display: 'flex',
+						justifyContent: 'flex-start',
+						alignItems: 'center',
+						height: '50vh',
+						maxWidth: '350px'
+					}}
+				>
+					<div>
+						<h1>What is a Grant? </h1>
+						<p>some things to know...</p>
+						<h3>
+							1. Each grant represents an instruction for your Charity Tree to make a donation to a {' '}
+							<a href="https://en.wikipedia.org/wiki/Donor-advised_fund" target="blank">
+								qualifyiing 501(c)3 organziation.
+							</a>
+						</h3>
+						<h3>2. Set the amount to grant and provide a short description memo, if needed.</h3>
+						<h3>
+							3. The staff at the Chairty Tree will review the grant within 24 hours, finalize the
+							distribution of the DAI and notify the organziation.
+						</h3>
+						<br />
+
+						<Button onClick={this.renderBranchForm} floated="left" className="ui button green">
+							Got It!
+						</Button>
+					</div>
+				</div>
+			);
+		}
+
+		if (this.state.ready === 'false' && this.props.gtOrgs[`${this.props.match.params.ein}`]) {
 			return (
 				<div
 					style={{
