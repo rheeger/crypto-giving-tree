@@ -153,8 +153,16 @@ export const deleteOrg = (id) => async (dispatch) => {
 
 //LOCAL DB ACTIONS: GRANTS
 
-export const createGrant = (formValues) => async (dispatch) => {
-	const response = await localDB.post(`/grants`, { ...formValues });
+export const createGrant = (formValues, recipientAddress, managerAddress) => async (dispatch, getState) => {
+	const tree = Tree(formValues.selectedTree);
+	const hash = [];
+	await tree.methods
+		.createGrant(formValues.grantDescription, formValues.grantAmount * 10 * 18, recipientAddress)
+		.send({ from: managerAddress })
+		.on('transactionHash', function(hash) {
+			hash.post(hash);
+		});
+	const response = await localDB.post(`/grants`, { ...formValues, hash });
 
 	dispatch({ type: CREATE_GRANT, payload: response.data });
 };

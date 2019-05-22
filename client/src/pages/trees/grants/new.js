@@ -30,7 +30,11 @@ class NewGrant extends React.Component {
 	};
 
 	onSubmit = (formValues) => {
-		this.props.createGrant(formValues);
+		this.props.createGrant(
+			formValues,
+			this.props.gtOrgs[`${this.props.match.params.ein}`].contractAddress,
+			this.props.web3.account
+		);
 	};
 
 	renderBranchForm = () => {
