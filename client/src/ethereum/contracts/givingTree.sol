@@ -8,9 +8,17 @@ contract AbstractAdmin {
     function getAdmin() public view returns (address);
 }
 
-contract ERC20 { 
-      function balanceOf(address tokenOwner) public constant returns (uint balance);
+contract ERC20 {
+    function totalSupply() public constant returns (uint);
+    function balanceOf(address tokenOwner) public constant returns (uint balance);
+    function allowance(address tokenOwner, address spender) public constant returns (uint remaining);
+    function transfer(address to, uint tokens) public returns (bool success);
+    function approve(address spender, uint tokens) public returns (bool success);
+    function transferFrom(address from, address to, uint tokens) public returns (bool success);
+    event Transfer(address indexed from, address indexed to, uint tokens);
+    event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
 }
+
 
 
 contract TreeNursery {
@@ -63,6 +71,7 @@ contract Tree {
     Grant[] public grants;
     uint public approversCount;
     uint public totalContributors;
+
     // bytes32 public branchName;
     
 
@@ -130,12 +139,14 @@ contract Tree {
         grant.challengeCount++;
     }
 
-    function finalizeGrant(uint index) public adminRestricted {
+    function finalizeGrant(uint index, address tokenAddress, address orgAddress) public adminRestricted {
         Grant storage grant = grants[index];
 
         require(grant.challengeCount < (approversCount/2));
         require(!grant.complete);
 
+        ERC20 t = ERC20(tokenAddress);
+        t.transfer(orgAddress, grant.value)
         grant.recipient.transfer(grant.value);
         grant.complete = true;
     }

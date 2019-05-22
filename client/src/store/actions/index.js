@@ -156,6 +156,8 @@ export const deleteOrg = (id) => async (dispatch) => {
 export const createGrant = (formValues, recipientAddress, managerAddress) => async (dispatch, getState) => {
 	const tree = Tree(formValues.selectedTree);
 	const hash = [];
+	console.log(formValues);
+	console.log(formValues.grantAmount * 10 ** 18);
 	await tree.methods
 		.createGrant(formValues.grantDescription, formValues.grantAmount * 10 * 18, recipientAddress)
 		.send({ from: managerAddress })
