@@ -16,9 +16,10 @@ export const plantTree = async (managerAddress) => {
 	const address = '0xe6263ae59f79384c79bee4c3d1ecde72a12aca6b';
 	const treeNursery = new web3.eth.Contract(JSON.parse(TreeNursery.interface), address);
 
+	console.log('Creating contract...');
 	const createContract = await treeNursery.methods
 		.plantTree(managerAddress)
-		.send({ from: accounts[0], gas: '1000000' });
+		.send({ from: accounts[0], gas: '1032065' });
 	console.log('Created contract:' + createContract.events.treePlanted.returnValues.newAddress);
 	const contractAddress = createContract.events.treePlanted.returnValues.newAddress;
 

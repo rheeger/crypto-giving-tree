@@ -155,20 +155,26 @@ export const deleteOrg = (id) => async (dispatch) => {
 
 export const createGrant = (formValues, recipientAddress, managerAddress) => async (dispatch, getState) => {
 	const tree = Tree(formValues.selectedTree);
-	const id = [];
+
 	console.log(formValues);
 	console.log(formValues.grantAmount * 10 ** 18);
-	tree.methods
+	const id = await tree.methods
 		.createGrant(formValues.grantDescription, formValues.grantAmount * 1000000000000000000, recipientAddress)
 		.send({ from: managerAddress })
 		.on('transactionHash', function(transId) {
-			console.log(transId);
-			this.id = transId;
+			return transId;
 		});
 
-	const response = await localDB.post(`/grants`, { ...formValues, id });
+	console.log(id);
+
+	const response = await localDB.post(`/grants`, {
+		selectedOrg: recipientAddress,
+		...formValues,
+		id: id.transactionHash
+	});
 
 	dispatch({ type: CREATE_GRANT, payload: response.data });
+	history.push(`/trees/${formValues.selectedTree}`);
 };
 
 export const fetchGrants = () => async (dispatch) => {
