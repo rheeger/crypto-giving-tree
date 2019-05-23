@@ -36,7 +36,7 @@ class HomePage extends React.Component {
 								<div>
 									<h1>Plant a Charity Tree today.</h1>
 									<h3>
-										Create your own chariable fund & award grants to qualifying non-profit
+										Create your own charitable fund & award grants to qualifying non-profit
 										organizations.
 									</h3>
 									<br />
