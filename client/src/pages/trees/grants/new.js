@@ -33,6 +33,7 @@ class NewGrant extends React.Component {
 		this.props.createGrant(
 			formValues,
 			this.props.gtOrgs[`${this.props.match.params.ein}`].contractAddress,
+			this.props.match.params.ein,
 			this.props.web3.account
 		);
 	};

@@ -153,7 +153,10 @@ export const deleteOrg = (id) => async (dispatch) => {
 
 //LOCAL DB ACTIONS: GRANTS
 
-export const createGrant = (formValues, recipientAddress, managerAddress) => async (dispatch, getState) => {
+export const createGrant = (formValues, recipientAddress, recipientEIN, managerAddress) => async (
+	dispatch,
+	getState
+) => {
 	const tree = Tree(formValues.selectedTree);
 
 	console.log(formValues);
@@ -168,7 +171,7 @@ export const createGrant = (formValues, recipientAddress, managerAddress) => asy
 	console.log(id);
 
 	const response = await localDB.post(`/grants`, {
-		selectedOrg: recipientAddress,
+		selectedOrg: recipientEIN,
 		...formValues,
 		id: id.transactionHash
 	});
