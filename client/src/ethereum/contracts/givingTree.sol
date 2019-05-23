@@ -95,7 +95,7 @@ contract Tree {
     }
 
     function checkRecipient(address recipient) public view returns (bool) {
-        AbstractOrgFactory x = AbstractOrgFactory ( 0x5173aF4f53D9c3dB1303c662624a2B50c2e4B5f1 );
+        AbstractOrgFactory x = AbstractOrgFactory ( 0x6b9d901467795364c40877cec5dd3f2602e6ece9 );
     
         return x.getAllowedOrgs(recipient);
 
@@ -114,7 +114,7 @@ contract Tree {
     }
     
     function createGrant(string memory description, uint value, address recipient) public restricted {
-        require(!checkRecipient(recipient) == false);
+        require(checkRecipient(recipient) == true);
 
         Grant memory newGrant = Grant({
             description: description,
@@ -146,7 +146,7 @@ contract Tree {
         require(!grant.complete);
 
         ERC20 t = ERC20(tokenAddress);
-        t.transfer(orgAddress, grant.value)
+        t.transfer(orgAddress, grant.value);
         grant.recipient.transfer(grant.value);
         grant.complete = true;
     }
