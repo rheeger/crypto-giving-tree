@@ -11,7 +11,7 @@ class NewGrant extends React.Component {
 
 	componentWillMount = async () => {
 		this.setState({ ready: 'false' });
-		this.props.selectOrg(this.props.match.params.ein);
+		await this.props.selectOrg(this.props.match.params.ein);
 		await this.props.fetchOrgs();
 		console.log('selecting org ' + this.props.match.params.ein);
 		console.log(this.props.gtOrgs);
@@ -22,8 +22,8 @@ class NewGrant extends React.Component {
 		}
 	};
 
-	setupOrg = async (id, address) => {
-		await this.props.createOrgAndContract(id, address);
+	setupOrg = async (id) => {
+		await this.props.createOrgAndContract(id, this.props.org.organization.name);
 		await this.props.fetchOrgs();
 
 		return <div>Transaction pending...</div>;

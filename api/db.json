@@ -100,6 +100,11 @@
     {
       "id": "131760110",
       "contractAddress": "0x8eA968d39874dC0801Adcf8EE0F7183c3360dc7e"
+    },
+    {
+      "id": "823249560",
+      "name": "1 ARMENIA DREAM",
+      "contractAddress": "0x0388761ada6BDb26eb0e7333Ba4Dd5e34768Fd3C"
     }
   ],
   "grants": [
@@ -114,6 +119,13 @@
       "grantAmount": "1",
       "grantDescription": "fsdafs",
       "id": "0xeeea22cbca987ef6cb74256a0503d51293774cc2f0d7b443c28d52d7b33d61ad"
+    },
+    {
+      "selectedOrg": "272620044",
+      "selectedTree": "0x255484Edbf2A70AedBf270eDBE58783D0945D4Be",
+      "grantAmount": "1",
+      "grantDescription": "Henlo",
+      "id": "0xdd918999f9bb098bd1be7e6df55561f83dd4f3219eb07adbc10e915a2c2a2cf6"
     }
   ]
 }

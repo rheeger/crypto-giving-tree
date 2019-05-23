@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchTree, fetchTreeDAIBalance } from '../../store/actions';
-import { Button, Card, Grid } from 'semantic-ui-react';
+import { fetchTree, fetchTreeDAIBalance, fetchTreeGrants } from '../../store/actions';
+import { Button, Card, Grid, Table } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import ContributionForm from '../../components/ContributionForm';
+import GrantRow from '../../components/GrantRow';
 
 class TreeShow extends Component {
 	componentWillMount = () => {
@@ -11,8 +12,14 @@ class TreeShow extends Component {
 
 		fetchTreeDAIBalance(match.params.address);
 		fetchTree(match.params.address);
-		// this.getTreeDAIBalance(match.params.address);
+		fetchTreeGrants(match.params.address);
 	};
+
+	renderRow() {
+		return this.props.gtGrants.map((grant, index) => {
+			return <GrantRow key={grant.id} id={grant.id} request={grant} />;
+		});
+	}
 
 	renderCards() {
 		const {
@@ -54,6 +61,8 @@ class TreeShow extends Component {
 	}
 
 	render() {
+		const { Header, Row, HeaderCell, Body } = Table;
+
 		if (!this.props.gtTrees[this.props.match.params.address]) {
 			return <div> Loading... </div>;
 		}
@@ -87,6 +96,23 @@ class TreeShow extends Component {
 								<ContributionForm recievingTree={this.props.match.params.address} />
 							</Grid.Column>
 						</Grid.Row>
+						<Grid.Row>
+							<Grid.Column width={16}>
+								<h3>Extended Grants:</h3>
+								<Table>
+									<Header>
+										<Row>
+											<HeaderCell>Recipient</HeaderCell>
+											<HeaderCell>Description</HeaderCell>
+											<HeaderCell>Amount</HeaderCell>
+											<HeaderCell>ID</HeaderCell>
+											<HeaderCell />
+										</Row>
+									</Header>
+									{/* <Body>{this.renderRow()}</Body> */}
+								</Table>
+							</Grid.Column>
+						</Grid.Row>
 						{/* 
 					<Link route={`/trees/${this.props.address}/grants`}>
 						<a>
@@ -108,8 +134,10 @@ class TreeShow extends Component {
 const mapStateToProps = (state) => {
 	return {
 		gtTrees: state.gtTrees,
-		web3: state.web3connect.web3
+		web3: state.web3connect.web3,
+		gtGrants: state.gtGrants,
+		gtOrgs: state.gtOrgs
 	};
 };
 
-export default connect(mapStateToProps, { fetchTreeDAIBalance, fetchTree })(TreeShow);
+export default connect(mapStateToProps, { fetchTreeDAIBalance, fetchTree, fetchTreeGrants })(TreeShow);

@@ -117,10 +117,10 @@ export const deleteTree = (id) => async (dispatch) => {
 
 //LOCAL DB ACTIONS: ORGS
 
-export const createOrgAndContract = (id) => async (dispatch, getState) => {
+export const createOrgAndContract = (id, name) => async (dispatch, getState) => {
 	const contractAddress = await createOrg(id);
 
-	const response = await localDB.post(`/orgs`, { id, contractAddress });
+	const response = await localDB.post(`/orgs`, { id, name, contractAddress });
 
 	dispatch({ type: CREATE_CONTRACT_ADDRESS, payload: response.data });
 };
@@ -153,10 +153,7 @@ export const deleteOrg = (id) => async (dispatch) => {
 
 //LOCAL DB ACTIONS: GRANTS
 
-export const createGrant = (formValues, recipientAddress, recipientEIN, managerAddress) => async (
-	dispatch,
-	getState
-) => {
+export const createGrant = (formValues, recipientAddress, recipientEIN, managerAddress) => async (dispatch) => {
 	const tree = Tree(formValues.selectedTree);
 
 	console.log(formValues);
@@ -187,7 +184,7 @@ export const fetchGrants = () => async (dispatch) => {
 };
 
 export const fetchTreeGrants = (address) => async (dispatch) => {
-	const allGrants = await localDB.get('/trees');
+	const allGrants = await localDB.get('/grants');
 
 	const response = allGrants.data.filter((grant) => {
 		if (grant.managerAddress === address) {
