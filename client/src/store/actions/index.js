@@ -73,6 +73,8 @@ export const extendGrant = (formValues, responsibleTree, id) => async (dispatch)
 
 export const fetchTrees = (address) => async (dispatch) => {
 	const allTrees = await localDB.get('/trees');
+	console.log(address);
+	console.log(allTrees.data);
 
 	const response = allTrees.data.filter((tree) => {
 		if (tree.managerAddress === address) {
@@ -87,7 +89,6 @@ export const fetchTrees = (address) => async (dispatch) => {
 export const fetchTreeDAIBalance = (address) => async (dispatch) => {
 	const tree = Tree(address);
 	const treeDAIBalance = await tree.methods.getSummary(RINKEBY_DAI).call();
-	console.log();
 	const treeDAI = (parseFloat(treeDAIBalance[0]) / 1000000000000000000).toFixed(2);
 
 	const response = await localDB.patch(`/trees/${address}`, { treeDAI: treeDAI });
@@ -185,15 +186,18 @@ export const fetchGrants = () => async (dispatch) => {
 
 export const fetchTreeGrants = (address) => async (dispatch) => {
 	const allGrants = await localDB.get('/grants');
-
+	console.log(address);
+	console.log(allGrants.data);
 	const response = allGrants.data.filter((grant) => {
-		if (grant.managerAddress === address) {
+		if (grant.selectedTree === address) {
 			return { grant };
 		}
 		return '';
 	});
 
-	dispatch({ type: FETCH_TREE_GRANTS, payload: response.data });
+	console.log(response);
+
+	dispatch({ type: FETCH_TREE_GRANTS, payload: response });
 };
 
 export const fetchGrant = (id) => async (dispatch) => {

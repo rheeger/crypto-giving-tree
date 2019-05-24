@@ -19,86 +19,107 @@
   "orgs": [
     {
       "id": "831425901",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0xe8A7aFeC33B1d90739d2386645E57077401b856b"
     },
     {
       "id": "262180370",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0xde88a7A303595f02F646f92eA3d6Df31deDdE3a2"
     },
     {
       "id": "464744976",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0x6cBb3b511D90F4d7f1832bBb4c910ECE4A513Cbe"
     },
     {
       "id": "203287404",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0x998d0B5B5E63F9A9C8718c1ec6F5341011044d82"
     },
     {
       "id": "272620044",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0x157E26263CeEb6C4F264Fd7A85b4017E8DAe0a7e"
     },
     {
       "id": "582260264",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0x284a7501CB932Ca9abE5636f4f93bfc3eee4D6CA"
     },
     {
       "id": "260447525",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0x0cd42F8a3230EB65b24A9Dc72e79b94889A3f64D"
     },
     {
       "id": "814045228",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0xcb3d0edAfA767E09554f222615c8aAFA5301614C"
     },
     {
       "id": "116037894",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0xd76f95c65065B8253207cfACEE44ddD8eD48b951"
     },
     {
       "id": "352518301",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0xB7aE6cb66Aa440A2E1cDf8b6804f8b0d02625439"
     },
     {
       "id": "61250781",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0x2b1796b5324B709B311C9F9664822D76eE149F13"
     },
     {
       "id": "824704419",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0x4574B6f25BE30ECF94CaB4ED02e69aDc81d3e1Ff"
     },
     {
       "id": "383915658",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0x7b6863C5df7Fb9547Fd9dE91982F938a5f17e265"
     },
     {
       "id": "363540706",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0x903b1380De60d8BaaFb100394e663d62B2DF4dE5"
     },
     {
       "id": "756061738",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0xe580109379CFDaDdBD36fD7BBfaCdF6f80B954A0"
     },
     {
       "id": "474146355",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0xc461D1e3f4D7773A3Aaf278bA2F16a23454339e4"
     },
     {
       "id": "616125263",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0x7f1A6116e2B978d87aa960C3f8356722BcF7B566"
     },
     {
       "id": "954592529",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0xACe8e5d785428c5114FeB9c9fe78e37B86983f6E"
     },
     {
       "id": "900417081",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0xDff2F57A23019365F528e58D586F708658149613"
     },
     {
       "id": "814049787",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0xDcBca4996665697F12919715597A69198CBA4181"
     },
     {
       "id": "131760110",
+      "name": "1 ARMENIA DREAM",
       "contractAddress": "0x8eA968d39874dC0801Adcf8EE0F7183c3360dc7e"
     },
     {
@@ -109,12 +130,14 @@
   ],
   "grants": [
     {
+      "selectedOrg": "272620044",
       "selectedTree": "0x255484Edbf2A70AedBf270eDBE58783D0945D4Be",
       "grantAmount": "1",
       "grantDescription": "dfasf",
       "id": "0x84116a8d0b27a6f85ed48659eb1ce1b31d65555d1a734c000c8ceb502cd567e8"
     },
     {
+      "selectedOrg": "272620044",
       "selectedTree": "0x255484Edbf2A70AedBf270eDBE58783D0945D4Be",
       "grantAmount": "1",
       "grantDescription": "fsdafs",

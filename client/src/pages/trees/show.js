@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchTree, fetchTreeDAIBalance, fetchTreeGrants } from '../../store/actions';
+import { fetchTree, fetchTreeDAIBalance, fetchTreeGrants, fetchOrgs } from '../../store/actions';
 import { Button, Card, Grid, Table } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import ContributionForm from '../../components/ContributionForm';
@@ -8,16 +8,26 @@ import GrantRow from '../../components/GrantRow';
 
 class TreeShow extends Component {
 	componentWillMount = () => {
-		const { fetchTreeDAIBalance, fetchTree, match } = this.props;
+		const { fetchTreeDAIBalance, fetchTree, match, fetchTreeGrants, fetchOrgs } = this.props;
 
+		fetchTreeGrants(match.params.address);
 		fetchTreeDAIBalance(match.params.address);
 		fetchTree(match.params.address);
-		fetchTreeGrants(match.params.address);
+		fetchOrgs();
 	};
 
 	renderRow() {
-		return this.props.gtGrants.map((grant, index) => {
-			return <GrantRow key={grant.id} id={grant.id} request={grant} />;
+		return Object.values(this.props.gtGrants).map((grant, index) => {
+			console.log(this.props.gtOrgs[grant.selectedOrg].name);
+			return (
+				<GrantRow
+					key={grant.id}
+					id={grant.id}
+					recipient={grant.selectedOrg}
+					amount={grant.grantAmount}
+					description={grant.grantDescription}
+				/>
+			);
 		});
 	}
 
@@ -85,7 +95,7 @@ class TreeShow extends Component {
 									<h3>Tree Balance:</h3>
 									<Link to={`/orgs`} className="ui two-buttons">
 										<Button floated="right" basic color="red">
-											<i class="paper plane icon" /> send grant
+											<i className="paper plane icon" /> send grant
 										</Button>
 									</Link>
 									<h1>${this.props.gtTrees[this.props.match.params.address].treeDAI}</h1>
@@ -105,11 +115,11 @@ class TreeShow extends Component {
 											<HeaderCell>Recipient</HeaderCell>
 											<HeaderCell>Description</HeaderCell>
 											<HeaderCell>Amount</HeaderCell>
-											<HeaderCell>ID</HeaderCell>
+											<HeaderCell>Tansaction ID</HeaderCell>
 											<HeaderCell />
 										</Row>
 									</Header>
-									{/* <Body>{this.renderRow()}</Body> */}
+									<Body>{this.renderRow()}</Body>
 								</Table>
 							</Grid.Column>
 						</Grid.Row>
@@ -140,4 +150,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { fetchTreeDAIBalance, fetchTree, fetchTreeGrants })(TreeShow);
+export default connect(mapStateToProps, { fetchTreeDAIBalance, fetchTree, fetchTreeGrants, fetchOrgs })(TreeShow);

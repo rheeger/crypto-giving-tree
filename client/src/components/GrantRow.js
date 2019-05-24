@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Message, Table, Button } from 'semantic-ui-react';
+import { Table, Button } from 'semantic-ui-react';
 
 class GrantRow extends Component {
 	state = {
@@ -50,12 +50,12 @@ class GrantRow extends Component {
 	// };
 
 	render() {
-		const { id, request } = this.props;
+		const { id, recipient, amount, description } = this.props;
 		return (
 			<Table.Row>
-				<Table.Cell>{request.description}</Table.Cell>
-				<Table.Cell>${request.amount} DAI</Table.Cell>
-				<Table.Cell>{request.recipient}</Table.Cell>
+				<Table.Cell>{recipient}</Table.Cell>
+				<Table.Cell>{description}</Table.Cell>
+				<Table.Cell>${amount} DAI</Table.Cell>
 				<Table.Cell>{id}</Table.Cell>
 				<Table.Cell>
 					<Button color="green" basic>
