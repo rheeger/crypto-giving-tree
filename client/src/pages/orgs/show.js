@@ -2,11 +2,29 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Button, Card, Grid } from 'semantic-ui-react';
-import { selectOrg } from '../../store/actions';
+import { selectOrg, fetchOrgGrants } from '../../store/actions';
+import OrgGrantRow from '../../components/OrgGrantRow';
 
 class OrgShow extends React.Component {
 	componentDidMount() {
-		this.props.selectOrg(this.props.match.params.ein);
+		const { selectOrg, fetchOrgGrants, match } = this.props;
+
+		selectOrg(match.params.ein);
+		fetchOrgGrants(match.params.ein);
+	}
+
+	renderRow() {
+		return Object.values(this.props.gtGrants).map((grant, index) => {
+			return (
+				<OrgGrantRow
+					key={grant.id}
+					id={grant.id}
+					tree={grant.selectedTree}
+					amount={grant.grantAmount}
+					description={grant.grantDescription}
+				/>
+			);
+		});
 	}
 
 	renderOrgDetails() {
@@ -70,4 +88,4 @@ const mapStateToProps = (state) => {
 	return { org: state.org };
 };
 
-export default connect(mapStateToProps, { selectOrg })(OrgShow);
+export default connect(mapStateToProps, { selectOrg, fetchOrgGrants })(OrgShow);

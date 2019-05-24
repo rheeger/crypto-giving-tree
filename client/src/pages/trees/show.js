@@ -10,15 +10,14 @@ class TreeShow extends Component {
 	componentWillMount = () => {
 		const { fetchTreeDAIBalance, fetchTree, match, fetchTreeGrants, fetchOrgs } = this.props;
 
+		fetchTree(match.params.address);
 		fetchTreeGrants(match.params.address);
 		fetchTreeDAIBalance(match.params.address);
-		fetchTree(match.params.address);
 		fetchOrgs();
 	};
 
 	renderRow() {
 		return Object.values(this.props.gtGrants).map((grant, index) => {
-			console.log(this.props.gtOrgs[grant.selectedOrg].name);
 			return (
 				<GrantRow
 					key={grant.id}
@@ -115,7 +114,6 @@ class TreeShow extends Component {
 											<HeaderCell>Recipient</HeaderCell>
 											<HeaderCell>Description</HeaderCell>
 											<HeaderCell>Amount</HeaderCell>
-											<HeaderCell>Tansaction ID</HeaderCell>
 											<HeaderCell />
 										</Row>
 									</Header>

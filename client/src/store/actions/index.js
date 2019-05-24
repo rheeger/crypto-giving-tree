@@ -21,7 +21,8 @@ import {
 	FETCH_GRANT,
 	EDIT_GRANT,
 	DELETE_GRANT,
-	RINKEBY_DAI
+	RINKEBY_DAI,
+	FETCH_ORG_GRANTS
 } from './types';
 import history from '../../history';
 import { createOrg } from '../../ethereum/orgFactoryAdmin';
@@ -186,8 +187,6 @@ export const fetchGrants = () => async (dispatch) => {
 
 export const fetchTreeGrants = (address) => async (dispatch) => {
 	const allGrants = await localDB.get('/grants');
-	console.log(address);
-	console.log(allGrants.data);
 	const response = allGrants.data.filter((grant) => {
 		if (grant.selectedTree === address) {
 			return { grant };
@@ -195,9 +194,19 @@ export const fetchTreeGrants = (address) => async (dispatch) => {
 		return '';
 	});
 
-	console.log(response);
-
 	dispatch({ type: FETCH_TREE_GRANTS, payload: response });
+};
+
+export const fetchOrgGrants = (ein) => async (dispatch) => {
+	const allGrants = await localDB.get('/grants');
+	const response = allGrants.data.filter((grant) => {
+		if (grant.selectedOrg === ein) {
+			return { grant };
+		}
+		return '';
+	});
+
+	dispatch({ type: FETCH_ORG_GRANTS, payload: response });
 };
 
 export const fetchGrant = (id) => async (dispatch) => {

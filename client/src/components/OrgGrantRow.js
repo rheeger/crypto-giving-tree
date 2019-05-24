@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Table, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
-class GrantRow extends Component {
+class OrgGrantRow extends Component {
 	state = {
 		approveloading: false,
 		finalizeloading: false,
@@ -71,4 +71,4 @@ class GrantRow extends Component {
 	}
 }
 
-export default GrantRow;
+export default OrgGrantRow;

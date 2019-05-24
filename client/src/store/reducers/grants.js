@@ -1,4 +1,12 @@
-import { CREATE_GRANT, FETCH_GRANTS, FETCH_TREE_GRANTS, FETCH_GRANT, EDIT_GRANT, DELETE_GRANT } from '../actions/types';
+import {
+	CREATE_GRANT,
+	FETCH_GRANTS,
+	FETCH_TREE_GRANTS,
+	FETCH_ORG_GRANTS,
+	FETCH_GRANT,
+	EDIT_GRANT,
+	DELETE_GRANT
+} from '../actions/types';
 import _ from 'lodash';
 
 export default (state = {}, action) => {
@@ -12,6 +20,8 @@ export default (state = {}, action) => {
 		case FETCH_GRANTS:
 			return { ...state, ..._.mapKeys(action.payload, 'id') };
 		case FETCH_TREE_GRANTS:
+			return { ...state, ..._.mapKeys(action.payload, 'id') };
+		case FETCH_ORG_GRANTS:
 			return { ...state, ..._.mapKeys(action.payload, 'id') };
 		case DELETE_GRANT:
 			return _.omit(state, action.payload);

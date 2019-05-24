@@ -18,6 +18,7 @@ export const GT_ORG_FACTORY = '0x6b9d901467795364c40877cec5dd3f2602e6ece9';
 export const CREATE_GRANT = 'CREATE_GRANT';
 export const FETCH_GRANTS = 'FETCH_GRANTS';
 export const FETCH_TREE_GRANTS = 'FETCH_TREE_GRANTS';
+export const FETCH_ORG_GRANTS = 'FETCH_ORG_GRANTS';
 export const FETCH_GRANT = 'FETCH_GRANT';
 export const EDIT_GRANT = 'EDIT_GRANT';
 export const DELETE_GRANT = 'DELETE_GRANT';
