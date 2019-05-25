@@ -51,9 +51,10 @@ class GrantRow extends Component {
 	// };
 
 	render() {
-		const { id, recipient, amount, description } = this.props;
+		const { id, recipient, amount, description, date } = this.props;
 		return (
 			<Table.Row>
+				<Table.Cell>{date}</Table.Cell>
 				<Table.Cell>
 					<Link to={`/orgs/${recipient}`}>{recipient} </Link>
 				</Table.Cell>

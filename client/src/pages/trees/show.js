@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchTree, fetchTreeDAIBalance, fetchTreeGrants, fetchOrgs } from '../../store/actions';
-import { Button, Card, Grid, Table } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Card, Grid, Table } from 'semantic-ui-react';
 import ContributionForm from '../../components/ContributionForm';
 import GrantRow from '../../components/GrantRow';
 
@@ -24,6 +23,7 @@ class TreeShow extends Component {
 					id={grant.id}
 					recipient={grant.selectedOrg}
 					amount={grant.grantAmount}
+					date={grant.grantDate}
 					description={grant.grantDescription}
 				/>
 			);
@@ -42,7 +42,8 @@ class TreeShow extends Component {
 			primaryAdvisorAddress,
 			primaryAdvisorCity,
 			primaryAdvisorState,
-			primaryAdvisorZip
+			primaryAdvisorZip,
+			treeDAI
 		} = this.props.gtTrees[this.props.match.params.address];
 
 		const items = [
@@ -50,7 +51,13 @@ class TreeShow extends Component {
 				style: { overflowWrap: 'break-word' },
 				header: branchName,
 				meta: 'Planted: ' + creationDate,
-				description: 'Address: ' + id
+				description: 'Address: ' + id,
+				fluid: true
+			},
+			{
+				style: { overflowWrap: 'break-word' },
+				header: '$' + treeDAI,
+				meta: 'Grantable Balance'
 			},
 			{
 				style: { overflowWrap: 'break-word' },
@@ -81,7 +88,7 @@ class TreeShow extends Component {
 
 		return (
 			<div style={{ display: 'flex', justifyContent: 'center' }}>
-				<div style={{ maxWidth: '700px' }}>
+				<div style={{ maxWidth: '900px' }}>
 					<Grid className="Container">
 						<Grid.Row>
 							<Grid.Column width={10}>
@@ -90,31 +97,22 @@ class TreeShow extends Component {
 							</Grid.Column>
 
 							<Grid.Column width={6}>
-								<div>
-									<h3>Tree Balance:</h3>
-									<Link to={`/orgs`} className="ui two-buttons">
-										<Button floated="right" basic color="red">
-											<i className="paper plane icon" /> send grant
-										</Button>
-									</Link>
-									<h1>${this.props.gtTrees[this.props.match.params.address].treeDAI}</h1>
-								</div>
-								<br />
-
-								<h3>Contribute Funds:</h3>
+								<h3>Contribute:</h3>
 								<ContributionForm recievingTree={this.props.match.params.address} />
 							</Grid.Column>
 						</Grid.Row>
 						<Grid.Row>
+							`
 							<Grid.Column width={16}>
 								<h3>Extended Grants:</h3>
 								<Table>
 									<Header>
 										<Row>
+											<HeaderCell>Request Date</HeaderCell>
 											<HeaderCell>Recipient</HeaderCell>
 											<HeaderCell>Description</HeaderCell>
 											<HeaderCell>Amount</HeaderCell>
-											<HeaderCell />
+											<HeaderCell>Status</HeaderCell>
 										</Row>
 									</Header>
 									<Body>{this.renderRow()}</Body>

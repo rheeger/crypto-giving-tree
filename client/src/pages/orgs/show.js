@@ -21,6 +21,7 @@ class OrgShow extends React.Component {
 					id={grant.id}
 					tree={grant.selectedTree}
 					amount={grant.grantAmount}
+					date={grant.grantDate}
 					description={grant.grantDescription}
 				/>
 			);
@@ -65,40 +66,43 @@ class OrgShow extends React.Component {
 			return <div> Loading... </div>;
 		}
 		return (
-			<div>
-				<Grid style={{ margin: '0 auto' }} className="Container">
-					<Grid.Column width={11}>{this.renderOrgDetails()}</Grid.Column>
-					<Grid.Column width={5}>
-						<h3>Actions:</h3>
-						<Link to={`/orgs/${this.props.match.params.ein}/claim`}>
-							<Button basic color="yellow">
-								Claim This Org
-							</Button>
-						</Link>
+			<div style={{ display: 'flex', justifyContent: 'center' }}>
+				<div style={{ maxWidth: '900px' }}>
+					<Grid style={{ margin: '0 auto' }} className="Container">
+						<Grid.Column width={11}>{this.renderOrgDetails()}</Grid.Column>
+						<Grid.Column width={5}>
+							<h3>Actions:</h3>
+							<Link to={`/orgs/${this.props.match.params.ein}/claim`}>
+								<Button basic color="yellow">
+									Claim Org
+								</Button>
+							</Link>
 
-						<Link to={`/orgs/${this.props.match.params.ein}/grant/new`}>
-							<Button floated="left" basic color="red">
-								<i class="paper plane icon" />send grant
-							</Button>
-						</Link>
-					</Grid.Column>
-					<Grid.Row>
-						<Grid.Column width={16}>
-							<h3>Extended Grants:</h3>
-							<Table>
-								<Header>
-									<Row>
-										<HeaderCell>Issuing Tree</HeaderCell>
-										<HeaderCell>Description</HeaderCell>
-										<HeaderCell>Amount</HeaderCell>
-										<HeaderCell />
-									</Row>
-								</Header>
-								<Body>{this.renderRow()}</Body>
-							</Table>
+							<Link to={`/orgs/${this.props.match.params.ein}/grant/new`}>
+								<Button floated="left" basic color="red">
+									<i class="paper plane icon" />send grant
+								</Button>
+							</Link>
 						</Grid.Column>
-					</Grid.Row>
-				</Grid>
+						<Grid.Row>
+							<Grid.Column width={16}>
+								<h3>Extended Grants:</h3>
+								<Table>
+									<Header>
+										<Row>
+											<HeaderCell>Request Date</HeaderCell>
+											<HeaderCell>Issuing Tree</HeaderCell>
+											<HeaderCell>Description</HeaderCell>
+											<HeaderCell>Amount</HeaderCell>
+											<HeaderCell>Status</HeaderCell>
+										</Row>
+									</Header>
+									<Body>{this.renderRow()}</Body>
+								</Table>
+							</Grid.Column>
+						</Grid.Row>
+					</Grid>
+				</div>
 			</div>
 		);
 	}
