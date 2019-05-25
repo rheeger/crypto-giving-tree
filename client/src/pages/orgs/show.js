@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Button, Card, Grid } from 'semantic-ui-react';
+import { Button, Card, Grid, Table } from 'semantic-ui-react';
 import { selectOrg, fetchOrgGrants } from '../../store/actions';
 import OrgGrantRow from '../../components/OrgGrantRow';
 
@@ -28,7 +28,7 @@ class OrgShow extends React.Component {
 	}
 
 	renderOrgDetails() {
-		if (!this.props.org.organization) {
+		if (!this.props.org.organization || !this.props.gtGrants) {
 			return <div> Loading... </div>;
 		}
 
@@ -60,6 +60,10 @@ class OrgShow extends React.Component {
 	}
 
 	render() {
+		const { Header, Row, HeaderCell, Body } = Table;
+		if (!this.props.org.organization || !this.props.gtGrants) {
+			return <div> Loading... </div>;
+		}
 		return (
 			<div>
 				<Grid style={{ margin: '0 auto' }} className="Container">
@@ -78,6 +82,22 @@ class OrgShow extends React.Component {
 							</Button>
 						</Link>
 					</Grid.Column>
+					<Grid.Row>
+						<Grid.Column width={16}>
+							<h3>Extended Grants:</h3>
+							<Table>
+								<Header>
+									<Row>
+										<HeaderCell>Issuing Tree</HeaderCell>
+										<HeaderCell>Description</HeaderCell>
+										<HeaderCell>Amount</HeaderCell>
+										<HeaderCell />
+									</Row>
+								</Header>
+								<Body>{this.renderRow()}</Body>
+							</Table>
+						</Grid.Column>
+					</Grid.Row>
 				</Grid>
 			</div>
 		);
@@ -85,7 +105,10 @@ class OrgShow extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	return { org: state.org };
+	return {
+		org: state.org,
+		gtGrants: state.gtGrants
+	};
 };
 
 export default connect(mapStateToProps, { selectOrg, fetchOrgGrants })(OrgShow);

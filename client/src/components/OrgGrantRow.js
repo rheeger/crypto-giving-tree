@@ -51,11 +51,11 @@ class OrgGrantRow extends Component {
 	// };
 
 	render() {
-		const { id, recipient, amount, description } = this.props;
+		const { id, tree, amount, description } = this.props;
 		return (
 			<Table.Row>
 				<Table.Cell>
-					<Link to={`/orgs/${recipient}`}>{recipient} </Link>
+					<Link to={`/trees/${tree}`}>{tree}</Link>
 				</Table.Cell>
 				<Table.Cell>{description}</Table.Cell>
 				<Table.Cell>${amount} DAI</Table.Cell>
