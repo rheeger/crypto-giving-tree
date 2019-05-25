@@ -60,7 +60,7 @@ class OrgGrantRow extends Component {
 				<Table.Cell>{description}</Table.Cell>
 				<Table.Cell>${amount} DAI</Table.Cell>
 				<Table.Cell>
-					<a href={`http://rinkeby.etherscan.com/tx/${id}`} target="blank">
+					<a href={`http://rinkeby.etherscan.io/tx/${id}`} target="blank">
 						<Button color="green" basic>
 							View on Etherscan
 						</Button>
