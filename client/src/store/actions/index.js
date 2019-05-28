@@ -92,7 +92,16 @@ export const fetchTreeDAIBalance = (address) => async (dispatch) => {
 	const treeDAIBalance = await tree.methods.getSummary(RINKEBY_DAI).call();
 	const treeDAI = (parseFloat(treeDAIBalance[0]) / 1000000000000000000).toFixed(2);
 
-	const response = await localDB.patch(`/trees/${address}`, { treeDAI: treeDAI });
+	const allGrants = await localDB.get('/grants');
+	const treeGrants = allGrants.data.filter((grant) => {
+		if (grant.selectedTree === address) {
+			return { grant };
+		}
+		return '';
+	});
+	const pendingGrants = Object.values(treeGrants).reduce((a, b) => a + (parseFloat(b['grantAmount']) || 0), 0);
+
+	const response = await localDB.patch(`/trees/${address}`, { treeDAI: treeDAI - pendingGrants });
 
 	dispatch({ type: FETCH_TREE_DAI, payload: response.data });
 };

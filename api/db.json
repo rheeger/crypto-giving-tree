@@ -13,7 +13,7 @@
       "primaryAdvisorZip": "94303",
       "managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
       "id": "0x255484Edbf2A70AedBf270eDBE58783D0945D4Be",
-      "treeDAI": "1.69"
+      "treeDAI": -12.5
     }
   ],
   "orgs": [
@@ -22,6 +22,16 @@
       "id": "272620044",
       "name": "0 TOLERANCE INC",
       "contractAddress": "0x51278E16f906bF2AD95aAbf1019890b0FAE32A55"
+    },
+    {
+      "id": "824704419",
+      "name": "00 MOVEMENT INC",
+      "contractAddress": "0x046B1C5eF62bE9E8015F912C6E65b2126478E79D"
+    },
+    {
+      "id": "363540706",
+      "name": "012367 ALBANY ELEMENTARY SCHOOL",
+      "contractAddress": "0x708BbF22cC9fAF127BD4cE015310A2F5a94164ce"
     }
   ],
   "grants": [
@@ -34,6 +44,24 @@
       "grantDate": "2019-02-24",
       "tncconsent": "null",
       "id": "0xb662f86e0beb187cb339e6b0d63765edc3e70b27f5a46601b4f17d8e989fc609"
+    },
+    {
+      "selectedOrg": "824704419",
+      "selectedTree": "0x255484Edbf2A70AedBf270eDBE58783D0945D4Be",
+      "grantAmount": ".69",
+      "grantDescription": "testing available blance",
+      "grantDate": "2019-05-24",
+      "tncconsent": "null",
+      "id": "0x8f2f23b988ca9d738ddff77d2e73d93aea32c8b6f9faeae780e4063073a0846c"
+    },
+    {
+      "selectedOrg": "363540706",
+      "selectedTree": "0x255484Edbf2A70AedBf270eDBE58783D0945D4Be",
+      "grantAmount": "12.5",
+      "grantDescription": "testing avail balance again",
+      "grantDate": "2019-05-24",
+      "tncconsent": "null",
+      "id": "0xd3c781491492be561c164407bc564a9cd7714c06f7101004a28c1ff0f2604ca4"
     }
   ]
 }
