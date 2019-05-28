@@ -2,8 +2,7 @@
   "trees": [
     {},
     {
-      "creationDate": "2019-05-24",
-      "branchName": "Henlo",
+      "branchName": "Robbie's Tree",
       "primaryAdvisorFirstName": "Robert",
       "primaryAdvisorLastName": "Heeger",
       "primaryAdvisorEmail": "rheeger@gmail.com",
@@ -11,26 +10,13 @@
       "primaryAdvisorCity": "Palo Alto",
       "primaryAdvisorState": "CA",
       "primaryAdvisorZip": "94303",
+      "primaryAdvisorBirthday": "1990-11-05",
+      "tncconsent": "null",
       "managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
-      "id": "0x255484Edbf2A70AedBf270eDBE58783D0945D4Be",
-      "treeDAI": "1.69",
-      "grantableDAI": -19.499999999999996
-    },
-    {
-      "branchName": "Robbie 6",
-      "primaryAdvisorFirstName": "Robert",
-      "primaryAdvisorLastName": "Heeger",
-      "primaryAdvisorEmail": "rheeger@gmail.com",
-      "primaryAdvisorAddress": "1410 Arcadia Place",
-      "primaryAdvisorCity": "Palo Alto",
-      "primaryAdvisorState": "CA",
-      "primaryAdvisorZip": "94303",
-      "primaryAdvisorBirthday": "1990-02-05",
-      "managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
-      "id": "0xd41dc37dc60D2F8944ac8d70e8Db6d6E899ddFAF",
-      "treeDAI": "1.69",
-      "datePlanted": "2019-05-28T19:34:14.000Z",
-      "grantableDAI": 0.6399999999999999
+      "id": "0x459e5851aef37352344241E8c381824D58fD00F6",
+      "treeDAI": "0.00",
+      "datePlanted": "5/28/2019",
+      "grantableDAI": 0
     }
   ],
   "orgs": [
@@ -67,114 +53,9 @@
     }
   ],
   "grants": [
-    {},
-    {
-      "selectedOrg": "272620044",
-      "selectedTree": "0x255484Edbf2A70AedBf270eDBE58783D0945D4Be",
-      "grantAmount": "1",
-      "grantDescription": "Helloooooo",
-      "grantDate": "2019-02-24",
-      "tncconsent": "null",
-      "id": "0xb662f86e0beb187cb339e6b0d63765edc3e70b27f5a46601b4f17d8e989fc609"
-    },
-    {
-      "selectedOrg": "824704419",
-      "selectedTree": "0x255484Edbf2A70AedBf270eDBE58783D0945D4Be",
-      "grantAmount": ".69",
-      "grantDescription": "testing available blance",
-      "grantDate": "2019-05-24",
-      "tncconsent": "null",
-      "id": "0x8f2f23b988ca9d738ddff77d2e73d93aea32c8b6f9faeae780e4063073a0846c"
-    },
-    {
-      "selectedOrg": "363540706",
-      "selectedTree": "0x255484Edbf2A70AedBf270eDBE58783D0945D4Be",
-      "grantAmount": "12.5",
-      "grantDescription": "testing avail balance again",
-      "grantDate": "2019-05-24",
-      "tncconsent": "null",
-      "id": "0xd3c781491492be561c164407bc564a9cd7714c06f7101004a28c1ff0f2604ca4"
-    },
-    {
-      "selectedOrg": "272620044",
-      "selectedTree": "0x255484Edbf2A70AedBf270eDBE58783D0945D4Be",
-      "grantAmount": "1",
-      "grantDescription": "trying something else",
-      "grantDate": "2019-05-28",
-      "id": "0x048f721da2e21aefd7a5c22dfc5787b69cff364e2c55ccfd78eaeca93a19f916",
-      "grantApproval": false
-    },
-    {
-      "selectedOrg": "320495362",
-      "selectedTree": "0x255484Edbf2A70AedBf270eDBE58783D0945D4Be",
-      "grantAmount": "1",
-      "grantDescription": "trying timestamp gathering",
-      "grantDate": "2019-11-05",
-      "id": "0x1225f5bee4139ccb7c51dd05b954541c763fb01bc23abe269081ad9416065be1",
-      "grantApproval": false
-    },
-    {
-      "selectedOrg": "320495362",
-      "selectedTree": "0x255484Edbf2A70AedBf270eDBE58783D0945D4Be",
-      "grantAmount": "1",
-      "grantDescription": "trying again",
-      "id": "0x6190e17442f2c5a9cadade32a3622b353e48d12f5279434131ab44b62880debb",
-      "date": 1559065484,
-      "grantApproval": false
-    },
-    {
-      "selectedOrg": "320495362",
-      "selectedTree": "0x255484Edbf2A70AedBf270eDBE58783D0945D4Be",
-      "grantAmount": "1",
-      "grantDescription": "helllllooooo",
-      "id": "0x4ccf613edb68df0b1308e534d88ab91c60c7ed92ba68c5fc955971e9b7d71308",
-      "date": "1970-01-19T01:04:25.664Z",
-      "grantApproval": false
-    },
-    {
-      "selectedOrg": "824704419",
-      "selectedTree": "0x255484Edbf2A70AedBf270eDBE58783D0945D4Be",
-      "grantAmount": "1",
-      "grantDescription": "fdsafds",
-      "id": "0x4dc619e4af87ae22b546db7c3c0118a16a7785168fc701e5b683a0673ffdc917",
-      "grantDate": "2068-10-22T11:50:29.235Z",
-      "grantApproval": false
-    },
-    {
-      "selectedOrg": "814045228",
-      "selectedTree": "0x255484Edbf2A70AedBf270eDBE58783D0945D4Be",
-      "grantAmount": "1",
-      "grantDescription": "sfasdfsa",
-      "id": "0x17c8b69cf3e5ed242fad67de58aebb9cc9159d6122c5702467d3d112823fa697",
-      "grantDate": "1970-01-19T01:04:26.279Z",
-      "grantApproval": false
-    },
-    {
-      "selectedOrg": "272620044",
-      "selectedTree": "0x255484Edbf2A70AedBf270eDBE58783D0945D4Be",
-      "grantAmount": "1",
-      "grantDescription": "fdsfasf",
-      "id": "0x83bdf86b4a20412b90c07ec588c7f5aa0bed678f559d8a71cb1fd2b16b5b0a51",
-      "grantDate": "2019-05-28T18:11:29.000Z",
-      "grantApproval": false
-    },
-    {
-      "selectedOrg": "272620044",
-      "selectedTree": "0xd41dc37dc60D2F8944ac8d70e8Db6d6E899ddFAF",
-      "grantAmount": ".05",
-      "grantDescription": "dfjlaskfjas;l",
-      "id": "0x97748185f389cb3f79301b73531c4aa3511ec66527a5d82b23caca052904dda8",
-      "grantDate": "2019-05-28T19:44:59.000Z",
-      "grantApproval": false
-    },
-    {
-      "selectedOrg": "582260264",
-      "selectedTree": "0xd41dc37dc60D2F8944ac8d70e8Db6d6E899ddFAF",
-      "grantAmount": "1",
-      "grantDescription": "dfkljsa;l",
-      "id": "0xa491f4eaac46f6c2e20a2f37c4fb14bfd62ee2523ac2580a48431c92c2927ee0",
-      "grantDate": "5/28/2019",
-      "grantApproval": false
-    }
+    {}
+  ],
+  "donations": [
+    {}
   ]
 }

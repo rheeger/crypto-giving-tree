@@ -29,7 +29,22 @@ class TreeShow extends Component {
 		fetchOrgs();
 	};
 
-	renderRow() {
+	renderGrantRow() {
+		return Object.values(this.props.gtGrants).map((grant, index) => {
+			return (
+				<GrantRow
+					key={grant.id}
+					id={grant.id}
+					recipient={grant.selectedOrg}
+					amount={grant.grantAmount}
+					date={grant.grantDate}
+					description={grant.grantDescription}
+				/>
+			);
+		});
+	}
+
+	renderDonationRow() {
 		return Object.values(this.props.gtGrants).map((grant, index) => {
 			return (
 				<GrantRow
@@ -113,12 +128,11 @@ class TreeShow extends Component {
 							</Grid.Column>
 
 							<Grid.Column width={6}>
-								<h3>Contribute:</h3>
+								<h3>Donate to {this.props.gtTrees[this.props.match.params.address].branchName}:</h3>
 								<ContributionForm recievingTree={this.props.match.params.address} />
 							</Grid.Column>
 						</Grid.Row>
 						<Grid.Row>
-							`
 							<Grid.Column width={16}>
 								<h3>Extended Grants:</h3>
 								<Table>
@@ -131,7 +145,24 @@ class TreeShow extends Component {
 											<HeaderCell>Status</HeaderCell>
 										</Row>
 									</Header>
-									<Body>{this.renderRow()}</Body>
+									<Body>{this.renderGrantRow()}</Body>
+								</Table>
+							</Grid.Column>
+						</Grid.Row>
+						<Grid.Row>
+							<Grid.Column width={16}>
+								<h3>Recieved Donations:</h3>
+								<Table>
+									<Header>
+										<Row>
+											<HeaderCell>Donation Date</HeaderCell>
+											<HeaderCell>From</HeaderCell>
+											<HeaderCell>Property Donated</HeaderCell>
+											<HeaderCell>Exchanged Amount</HeaderCell>
+											<HeaderCell>Status</HeaderCell>
+										</Row>
+									</Header>
+									<Body>{this.renderDonationRow()}</Body>
 								</Table>
 							</Grid.Column>
 						</Grid.Row>

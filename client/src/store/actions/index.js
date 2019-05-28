@@ -23,7 +23,12 @@ import {
 	EDIT_GRANT,
 	DELETE_GRANT,
 	RINKEBY_DAI,
-	FETCH_ORG_GRANTS
+	FETCH_ORG_GRANTS,
+	CREATE_DONATION,
+	FETCH_DONATIONS,
+	FETCH_TREE_DONATIONS,
+	FETCH_DONATION,
+	DELETE_DONATION
 } from './types';
 import history from '../../history';
 import { createOrg } from '../../ethereum/orgFactoryAdmin';
@@ -265,5 +270,61 @@ export const deleteGrant = (id) => async (dispatch) => {
 	await localDB.delete(`/grants/${id}`);
 
 	dispatch({ type: DELETE_GRANT, payload: id });
+	history.push('/');
+};
+
+//LOCAL DB ACTIONS: DONATIONS
+
+export const createDonation = (
+	txID,
+	treeAddress,
+	fromAddress,
+	inputCurrency,
+	inputAmount,
+	outputAmount,
+	donationDate
+) => async (dispatch) => {
+	const response = await localDB.post(`/donations`, {
+		id: txID,
+		to: treeAddress,
+		from: fromAddress,
+		inputCurrency,
+		inputAmount,
+		outputAmount,
+		donationDate
+	});
+
+	dispatch({ type: CREATE_DONATION, payload: response.data });
+	history.push(`/trees/${treeAddress}`);
+};
+
+export const fetchDonations = () => async (dispatch) => {
+	const response = await localDB.get('/donations');
+
+	dispatch({ type: FETCH_DONATIONS, payload: response.data });
+};
+
+export const fetchTreeDonations = (address) => async (dispatch) => {
+	const allGrants = await localDB.get('/donations');
+	const response = allGrants.data.filter((grant) => {
+		if (grant.selectedTree === address) {
+			return { grant };
+		}
+		return '';
+	});
+
+	dispatch({ type: FETCH_TREE_DONATIONS, payload: response });
+};
+
+export const fetchDonation = (id) => async (dispatch) => {
+	const response = await localDB.get(`/donations/${id}`);
+
+	dispatch({ type: FETCH_DONATION, payload: response.data });
+};
+
+export const deleteDonation = (id) => async (dispatch) => {
+	await localDB.delete(`/donations/${id}`);
+
+	dispatch({ type: DELETE_DONATION, payload: id });
 	history.push('/');
 };
