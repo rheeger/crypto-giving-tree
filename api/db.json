@@ -13,7 +13,8 @@
       "primaryAdvisorZip": "94303",
       "managerAddress": "0x823c002575a1f182DF853919F0d9F44a6c7C875c",
       "id": "0x255484Edbf2A70AedBf270eDBE58783D0945D4Be",
-      "treeDAI": -12.5
+      "treeDAI": "1.69",
+      "grantableDAI": -12.5
     }
   ],
   "orgs": [

@@ -1,17 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchTree, fetchTreeDAIBalance, fetchTreeGrants, fetchOrgs } from '../../store/actions';
+import {
+	fetchTree,
+	fetchTreeDAIBalance,
+	fetchTreeGrants,
+	fetchOrgs,
+	fetchGrantableDAIBalance
+} from '../../store/actions';
 import { Card, Grid, Table } from 'semantic-ui-react';
 import ContributionForm from '../../components/ContributionForm';
 import GrantRow from '../../components/GrantRow';
 
 class TreeShow extends Component {
 	componentWillMount = () => {
-		const { fetchTreeDAIBalance, fetchTree, match, fetchTreeGrants, fetchOrgs } = this.props;
+		const {
+			fetchTreeDAIBalance,
+			fetchTree,
+			match,
+			fetchTreeGrants,
+			fetchOrgs,
+			fetchGrantableDAIBalance
+		} = this.props;
 
 		fetchTree(match.params.address);
 		fetchTreeGrants(match.params.address);
 		fetchTreeDAIBalance(match.params.address);
+		fetchGrantableDAIBalance(match.params.address);
 		fetchOrgs();
 	};
 
@@ -146,4 +160,10 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { fetchTreeDAIBalance, fetchTree, fetchTreeGrants, fetchOrgs })(TreeShow);
+export default connect(mapStateToProps, {
+	fetchTreeDAIBalance,
+	fetchTree,
+	fetchTreeGrants,
+	fetchOrgs,
+	fetchGrantableDAIBalance
+})(TreeShow);

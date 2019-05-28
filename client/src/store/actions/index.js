@@ -15,6 +15,7 @@ import {
 	DELETE_ORG,
 	CREATE_CONTRACT_ADDRESS,
 	FETCH_TREE_DAI,
+	FETCH_GRANTABLE_DAI,
 	CREATE_GRANT,
 	FETCH_GRANTS,
 	FETCH_TREE_GRANTS,
@@ -92,6 +93,16 @@ export const fetchTreeDAIBalance = (address) => async (dispatch) => {
 	const treeDAIBalance = await tree.methods.getSummary(RINKEBY_DAI).call();
 	const treeDAI = (parseFloat(treeDAIBalance[0]) / 1000000000000000000).toFixed(2);
 
+	const response = await localDB.patch(`/trees/${address}`, { treeDAI: treeDAI });
+
+	dispatch({ type: FETCH_TREE_DAI, payload: response.data });
+};
+
+export const fetchGrantableDAIBalance = (address) => async (dispatch) => {
+	const tree = Tree(address);
+	const treeDAIBalance = await tree.methods.getSummary(RINKEBY_DAI).call();
+	const treeDAI = (parseFloat(treeDAIBalance[0]) / 1000000000000000000).toFixed(2);
+
 	const allGrants = await localDB.get('/grants');
 	const treeGrants = allGrants.data.filter((grant) => {
 		if (grant.selectedTree === address) {
@@ -99,13 +110,13 @@ export const fetchTreeDAIBalance = (address) => async (dispatch) => {
 		}
 		return '';
 	});
+
 	const pendingGrants = Object.values(treeGrants).reduce((a, b) => a + (parseFloat(b['grantAmount']) || 0), 0);
 
-	const response = await localDB.patch(`/trees/${address}`, { treeDAI: treeDAI - pendingGrants });
+	const response = await localDB.patch(`/trees/${address}`, { grantableDAI: treeDAI - pendingGrants });
 
-	dispatch({ type: FETCH_TREE_DAI, payload: response.data });
+	dispatch({ type: FETCH_GRANTABLE_DAI, payload: response.data });
 };
-
 export const fetchTree = (id) => async (dispatch) => {
 	const response = await localDB.get(`/trees/${id}`);
 
@@ -181,7 +192,8 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 	const response = await localDB.post(`/grants`, {
 		selectedOrg: recipientEIN,
 		...formValues,
-		id: id.transactionHash
+		id: id.transactionHash,
+		grantApproval: false
 	});
 
 	dispatch({ type: CREATE_GRANT, payload: response.data });

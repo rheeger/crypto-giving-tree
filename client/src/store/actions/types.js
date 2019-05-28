@@ -5,6 +5,7 @@ export const FETCH_TREES = 'FETCH_TREES';
 export const FETCH_TREE = 'FETCH_TREE';
 export const EXTEND_GRANT = 'EXTEND_GRANT';
 export const FETCH_TREE_DAI = 'FETCH_TREE_DAI';
+export const FETCH_GRANTABLE_DAI = 'FETCH_GRANTABLE_DAI';
 export const EDIT_TREE = 'EDIT_TREE';
 export const DELETE_TREE = 'DELETE_TREE';
 export const CREATE_ORG = 'CREATE_ORG';
