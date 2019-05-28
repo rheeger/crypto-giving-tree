@@ -21,9 +21,14 @@ export const plantTree = async (managerAddress) => {
 		.plantTree(managerAddress)
 		.send({ from: accounts[0], gas: '1032065' });
 	console.log('Created contract:' + createContract.events.treePlanted.returnValues.newAddress);
-	const contractAddress = createContract.events.treePlanted.returnValues.newAddress;
 
-	return contractAddress;
+	const blockInfo = await web3.eth.getBlock(createContract.blockNumber);
+	console.log(blockInfo);
+
+	const plantDate = new Date(blockInfo.timestamp * 1000);
+	const formattedGrantDate = new Intl.DateTimeFormat('en-US').format(plantDate);
+
+	return { id: createContract.events.treePlanted.returnValues.newAddress, timestamp: formattedGrantDate };
 };
 
 export function getNurseryInstance() {

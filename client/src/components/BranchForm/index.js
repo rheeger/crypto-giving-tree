@@ -28,8 +28,7 @@ class BranchForm extends React.Component {
 	render() {
 		return (
 			<form className="ui form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
-				<Field name="creationDate" component={this.renderInput} type="date" label="Creation Date:" />
-				<Field name="branchName" component={this.renderInput} label="Give your branch a name:" />
+				<Field name="branchName" component={this.renderInput} label="Give your tree a name:" />
 				<Field name="primaryAdvisorFirstName" component={this.renderInput} label="First name:" />
 				<Field name="primaryAdvisorLastName" component={this.renderInput} label="Last name:" />
 				<Field name="primaryAdvisorEmail" component={this.renderInput} type="email" label="eMail:" />

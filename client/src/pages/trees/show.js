@@ -48,7 +48,7 @@ class TreeShow extends Component {
 		const {
 			id,
 			branchName,
-			creationDate,
+			datePlanted,
 			managerAddress,
 			primaryAdvisorFirstName,
 			primaryAdvisorLastName,
@@ -57,21 +57,23 @@ class TreeShow extends Component {
 			primaryAdvisorCity,
 			primaryAdvisorState,
 			primaryAdvisorZip,
-			treeDAI
+			treeDAI,
+			grantableDAI
 		} = this.props.gtTrees[this.props.match.params.address];
 
 		const items = [
 			{
 				style: { overflowWrap: 'break-word' },
 				header: branchName,
-				meta: 'Planted: ' + creationDate,
+				meta: 'Planted: ' + datePlanted.toLocaleString('en'),
 				description: 'Address: ' + id,
 				fluid: true
 			},
 			{
 				style: { overflowWrap: 'break-word' },
 				header: '$' + treeDAI,
-				meta: 'Grantable Balance'
+				meta: 'Tree Balance',
+				description: 'Grantable: $' + grantableDAI
 			},
 			{
 				style: { overflowWrap: 'break-word' },

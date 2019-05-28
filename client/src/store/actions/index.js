@@ -55,15 +55,21 @@ export const searchOrgs = (term) => async (dispatch) => {
 	});
 };
 
-//LOCAL DB ACTIONS: TREEES
+//LOCAL DB ACTIONS: TREES
 export const plantTreeAndContract = (formValues) => async (dispatch, getState) => {
-	const managerAddress = getState().web3connect.account;
-	const id = await plantTree(managerAddress);
+	const { account } = getState().web3connect;
+	const createdContract = await plantTree(account);
 
-	const response = await localDB.post('/trees', { ...formValues, managerAddress, id, treeDAI: 0.0 });
+	const response = await localDB.post('/trees', {
+		...formValues,
+		managerAddress: account,
+		id: createdContract.id,
+		treeDAI: 0.0,
+		datePlanted: createdContract.timestamp
+	});
 
 	dispatch({ type: PLANT_TREE, payload: response.data });
-	history.push(`/trees/${id}`);
+	history.push(`/trees/${createdContract.id}`);
 };
 
 export const extendGrant = (formValues, responsibleTree, id) => async (dispatch) => {
@@ -198,7 +204,7 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 	console.log(blockInfo);
 
 	const grantDate = new Date(blockInfo.timestamp * 1000);
-	const formattedGrantDate = grantDate.toISOString();
+	const formattedGrantDate = Intl.DateTimeFormat('en-US').format(grantDate);
 
 	const response = await localDB.post(`/grants`, {
 		selectedOrg: recipientEIN,
