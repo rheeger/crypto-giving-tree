@@ -63,7 +63,6 @@ class GrantForm extends React.Component {
 				/>
 				<Field name="grantAmount" component={this.renderInput} type="number" label="Grant amount:" />
 				<Field name="grantDescription" component={this.renderInput} type="text" label="Grant memo:" />
-				<Field name="grantDate" component={this.renderInput} type="date" label="Today's Date:" />
 				<Field
 					name="tncconsent"
 					component={this.renderInput}

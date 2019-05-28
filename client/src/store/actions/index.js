@@ -175,7 +175,11 @@ export const deleteOrg = (id) => async (dispatch) => {
 
 //LOCAL DB ACTIONS: GRANTS
 
-export const createGrant = (formValues, recipientAddress, recipientEIN, managerAddress) => async (dispatch) => {
+export const createGrant = (formValues, recipientAddress, recipientEIN, managerAddress) => async (
+	dispatch,
+	getState
+) => {
+	const web3 = getState().web3connect.web3;
 	const tree = Tree(formValues.selectedTree);
 
 	console.log(formValues);
@@ -184,15 +188,23 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 		.createGrant(formValues.grantDescription, formValues.grantAmount * 1000000000000000000, recipientAddress)
 		.send({ from: managerAddress })
 		.on('transactionHash', function(transId) {
+			console.log(transId);
 			return transId;
 		});
 
 	console.log(id);
 
+	const blockInfo = await web3.eth.getBlock(id.blockNumber);
+	console.log(blockInfo);
+
+	const grantDate = new Date(blockInfo.timestamp * 1000);
+	const formattedGrantDate = grantDate.toISOString();
+
 	const response = await localDB.post(`/grants`, {
 		selectedOrg: recipientEIN,
 		...formValues,
 		id: id.transactionHash,
+		grantDate: formattedGrantDate,
 		grantApproval: false
 	});
 
