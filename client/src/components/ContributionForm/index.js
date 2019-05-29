@@ -15,10 +15,9 @@ import { getBlockDeadline } from '../../helpers/web3-utils';
 import { retry } from '../../helpers/promise-utils';
 import EXCHANGE_ABI from '../../ethereum/uniSwap/abi/exchange';
 import ERC20_ABI from '../../ethereum/uniSwap/abi/erc20';
-import history from '../../history';
 import './contributionForm.scss';
 import { GT_ADMIN } from '../../store/actions/types';
-import { fetchTreeDAIBalance } from '../../store/actions';
+import { fetchTreeDAIBalance, createDonation } from '../../store/actions';
 
 const INPUT = 0;
 const OUTPUT = 1;
@@ -431,7 +430,7 @@ class Send extends Component {
 			selectors,
 			addPendingTx,
 			fetchTreeDAIBalance,
-			recievingTree
+			createDonation
 		} = this.props;
 		const {
 			inputValue,
@@ -462,7 +461,7 @@ class Send extends Component {
 			// send input
 			switch (type) {
 				case 'ETH_TO_TOKEN':
-					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
+					const ethtrans = await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferInput(
 							BN(outputValue)
 								.multipliedBy(10 ** outputDecimals)
@@ -484,12 +483,22 @@ class Send extends Component {
 								}
 							}
 						);
-					console.log('exchanged eth through uniswap');
 					fetchTreeDAIBalance(recipient);
-					history.push(`/trees/${recievingTree}`);
+					const blockInfo = await web3.eth.getBlock(ethtrans.blockNumber);
+					const donationDate = new Date(blockInfo.timestamp * 1000);
+					const formattedDonationDate = new Intl.DateTimeFormat('en-US').format(donationDate);
+					createDonation(
+						ethtrans.transactionHash,
+						recipient,
+						this.props.account,
+						inputCurrency,
+						inputValue,
+						ethtrans.events.TokenPurchase.returnValues.tokens_bought,
+						formattedDonationDate
+					);
 					break;
 				case 'TOKEN_TO_TOKEN':
-					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
+					const tokentrans = await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 						.tokenToTokenTransferInput(
 							BN(inputValue).multipliedBy(10 ** inputDecimals).toFixed(0),
 							BN(outputValue)
@@ -507,9 +516,19 @@ class Send extends Component {
 								this.reset();
 							}
 						});
-					console.log('exchanged token through uniswap');
 					fetchTreeDAIBalance(recipient);
-					history.push(`/trees/${recievingTree}`);
+					const ttBlockInfo = await web3.eth.getBlock(tokentrans.blockNumber);
+					const ttDonationDate = new Date(ttBlockInfo.timestamp * 1000);
+					const ttFormattedDonationDate = new Intl.DateTimeFormat('en-US').format(ttDonationDate);
+					createDonation(
+						tokentrans.transactionHash,
+						recipient,
+						this.props.account,
+						inputCurrency,
+						inputValue,
+						tokentrans.events.TokenPurchase.returnValues.tokens_bought,
+						ttFormattedDonationDate
+					);
 					break;
 				default:
 					break;
@@ -521,7 +540,7 @@ class Send extends Component {
 
 			switch (type) {
 				case 'ETH_TO_TOKEN':
-					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
+					const ethtrans = await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferOutput(
 							BN(outputValue).multipliedBy(10 ** outputDecimals).toFixed(0),
 							deadline,
@@ -533,7 +552,8 @@ class Send extends Component {
 								value: BN(inputValue)
 									.multipliedBy(10 ** inputDecimals)
 									.multipliedBy(1 + ALLOWED_SLIPPAGE)
-									.toFixed(0)
+									.toFixed(0),
+								gas: '1000000'
 							},
 							(err, data) => {
 								if (!err) {
@@ -542,16 +562,26 @@ class Send extends Component {
 								}
 							}
 						);
-					console.log('exchanged eth through uniswap');
 					fetchTreeDAIBalance(recipient);
-					history.push(`/trees/${recievingTree}`);
+					const blockInfo = await web3.eth.getBlock(ethtrans.blockNumber);
+					const donationDate = new Date(blockInfo.timestamp * 1000);
+					const formattedDonationDate = new Intl.DateTimeFormat('en-US').format(donationDate);
+					createDonation(
+						ethtrans.transactionHash,
+						recipient,
+						this.props.account,
+						inputCurrency,
+						inputValue,
+						ethtrans.events.TokenPurchase.returnValues.tokens_bought,
+						formattedDonationDate
+					);
 					break;
 				case 'TOKEN_TO_TOKEN':
 					if (!inputAmountB) {
 						return;
 					}
 
-					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
+					const tokentrans = await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 						.tokenToTokenTransferOutput(
 							BN(outputValue).multipliedBy(10 ** outputDecimals).toFixed(0),
 							BN(inputValue)
@@ -569,9 +599,20 @@ class Send extends Component {
 								this.reset();
 							}
 						});
-					console.log('exchanged token through uniswap');
+
 					fetchTreeDAIBalance(recipient);
-					history.push(`/trees/${recievingTree}`);
+					const ttBlockInfo = await web3.eth.getBlock(tokentrans.blockNumber);
+					const ttDonationDate = new Date(ttBlockInfo.timestamp * 1000);
+					const ttFormattedDonationDate = new Intl.DateTimeFormat('en-US').format(ttDonationDate);
+					createDonation(
+						tokentrans.transactionHash,
+						recipient,
+						this.props.account,
+						inputCurrency,
+						inputValue,
+						tokentrans.events.TokenPurchase.returnValues.tokens_bought,
+						ttFormattedDonationDate
+					);
 					break;
 				default:
 					break;
@@ -859,7 +900,9 @@ export default connect(mapStateToProps, (dispatch) => ({
 	startWatching: () => dispatch(startWatching()),
 	selectors: () => dispatch(selectors()),
 	addPendingTx: (id) => dispatch(addPendingTx(id)),
-	fetchTreeDAIBalance: (address) => dispatch(fetchTreeDAIBalance(address))
+	fetchTreeDAIBalance: (address) => dispatch(fetchTreeDAIBalance(address)),
+	createDonation: (txID, treeAddress, fromAddress, inputCurrency, inputAmount, outputAmount, donationDate) =>
+		dispatch(createDonation(txID, treeAddress, fromAddress, inputCurrency, inputAmount, outputAmount, donationDate))
 }))(withTranslation()(Send));
 
 const b = (text) => <span className="swap__highlight-text">{text}</span>;

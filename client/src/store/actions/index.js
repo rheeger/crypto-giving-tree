@@ -102,7 +102,7 @@ export const fetchTrees = (address) => async (dispatch) => {
 export const fetchTreeDAIBalance = (address) => async (dispatch) => {
 	const tree = Tree(address);
 	const treeDAIBalance = await tree.methods.getSummary(RINKEBY_DAI).call();
-	const treeDAI = (parseFloat(treeDAIBalance[0]) / 1000000000000000000).toFixed(2);
+	const treeDAI = (parseFloat(treeDAIBalance[0]) / 1000000000000000000 - 0.01).toFixed(2);
 
 	const response = await localDB.patch(`/trees/${address}`, { treeDAI: treeDAI });
 
@@ -112,7 +112,7 @@ export const fetchTreeDAIBalance = (address) => async (dispatch) => {
 export const fetchGrantableDAIBalance = (address) => async (dispatch) => {
 	const tree = Tree(address);
 	const treeDAIBalance = await tree.methods.getSummary(RINKEBY_DAI).call();
-	const treeDAI = (parseFloat(treeDAIBalance[0]) / 1000000000000000000).toFixed(2);
+	const treeDAI = (parseFloat(treeDAIBalance[0]) / 1000000000000000000 - 0.01).toFixed(2);
 
 	const allGrants = await localDB.get('/grants');
 	const treeGrants = allGrants.data.filter((grant) => {
@@ -284,13 +284,14 @@ export const createDonation = (
 	outputAmount,
 	donationDate
 ) => async (dispatch) => {
+	const finalTradeOutput = (outputAmount / 1000000000000000000 - 0.01).toFixed(2);
 	const response = await localDB.post(`/donations`, {
 		id: txID,
 		to: treeAddress,
 		from: fromAddress,
 		inputCurrency,
 		inputAmount,
-		outputAmount,
+		finalTradeOutput,
 		donationDate
 	});
 
