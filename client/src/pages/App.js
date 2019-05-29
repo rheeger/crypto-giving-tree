@@ -4,12 +4,13 @@ import { Router, Route, Switch } from 'react-router-dom';
 import Header from '../components/Header';
 import history from '../history';
 import HomePage from './HomePage';
-import OrgIndex from '../pages/orgs';
-import OrgShow from '../pages/orgs/show';
-import NewTree from '../pages/trees/new';
-import Manager from '../pages/trees/manager';
-import TreeShow from '../pages/trees/show';
-import NewGrant from '../pages/trees/grants/new';
+import AdminPanel from './admin';
+import OrgIndex from './orgs';
+import OrgShow from './orgs/show';
+import NewTree from './trees/new';
+import Manager from './trees/manager';
+import TreeShow from './trees/show';
+import NewGrant from './trees/grants/new';
 import { Web3Connect, startWatching, initialize } from '../store/reducers/web3connect';
 import { setAddresses } from '../store/reducers/swapAddresses';
 
@@ -50,6 +51,7 @@ class App extends React.Component {
 							<Route path="/orgs" exact component={OrgIndex} />
 							<Route path="/orgs/:ein" exact component={OrgShow} />
 							<Route path="/orgs/:ein/grants/new" exact component={NewGrant} />
+							<Route path="/admin" exact component={AdminPanel} />
 						</Switch>
 					</div>
 				</Router>
