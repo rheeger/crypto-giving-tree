@@ -102,11 +102,14 @@ class AdminPanel extends Component {
 		if (!this.props.gtTrees) {
 			return <div> Loading... </div>;
 		}
+		if (!this.props.gtDonations) {
+			return <div> Loading... </div>;
+		}
 		if (this.props.web3 === 'null') {
 			return <div> Loading... </div>;
 		}
 
-		if (this.props.web3.account !== GT_ADMIN) {
+		if (this.props.web3.account && this.props.web3.account !== GT_ADMIN) {
 			history.push('/');
 		}
 
@@ -117,7 +120,7 @@ class AdminPanel extends Component {
 						<Grid.Row>
 							<Grid.Column width={16}>
 								<h3>Admin Panel:</h3>
-								{this.renderCards()}
+								{/* {this.renderCards()} */}
 							</Grid.Column>
 						</Grid.Row>
 						<Grid.Row>
