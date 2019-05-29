@@ -306,10 +306,10 @@ export const fetchDonations = () => async (dispatch) => {
 };
 
 export const fetchTreeDonations = (address) => async (dispatch) => {
-	const allGrants = await localDB.get('/donations');
-	const response = allGrants.data.filter((grant) => {
-		if (grant.selectedTree === address) {
-			return { grant };
+	const allDonations = await localDB.get('/donations');
+	const response = allDonations.data.filter((donation) => {
+		if (donation.to === address) {
+			return { donation };
 		}
 		return '';
 	});

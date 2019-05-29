@@ -5,11 +5,13 @@ import {
 	fetchTreeDAIBalance,
 	fetchTreeGrants,
 	fetchOrgs,
-	fetchGrantableDAIBalance
+	fetchGrantableDAIBalance,
+	fetchTreeDonations
 } from '../../store/actions';
 import { Card, Grid, Table } from 'semantic-ui-react';
 import ContributionForm from '../../components/ContributionForm';
 import GrantRow from '../../components/GrantRow';
+import DonationRow from '../../components/DonationRow';
 
 class TreeShow extends Component {
 	componentWillMount = () => {
@@ -19,13 +21,15 @@ class TreeShow extends Component {
 			match,
 			fetchTreeGrants,
 			fetchOrgs,
-			fetchGrantableDAIBalance
+			fetchGrantableDAIBalance,
+			fetchTreeDonations
 		} = this.props;
 
 		fetchTree(match.params.address);
 		fetchTreeGrants(match.params.address);
 		fetchTreeDAIBalance(match.params.address);
 		fetchGrantableDAIBalance(match.params.address);
+		fetchTreeDonations(match.params.address);
 		fetchOrgs();
 	};
 
@@ -45,15 +49,16 @@ class TreeShow extends Component {
 	}
 
 	renderDonationRow() {
-		return Object.values(this.props.gtGrants).map((grant, index) => {
+		return Object.values(this.props.gtDonations).map((donation, index) => {
 			return (
-				<GrantRow
-					key={grant.id}
-					id={grant.id}
-					recipient={grant.selectedOrg}
-					amount={grant.grantAmount}
-					date={grant.grantDate}
-					description={grant.grantDescription}
+				<DonationRow
+					from={donation.from}
+					finalTradeOutput={donation.finalTradeOutput}
+					donationAmount={donation.inputAmount}
+					inputCurrency={donation.inputCurrency}
+					date={donation.donationDate}
+					key={donation.id}
+					id={donation.id}
 				/>
 			);
 		});
@@ -88,7 +93,7 @@ class TreeShow extends Component {
 				style: { overflowWrap: 'break-word' },
 				header: '$' + treeDAI,
 				meta: 'Tree Balance',
-				description: 'Grantable: $' + grantableDAI
+				description: 'Available to Grant: $' + grantableDAI
 			},
 			{
 				style: { overflowWrap: 'break-word' },
@@ -189,7 +194,8 @@ const mapStateToProps = (state) => {
 		gtTrees: state.gtTrees,
 		web3: state.web3connect.web3,
 		gtGrants: state.gtGrants,
-		gtOrgs: state.gtOrgs
+		gtOrgs: state.gtOrgs,
+		gtDonations: state.gtDonations
 	};
 };
 
@@ -198,5 +204,6 @@ export default connect(mapStateToProps, {
 	fetchTree,
 	fetchTreeGrants,
 	fetchOrgs,
-	fetchGrantableDAIBalance
+	fetchGrantableDAIBalance,
+	fetchTreeDonations
 })(TreeShow);
