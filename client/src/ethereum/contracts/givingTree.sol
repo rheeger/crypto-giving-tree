@@ -139,15 +139,14 @@ contract Tree {
         grant.challengeCount++;
     }
 
-    function finalizeGrant(uint index, address tokenAddress, address orgAddress) public adminRestricted {
+    function finalizeGrant(uint index, address tokenAddress) public adminRestricted {
         Grant storage grant = grants[index];
 
         require(grant.challengeCount < (approversCount/2));
         require(!grant.complete);
 
         ERC20 t = ERC20(tokenAddress);
-        t.transfer(orgAddress, grant.value);
-        grant.recipient.transfer(grant.value);
+        t.transfer(grant.recipient, grant.value);
         grant.complete = true;
     }
 
