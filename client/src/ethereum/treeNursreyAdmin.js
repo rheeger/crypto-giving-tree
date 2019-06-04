@@ -13,7 +13,7 @@ export const plantTree = async (managerAddress) => {
 
 	const web3 = new Web3(provider);
 	const accounts = await web3.eth.getAccounts();
-	const address = '0xe6263ae59f79384c79bee4c3d1ecde72a12aca6b';
+	const address = '0xdeda72801f787d42f82bbc4831842925ffc4fbef';
 	const treeNursery = new web3.eth.Contract(JSON.parse(TreeNursery.interface), address);
 
 	console.log('Creating contract...');
@@ -32,7 +32,7 @@ export const plantTree = async (managerAddress) => {
 };
 
 export function getNurseryInstance() {
-	const address = '0xe6263ae59f79384c79bee4c3d1ecde72a12aca6b';
+	const address = '0xdeda72801f787d42f82bbc4831842925ffc4fbef';
 	const treeNursery = new web3.eth.Contract(JSON.parse(TreeNursery.interface), address);
 
 	return treeNursery;

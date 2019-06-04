@@ -190,9 +190,6 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 ) => {
 	const web3 = getState().web3connect.web3;
 	const tree = Tree(formValues.selectedTree);
-
-	console.log(formValues);
-	console.log(formValues.grantAmount * 10 ** 18);
 	const id = await tree.methods
 		.createGrant(formValues.grantDescription, formValues.grantAmount * 1000000000000000000, recipientAddress)
 		.send({ from: managerAddress })
@@ -201,7 +198,7 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 			return transId;
 		});
 
-	console.log(id);
+	const index = await tree.methods.getGrantsCount().call();
 
 	const blockInfo = await web3.eth.getBlock(id.blockNumber);
 	console.log(blockInfo);
@@ -214,7 +211,8 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 		...formValues,
 		id: id.transactionHash,
 		grantDate: formattedGrantDate,
-		grantApproval: false
+		grantApproval: false,
+		grantIndex: index - 1
 	});
 
 	dispatch({ type: CREATE_GRANT, payload: response.data });
