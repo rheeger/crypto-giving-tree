@@ -75,7 +75,8 @@ class NewTree extends React.Component {
 						3. Donated tokens are exchanged for{' '}
 						<a href="https://makerdao.com/en/dai/" target="blank">
 							DAI
-						</a>. Use the DAI to reccomend grants in USD to any qualifyiing 501(c)(3) at your own pace.
+						</a>. 1 DAI = 1 USD. Use the DAI to reccomend grants to any qualifyiing 501(c)(3) at your own
+						pace.
 					</h3>
 					<br />
 
