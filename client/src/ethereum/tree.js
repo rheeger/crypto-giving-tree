@@ -27,5 +27,5 @@ export const approveTreeGrant = async (treeAddress, grantNonce, tokenAddress) =>
 	const approvalDate = new Date(blockInfo.timestamp * 1000);
 	const formattedApprovalDate = new Intl.DateTimeFormat('en-US').format(approvalDate);
 
-	return { approvalId: approvedGrant.transactionhash, approvalDate: formattedApprovalDate };
+	return { approvalId: approvedGrant.transactionHash, approvalDate: formattedApprovalDate };
 };

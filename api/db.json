@@ -132,8 +132,12 @@
       "tncconsent": "null",
       "id": "0xb6b0791d9c6ae1c053a551b345fd504e7d0d487f8a38d25aba2b1f874ea708e1",
       "grantDate": "6/5/2019",
-      "grantApproval": false,
-      "grantIndex": 0
+      "grantApproval": true,
+      "grantIndex": 0,
+      "approvalDetails": {
+        "approvalId": "0x67764fcf27a3c39d072918adbf963ab887376ba988b072a1be88421e6836da47",
+        "approvalDate": "6/7/2019"
+      }
     }
   ],
   "donations": [
