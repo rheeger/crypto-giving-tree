@@ -168,6 +168,22 @@ export const fetchOrg = (id) => async (dispatch) => {
 	dispatch({ type: FETCH_ORG, payload: response.data });
 };
 
+export const fetchOrgLifetimeGrants = (id) => async (dispatch) => {
+	const allGrants = await localDB.get('/grants');
+	const orgGrants = allGrants.data.filter((grant) => {
+		if (grant.selectedOrg === id && grant.Approval === true) {
+			return { grant };
+		}
+		return '';
+	});
+
+	const completedGrants = Object.values(orgGrants).reduce((a, b) => a + (parseFloat(b['grantAmount']) || 0), 0);
+
+	const response = await localDB.patch(`/orgs/${id}`, { lifetimeGrants: completedGrants });
+
+	dispatch({ type: EDIT_ORG, payload: response.data });
+};
+
 export const editOrg = (id, formValues) => async (dispatch) => {
 	const response = await localDB.patch(`/orgs/${id}`, formValues);
 

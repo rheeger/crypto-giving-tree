@@ -25,6 +25,18 @@ contract AbstractAdmin {
     function getAdmin() public view returns (address);
 }
 
+
+contract ERC20 {
+    function totalSupply() public constant returns (uint);
+    function balanceOf(address tokenOwner) public constant returns (uint balance);
+    function allowance(address tokenOwner, address spender) public constant returns (uint remaining);
+    function transfer(address to, uint tokens) public returns (bool success);
+    function approve(address spender, uint tokens) public returns (bool success);
+    function transferFrom(address from, address to, uint tokens) public returns (bool success);
+    event Transfer(address indexed from, address indexed to, uint tokens);
+    event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
+}
+
 contract Org {
     struct Claim {
         string firstName;
@@ -71,10 +83,12 @@ contract Org {
 
     }
 
-    function cashOutOrg(address desiredWithdrawlAddress) public {
+    function cashOutOrg(address desiredWithdrawlAddress, address tokenAddress) public {
         require (msg.sender == orgWallet);
+        ERC20 t = ERC20(tokenAddress);
+        uint bal = t.balanceOf(address(this));
 
-        desiredWithdrawlAddress.transfer(address(this).balance);
+        t.transfer(desiredWithdrawlAddress, bal);
 
     }
 
@@ -84,5 +98,12 @@ contract Org {
         orgWallet = providedWallet;
 
     }
+
+     function getTokenBalance(address tokenAddress) public view returns (uint) {
+            ERC20 t = ERC20(tokenAddress);
+            uint bal = t.balanceOf(address(this));
+
+        return bal;
+     }
 
 }
