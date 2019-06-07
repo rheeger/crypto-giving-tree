@@ -10,8 +10,8 @@ import {
 } from '../../store/actions';
 import { Card, Grid, Table } from 'semantic-ui-react';
 import ContributionForm from '../../components/ContributionForm';
-import GrantRow from '../../components/GrantRow';
-import DonationRow from '../../components/DonationRow';
+import GrantRow from '../../components/tables/GrantRow';
+import DonationRow from '../../components/tables/DonationRow';
 
 class TreeShow extends Component {
 	componentWillMount = () => {

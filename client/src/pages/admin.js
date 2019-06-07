@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchGrants, fetchTrees, fetchDonations, fetchOrgs } from '../store/actions';
 import { Card, Grid, Table } from 'semantic-ui-react';
-import GrantRow from '../components/GrantRow';
-import DonationRow from '../components/DonationRow';
+import DonationRow from '../components/tables/DonationRow';
 import { GT_ADMIN } from '../store/actions/types';
 import history from '../history';
+import AdminGrantRow from '../components/tables/AdminGrantRow';
 
 class AdminPanel extends Component {
 	componentWillMount = () => {
@@ -20,13 +20,15 @@ class AdminPanel extends Component {
 	renderGrantRow() {
 		return Object.values(this.props.gtGrants).map((grant, index) => {
 			return (
-				<GrantRow
+				<AdminGrantRow
 					key={grant.id}
 					id={grant.id}
 					recipient={grant.selectedOrg}
 					amount={grant.grantAmount}
 					date={grant.grantDate}
 					description={grant.grantDescription}
+					selectedTree={grant.selectedTree}
+					grantIndex={grant.grantIndex}
 				/>
 			);
 		});
@@ -133,7 +135,9 @@ class AdminPanel extends Component {
 											<HeaderCell>Recipient</HeaderCell>
 											<HeaderCell>Description</HeaderCell>
 											<HeaderCell>Amount</HeaderCell>
-											<HeaderCell>Status</HeaderCell>
+											<HeaderCell>View</HeaderCell>
+											<HeaderCell>Approve</HeaderCell>
+											<HeaderCell>Reject</HeaderCell>
 										</Row>
 									</Header>
 									<Body>{this.renderGrantRow()}</Body>

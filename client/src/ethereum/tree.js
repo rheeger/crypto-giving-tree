@@ -1,7 +1,7 @@
 import web3 from './web3';
 import Tree from './build/Tree.json';
 
-export default (address) => {
+export const treeContract = (address) => {
 	return new web3.eth.Contract(JSON.parse(Tree.interface), address);
 };
 
@@ -19,7 +19,6 @@ export const approveTreeGrant = async (treeAddress, grantNonce, tokenAddress) =>
 	const accounts = await web3.eth.getAccounts();
 	const tree = new web3.eth.Contract(JSON.parse(Tree.interface), treeAddress);
 
-	console.log('Approving Grant...');
 	const approvedGrant = await tree.methods
 		.finalizeGrant(grantNonce, tokenAddress)
 		.send({ from: accounts[0], gas: '1500000' });
@@ -28,5 +27,5 @@ export const approveTreeGrant = async (treeAddress, grantNonce, tokenAddress) =>
 	const approvalDate = new Date(blockInfo.timestamp * 1000);
 	const formattedApprovalDate = new Intl.DateTimeFormat('en-US').format(approvalDate);
 
-	return { id: approvedGrant.transactionhash, date: formattedApprovalDate };
+	return { approvalId: approvedGrant.transactionhash, approvalDate: formattedApprovalDate };
 };

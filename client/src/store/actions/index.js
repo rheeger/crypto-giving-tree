@@ -32,7 +32,7 @@ import {
 import history from '../../history';
 import { createOrg } from '../../ethereum/orgFactoryAdmin';
 import { plantTree } from '../../ethereum/treeNursreyAdmin';
-import Tree from '../../ethereum/tree';
+import { treeContract, approveTreeGrant } from '../../ethereum/tree';
 
 //PRO PUBLICA ACTIONS
 export const selectOrg = (ein) => async (dispatch) => {
@@ -98,7 +98,7 @@ export const fetchUserTrees = (address) => async (dispatch) => {
 };
 
 export const fetchTreeDAIBalance = (address) => async (dispatch) => {
-	const tree = Tree(address);
+	const tree = treeContract(address);
 	const treeDAIBalance = await tree.methods.getSummary(RINKEBY_DAI).call();
 	const treeDAI = (parseFloat(treeDAIBalance[0]) / 1000000000000000000 - 0.01).toFixed(2);
 
@@ -108,7 +108,7 @@ export const fetchTreeDAIBalance = (address) => async (dispatch) => {
 };
 
 export const fetchGrantableDAIBalance = (address) => async (dispatch) => {
-	const tree = Tree(address);
+	const tree = treeContract(address);
 	const treeDAIBalance = await tree.methods.getSummary(RINKEBY_DAI).call();
 	const treeDAI = (parseFloat(treeDAIBalance[0]) / 1000000000000000000 - 0.01).toFixed(2);
 
@@ -189,7 +189,7 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 	getState
 ) => {
 	const web3 = getState().web3connect.web3;
-	const tree = Tree(formValues.selectedTree);
+	const tree = treeContract(formValues.selectedTree);
 	const id = await tree.methods
 		.createGrant(formValues.grantDescription, formValues.grantAmount * 1000000000000000000, recipientAddress)
 		.send({ from: managerAddress })
@@ -217,6 +217,18 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 
 	dispatch({ type: CREATE_GRANT, payload: response.data });
 	history.push(`/trees/${formValues.selectedTree}`);
+};
+
+export const approveGrant = (id, treeAddress, grantNonce) => async (dispatch, getState) => {
+	const tokenAddress = getState().addresses.tokenAddresses.DAI;
+	console.log(tokenAddress);
+
+	const approvalDetails = await approveTreeGrant(treeAddress, grantNonce, tokenAddress);
+
+	const response = await localDB.patch(`/grants/${id}`, { grantApproval: true, approvalDetails });
+
+	dispatch({ type: EDIT_GRANT, payload: response.data });
+	history.push('/');
 };
 
 export const fetchGrants = () => async (dispatch) => {

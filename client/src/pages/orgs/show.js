@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Button, Card, Grid, Table } from 'semantic-ui-react';
 import { selectOrg, fetchOrgGrants } from '../../store/actions';
-import OrgGrantRow from '../../components/OrgGrantRow';
+import OrgGrantRow from '../../components/tables/OrgGrantRow';
 
 class OrgShow extends React.Component {
 	componentDidMount() {
