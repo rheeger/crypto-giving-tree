@@ -11,8 +11,14 @@ class AdminGrantRow extends Component {
 		errorMessage: ''
 	};
 
+	onApprove = async () => {
+		const { approveGrant, id, grantIndex, selectedTree } = this.props;
+
+		approveGrant(id, selectedTree, grantIndex);
+	};
+
 	render() {
-		const { id, recipient, amount, description, date, approveGrant, grantIndex, selectedTree } = this.props;
+		const { id, recipient, amount, description, date } = this.props;
 
 		return (
 			<Table.Row>
@@ -30,7 +36,7 @@ class AdminGrantRow extends Component {
 					</a>
 				</Table.Cell>
 				<Table.Cell>
-					<Button onClick={approveGrant(id, selectedTree, grantIndex)} color="green" basic>
+					<Button onClick={this.onApprove} color="green" basic>
 						Approve
 					</Button>
 				</Table.Cell>

@@ -220,10 +220,7 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 };
 
 export const approveGrant = (id, treeAddress, grantNonce) => async (dispatch, getState) => {
-	const tokenAddress = getState().addresses.tokenAddresses.DAI;
-	console.log(tokenAddress);
-
-	const approvalDetails = await approveTreeGrant(treeAddress, grantNonce, tokenAddress);
+	const approvalDetails = await approveTreeGrant(treeAddress, grantNonce, RINKEBY_DAI);
 
 	const response = await localDB.patch(`/grants/${id}`, { grantApproval: true, approvalDetails });
 

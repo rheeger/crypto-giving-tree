@@ -53,7 +53,7 @@ class OrgIndex extends React.Component {
 
 		return (
 			<div style={{ display: 'flex', justifyContent: 'center' }}>
-				<div style={{ maxWidth: '700px' }}>
+				<div style={{ maxWidth: '900px' }}>
 					<SearchBar onSearchTermChange={orgSearch} />
 					<div style={{ margin: '0 auto', maxWidth: '80vw' }}>
 						<p>Found {this.props.orgs.total_results} organizations</p>
