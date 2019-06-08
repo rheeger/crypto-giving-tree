@@ -114,7 +114,7 @@ export const fetchGrantableDAIBalance = (address) => async (dispatch) => {
 
 	const allGrants = await localDB.get('/grants');
 	const treeGrants = allGrants.data.filter((grant) => {
-		if (grant.selectedTree === address) {
+		if (grant.selectedTree === address && grant.Approval === false) {
 			return { grant };
 		}
 		return '';
