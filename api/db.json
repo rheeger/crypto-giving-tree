@@ -122,6 +122,24 @@
       "name": "003 LAFAYETTE CTY CHAPTER",
       "contractAddress": "0xE8A81519401e949136B56d535E6596a0E9B81E48",
       "lifetimeGrants": 0
+    },
+    {
+      "id": "814045228",
+      "name": "0 U R PASSION",
+      "contractAddress": "0xE878aa345E9cB521a1bA6a326eDF02e65292E0D0",
+      "lifetimeGrants": 0
+    },
+    {
+      "id": "814049787",
+      "name": "02 SCHOLARSHIP FUND INC",
+      "contractAddress": "0xB898f85d96e128B75c57BFdeE265934527b2d8A2",
+      "lifetimeGrants": 0
+    },
+    {
+      "id": "383915658",
+      "name": "03XX FOUNDATION",
+      "contractAddress": "0xC2868F6f4366175710aF9FbB21eA50d90D60dC02",
+      "lifetimeGrants": 0
     }
   ],
   "grants": [

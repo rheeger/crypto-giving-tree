@@ -14,6 +14,9 @@ class OrgShow extends React.Component {
 	}
 
 	renderRow() {
+		if (Object.keys(this.props.gtGrants).length === 0) {
+			return <Table.Row>No grants received, yet. Be the first today!</Table.Row>;
+		}
 		return Object.values(this.props.gtGrants).map((grant, index) => {
 			return (
 				<OrgGrantRow
@@ -99,7 +102,7 @@ class OrgShow extends React.Component {
 								</Button>
 							</Link>
 
-							<Link to={`/orgs/${this.props.match.params.ein}/grant/new`}>
+							<Link to={`/orgs/${this.props.match.params.ein}/grants/new`}>
 								<Button floated="left" basic color="red">
 									<i class="paper plane icon" />send grant
 								</Button>

@@ -18,6 +18,10 @@ class AdminPanel extends Component {
 	};
 
 	renderGrantRow() {
+		if (Object.keys(this.props.gtGrants).length === 0) {
+			return <Table.Row>Nothing to Approve</Table.Row>;
+		}
+
 		return Object.values(this.props.gtGrants).map((grant, index) => {
 			return (
 				<AdminGrantRow

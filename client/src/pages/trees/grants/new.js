@@ -10,23 +10,18 @@ class NewGrant extends React.Component {
 	};
 
 	componentWillMount = async () => {
+		const { selectOrg, fetchOrgs, gtOrgs, match } = this.props;
 		this.setState({ ready: 'false' });
-		await this.props.selectOrg(this.props.match.params.ein);
-		await this.props.fetchOrgs();
-		console.log('selecting org ' + this.props.match.params.ein);
-		console.log(this.props.gtOrgs);
-		if (!this.props.gtOrgs[`${this.props.match.params.ein}`]) {
-			console.log('creating org address');
-			const { ein } = this.props.match.params;
-			this.setupOrg(ein);
+		await selectOrg(match.params.ein);
+		await fetchOrgs();
+		if (gtOrgs[`${match.params.ein}`] === undefined) {
+			this.setupOrg(match.params.ein);
 		}
 	};
 
 	setupOrg = async (id) => {
 		await this.props.createOrgAndContract(id, this.props.org.organization.name);
 		await this.props.fetchOrgs();
-
-		return <div>Transaction pending...</div>;
 	};
 
 	onSubmit = (formValues) => {
@@ -114,43 +109,40 @@ class NewGrant extends React.Component {
 			);
 		}
 
-		if (this.state.ready === 'false' && this.props.gtOrgs[`${this.props.match.params.ein}`]) {
-			return (
-				<div
-					style={{
-						margin: '0px auto',
-						textAlign: 'left',
-						display: 'flex',
-						justifyContent: 'flex-start',
-						alignItems: 'center',
-						height: '50vh',
-						maxWidth: '350px'
-					}}
-				>
-					<div>
-						<h1>What is a Grant? </h1>
-						<p>some things to know...</p>
-						<h3>
-							1. Each grant represents an instruction for your Charity Tree to make a donation to a {' '}
-							<a href="https://en.wikipedia.org/wiki/Donor-advised_fund" target="blank">
-								qualifyiing 501(c)3 organziation.
-							</a>
-						</h3>
-						<h3>2. Set the amount to grant and provide a short description memo, if needed.</h3>
-						<h3>
-							3. The staff at the Chairty Tree will review the grant within 24 hours, finalize the
-							distribution of the DAI and notify the organziation.
-						</h3>
-						<br />
+		return (
+			<div
+				style={{
+					margin: '0px auto',
+					textAlign: 'left',
+					display: 'flex',
+					justifyContent: 'flex-start',
+					alignItems: 'center',
+					height: '50vh',
+					maxWidth: '350px'
+				}}
+			>
+				<div>
+					<h1>What is a Grant? </h1>
+					<p>some things to know...</p>
+					<h3>
+						1. Each grant represents an instruction for your Charity Tree to make a donation to a {' '}
+						<a href="https://en.wikipedia.org/wiki/Donor-advised_fund" target="blank">
+							qualifyiing 501(c)3 organziation.
+						</a>
+					</h3>
+					<h3>2. Set the amount to grant and provide a short description memo, if needed.</h3>
+					<h3>
+						3. The staff at the Chairty Tree will review the grant within 24 hours, finalize the
+						distribution of the DAI and notify the organziation.
+					</h3>
+					<br />
 
-						<Button onClick={this.renderBranchForm} floated="left" className="ui button green">
-							Got It!
-						</Button>
-					</div>
+					<Button onClick={this.renderBranchForm} floated="left" className="ui button green">
+						Got It!
+					</Button>
 				</div>
-			);
-		}
-		return <div />;
+			</div>
+		);
 	}
 }
 
