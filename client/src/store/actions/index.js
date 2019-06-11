@@ -151,7 +151,7 @@ export const deleteTree = (id) => async (dispatch) => {
 export const createOrgAndContract = (id, name) => async (dispatch, getState) => {
 	const contractAddress = await createOrg(id);
 
-	const response = await localDB.post(`/orgs`, { id, name, contractAddress, lifetimeGrants: 0 });
+	const response = await localDB.post(`/orgs`, { id, name, contractAddress, lifetimeGrants: 0, claimed: false });
 
 	dispatch({ type: CREATE_CONTRACT_ADDRESS, payload: response.data });
 };
