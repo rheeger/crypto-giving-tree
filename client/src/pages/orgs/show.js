@@ -104,7 +104,7 @@ class OrgShow extends React.Component {
 
 							<Link to={`/orgs/${this.props.match.params.ein}/grants/new`}>
 								<Button floated="left" basic color="red">
-									<i class="paper plane icon" />send grant
+									<i className="paper plane icon" />send grant
 								</Button>
 							</Link>
 						</Grid.Column>
