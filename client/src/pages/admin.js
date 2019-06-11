@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchGrants, fetchTrees, fetchDonations, fetchOrgs } from '../store/actions';
+import { fetchTrees, fetchDonations, fetchOrgs, fetchUnapprovedGrants } from '../store/actions';
 import { Card, Grid, Table } from 'semantic-ui-react';
 import DonationRow from '../components/tables/DonationRow';
 import { GT_ADMIN } from '../store/actions/types';
@@ -9,9 +9,9 @@ import AdminGrantRow from '../components/tables/AdminGrantRow';
 
 class AdminPanel extends Component {
 	componentWillMount = () => {
-		const { fetchGrants, fetchTrees, fetchDonations, fetchOrgs } = this.props;
+		const { fetchTrees, fetchDonations, fetchOrgs } = this.props;
 
-		fetchGrants();
+		fetchUnapprovedGrants();
 		fetchTrees();
 		fetchDonations();
 		fetchOrgs();
@@ -127,7 +127,7 @@ class AdminPanel extends Component {
 						</Grid.Row>
 						<Grid.Row>
 							<Grid.Column width={16}>
-								<h3>Extended Grants:</h3>
+								<h3>Grants Awaiting Approval:</h3>
 								<Table>
 									<Header>
 										<Row>
@@ -190,7 +190,7 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, {
-	fetchGrants,
+	fetchUnapprovedGrants,
 	fetchTrees,
 	fetchDonations,
 	fetchOrgs

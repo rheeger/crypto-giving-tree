@@ -2,15 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Button, Card, Grid, Table } from 'semantic-ui-react';
-import { selectOrg, fetchOrgGrants } from '../../store/actions';
+import { selectOrg, fetchOrgGrants, fetchOrg } from '../../store/actions';
 import OrgGrantRow from '../../components/tables/OrgGrantRow';
 
 class OrgShow extends React.Component {
 	componentDidMount() {
-		const { selectOrg, fetchOrgGrants, match } = this.props;
-
+		const { fetchOrg, selectOrg, fetchOrgGrants, match } = this.props;
 		selectOrg(match.params.ein);
 		fetchOrgGrants(match.params.ein);
+		fetchOrg(match.params.ein);
 	}
 
 	renderRow() {
@@ -29,11 +29,33 @@ class OrgShow extends React.Component {
 	}
 
 	renderOrgDetails() {
-		if (!this.props.org.organization || !this.props.gtGrants) {
-			return <div> Loading... </div>;
-		}
-
 		const { name, ruling_date, address, city, state, zipcode, updated_at } = this.props.org.organization;
+		const { match, gtOrgs } = this.props;
+
+		if (!gtOrgs[match.params.ein]) {
+			const items = [
+				{
+					style: { overflowWrap: 'break-word' },
+					header: name,
+					description: 'last updated: ' + updated_at,
+					extra: 'est: ' + ruling_date,
+					fluid: true
+				},
+				{
+					header: '$0 Donated',
+					// header: web3.utils.fromWei(minimumContribution, 'ether'),
+					description: 'Be the first to Donate!'
+				},
+				{
+					header: address,
+					// header: web3.utils.fromWei(balance, 'ether'),
+					extra: zipcode,
+					description: city + ', ' + state
+				}
+			];
+
+			return <Card.Group items={items} />;
+		}
 
 		const items = [
 			{
@@ -44,10 +66,9 @@ class OrgShow extends React.Component {
 				fluid: true
 			},
 			{
-				header: '$0 Donated',
+				header: '$' + gtOrgs[match.params.ein].lifetimeGrants,
 				// header: web3.utils.fromWei(minimumContribution, 'ether'),
-				description: 'Make a donation today!',
-				extra: 'Raised to date'
+				description: 'Raised to date'
 			},
 			{
 				header: address,
@@ -111,8 +132,9 @@ class OrgShow extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		org: state.org,
-		gtGrants: state.gtGrants
+		gtGrants: state.gtGrants,
+		gtOrgs: state.gtOrgs
 	};
 };
 
-export default connect(mapStateToProps, { selectOrg, fetchOrgGrants })(OrgShow);
+export default connect(mapStateToProps, { selectOrg, fetchOrgGrants, fetchOrg })(OrgShow);

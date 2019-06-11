@@ -151,7 +151,7 @@ export const deleteTree = (id) => async (dispatch) => {
 export const createOrgAndContract = (id, name) => async (dispatch, getState) => {
 	const contractAddress = await createOrg(id);
 
-	const response = await localDB.post(`/orgs`, { id, name, contractAddress });
+	const response = await localDB.post(`/orgs`, { id, name, contractAddress, lifetimeGrants: 0 });
 
 	dispatch({ type: CREATE_CONTRACT_ADDRESS, payload: response.data });
 };
@@ -246,6 +246,18 @@ export const approveGrant = (id, treeAddress, grantNonce) => async (dispatch, ge
 
 export const fetchGrants = () => async (dispatch) => {
 	const response = await localDB.get('/grants');
+
+	dispatch({ type: FETCH_GRANTS, payload: response.data });
+};
+
+export const fetchUnapprovedGrants = () => async (dispatch) => {
+	const allGrants = await localDB.get('/grants');
+	const response = allGrants.data.filter((grant) => {
+		if (grant.grantApproval === false) {
+			return { grant };
+		}
+		return '';
+	});
 
 	dispatch({ type: FETCH_GRANTS, payload: response.data });
 };

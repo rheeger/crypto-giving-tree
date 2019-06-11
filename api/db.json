@@ -117,46 +117,11 @@
     }
   ],
   "orgs": [
-    {},
-    {
-      "id": "272620044",
-      "name": "0 TOLERANCE INC",
-      "contractAddress": "0x51278E16f906bF2AD95aAbf1019890b0FAE32A55"
-    },
-    {
-      "id": "824704419",
-      "name": "00 MOVEMENT INC",
-      "contractAddress": "0x046B1C5eF62bE9E8015F912C6E65b2126478E79D"
-    },
-    {
-      "id": "363540706",
-      "name": "012367 ALBANY ELEMENTARY SCHOOL",
-      "contractAddress": "0x708BbF22cC9fAF127BD4cE015310A2F5a94164ce"
-    },
-    {
-      "id": "320495362",
-      "name": "01420 INC",
-      "contractAddress": "0x8327D047265dB95125d8903be4Df63658ABCa6Af"
-    },
-    {
-      "id": "814045228",
-      "name": "0 U R PASSION",
-      "contractAddress": "0x3C15AD7263504E63d9cFae6f650E8c1A2a5857a5"
-    },
     {
       "id": "582260264",
       "name": "003 LAFAYETTE CTY CHAPTER",
-      "contractAddress": "0x4Bf512B8429848113bA99f9537f25b23cE760e78"
-    },
-    {
-      "id": "131760110",
-      "name": "UNITED STATES FUND FOR UNICEF",
-      "contractAddress": "0xB3D88e9242B1eB9D82dD794e032600F2dcD114d0"
-    },
-    {
-      "id": "452822269",
-      "name": "SAVE THE STREET CHILDREN INTERNATIONAL",
-      "contractAddress": "0x3c6e3E610ff10f64bF62586705F967dC6b8dBe37"
+      "contractAddress": "0xE8A81519401e949136B56d535E6596a0E9B81E48",
+      "lifetimeGrants": 0
     }
   ],
   "grants": [
