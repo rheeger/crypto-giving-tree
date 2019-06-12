@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Table, Button } from 'semantic-ui-react';
-import { approveGrant } from '../../store/actions';
+import { approveGrant, deleteGrant } from '../../store/actions';
 
 class AdminGrantRow extends Component {
 	state = {
@@ -15,6 +15,12 @@ class AdminGrantRow extends Component {
 		const { approveGrant, id, grantIndex, selectedTree } = this.props;
 
 		approveGrant(id, selectedTree, grantIndex);
+	};
+
+	onReject = async () => {
+		const { deleteGrant, id } = this.props;
+
+		deleteGrant(id);
 	};
 
 	render() {
@@ -41,7 +47,7 @@ class AdminGrantRow extends Component {
 					</Button>
 				</Table.Cell>
 				<Table.Cell>
-					<Button color="red" basic>
+					<Button onClick={this.onReject} color="red" basic>
 						Reject
 					</Button>
 				</Table.Cell>
@@ -50,4 +56,4 @@ class AdminGrantRow extends Component {
 	}
 }
 
-export default connect(null, { approveGrant })(AdminGrantRow);
+export default connect(null, { approveGrant, deleteGrant })(AdminGrantRow);

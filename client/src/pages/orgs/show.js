@@ -2,15 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Button, Card, Grid, Table } from 'semantic-ui-react';
-import { selectOrg, fetchOrgGrants, fetchOrg } from '../../store/actions';
+import { selectOrg, fetchOrg, fetchOrgLifetimeGrants, fetchOrgApprovedGrants } from '../../store/actions';
 import OrgGrantRow from '../../components/tables/OrgGrantRow';
 
 class OrgShow extends React.Component {
 	componentDidMount() {
-		const { fetchOrg, selectOrg, fetchOrgGrants, match } = this.props;
+		const { fetchOrg, selectOrg, fetchOrgApprovedGrants, match, fetchOrgLifetimeGrants } = this.props;
 		selectOrg(match.params.ein);
-		fetchOrgGrants(match.params.ein);
 		fetchOrg(match.params.ein);
+		fetchOrgApprovedGrants(match.params.ein);
+		fetchOrgLifetimeGrants(match.params.ein);
 	}
 
 	renderRow() {
@@ -110,7 +111,7 @@ class OrgShow extends React.Component {
 						</Grid.Column>
 						<Grid.Row>
 							<Grid.Column width={16}>
-								<h3>Extended Grants:</h3>
+								<h3>Completed Grants:</h3>
 								<Table>
 									<Header>
 										<Row>
@@ -140,4 +141,6 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { selectOrg, fetchOrgGrants, fetchOrg })(OrgShow);
+export default connect(mapStateToProps, { selectOrg, fetchOrgApprovedGrants, fetchOrg, fetchOrgLifetimeGrants })(
+	OrgShow
+);

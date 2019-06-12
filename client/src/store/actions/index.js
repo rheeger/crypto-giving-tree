@@ -171,13 +171,15 @@ export const fetchOrg = (id) => async (dispatch) => {
 export const fetchOrgLifetimeGrants = (id) => async (dispatch) => {
 	const allGrants = await localDB.get('/grants');
 	const orgGrants = allGrants.data.filter((grant) => {
-		if (grant.selectedOrg === id && grant.Approval === true) {
+		if (grant.selectedOrg === id && grant.grantApproval === true) {
 			return { grant };
 		}
 		return '';
 	});
 
-	const completedGrants = Object.values(orgGrants).reduce((a, b) => a + (parseFloat(b['grantAmount']) || 0), 0);
+	const completedGrants = Object.values(orgGrants)
+		.reduce((a, b) => a + (parseFloat(b['grantAmount']) || 0), 0)
+		.toFixed(2);
 
 	const response = await localDB.patch(`/orgs/${id}`, { lifetimeGrants: completedGrants });
 
@@ -241,13 +243,25 @@ export const approveGrant = (id, treeAddress, grantNonce) => async (dispatch, ge
 	const response = await localDB.patch(`/grants/${id}`, { grantApproval: true, approvalDetails });
 
 	dispatch({ type: EDIT_GRANT, payload: response.data });
-	history.push('/');
+	history.push('/admin');
 };
 
 export const fetchGrants = () => async (dispatch) => {
 	const response = await localDB.get('/grants');
 
 	dispatch({ type: FETCH_GRANTS, payload: response.data });
+};
+
+export const fetchOrgApprovedGrants = (ein) => async (dispatch) => {
+	const allGrants = await localDB.get('/grants');
+	const response = allGrants.data.filter((grant) => {
+		if (grant.grantApproval === true && grant.selectedOrg === ein) {
+			return { grant };
+		}
+		return '';
+	});
+
+	dispatch({ type: FETCH_GRANTS, payload: response });
 };
 
 export const fetchUnapprovedGrants = () => async (dispatch) => {
@@ -259,7 +273,7 @@ export const fetchUnapprovedGrants = () => async (dispatch) => {
 		return '';
 	});
 
-	dispatch({ type: FETCH_GRANTS, payload: response.data });
+	dispatch({ type: FETCH_GRANTS, payload: response });
 };
 
 export const fetchTreeGrants = (address) => async (dispatch) => {
@@ -296,14 +310,14 @@ export const editGrant = (id, formValues) => async (dispatch) => {
 	const response = await localDB.patch(`/grants/${id}`, formValues);
 
 	dispatch({ type: EDIT_GRANT, payload: response.data });
-	history.push('/');
+	history.push('/admin');
 };
 
 export const deleteGrant = (id) => async (dispatch) => {
 	await localDB.delete(`/grants/${id}`);
 
 	dispatch({ type: DELETE_GRANT, payload: id });
-	history.push('/');
+	history.push('/admin');
 };
 
 //LOCAL DB ACTIONS: DONATIONS

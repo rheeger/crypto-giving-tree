@@ -12,9 +12,9 @@
       "primaryAdvisorBirthday": "1990-11-05",
       "managerAddress": "0xB59EaB6A9C3AAC2dba42491502A0699c7b03A857",
       "id": "0xCA734981DbcA7D44c84A17033F26209Ea4c3e707",
-      "treeDAI": "15.73",
+      "treeDAI": "5.73",
       "datePlanted": "6/3/2019",
-      "grantableDAI": 14.73
+      "grantableDAI": 5.73
     },
     {
       "branchName": "Fuck Trump ",
@@ -82,38 +82,6 @@
       "treeDAI": "0.00",
       "datePlanted": "6/8/2019",
       "grantableDAI": 0
-    },
-    {
-      "branchName": "Them that hold fast to it",
-      "primaryAdvisorFirstName": "Daniel",
-      "primaryAdvisorLastName": "Mizrachi",
-      "primaryAdvisorEmail": "danielbmizrachi@gmail.com",
-      "primaryAdvisorAddress": "730 Columbus Ave 7A",
-      "primaryAdvisorCity": "New York",
-      "primaryAdvisorState": "NY",
-      "primaryAdvisorZip": "10025",
-      "primaryAdvisorBirthday": "1990-11-04",
-      "tncconsent": "null",
-      "managerAddress": "0xB59EaB6A9C3AAC2dba42491502A0699c7b03A857",
-      "id": "0xA2E2BF77745fF5918665136131e4CF9eF686AaC7",
-      "treeDAI": 0,
-      "datePlanted": "6/8/2019"
-    },
-    {
-      "branchName": "Them that hold fast to it",
-      "primaryAdvisorFirstName": "Daniel",
-      "primaryAdvisorLastName": "Mizrachi",
-      "primaryAdvisorEmail": "danielbmizrachi@gmail.com",
-      "primaryAdvisorAddress": "730 Columbus Ave 7A",
-      "primaryAdvisorCity": "New York",
-      "primaryAdvisorState": "NY",
-      "primaryAdvisorZip": "10025",
-      "primaryAdvisorBirthday": "1990-11-04",
-      "tncconsent": "null",
-      "managerAddress": "0xB59EaB6A9C3AAC2dba42491502A0699c7b03A857",
-      "id": "0xd6ecfc0BC713ce98712613e85123fCc11078f7dB",
-      "treeDAI": 0,
-      "datePlanted": "6/8/2019"
     }
   ],
   "orgs": [
@@ -127,7 +95,7 @@
       "id": "814045228",
       "name": "0 U R PASSION",
       "contractAddress": "0xE878aa345E9cB521a1bA6a326eDF02e65292E0D0",
-      "lifetimeGrants": 0
+      "lifetimeGrants": "10.00"
     },
     {
       "id": "814049787",
@@ -140,6 +108,20 @@
       "name": "03XX FOUNDATION",
       "contractAddress": "0xC2868F6f4366175710aF9FbB21eA50d90D60dC02",
       "lifetimeGrants": 0
+    },
+    {
+      "id": "272620044",
+      "name": "0 TOLERANCE INC",
+      "contractAddress": "0x20e45B14a7be0fC6Fa9c56fCFA23D0271Af6A01f",
+      "lifetimeGrants": "2.00",
+      "claimed": false
+    },
+    {
+      "id": "831425901",
+      "name": "08 WICKED STIX SOFTBALL",
+      "contractAddress": "0xc1E6242FCCB6317cBCEC3f6EE256F85a21D0BD8e",
+      "lifetimeGrants": 0,
+      "claimed": false
     }
   ],
   "grants": [
@@ -184,6 +166,20 @@
       "approvalDetails": {
         "approvalId": "0x985175bbf3c05d9c2eca211b19fda9d7726b7f49fdfe41c570b538ead23247fb",
         "approvalDate": "6/8/2019"
+      }
+    },
+    {
+      "selectedOrg": "814045228",
+      "selectedTree": "0xCA734981DbcA7D44c84A17033F26209Ea4c3e707",
+      "grantAmount": "10",
+      "grantDescription": "Hello",
+      "id": "0x644bac7a5316f05eab4989b57b4d6f7a394219a71786f1880e98bad1f6f92e82",
+      "grantDate": "6/11/2019",
+      "grantApproval": true,
+      "grantIndex": 1,
+      "approvalDetails": {
+        "approvalId": "0x7f3664c4d68071be82140ccfb7659bd50dc63dea1c7ba8870913efe4c80dab9f",
+        "approvalDate": "6/11/2019"
       }
     }
   ],

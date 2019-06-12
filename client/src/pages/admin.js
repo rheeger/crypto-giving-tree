@@ -9,7 +9,7 @@ import AdminGrantRow from '../components/tables/AdminGrantRow';
 
 class AdminPanel extends Component {
 	componentWillMount = () => {
-		const { fetchTrees, fetchDonations, fetchOrgs } = this.props;
+		const { fetchTrees, fetchDonations, fetchOrgs, fetchUnapprovedGrants } = this.props;
 
 		fetchUnapprovedGrants();
 		fetchTrees();
