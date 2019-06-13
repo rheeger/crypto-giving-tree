@@ -15,7 +15,11 @@ class OrgIndex extends React.Component {
 
 	renderOrgs() {
 		if (!this.props.orgs.organizations) {
-			return <div> Loading... </div>;
+			return <div style={{ textAlign: 'center' }}> Loading... </div>;
+		}
+
+		if (this.props.orgs.organizations === '404') {
+			return <div style={{ textAlign: 'center' }}> Oops! No results found... Try a different search </div>;
 		}
 
 		const items = this.props.orgs.organizations.map((index) => {
@@ -53,8 +57,8 @@ class OrgIndex extends React.Component {
 
 		return (
 			<div style={{ display: 'flex', justifyContent: 'center' }}>
-				<div style={{ maxWidth: '900px' }}>
-					<SearchBar onSearchTermChange={orgSearch} />
+				<div style={{ width: '900px' }}>
+					<SearchBar onSearchTermChange={orgSearch} onSubmit={orgSearch} />
 					<div style={{ margin: '0 auto', maxWidth: '80vw' }}>
 						<p>Found {this.props.orgs.total_results} organizations</p>
 						{this.renderOrgs()}

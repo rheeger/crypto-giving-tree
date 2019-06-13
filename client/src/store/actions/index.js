@@ -52,11 +52,19 @@ export const searchOrgs = (term) => async (dispatch) => {
 	}).catch(function(error) {
 		console.error(error);
 	});
+	console.log(response);
 
-	dispatch({
-		type: ORG_SEARCH,
-		payload: response.data
-	});
+	if (response === undefined) {
+		dispatch({
+			type: ORG_SEARCH,
+			payload: { organizations: '404', total_results: 0 }
+		});
+	} else {
+		dispatch({
+			type: ORG_SEARCH,
+			payload: response.data
+		});
+	}
 };
 
 //LOCAL DB ACTIONS: TREES

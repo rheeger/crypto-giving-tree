@@ -16,7 +16,7 @@ class OrgShow extends React.Component {
 
 	renderRow() {
 		if (Object.keys(this.props.gtGrants).length === 0) {
-			return <Table.Row>No grants received, yet. Be the first today!</Table.Row>;
+			return <div style={{ textAlign: 'center', padding: '10px' }}>No grants received. Be the first today!</div>;
 		}
 		return Object.values(this.props.gtGrants).map((grant, index) => {
 			return (
