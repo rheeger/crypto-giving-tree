@@ -1,7 +1,12 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { Button } from 'semantic-ui-react';
 
 class BranchForm extends React.Component {
+	state = {
+		loading: false
+	};
+
 	renderError({ error, touched }) {
 		if (touched && error) {
 			return (
@@ -21,7 +26,7 @@ class BranchForm extends React.Component {
 			</div>
 		);
 	};
-	onSubmit = (formValues) => {
+	onSubmit = async (formValues) => {
 		this.props.onSubmit(formValues);
 	};
 
@@ -46,7 +51,9 @@ class BranchForm extends React.Component {
 				>
 					I Agree
 				</Field>
-				<button className="ui button primary">Submit</button>
+				<Button loading={this.props.loading} className="ui button primary">
+					Submit
+				</Button>
 			</form>
 		);
 	}
