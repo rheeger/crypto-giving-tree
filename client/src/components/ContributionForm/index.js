@@ -37,7 +37,8 @@ class Send extends Component {
 		outputCurrency: '0x2448eE2641d78CC42D7AD76498917359D961A783',
 		inputAmountB: '',
 		lastEditedField: '',
-		recipient: this.props.recievingTree
+		recipient: this.props.recievingTree,
+		loading: false
 	};
 
 	componentDidMount() {
@@ -412,6 +413,7 @@ class Send extends Component {
 	};
 
 	onSend = async () => {
+		this.setState({ loading: true });
 		await this.onContribution();
 		console.log('property transferred to GT_ADMIN');
 		const Web3 = require('web3');
@@ -495,7 +497,7 @@ class Send extends Component {
 						inputValue,
 						ethtrans.events.TokenPurchase.returnValues.tokens_bought,
 						formattedDonationDate
-					);
+					).then(this.setState({ loading: false }));
 					break;
 				case 'TOKEN_TO_TOKEN':
 					const tokentrans = await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
@@ -528,7 +530,7 @@ class Send extends Component {
 						inputValue,
 						tokentrans.events.TokenPurchase.returnValues.tokens_bought,
 						ttFormattedDonationDate
-					);
+					).then(this.setState({ loading: false }));
 					break;
 				default:
 					break;
@@ -575,6 +577,7 @@ class Send extends Component {
 						ethtrans.events.TokenPurchase.returnValues.tokens_bought,
 						formattedDonationDate
 					);
+					this.setState({ loading: false });
 					break;
 				case 'TOKEN_TO_TOKEN':
 					if (!inputAmountB) {
@@ -613,6 +616,7 @@ class Send extends Component {
 						tokentrans.events.TokenPurchase.returnValues.tokens_bought,
 						ttFormattedDonationDate
 					);
+					this.setState({ loading: false });
 					break;
 				default:
 					break;
@@ -792,6 +796,7 @@ class Send extends Component {
 				})}
 				disabled={!isValid}
 				onClick={this.onSend}
+				loading={this.state.loading}
 			>
 				Donate ~${outputValue.toLocaleString('en')}
 			</Button>

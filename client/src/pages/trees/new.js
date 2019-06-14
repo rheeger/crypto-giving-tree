@@ -6,15 +6,18 @@ import BranchForm from '../../components/BranchForm';
 
 class NewTree extends React.Component {
 	state = {
-		ready: 'false'
+		ready: 'false',
+		loading: false
 	};
 
 	componentDidMount() {
 		this.setState({ ready: 'false' });
 	}
 
-	onSubmit = (formValues) => {
-		this.props.plantTreeAndContract(formValues);
+	onSubmit = async (formValues) => {
+		this.setState({ loading: true });
+		await this.props.plantTreeAndContract(formValues);
+		this.setState({ loading: false });
 	};
 
 	renderBranchForm = () => {
@@ -38,7 +41,7 @@ class NewTree extends React.Component {
 					<div style={{ width: '500px' }}>
 						<h1>Plant your Tree:</h1>
 
-						<BranchForm onSubmit={this.onSubmit} />
+						<BranchForm onSubmit={this.onSubmit} loading={this.state.loading} />
 					</div>
 				</div>
 			);

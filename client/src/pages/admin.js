@@ -17,6 +17,10 @@ class AdminPanel extends Component {
 		fetchOrgs();
 	};
 
+	onApproveSubmit = async () => {
+		await this.props.fetchUnapprovedGrants();
+	};
+
 	renderGrantRow() {
 		if (Object.keys(this.props.gtGrants).length === 0) {
 			return <div style={{ textAlign: 'center', padding: '10px' }}>Nothing to approve.</div>;
@@ -33,6 +37,7 @@ class AdminPanel extends Component {
 					description={grant.grantDescription}
 					selectedTree={grant.selectedTree}
 					grantIndex={grant.grantIndex}
+					onSubmit={this.onApproveSubmit}
 				/>
 			);
 		});

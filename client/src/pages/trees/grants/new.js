@@ -6,7 +6,8 @@ import GrantForm from '../../../components/GrantForm';
 
 class NewGrant extends React.Component {
 	state = {
-		ready: 'false'
+		ready: 'false',
+		loading: false
 	};
 
 	componentWillMount = async () => {
@@ -24,13 +25,15 @@ class NewGrant extends React.Component {
 		await this.props.fetchOrgs();
 	};
 
-	onSubmit = (formValues) => {
-		this.props.createGrant(
+	onSubmit = async (formValues) => {
+		this.setState({ loading: true });
+		await this.props.createGrant(
 			formValues,
 			this.props.gtOrgs[`${this.props.match.params.ein}`].contractAddress,
 			this.props.match.params.ein,
 			this.props.web3.account
 		);
+		this.setState({ loading: false });
 	};
 
 	renderBranchForm = () => {
@@ -53,7 +56,7 @@ class NewGrant extends React.Component {
 						<h4>You're reccomending a grant to:</h4>
 						<h1>{this.props.org.organization.name}</h1>
 
-						<GrantForm onSubmit={this.onSubmit} gtTrees={this.props.gtTrees} />
+						<GrantForm onSubmit={this.onSubmit} loading={this.state.loading} gtTrees={this.props.gtTrees} />
 					</div>
 				</div>
 			);
@@ -101,9 +104,26 @@ class NewGrant extends React.Component {
 						</h3>
 						<br />
 
-						<Button onClick={this.renderBranchForm} floated="left" className="ui button green">
+						<Button
+							onClick={this.renderBranchForm}
+							loading={this.state.loading}
+							floated="left"
+							className="ui button green"
+						>
 							Got It!
 						</Button>
+					</div>
+				</div>
+			);
+		}
+
+		if (this.state.loading === true) {
+			return (
+				<div className="ui container">
+					<div style={{ textAlign: 'center', display: 'flex-flow', alignContent: 'center' }}>
+						<h1>Hang tight!</h1>
+						<p>We're submitting your grant reccomendation to: </p>
+						<h3>{this.props.org.organization.name}</h3>
 					</div>
 				</div>
 			);

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { Button } from 'semantic-ui-react';
 
 class GrantForm extends React.Component {
 	renderError({ error, touched }) {
@@ -72,7 +73,9 @@ class GrantForm extends React.Component {
 				>
 					I Agree
 				</Field>
-				<button className="ui button primary">Submit</button>
+				<Button loading={this.props.loading} className="ui button primary">
+					Submit
+				</Button>
 			</form>
 		);
 	}

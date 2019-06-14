@@ -3,10 +3,6 @@ import { Field, reduxForm } from 'redux-form';
 import { Button } from 'semantic-ui-react';
 
 class BranchForm extends React.Component {
-	state = {
-		loading: false
-	};
-
 	renderError({ error, touched }) {
 		if (touched && error) {
 			return (

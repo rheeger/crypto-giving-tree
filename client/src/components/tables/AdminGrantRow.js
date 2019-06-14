@@ -7,20 +7,23 @@ import { approveGrant, deleteGrant } from '../../store/actions';
 class AdminGrantRow extends Component {
 	state = {
 		approveloading: false,
-		finalizeloading: false,
+		rejectloading: false,
 		errorMessage: ''
 	};
 
 	onApprove = async () => {
 		const { approveGrant, id, grantIndex, selectedTree } = this.props;
-
-		approveGrant(id, selectedTree, grantIndex);
+		this.setState({ approveloading: true });
+		await approveGrant(id, selectedTree, grantIndex);
+		this.props.onSubmit();
+		this.setState({ approveloading: false });
 	};
 
 	onReject = async () => {
 		const { deleteGrant, id } = this.props;
-
-		deleteGrant(id);
+		this.setState({ rejectloading: true });
+		await deleteGrant(id);
+		this.setState({ rejectloading: false });
 	};
 
 	render() {
@@ -42,12 +45,12 @@ class AdminGrantRow extends Component {
 					</a>
 				</Table.Cell>
 				<Table.Cell>
-					<Button onClick={this.onApprove} color="green" basic>
+					<Button loading={this.state.approveloading} onClick={this.onApprove} color="green" basic>
 						Approve
 					</Button>
 				</Table.Cell>
 				<Table.Cell>
-					<Button onClick={this.onReject} color="red" basic>
+					<Button loading={this.state.rejectloading} onClick={this.onReject} color="red" basic>
 						Reject
 					</Button>
 				</Table.Cell>
