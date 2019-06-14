@@ -1,5 +1,5 @@
 {
-	"name": "crypto-giving-tree",
+	"name": "the-charity-forest",
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
@@ -51,17 +51,13 @@
 		"start:rinkeby": "REACT_APP_NETWORK_ID=4 REACT_APP_NETWORK='Rinkeby Test Network' yarn start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"now-build": "react-scripts build"
 	},
 	"eslintConfig": {
 		"extends": "react-app"
 	},
-	"browserslist": [
-		">0.2%",
-		"not dead",
-		"not ie <= 11",
-		"not op_mini all"
-	],
+	"browserslist": [ ">0.2%", "not dead", "not ie <= 11", "not op_mini all" ],
 	"devDependencies": {
 		"husky": "^2.4.1",
 		"node-sass": "^4.12.0",
