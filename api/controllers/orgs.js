@@ -1,4 +1,4 @@
-const Org = require('../models/tree');
+const Org = require('../models/org');
 
 exports.allOrgs = function(req, res, next) {
 	// use mongoose to get all orgs in the database
