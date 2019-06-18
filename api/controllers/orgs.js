@@ -33,7 +33,7 @@ exports.createOrg = function(req, res, next) {
 		function(err, todo) {
 			if (err) res.send(err);
 			// use mongoose to get one org in the database
-			Org.findById(req.body.id, function(err, org) {
+			Org.find({ id: req.body.id }, function(err, org) {
 				// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 				if (err) res.send(err);
 
@@ -46,7 +46,7 @@ exports.createOrg = function(req, res, next) {
 exports.updateOrg = function(req, res, next) {
 	var updateObject = req.body;
 
-	Org.findById(req.params.id, function(err, org) {
+	Org.find({ id: req.params.id }, function(err, org) {
 		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 		if (err) res.send(err);
 
