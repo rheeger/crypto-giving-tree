@@ -1,4 +1,4 @@
-const Tree = require('./models/trees');
+const Tree = require('../models/tree');
 
 exports.allTrees = function(req, res, next) {
 	// use mongoose to get all trees in the database
@@ -16,7 +16,7 @@ exports.oneTree = function(req, res, next) {
 		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 		if (err) res.send(err);
 
-		res.json(tree); // return all trees in JSON format
+		res.json(tree); // return tree in JSON format
 	});
 };
 
@@ -46,8 +46,31 @@ exports.createTree = function(req, res, next) {
 				// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 				if (err) res.send(err);
 
-				res.json(tree); // return all trees in JSON format
+				res.json(tree); // return tree in JSON format
 			});
+		}
+	);
+};
+
+exports.updateTree = function(req, res, next) {
+	var updateObject = req.body;
+
+	Tree.findById(req.params.id, function(err, tree) {
+		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
+		if (err) res.send(err);
+
+		tree.update({ $set: updateObject });
+		res.json(tree); // return tree in JSON format
+	});
+};
+
+exports.deleteTree = function(req, res, next) {
+	Tree.remove(
+		{
+			id: req.params.id
+		},
+		function(err, todo) {
+			if (err) res.send(err);
 		}
 	);
 };

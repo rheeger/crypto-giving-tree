@@ -12,7 +12,6 @@ app.use(morgan('combined'));
 app.use(bodyParser.json({ type: '*/*' }));
 router(app);
 
-const port = process.env.PORT || 80;
 const server = http.createServer(app);
-server.listen(port);
-console.log('Server is LIVE on:', port);
+server.listen(8080);
+console.log('App listening on port 8080');
