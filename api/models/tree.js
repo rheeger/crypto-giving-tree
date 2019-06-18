@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 //model
 const treeSchema = new Schema({
-	id: { type: String, unique: true },
+	id: String,
 	branchName: String,
 	primaryAdvisorFirstName: String,
 	primaryAdvisorLastName: String,

@@ -21,6 +21,7 @@ export const plantTree = async (managerAddress) => {
 		.plantTree(managerAddress)
 		.send({ from: accounts[0], gas: '1500000' });
 	console.log('Created contract:' + createContract.events.treePlanted.returnValues.newAddress);
+	console.log('BlockNumber:' + createContract.blockNumber);
 
 	const blockInfo = await web3.eth.getBlock(createContract.blockNumber);
 	console.log(blockInfo);

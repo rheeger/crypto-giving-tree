@@ -76,8 +76,9 @@ export const plantTreeAndContract = (formValues) => async (dispatch, getState) =
 		...formValues,
 		managerAddress: account,
 		id: createdContract.id,
-		treeDAI: 0.0,
-		datePlanted: createdContract.timestamp
+		treeDAI: '0.00',
+		datePlanted: createdContract.timestamp,
+		grantableDAI: 0.0
 	});
 
 	dispatch({ type: PLANT_TREE, payload: response.data });

@@ -7,7 +7,7 @@ const orgSchema = new Schema({
 	name: String,
 	contractAddress: String,
 	lifetimeGrants: String,
-	claimed: String
+	claimed: Boolean
 });
 
 //modelClass

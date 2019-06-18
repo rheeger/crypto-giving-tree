@@ -11,12 +11,12 @@ module.exports = function(app) {
 	app.post('/trees', Trees.createTree);
 	app.patch('/trees/:id', Trees.updateTree);
 	app.delete('/trees/:id', Trees.deleteTree);
-	// //Orgs
-	// app.get('/orgs', Orgs.allOrgs);
-	// app.get('/orgs/:id', Orgs.oneOrg);
-	// app.post('/orgs', Orgs.createOrg);
-	// app.patch('/orgs/:id', Orgs.updateOrg);
-	// app.delete('/orgs/:id', Orgs.deleteOrg);
+	//Orgs
+	app.get('/orgs', Orgs.allOrgs);
+	app.get('/orgs/:id', Orgs.oneOrg);
+	app.post('/orgs', Orgs.createOrg);
+	app.patch('/orgs/:id', Orgs.updateOrg);
+	app.delete('/orgs/:id', Orgs.deleteOrg);
 	// //Grants
 	// app.get('/grants', Grants.allGrants);
 	// app.get('/grants/:id', Grants.oneGrant);
