@@ -12,7 +12,7 @@ exports.allOrgs = function(req, res, next) {
 
 exports.oneOrg = function(req, res, next) {
 	// use mongoose to get one org in the database
-	Org.findById(req.params.id, function(err, org) {
+	Org.find({ id: req.params.id }, function(err, org) {
 		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 		if (err) res.send(err);
 

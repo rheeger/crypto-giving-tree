@@ -12,7 +12,7 @@ exports.allTrees = function(req, res, next) {
 
 exports.oneTree = function(req, res, next) {
 	// use mongoose to get one tree in the database
-	Tree.findById(req.params.id, function(err, tree) {
+	Tree.find({ id: req.params.id }, function(err, tree) {
 		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 		if (err) res.send(err);
 
@@ -55,12 +55,11 @@ exports.createTree = function(req, res, next) {
 exports.updateTree = function(req, res, next) {
 	var updateObject = req.body;
 
-	Tree.findById(req.params.id, function(err, tree) {
+	Tree.find({ id: req.params.id }, function(err, tree) {
 		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 		if (err) res.send(err);
 
 		tree.update({ $set: updateObject });
-		res.json(tree); // return tree in JSON format
 	});
 };
 
