@@ -12,7 +12,7 @@ exports.allGrants = function(req, res, next) {
 
 exports.oneGrant = function(req, res, next) {
 	// use mongoose to get one grant in the database
-	Grant.find({ id: req.params.id }, function(err, grant) {
+	Grant.findOne({ id: req.params.id }, function(err, grant) {
 		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 		if (err) res.send(err);
 
@@ -37,7 +37,7 @@ exports.createGrant = function(req, res, next) {
 		function(err, todo) {
 			if (err) res.send(err);
 			// use mongoose to get one grant in the database
-			Grant.find({ id: req.body.id }, function(err, grant) {
+			Grant.findOne({ id: req.body.id }, function(err, grant) {
 				// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 				if (err) res.send(err);
 
@@ -50,7 +50,7 @@ exports.createGrant = function(req, res, next) {
 exports.updateGrant = function(req, res, next) {
 	var updateObject = req.body;
 
-	Grant.find({ id: req.params.id }, function(err, grant) {
+	Grant.findOne({ id: req.params.id }, function(err, grant) {
 		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 		if (err) res.send(err);
 

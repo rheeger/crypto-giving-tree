@@ -12,7 +12,7 @@ exports.allClaims = function(req, res, next) {
 
 exports.oneClaim = function(req, res, next) {
 	// use mongoose to get one claim in the database
-	Claim.find({ id: req.params.id }, function(err, claim) {
+	Claim.findOne({ id: req.params.id }, function(err, claim) {
 		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 		if (err) res.send(err);
 
@@ -42,7 +42,7 @@ exports.createClaim = function(req, res, next) {
 		function(err, todo) {
 			if (err) res.send(err);
 			// use mongoose to get one claim in the database
-			Claim.findById(req.body.id, function(err, claim) {
+			Claim.findOne({ id: req.body.id }, function(err, claim) {
 				// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 				if (err) res.send(err);
 
@@ -55,7 +55,7 @@ exports.createClaim = function(req, res, next) {
 exports.updateClaim = function(req, res, next) {
 	var updateObject = req.body;
 
-	Claim.find({ id: req.params.id }, function(err, claim) {
+	Claim.findOne({ id: req.params.id }, function(err, claim) {
 		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 		if (err) res.send(err);
 

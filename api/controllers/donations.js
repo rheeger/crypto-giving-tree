@@ -12,7 +12,7 @@ exports.allDonations = function(req, res, next) {
 
 exports.oneDonation = function(req, res, next) {
 	// use mongoose to get one donation in the database
-	Donation.find({ id: req.params.id }, function(err, donation) {
+	Donation.findOne({ id: req.params.id }, function(err, donation) {
 		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 		if (err) res.send(err);
 
@@ -35,7 +35,7 @@ exports.createDonation = function(req, res, next) {
 		function(err, todo) {
 			if (err) res.send(err);
 			// use mongoose to get one donation in the database
-			Donation.findById(req.body.id, function(err, donation) {
+			Donation.findOne({ id: req.body.id }, function(err, donation) {
 				// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 				if (err) res.send(err);
 
@@ -48,7 +48,7 @@ exports.createDonation = function(req, res, next) {
 exports.updateDonation = function(req, res, next) {
 	var updateObject = req.body;
 
-	Donation.find({ id: req.params.id }, function(err, donation) {
+	Donation.findOne({ id: req.params.id }, function(err, donation) {
 		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 		if (err) res.send(err);
 
