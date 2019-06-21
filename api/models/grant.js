@@ -9,7 +9,7 @@ const grantSchema = new Schema({
 	grantAmount: String,
 	grantDescription: String,
 	grantDate: String,
-	grantApproval: String,
+	grantApproval: Boolean,
 	grantIndex: String,
 	approvalDetails: { approvalId: { type: String, unique: true }, approvalDate: String }
 });

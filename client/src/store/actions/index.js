@@ -123,15 +123,19 @@ export const fetchGrantableDAIBalance = (address) => async (dispatch) => {
 
 	const allGrants = await localDB.get('/grants');
 	const treeGrants = allGrants.data.filter((grant) => {
-		if (grant.selectedTree === address && grant.Approval === false) {
+		if (grant.selectedTree === address && grant.grantApproval === false) {
 			return { grant };
 		}
 		return '';
 	});
 
 	const pendingGrants = Object.values(treeGrants).reduce((a, b) => a + (parseFloat(b['grantAmount']) || 0), 0);
+	const grantableDAI = (treeDAI - pendingGrants).toFixed(2);
+	console.log(treeDAI);
+	console.log(pendingGrants);
+	console.log(grantableDAI);
 
-	const response = await localDB.patch(`/trees/${address}`, { grantableDAI: (treeDAI - pendingGrants).toFixed(2) });
+	const response = await localDB.patch(`/trees/${address}`, { grantableDAI: grantableDAI });
 
 	dispatch({ type: FETCH_GRANTABLE_DAI, payload: response.data });
 };
