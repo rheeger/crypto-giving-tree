@@ -48,11 +48,9 @@ exports.createDonation = function(req, res, next) {
 exports.updateDonation = function(req, res, next) {
 	var updateObject = req.body;
 
-	Donation.findOne({ id: req.params.id }, function(err, donation) {
+	Donation.updateOne({ id: req.params.id }, { $set: updateObject }, function(err, tree) {
 		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 		if (err) res.send(err);
-
-		donation.update({ $set: updateObject });
 	});
 };
 

@@ -54,12 +54,11 @@ exports.createTree = function(req, res, next) {
 
 exports.updateTree = function(req, res, next) {
 	var updateObject = req.body;
+	console.log(req.body);
 
-	Tree.findOne({ id: req.params.id }, function(err, tree) {
+	Tree.updateOne({ id: req.params.id }, { $set: updateObject }, function(err, tree) {
 		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 		if (err) res.send(err);
-
-		tree.update({ $set: updateObject });
 	});
 };
 

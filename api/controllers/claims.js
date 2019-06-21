@@ -55,11 +55,9 @@ exports.createClaim = function(req, res, next) {
 exports.updateClaim = function(req, res, next) {
 	var updateObject = req.body;
 
-	Claim.findOne({ id: req.params.id }, function(err, claim) {
+	Claim.updateOne({ id: req.params.id }, { $set: updateObject }, function(err, tree) {
 		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 		if (err) res.send(err);
-
-		claim.update({ $set: updateObject });
 	});
 };
 
