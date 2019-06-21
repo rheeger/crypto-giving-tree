@@ -131,9 +131,6 @@ export const fetchGrantableDAIBalance = (address) => async (dispatch) => {
 
 	const pendingGrants = Object.values(treeGrants).reduce((a, b) => a + (parseFloat(b['grantAmount']) || 0), 0);
 	const grantableDAI = (treeDAI - pendingGrants).toFixed(2);
-	console.log(treeDAI);
-	console.log(pendingGrants);
-	console.log(grantableDAI);
 
 	const response = await localDB.patch(`/trees/${address}`, { grantableDAI: grantableDAI });
 
