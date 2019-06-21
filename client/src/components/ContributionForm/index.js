@@ -26,8 +26,8 @@ class Send extends Component {
 	static propTypes = {
 		account: PropTypes.string,
 		isConnected: PropTypes.bool.isRequired,
-		selectors: PropTypes.func.isRequired,
-		web3: PropTypes.object.isRequired
+		selectors: PropTypes.func.isRequired
+		// web3: PropTypes.object.isRequired
 	};
 
 	state = {
