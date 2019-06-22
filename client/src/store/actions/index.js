@@ -71,17 +71,21 @@ export const plantTreeAndContract = (formValues) => async (dispatch, getState) =
 	const { account } = getState().web3connect;
 	const createdContract = await plantTree(account);
 
-	// const metaWeb3 = getState().web3connect.web3;
-	// const blockInfo = await metaWeb3.eth.getBlock(createdContract.blockNumber);
-	// const approvalDate = new Date(blockInfo.timestamp * 1000);
-	// const formattedApprovalDate = new Intl.DateTimeFormat('en-US').format(approvalDate);
+	const Web3 = require('web3');
+	const infuraKey = process.env.REACT_APP_INFURA_KEY;
+	const infuraRinkebyEndpoint = 'https://rinkeby.infura.io/v3/' + infuraKey;
+	const provider = new Web3.providers.HttpProvider(infuraRinkebyEndpoint);
+	const web3 = new Web3(provider);
+	const blockInfo = await web3.eth.getBlock(createdContract.blockNumber);
+	const approvalDate = new Date(blockInfo.timestamp * 1000);
+	const formattedApprovalDate = new Intl.DateTimeFormat('en-US').format(approvalDate);
 
 	const response = await localDB.post('/trees', {
 		...formValues,
 		managerAddress: account,
 		id: createdContract.id,
 		treeDAI: '0.00',
-		datePlanted: '',
+		datePlanted: formattedApprovalDate,
 		grantableDAI: 0.0
 	});
 
@@ -249,10 +253,15 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 };
 
 export const approveGrant = (id, treeAddress, grantNonce) => async (dispatch, getState) => {
-	const web3 = getState().web3connect.web3;
 	const approvalDetails = await approveTreeGrant(treeAddress, grantNonce, RINKEBY_DAI);
 
+	const Web3 = require('web3');
+	const infuraKey = process.env.REACT_APP_INFURA_KEY;
+	const infuraRinkebyEndpoint = 'https://rinkeby.infura.io/v3/' + infuraKey;
+	const provider = new Web3.providers.HttpProvider(infuraRinkebyEndpoint);
+	const web3 = new Web3(provider);
 	const blockInfo = await web3.eth.getBlock(approvalDetails.blockNumber);
+	console.log(blockInfo);
 	const approvalDate = new Date(blockInfo.timestamp * 1000);
 	const formattedApprovalDate = new Intl.DateTimeFormat('en-US').format(approvalDate);
 

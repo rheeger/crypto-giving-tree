@@ -41,7 +41,7 @@ exports.createOrg = function(req, res, next) {
 exports.updateOrg = function(req, res, next) {
 	var updateObject = req.body;
 
-	Org.updateOne({ id: req.params.id }, { $set: updateObject }, function(err, tree) {
+	Org.updateOne({ id: req.params.id }, { $set: updateObject }, function(err, org) {
 		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 		if (err) res.send(err);
 		res.json(org); // return org in JSON format
