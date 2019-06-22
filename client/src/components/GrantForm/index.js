@@ -37,8 +37,8 @@ class GrantForm extends React.Component {
 					{...rest}
 				>
 					<option>select a tree:</option>
-					{options.map((option) => (
-						<option key={option.id} value={JSON.stringify(option.id)}>
+					{options.map((option, key) => (
+						<option key={key} value={JSON.stringify(option.id)}>
 							{option.branchName} -- (Available Balance: ${option.grantableDAI})
 						</option>
 					))}

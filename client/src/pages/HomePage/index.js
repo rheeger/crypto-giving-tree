@@ -6,12 +6,9 @@ import { Grid } from 'semantic-ui-react';
 class HomePage extends React.Component {
 	renderManager() {
 		if (!this.props.gtTrees.Object) {
-			console.log(this.props.gtTrees);
-			console.log(Object.keys(this.props.gtTrees).length);
 			return 'Plant a Tree';
 		}
 		if (Object.keys(this.props.gtTrees).length > 0) {
-			console.log(this.props.gtTrees.Object);
 			return 'View My Trees';
 		}
 	}

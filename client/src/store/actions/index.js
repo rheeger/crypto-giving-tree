@@ -52,7 +52,6 @@ export const searchOrgs = (term) => async (dispatch) => {
 	}).catch(function(error) {
 		console.error(error);
 	});
-	console.log(response);
 
 	if (response === undefined) {
 		dispatch({
@@ -71,18 +70,18 @@ export const searchOrgs = (term) => async (dispatch) => {
 export const plantTreeAndContract = (formValues) => async (dispatch, getState) => {
 	const { account } = getState().web3connect;
 	const createdContract = await plantTree(account);
-	const metaWeb3 = getState().web3connect.web3;
 
-	const blockInfo = await metaWeb3.eth.getBlock(createdContract.blockNumber);
-	const approvalDate = new Date(blockInfo.timestamp * 1000);
-	const formattedApprovalDate = new Intl.DateTimeFormat('en-US').format(approvalDate);
+	// const metaWeb3 = getState().web3connect.web3;
+	// const blockInfo = await metaWeb3.eth.getBlock(createdContract.blockNumber);
+	// const approvalDate = new Date(blockInfo.timestamp * 1000);
+	// const formattedApprovalDate = new Intl.DateTimeFormat('en-US').format(approvalDate);
 
 	const response = await localDB.post('/trees', {
 		...formValues,
 		managerAddress: account,
 		id: createdContract.id,
 		treeDAI: '0.00',
-		datePlanted: formattedApprovalDate,
+		datePlanted: '',
 		grantableDAI: 0.0
 	});
 
@@ -98,9 +97,6 @@ export const fetchTrees = () => async (dispatch) => {
 
 export const fetchUserTrees = (address) => async (dispatch) => {
 	const allTrees = await localDB.get('/trees');
-	console.log(address);
-	console.log(allTrees.data);
-
 	const response = allTrees.data.filter((tree) => {
 		if (tree.managerAddress === address) {
 			return { tree };

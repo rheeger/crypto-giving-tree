@@ -34,10 +34,10 @@ class TreeShow extends Component {
 	};
 
 	renderGrantRow() {
-		return Object.values(this.props.gtGrants).map((grant, index) => {
+		return Object.values(this.props.gtGrants).map((grant, key) => {
 			return (
 				<GrantRow
-					key={grant.id}
+					key={key}
 					id={grant.id}
 					recipient={grant.selectedOrg}
 					amount={grant.grantAmount}
@@ -49,7 +49,7 @@ class TreeShow extends Component {
 	}
 
 	renderDonationRow() {
-		return Object.values(this.props.gtDonations).map((donation, index) => {
+		return Object.values(this.props.gtDonations).map((donation, key) => {
 			return (
 				<DonationRow
 					from={donation.from}
@@ -57,7 +57,7 @@ class TreeShow extends Component {
 					donationAmount={donation.inputAmount}
 					inputCurrency={donation.inputCurrency}
 					date={donation.donationDate}
-					key={donation.id}
+					key={key}
 					id={donation.id}
 				/>
 			);

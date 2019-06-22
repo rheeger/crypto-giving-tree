@@ -48,6 +48,7 @@ exports.updateGrant = function(req, res, next) {
 	Org.updateOne({ id: req.params.id }, { $set: updateObject }, function(err, tree) {
 		// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 		if (err) res.send(err);
+		res.json(grant); // return grant in JSON format
 	});
 };
 
