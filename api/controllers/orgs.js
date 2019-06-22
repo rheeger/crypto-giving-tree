@@ -30,15 +30,10 @@ exports.createOrg = function(req, res, next) {
 			lifetimeGrants: req.body.lifetimeGrants,
 			claimed: req.body.claimed
 		},
-		function(err, todo) {
+		function(err, org) {
 			if (err) res.send(err);
-			// use mongoose to get one org in the database
-			Org.findOne({ id: req.body.id }, function(err, org) {
-				// if there is an error retrieving, send the error. nothing after res.send(err) will execute
-				if (err) res.send(err);
 
-				res.json(org); // return org in JSON format
-			});
+			res.json(org); // return org in JSON format
 		}
 	);
 };

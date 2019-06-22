@@ -39,15 +39,10 @@ exports.createClaim = function(req, res, next) {
 			datePlanted: req.body.datePlanted,
 			grantableDAI: req.body.grantableDAI
 		},
-		function(err, todo) {
+		function(err, claim) {
 			if (err) res.send(err);
-			// use mongoose to get one claim in the database
-			Claim.findOne({ id: req.body.id }, function(err, claim) {
-				// if there is an error retrieving, send the error. nothing after res.send(err) will execute
-				if (err) res.send(err);
 
-				res.json(claim); // return claim in JSON format
-			});
+			res.json(claim); // return claim in JSON format
 		}
 	);
 };

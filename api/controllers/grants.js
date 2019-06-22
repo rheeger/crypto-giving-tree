@@ -34,15 +34,10 @@ exports.createGrant = function(req, res, next) {
 			grantIndex: req.body.grantIndex,
 			approvalDetails: req.body.approvalDetails
 		},
-		function(err, todo) {
+		function(err, grant) {
 			if (err) res.send(err);
-			// use mongoose to get one grant in the database
-			Grant.findOne({ id: req.body.id }, function(err, grant) {
-				// if there is an error retrieving, send the error. nothing after res.send(err) will execute
-				if (err) res.send(err);
 
-				res.json(grant); // return grant in JSON format
-			});
+			res.json(grant); // return grant in JSON format
 		}
 	);
 };

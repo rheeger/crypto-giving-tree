@@ -39,15 +39,10 @@ exports.createTree = function(req, res, next) {
 			datePlanted: req.body.datePlanted,
 			grantableDAI: req.body.grantableDAI
 		},
-		function(err, todo) {
+		function(err, tree) {
 			if (err) res.send(err);
-			// use mongoose to get one tree in the database
-			Tree.findOne({ id: req.body.id }, function(err, tree) {
-				// if there is an error retrieving, send the error. nothing after res.send(err) will execute
-				if (err) res.send(err);
 
-				res.json(tree); // return tree in JSON format
-			});
+			res.json(tree); // return tree in JSON format
 		}
 	);
 };

@@ -32,15 +32,10 @@ exports.createDonation = function(req, res, next) {
 			finalTradeOutput: req.body.finalTradeOutput,
 			donationDate: req.body.donationDate
 		},
-		function(err, todo) {
+		function(err, donation) {
 			if (err) res.send(err);
-			// use mongoose to get one donation in the database
-			Donation.findOne({ id: req.body.id }, function(err, donation) {
-				// if there is an error retrieving, send the error. nothing after res.send(err) will execute
-				if (err) res.send(err);
 
-				res.json(donation); // return donation in JSON format
-			});
+			res.json(donation); // return donation in JSON format
 		}
 	);
 };
