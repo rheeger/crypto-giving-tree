@@ -22,6 +22,7 @@ exports.oneOrg = function(req, res, next) {
 
 exports.createOrg = function(req, res, next) {
 	// use mongoose to create one org in the database
+	console.log(req.body);
 	Org.create(
 		{
 			id: req.body.id,
@@ -32,7 +33,7 @@ exports.createOrg = function(req, res, next) {
 		},
 		function(err, org) {
 			if (err) res.send(err);
-
+			console.log(org);
 			res.json(org); // return org in JSON format
 		}
 	);

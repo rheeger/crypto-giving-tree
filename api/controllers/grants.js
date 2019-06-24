@@ -22,6 +22,7 @@ exports.oneGrant = function(req, res, next) {
 
 exports.createGrant = function(req, res, next) {
 	// use mongoose to create one grant in the database
+	console.log(req.body);
 	Grant.create(
 		{
 			id: req.body.id,
@@ -31,13 +32,13 @@ exports.createGrant = function(req, res, next) {
 			grantDescription: req.body.grantDescription,
 			grantDate: req.body.grantDate,
 			grantApproval: req.body.grantApproval,
-			grantIndex: req.body.grantIndex,
-			approvalDetails: req.body.approvalDetails
+			grantIndex: req.body.grantIndex
 		},
 		function(err, grant) {
 			if (err) res.send(err);
 
-			res.json(grant); // return grant in JSON format
+			console.log(grant);
+			// res.json(grant); // return grant in JSON format
 		}
 	);
 };

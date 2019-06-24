@@ -10,8 +10,7 @@ const grantSchema = new Schema({
 	grantDescription: String,
 	grantDate: String,
 	grantApproval: Boolean,
-	grantIndex: String,
-	approvalDetails: { approvalId: { type: String, unique: true }, approvalDate: String }
+	grantIndex: Number
 });
 
 //modelClass

@@ -26,10 +26,10 @@ class TreeShow extends Component {
 		} = this.props;
 
 		fetchTree(match.params.address);
-		fetchTreeGrants(match.params.address);
 		fetchTreeDAIBalance(match.params.address);
 		fetchGrantableDAIBalance(match.params.address);
 		fetchTreeDonations(match.params.address);
+		fetchTreeGrants(match.params.address);
 		fetchOrgs();
 	};
 

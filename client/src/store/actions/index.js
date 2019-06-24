@@ -240,15 +240,16 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 	const formattedGrantDate = Intl.DateTimeFormat('en-US').format(grantDate);
 
 	const response = await localDB.post(`/grants`, {
+		id: id.transactionHash,
 		selectedOrg: recipientEIN,
 		...formValues,
-		id: id.transactionHash,
 		grantDate: formattedGrantDate,
 		grantApproval: false,
 		grantIndex: index - 1
 	});
 
-	dispatch({ type: CREATE_GRANT, payload: response.data }).then(history.push(`/trees/${formValues.selectedTree}`));
+	dispatch({ type: CREATE_GRANT, payload: response.data });
+	// history.push(`/trees/${formValues.selectedTree}`);
 };
 
 export const approveGrant = (id, treeAddress, grantNonce) => async (dispatch, getState) => {

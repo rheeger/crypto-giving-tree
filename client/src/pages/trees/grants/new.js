@@ -10,14 +10,12 @@ class NewGrant extends React.Component {
 		loading: false
 	};
 
-	componentWillMount = async () => {
+	componentDidMount = async () => {
 		const { selectOrg, fetchOrgs, gtOrgs, match } = this.props;
 		this.setState({ ready: 'false' });
 		await selectOrg(match.params.ein);
+		console.log(gtOrgs);
 		await fetchOrgs();
-		if (gtOrgs[`${match.params.ein}`] === undefined) {
-			this.setupOrg(match.params.ein);
-		}
 	};
 
 	setupOrg = async (id) => {
@@ -63,6 +61,7 @@ class NewGrant extends React.Component {
 		}
 
 		if (this.state.ready === 'true' && this.props.gtOrgs && !this.props.gtOrgs[`${this.props.match.params.ein}`]) {
+			this.setupOrg(this.props.match.params.ein);
 			return (
 				<div className="ui container">
 					<div style={{ textAlign: 'center', display: 'flex-flow', alignContent: 'center' }}>
@@ -117,7 +116,7 @@ class NewGrant extends React.Component {
 			);
 		}
 
-		if (this.state.loading === true) {
+		if (this.state.loading === true && this.props.gtOrgs[`${this.props.match.params.ein}`] === undefined) {
 			return (
 				<div className="ui container">
 					<div style={{ textAlign: 'center', display: 'flex-flow', alignContent: 'center' }}>
