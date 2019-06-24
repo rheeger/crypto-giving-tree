@@ -2,10 +2,10 @@
 	"name": "api",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
+	"main": "server.js",
 	"scripts": {
 		"start": "json-server -p 80 -w db.json",
-		"dev": "nodemon index.js"
+		"dev": "nodemon local.js"
 	},
 	"author": "",
 	"license": "ISC",
