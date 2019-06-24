@@ -248,8 +248,7 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 		grantIndex: index - 1
 	});
 
-	dispatch({ type: CREATE_GRANT, payload: response.data });
-	history.push(`/trees/${formValues.selectedTree}`);
+	dispatch({ type: CREATE_GRANT, payload: response.data }).then(history.push(`/trees/${formValues.selectedTree}`));
 };
 
 export const approveGrant = (id, treeAddress, grantNonce) => async (dispatch, getState) => {
