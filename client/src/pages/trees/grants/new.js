@@ -13,9 +13,8 @@ class NewGrant extends React.Component {
 	componentDidMount = async () => {
 		const { selectOrg, fetchOrgs, gtOrgs, match } = this.props;
 		this.setState({ ready: 'false' });
-		await selectOrg(match.params.ein);
-		console.log(gtOrgs);
-		await fetchOrgs();
+		selectOrg(match.params.ein);
+		fetchOrgs();
 	};
 
 	setupOrg = async (id) => {
