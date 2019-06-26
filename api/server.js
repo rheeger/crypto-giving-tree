@@ -7,7 +7,7 @@ const router = require('./router');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-mongoose.connect('mongodb://10.128.0.4:80:forest/forest', { useNewUrlParser: true });
+mongoose.connect('mongodb://10.128.0.4:80/forest', { useNewUrlParser: true });
 
 app.use(morgan('combined'));
 app.use(cors());
