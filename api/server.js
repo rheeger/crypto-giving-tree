@@ -6,9 +6,8 @@ const app = express();
 const router = require('./router');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const argv = require('optimist').argv;
 
-mongoose.connect('mongodb://' + argv.be_ip + ':80/forest', { useNewUrlParser: true });
+mongoose.connect('mongodb://10.128.0.4:80/forest', { useNewUrlParser: true });
 
 app.use(morgan('combined'));
 app.use(cors());
@@ -16,5 +15,5 @@ app.use(bodyParser.json({ type: '*/*' }));
 router(app);
 
 const server = http.createServer(app);
-server.listen(8080, argv.fe_ip);
+server.listen(8080, '10.128.0.3');
 console.log('Server listening on port 8080');
