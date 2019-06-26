@@ -1,24 +1,20 @@
 ## CHARIDAO BACK-END SETUP
 
 ## GOOGLE CLOUD COMPUTE
-1. SSH into VM instances:
-
+1. SSH into VM instances.
 API: 
 ///
-gcloud compute --project "the-charity-forest" ssh --zone "us-central1-a" "forest-api"
+$ gcloud compute --project "the-charity-forest" ssh --zone "us-central1-a" "forest-api"
 ///
 MONGO:
 ///
-gcloud compute --project "the-charity-forest" ssh --zone "us-central1-a" "forest-client"
+$ gcloud compute --project "the-charity-forest" ssh --zone "us-central1-a" "forest-client"
 ///
 CLIENT: 
 ///
-gcloud compute --project "the-charity-forest" ssh --zone "us-central1-a" "forest-mongo"
+$ gcloud compute --project "the-charity-forest" ssh --zone "us-central1-a" "forest-mongo"
 ///
 
-sudo nohup nodejs server.js --be_ip \
-    <10.128.0.4> --fe_ip \
-    <10.128.0.3> &
 2.
 ///
 ///
@@ -29,10 +25,14 @@ sudo nohup nodejs server.js --be_ip \
 
 4.
 ///
+$ sudo nohup nodejs server.js --be_ip \
+    10.128.0.4 --fe_ip \
+    10.128.0.3 &
 ///
 
 5.
 ///
+$ exit
 ///
 
 6.
