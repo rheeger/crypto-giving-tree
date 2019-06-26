@@ -15,5 +15,5 @@ app.use(bodyParser.json({ type: '*/*' }));
 router(app);
 
 const server = http.createServer(app);
-server.listen(8080, '10.128.0.3');
-console.log('Server listening on port 8080');
+server.listen(80, '10.128.0.3');
+console.log('Server listening on port 80');
