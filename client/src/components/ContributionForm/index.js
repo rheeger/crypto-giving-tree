@@ -486,7 +486,7 @@ class Send extends Component {
 							}
 						);
 					fetchTreeDAIBalance(recipient);
-					const freshWeb3 = require('../../ethereum/web3');
+					const freshWeb3 = this.props.web3;
 					const blockInfo = await freshWeb3.eth.getBlock(ethtrans.blockNumber);
 					const donationDate = new Date(blockInfo.timestamp * 1000);
 					const formattedDonationDate = new Intl.DateTimeFormat('en-US').format(donationDate);

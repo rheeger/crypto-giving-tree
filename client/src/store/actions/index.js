@@ -70,22 +70,12 @@ export const searchOrgs = (term) => async (dispatch) => {
 export const plantTreeAndContract = (formValues) => async (dispatch, getState) => {
 	const { account } = getState().web3connect;
 	const createdContract = await plantTree(account);
-
-	const Web3 = require('web3');
-	const infuraKey = process.env.REACT_APP_INFURA_KEY;
-	const infuraRinkebyEndpoint = 'https://rinkeby.infura.io/v3/' + infuraKey;
-	const provider = new Web3.providers.HttpProvider(infuraRinkebyEndpoint);
-	const web3 = new Web3(provider);
-	const blockInfo = await web3.eth.getBlock(createdContract.blockNumber);
-	const approvalDate = new Date(blockInfo.timestamp * 1000);
-	const formattedApprovalDate = new Intl.DateTimeFormat('en-US').format(approvalDate);
-
 	const response = await localDB.post('/trees', {
 		...formValues,
 		managerAddress: account,
 		id: createdContract.id,
 		treeDAI: '0.00',
-		datePlanted: formattedApprovalDate,
+		datePlanted: createdContract.plantedDate,
 		grantableDAI: 0.0
 	});
 
