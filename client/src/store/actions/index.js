@@ -233,7 +233,6 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 		id: id.transactionHash,
 		selectedOrg: recipientEIN,
 		...formValues,
-		grantDate: null,
 		grantApproval: false,
 		grantIndex: index - 1
 	});
