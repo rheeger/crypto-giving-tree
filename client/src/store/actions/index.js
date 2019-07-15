@@ -211,7 +211,7 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 	dispatch,
 	getState
 ) => {
-	const web3 = getState().web3connect.web3;
+	// const web3 = getState().web3connect.web3;
 	const tree = treeContract(formValues.selectedTree);
 	const id = await tree.methods
 		.createGrant(formValues.grantDescription, formValues.grantAmount * 1000000000000000000, recipientAddress)
@@ -223,17 +223,17 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 
 	const index = await tree.methods.getGrantsCount().call();
 
-	const blockInfo = await web3.eth.getBlock(id.blockNumber);
-	console.log(blockInfo);
+	// const blockInfo = await web3.eth.getBlock(id.blockNumber);
+	// console.log(blockInfo);
 
-	const grantDate = new Date(blockInfo.timestamp * 1000);
-	const formattedGrantDate = Intl.DateTimeFormat('en-US').format(grantDate);
+	// const grantDate = new Date(blockInfo.timestamp * 1000);
+	// const formattedGrantDate = Intl.DateTimeFormat('en-US').format(grantDate);
 
 	const response = await localDB.post(`/grants`, {
 		id: id.transactionHash,
 		selectedOrg: recipientEIN,
 		...formValues,
-		grantDate: formattedGrantDate,
+		grantDate: null,
 		grantApproval: false,
 		grantIndex: index - 1
 	});

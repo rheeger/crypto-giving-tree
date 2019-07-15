@@ -15,7 +15,7 @@ const treeSchema = new Schema({
 	primaryAdvisorBirthday: String,
 	managerAddress: String,
 	treeDAI: String,
-	datePlanted: String,
+	datePlanted: { type: Date, default: Date.now, required: true },
 	grantableDAI: Number
 });
 

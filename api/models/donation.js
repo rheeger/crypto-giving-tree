@@ -9,7 +9,7 @@ const donationSchema = new Schema({
 	inputCurrency: String,
 	inputAmount: String,
 	finalTradeOutput: String,
-	donationDate: String
+	donationDate: { type: Date, default: Date.now, required: true }
 });
 
 //modelClass
