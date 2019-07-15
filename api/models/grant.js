@@ -8,7 +8,7 @@ const grantSchema = new Schema({
 	selectedTree: String,
 	grantAmount: String,
 	grantDescription: String,
-	grantDate: { type: Number, default: Date.now, required: true },
+	grantDate: { type: Date, default: Date.now, required: true },
 	grantApproval: Boolean,
 	grantIndex: Number
 });
