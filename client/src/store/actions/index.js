@@ -75,7 +75,6 @@ export const plantTreeAndContract = (formValues) => async (dispatch, getState) =
 		managerAddress: account,
 		id: createdContract.id,
 		treeDAI: '0.00',
-		datePlanted: createdContract.plantedDate,
 		grantableDAI: 0.0
 	});
 
@@ -234,7 +233,9 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 		selectedOrg: recipientEIN,
 		...formValues,
 		grantApproval: false,
-		grantIndex: index - 1
+		grantIndex: index - 1,
+		approvalDetails: {},
+		dateApproved: null
 	});
 
 	dispatch({ type: CREATE_GRANT, payload: response.data });
@@ -244,20 +245,20 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 export const approveGrant = (id, treeAddress, grantNonce) => async (dispatch, getState) => {
 	const approvalDetails = await approveTreeGrant(treeAddress, grantNonce, RINKEBY_DAI);
 
-	const Web3 = require('web3');
-	const infuraKey = process.env.REACT_APP_INFURA_KEY;
-	const infuraRinkebyEndpoint = 'https://rinkeby.infura.io/v3/' + infuraKey;
-	const provider = new Web3.providers.HttpProvider(infuraRinkebyEndpoint);
-	const web3 = new Web3(provider);
-	const blockInfo = await web3.eth.getBlock(approvalDetails.blockNumber);
-	console.log(blockInfo);
-	const approvalDate = new Date(blockInfo.timestamp * 1000);
-	const formattedApprovalDate = new Intl.DateTimeFormat('en-US').format(approvalDate);
+	// const Web3 = require('web3');
+	// const infuraKey = process.env.REACT_APP_INFURA_KEY;
+	// const infuraRinkebyEndpoint = 'https://rinkeby.infura.io/v3/' + infuraKey;
+	// const provider = new Web3.providers.HttpProvider(infuraRinkebyEndpoint);
+	// const web3 = new Web3(provider);
+	// const blockInfo = await web3.eth.getBlock(approvalDetails.blockNumber);
+	// console.log(blockInfo);
+	// const approvalDate = new Date(blockInfo.timestamp * 1000);
+	// const formattedApprovalDate = new Intl.DateTimeFormat('en-US').format(approvalDate);
 
 	const response = await localDB.patch(`/grants/${id}`, {
 		grantApproval: true,
 		approvalDetails,
-		dateApproved: formattedApprovalDate
+		dateApproved: Date.now()
 	});
 
 	dispatch({ type: EDIT_GRANT, payload: response.data });
@@ -346,8 +347,8 @@ export const createDonation = (
 	fromAddress,
 	inputCurrency,
 	inputAmount,
-	outputAmount,
-	donationDate
+	outputAmount
+	// donationDate
 ) => async (dispatch) => {
 	const finalTradeOutput = (outputAmount / 1000000000000000000 - 0.01).toFixed(2);
 	const response = await localDB.post(`/donations`, {
@@ -356,8 +357,8 @@ export const createDonation = (
 		from: fromAddress,
 		inputCurrency,
 		inputAmount,
-		finalTradeOutput,
-		donationDate
+		finalTradeOutput
+		// donationDate
 	});
 
 	dispatch({ type: CREATE_DONATION, payload: response.data });

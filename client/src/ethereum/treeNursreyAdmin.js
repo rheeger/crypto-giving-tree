@@ -21,11 +21,11 @@ export const plantTree = async (managerAddress) => {
 		.plantTree(managerAddress)
 		.send({ from: accounts[0], gas: '1500000' });
 
-	const blockInfo = await web3.eth.getBlock(createContract.blockNumber);
-	const approvalDate = new Date(blockInfo.timestamp * 1000);
-	const formattedApprovalDate = new Intl.DateTimeFormat('en-US').format(approvalDate);
+	// const blockInfo = await web3.eth.getBlock(createContract.blockNumber);
+	// const approvalDate = new Date(blockInfo.timestamp * 1000);
+	// const formattedApprovalDate = new Intl.DateTimeFormat('en-US').format(approvalDate);
 
-	return { id: createContract.events.treePlanted.returnValues.newAddress, plantedDate: formattedApprovalDate };
+	return { id: createContract.events.treePlanted.returnValues.newAddress };
 };
 
 export function getNurseryInstance() {

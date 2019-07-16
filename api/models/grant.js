@@ -10,7 +10,9 @@ const grantSchema = new Schema({
 	grantDescription: String,
 	grantDate: { type: Date, default: Date.now, required: true },
 	grantApproval: Boolean,
-	grantIndex: Number
+	grantIndex: Number,
+	approvalDetails: {},
+	dateApproved: { type: Date, default: Date.now }
 });
 
 //modelClass
