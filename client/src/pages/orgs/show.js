@@ -6,10 +6,9 @@ import { selectOrg, fetchOrg, fetchOrgLifetimeGrants, fetchOrgApprovedGrants } f
 import OrgGrantRow from '../../components/tables/OrgGrantRow';
 
 class OrgShow extends React.Component {
-	componentDidMount() {
-		const { fetchOrg, selectOrg, fetchOrgApprovedGrants, match, fetchOrgLifetimeGrants } = this.props;
+	componentWillMount() {
+		const { selectOrg, fetchOrgApprovedGrants, match, fetchOrgLifetimeGrants } = this.props;
 		selectOrg(match.params.ein);
-		fetchOrg(match.params.ein);
 		fetchOrgApprovedGrants(match.params.ein);
 		fetchOrgLifetimeGrants(match.params.ein);
 	}
