@@ -34,6 +34,9 @@ class TreeShow extends Component {
 	};
 
 	renderGrantRow() {
+		if (Object.keys(this.props.gtGrants).length === 0) {
+			return <div style={{ textAlign: 'center', padding: '10px' }}>No grants reccommended.</div>;
+		}
 		return Object.values(this.props.gtGrants).map((grant, key) => {
 			if (grant.selectedTree === this.props.match.params.address) {
 				return (
@@ -46,11 +49,16 @@ class TreeShow extends Component {
 						description={grant.grantDescription}
 					/>
 				);
+			} else {
+				return <div style={{ textAlign: 'center', padding: '10px' }}>No grants reccommended.</div>;
 			}
 		});
 	}
 
 	renderDonationRow() {
+		if (Object.keys(this.props.gtDonations).length === 0) {
+			return <div style={{ textAlign: 'center', padding: '10px' }}>No token donations received.</div>;
+		}
 		return Object.values(this.props.gtDonations).map((donation, key) => {
 			if (donation.to === this.props.match.params.address) {
 				return (
@@ -64,6 +72,8 @@ class TreeShow extends Component {
 						id={donation.id}
 					/>
 				);
+			} else {
+				return <div style={{ textAlign: 'center', padding: '10px' }}>No token donations received.</div>;
 			}
 		});
 	}
