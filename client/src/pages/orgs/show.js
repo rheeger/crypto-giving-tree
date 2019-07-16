@@ -32,9 +32,7 @@ class OrgShow extends React.Component {
 					/>
 				);
 			} else {
-				return (
-					<div style={{ textAlign: 'center', padding: '10px' }}>No grants received. Be the first today!</div>
-				);
+				return;
 			}
 		});
 	}

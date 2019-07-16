@@ -14,8 +14,6 @@ import GrantRow from '../../components/tables/GrantRow';
 import DonationRow from '../../components/tables/DonationRow';
 
 class TreeShow extends Component {
-	initialState = {};
-
 	componentWillMount = () => {
 		const {
 			fetchTreeDAIBalance,
@@ -37,32 +35,36 @@ class TreeShow extends Component {
 
 	renderGrantRow() {
 		return Object.values(this.props.gtGrants).map((grant, key) => {
-			return (
-				<GrantRow
-					key={key}
-					id={grant.id}
-					recipient={grant.selectedOrg}
-					amount={grant.grantAmount}
-					date={grant.grantDate}
-					description={grant.grantDescription}
-				/>
-			);
+			if (grant.selectedTree === this.props.match.params.address) {
+				return (
+					<GrantRow
+						key={key}
+						id={grant.id}
+						recipient={grant.selectedOrg}
+						amount={grant.grantAmount}
+						date={grant.grantDate}
+						description={grant.grantDescription}
+					/>
+				);
+			}
 		});
 	}
 
 	renderDonationRow() {
 		return Object.values(this.props.gtDonations).map((donation, key) => {
-			return (
-				<DonationRow
-					from={donation.from}
-					finalTradeOutput={donation.finalTradeOutput}
-					donationAmount={donation.inputAmount}
-					inputCurrency={donation.inputCurrency}
-					date={donation.donationDate}
-					key={key}
-					id={donation.id}
-				/>
-			);
+			if (donation.to === this.props.match.params.address) {
+				return (
+					<DonationRow
+						from={donation.from}
+						finalTradeOutput={donation.finalTradeOutput}
+						donationAmount={donation.inputAmount}
+						inputCurrency={donation.inputCurrency}
+						date={donation.donationDate}
+						key={key}
+						id={donation.id}
+					/>
+				);
+			}
 		});
 	}
 

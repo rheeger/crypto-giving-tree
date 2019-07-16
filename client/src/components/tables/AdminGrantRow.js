@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Table, Button } from 'semantic-ui-react';
 import { approveGrant, deleteGrant } from '../../store/actions';
+import history from '../../history';
 
 class AdminGrantRow extends Component {
 	state = {
@@ -15,8 +16,9 @@ class AdminGrantRow extends Component {
 		const { approveGrant, id, grantIndex, selectedTree } = this.props;
 		this.setState({ approveloading: true });
 		await approveGrant(id, selectedTree, grantIndex);
-		this.props.onSubmit();
 		this.setState({ approveloading: false });
+		this.props.onSubmit();
+		history.push('/admin');
 	};
 
 	onReject = async () => {
@@ -24,6 +26,7 @@ class AdminGrantRow extends Component {
 		this.setState({ rejectloading: true });
 		await deleteGrant(id);
 		this.setState({ rejectloading: false });
+		history.push('/admin');
 	};
 
 	render() {

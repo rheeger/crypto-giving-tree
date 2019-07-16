@@ -27,19 +27,21 @@ class AdminPanel extends Component {
 		}
 
 		return Object.values(this.props.gtGrants).map((grant, index) => {
-			return (
-				<AdminGrantRow
-					key={grant.id}
-					id={grant.id}
-					recipient={grant.selectedOrg}
-					amount={grant.grantAmount}
-					date={grant.grantDate}
-					description={grant.grantDescription}
-					selectedTree={grant.selectedTree}
-					grantIndex={grant.grantIndex}
-					onSubmit={this.onApproveSubmit}
-				/>
-			);
+			if (grant.grantApproval === false) {
+				return (
+					<AdminGrantRow
+						key={grant.id}
+						id={grant.id}
+						recipient={grant.selectedOrg}
+						amount={grant.grantAmount}
+						date={grant.grantDate}
+						description={grant.grantDescription}
+						selectedTree={grant.selectedTree}
+						grantIndex={grant.grantIndex}
+						onSubmit={this.onApproveSubmit}
+					/>
+				);
+			}
 		});
 	}
 
