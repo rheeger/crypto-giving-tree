@@ -6,6 +6,8 @@ import { selectOrg, fetchOrg, fetchOrgLifetimeGrants, fetchOrgApprovedGrants } f
 import OrgGrantRow from '../../components/tables/OrgGrantRow';
 
 class OrgShow extends React.Component {
+	initialState = {};
+
 	componentWillMount() {
 		const { selectOrg, fetchOrgApprovedGrants, match, fetchOrgLifetimeGrants } = this.props;
 		selectOrg(match.params.ein);
@@ -18,16 +20,22 @@ class OrgShow extends React.Component {
 			return <div style={{ textAlign: 'center', padding: '10px' }}>No grants received. Be the first today!</div>;
 		}
 		return Object.values(this.props.gtGrants).map((grant, index) => {
-			return (
-				<OrgGrantRow
-					key={grant.id}
-					id={grant.id}
-					tree={grant.selectedTree}
-					amount={grant.grantAmount}
-					date={grant.grantDate}
-					description={grant.grantDescription}
-				/>
-			);
+			if (grant.selectedOrg === this.props.match.params.ein && grant.grantApproval === true) {
+				return (
+					<OrgGrantRow
+						key={grant.id}
+						id={grant.id}
+						tree={grant.selectedTree}
+						amount={grant.grantAmount}
+						date={grant.grantDate}
+						description={grant.grantDescription}
+					/>
+				);
+			} else {
+				return (
+					<div style={{ textAlign: 'center', padding: '10px' }}>No grants received. Be the first today!</div>
+				);
+			}
 		});
 	}
 

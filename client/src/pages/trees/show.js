@@ -14,6 +14,8 @@ import GrantRow from '../../components/tables/GrantRow';
 import DonationRow from '../../components/tables/DonationRow';
 
 class TreeShow extends Component {
+	initialState = {};
+
 	componentWillMount = () => {
 		const {
 			fetchTreeDAIBalance,
