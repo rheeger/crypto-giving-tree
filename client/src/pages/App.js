@@ -3,16 +3,18 @@ import { connect } from 'react-redux';
 import { Router, Route, Switch } from 'react-router-dom';
 import Header from '../components/Header';
 import history from '../history';
-import HomePage from './HomePage';
-import AdminPanel from './admin';
-import OrgIndex from './orgs';
-import OrgShow from './orgs/show';
-import NewTree from './trees/new';
-import Manager from './trees/manager';
-import TreeShow from './trees/show';
-import NewGrant from './trees/grants/new';
 import { Web3Connect, startWatching, initialize } from '../store/reducers/web3connect';
 import { setAddresses } from '../store/reducers/swapAddresses';
+import asyncComponent from './AsyncComponents';
+
+const AsyncHome = asyncComponent(() => import('./HomePage'));
+const AsyncManager = asyncComponent(() => import('./trees/manager'));
+const AsyncNewTree = asyncComponent(() => import('./trees/new'));
+const AsyncTreeShow = asyncComponent(() => import('./trees/show'));
+const AsyncOrgIndex = asyncComponent(() => import('./orgs'));
+const AsyncOrgShow = asyncComponent(() => import('./orgs/show'));
+const AsyncNewGrant = asyncComponent(() => import('./trees/grants/new'));
+const AsyncAdminPanel = asyncComponent(() => import('./admin'));
 
 class App extends React.Component {
 	componentWillMount() {
@@ -44,14 +46,14 @@ class App extends React.Component {
 						<Header />
 						<Web3Connect />
 						<Switch>
-							<Route path="/" exact component={HomePage} />
-							<Route path="/trees" exact component={Manager} />
-							<Route path="/trees/new" exact component={NewTree} />
-							<Route path="/trees/:address" exact component={TreeShow} />
-							<Route path="/orgs" exact component={OrgIndex} />
-							<Route path="/orgs/:ein" exact component={OrgShow} />
-							<Route path="/orgs/:ein/grants/new" exact component={NewGrant} />
-							<Route path="/admin" exact component={AdminPanel} />
+							<Route path="/" exact component={AsyncHome} />
+							<Route path="/trees" exact component={AsyncManager} />
+							<Route path="/trees/new" exact component={AsyncNewTree} />
+							<Route path="/trees/:address" exact component={AsyncTreeShow} />
+							<Route path="/orgs" exact component={AsyncOrgIndex} />
+							<Route path="/orgs/:ein" exact component={AsyncOrgShow} />
+							<Route path="/orgs/:ein/grants/new" exact component={AsyncNewGrant} />
+							<Route path="/admin" exact component={AsyncAdminPanel} />
 						</Switch>
 					</div>
 				</Router>

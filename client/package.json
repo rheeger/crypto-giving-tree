@@ -37,6 +37,7 @@
 		"redux-thunk": "^2.3.0",
 		"semantic-ui-react": "^0.86.0",
 		"solc": "^0.4.26",
+		"source-map-explorer": "^2.0.1",
 		"truffle-hdwallet-provider": "^1.0.11",
 		"ua-parser-js": "^0.7.20",
 		"url-loader": "^1.1.2",
@@ -44,13 +45,15 @@
 		"web3-react": "^5.0.4"
 	},
 	"scripts": {
+		"analyze": "source-map-explorer 'build/static/js/*.js'",
 		"start": "react-scripts start",
-		"start:rinkeby": "REACT_APP_NETWORK_ID=4 REACT_APP_NETWORK='Rinkeby Test Network' yarn start",
+		"start:rinkeby": "REACT_APP_NETWORK_ID=4 REACT_APP_NETWORK='Rinkeby Test Network' react-scripts start",
 		"build": "react-scripts build",
-		"build:rinkeby": "REACT_APP_NETWORK_ID=4 REACT_APP_NETWORK='Rinkeby Test Network' yarn build",
+		"build:rinkeby": "REACT_APP_NETWORK_ID=4 REACT_APP_NETWORK='Rinkeby Test Network' react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"now-build": "react-scripts build"
+		"now-build": "react-scripts build",
+		"gcp-build": "REACT_APP_NETWORK_ID=4 REACT_APP_NETWORK='Rinkeby Test Network' react-scripts build"
 	},
 	"eslintConfig": {
 		"extends": "react-app"
@@ -60,5 +63,10 @@
 		"node-sass": "^4.12.0",
 		"sass-loader": "^7.1.0"
 	},
-	"browserslist": [ ">0.2%", "not dead", "not ie <= 11", "not op_mini all" ]
+	"browserslist": [
+		">0.2%",
+		"not dead",
+		"not ie <= 11",
+		"not op_mini all"
+	]
 }
