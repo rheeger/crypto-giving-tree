@@ -41,6 +41,8 @@ class AdminPanel extends Component {
 						onSubmit={this.onApproveSubmit}
 					/>
 				);
+			} else {
+				return <div style={{ textAlign: 'center', padding: '10px' }}>Nothing to approve.</div>;
 			}
 		});
 	}
