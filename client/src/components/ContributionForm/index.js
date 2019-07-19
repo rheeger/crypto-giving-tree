@@ -463,7 +463,7 @@ class Send extends Component {
 			// send input
 			switch (type) {
 				case 'ETH_TO_TOKEN':
-					const ethtrans = await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
+					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferInput(
 							BN(outputValue)
 								.multipliedBy(10 ** outputDecimals)
@@ -484,24 +484,22 @@ class Send extends Component {
 									this.reset();
 								}
 							}
-						);
-					fetchTreeDAIBalance(recipient);
-					const freshWeb3 = this.props.web3;
-					const blockInfo = await freshWeb3.eth.getBlock(ethtrans.blockNumber);
-					const donationDate = new Date(blockInfo.timestamp * 1000);
-					const formattedDonationDate = new Intl.DateTimeFormat('en-US').format(donationDate);
-					createDonation(
-						ethtrans.transactionHash,
-						recipient,
-						this.props.account,
-						inputCurrency,
-						inputValue,
-						ethtrans.events.TokenPurchase.returnValues.tokens_bought,
-						formattedDonationDate
-					).then(this.setState({ loading: false }));
+						)
+						.then(async (receipt) => {
+							fetchTreeDAIBalance(recipient) &&
+								(await createDonation(
+									receipt.transactionHash,
+									recipient,
+									account[0],
+									inputCurrency,
+									inputValue,
+									receipt.events.TokenPurchase.returnValues.tokens_bought
+								));
+						})
+						.then(this.setState({ loading: false }));
 					break;
 				case 'TOKEN_TO_TOKEN':
-					const tokentrans = await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
+					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 						.tokenToTokenTransferInput(
 							BN(inputValue).multipliedBy(10 ** inputDecimals).toFixed(0),
 							BN(outputValue)
@@ -518,20 +516,19 @@ class Send extends Component {
 								addPendingTx(data);
 								this.reset();
 							}
-						});
-					fetchTreeDAIBalance(recipient);
-					const ttBlockInfo = await web3.eth.getBlock(tokentrans.blockNumber);
-					const ttDonationDate = new Date(ttBlockInfo.timestamp * 1000);
-					const ttFormattedDonationDate = new Intl.DateTimeFormat('en-US').format(ttDonationDate);
-					createDonation(
-						tokentrans.transactionHash,
-						recipient,
-						this.props.account,
-						inputCurrency,
-						inputValue,
-						tokentrans.events.TokenPurchase.returnValues.tokens_bought,
-						ttFormattedDonationDate
-					).then(this.setState({ loading: false }));
+						})
+						.then(async (receipt) => {
+							fetchTreeDAIBalance(recipient) &&
+								(await createDonation(
+									receipt.transactionHash,
+									recipient,
+									account[0],
+									inputCurrency,
+									inputValue,
+									receipt.events.TokenPurchase.returnValues.tokens_bought
+								));
+						})
+						.then(this.setState({ loading: false }));
 					break;
 				default:
 					break;
@@ -543,7 +540,7 @@ class Send extends Component {
 
 			switch (type) {
 				case 'ETH_TO_TOKEN':
-					const ethtrans = await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
+					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferOutput(
 							BN(outputValue).multipliedBy(10 ** outputDecimals).toFixed(0),
 							deadline,
@@ -564,28 +561,26 @@ class Send extends Component {
 									this.reset();
 								}
 							}
-						);
-					fetchTreeDAIBalance(recipient);
-					const blockInfo = await web3.eth.getBlock(ethtrans.blockNumber);
-					const donationDate = new Date(blockInfo.timestamp * 1000);
-					const formattedDonationDate = new Intl.DateTimeFormat('en-US').format(donationDate);
-					createDonation(
-						ethtrans.transactionHash,
-						recipient,
-						this.props.account,
-						inputCurrency,
-						inputValue,
-						ethtrans.events.TokenPurchase.returnValues.tokens_bought,
-						formattedDonationDate
-					);
-					this.setState({ loading: false });
+						)
+						.then(async (receipt) => {
+							fetchTreeDAIBalance(recipient) &&
+								(await createDonation(
+									receipt.transactionHash,
+									recipient,
+									account[0],
+									inputCurrency,
+									inputValue,
+									receipt.events.TokenPurchase.returnValues.tokens_bought
+								));
+						})
+						.then(this.setState({ loading: false }));
 					break;
 				case 'TOKEN_TO_TOKEN':
 					if (!inputAmountB) {
 						return;
 					}
 
-					const tokentrans = await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
+					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 						.tokenToTokenTransferOutput(
 							BN(outputValue).multipliedBy(10 ** outputDecimals).toFixed(0),
 							BN(inputValue)
@@ -602,22 +597,19 @@ class Send extends Component {
 								addPendingTx(data);
 								this.reset();
 							}
-						});
-
-					fetchTreeDAIBalance(recipient);
-					const ttBlockInfo = await web3.eth.getBlock(tokentrans.blockNumber);
-					const ttDonationDate = new Date(ttBlockInfo.timestamp * 1000);
-					const ttFormattedDonationDate = new Intl.DateTimeFormat('en-US').format(ttDonationDate);
-					createDonation(
-						tokentrans.transactionHash,
-						recipient,
-						this.props.account,
-						inputCurrency,
-						inputValue,
-						tokentrans.events.TokenPurchase.returnValues.tokens_bought,
-						ttFormattedDonationDate
-					);
-					this.setState({ loading: false });
+						})
+						.then(async (receipt) => {
+							fetchTreeDAIBalance(recipient) &&
+								(await createDonation(
+									receipt.transactionHash,
+									recipient,
+									account[0],
+									inputCurrency,
+									inputValue,
+									receipt.events.TokenPurchase.returnValues.tokens_bought
+								));
+						})
+						.then(this.setState({ loading: false }));
 					break;
 				default:
 					break;

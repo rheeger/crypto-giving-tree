@@ -210,7 +210,6 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 	dispatch,
 	getState
 ) => {
-	// const web3 = getState().web3connect.web3;
 	const tree = treeContract(formValues.selectedTree);
 	const id = await tree.methods
 		.createGrant(formValues.grantDescription, formValues.grantAmount * 1000000000000000000, recipientAddress)
@@ -219,15 +218,7 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 			console.log(transId);
 			return transId;
 		});
-
 	const index = await tree.methods.getGrantsCount().call();
-
-	// const blockInfo = await web3.eth.getBlock(id.blockNumber);
-	// console.log(blockInfo);
-
-	// const grantDate = new Date(blockInfo.timestamp * 1000);
-	// const formattedGrantDate = Intl.DateTimeFormat('en-US').format(grantDate);
-
 	const response = await localDB.post(`/grants`, {
 		id: id.transactionHash,
 		selectedOrg: recipientEIN,
@@ -244,17 +235,6 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 
 export const approveGrant = (id, treeAddress, grantNonce) => async (dispatch, getState) => {
 	const approvalDetails = await approveTreeGrant(treeAddress, grantNonce, RINKEBY_DAI);
-
-	// const Web3 = require('web3');
-	// const infuraKey = process.env.REACT_APP_INFURA_KEY;
-	// const infuraRinkebyEndpoint = 'https://rinkeby.infura.io/v3/' + infuraKey;
-	// const provider = new Web3.providers.HttpProvider(infuraRinkebyEndpoint);
-	// const web3 = new Web3(provider);
-	// const blockInfo = await web3.eth.getBlock(approvalDetails.blockNumber);
-	// console.log(blockInfo);
-	// const approvalDate = new Date(blockInfo.timestamp * 1000);
-	// const formattedApprovalDate = new Intl.DateTimeFormat('en-US').format(approvalDate);
-
 	const response = await localDB.patch(`/grants/${id}`, {
 		grantApproval: true,
 		approvalDetails,
@@ -262,7 +242,7 @@ export const approveGrant = (id, treeAddress, grantNonce) => async (dispatch, ge
 	});
 
 	dispatch({ type: EDIT_GRANT, payload: response.data });
-	history.push('/admin');
+	window.location.reload();
 };
 
 export const fetchGrants = () => async (dispatch) => {
@@ -341,15 +321,9 @@ export const deleteGrant = (id) => async (dispatch) => {
 
 //LOCAL DB ACTIONS: DONATIONS
 
-export const createDonation = (
-	txID,
-	treeAddress,
-	fromAddress,
-	inputCurrency,
-	inputAmount,
-	outputAmount
-	// donationDate
-) => async (dispatch) => {
+export const createDonation = (txID, treeAddress, fromAddress, inputCurrency, inputAmount, outputAmount) => async (
+	dispatch
+) => {
 	const finalTradeOutput = (outputAmount / 1000000000000000000 - 0.01).toFixed(2);
 	const response = await localDB.post(`/donations`, {
 		id: txID,
@@ -358,11 +332,10 @@ export const createDonation = (
 		inputCurrency,
 		inputAmount,
 		finalTradeOutput
-		// donationDate
 	});
 
 	dispatch({ type: CREATE_DONATION, payload: response.data });
-	history.push(`/trees/${treeAddress}`);
+	window.location.reload();
 };
 
 export const fetchDonations = () => async (dispatch) => {

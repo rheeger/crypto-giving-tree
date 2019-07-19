@@ -17,7 +17,7 @@
 		"fs-extra": "^7.0.1",
 		"fuse": "^0.4.0",
 		"jazzicon": "^1.5.0",
-		"lodash": "^4.17.14",
+		"lodash": "^4.17.11",
 		"optimize-css-assets-webpack-plugin": "^5.0.1",
 		"prop-types": "^15.7.2",
 		"react": "^16.8.6",
@@ -47,7 +47,7 @@
 	},
 	"scripts": {
 		"analyze": "source-map-explorer 'build/static/js/*.js'",
-		"start": "serve -s build",
+		"start": "REACT_APP_NETWORK_ID=4 REACT_APP_NETWORK='Rinkeby Test Network' react-scripts start",
 		"start:rinkeby": "REACT_APP_NETWORK_ID=4 REACT_APP_NETWORK='Rinkeby Test Network' react-scripts start",
 		"build": "react-scripts build",
 		"build:rinkeby": "REACT_APP_NETWORK_ID=4 REACT_APP_NETWORK='Rinkeby Test Network' react-scripts build",
@@ -64,10 +64,5 @@
 		"node-sass": "^4.12.0",
 		"sass-loader": "^7.1.0"
 	},
-	"browserslist": [
-		">0.2%",
-		"not dead",
-		"not ie <= 11",
-		"not op_mini all"
-	]
+	"browserslist": [ ">0.2%", "not dead", "not ie <= 11", "not op_mini all" ]
 }
