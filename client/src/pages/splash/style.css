@@ -1,0 +1,157 @@
+body {
+	font-family: 'EB Garamond', serif;
+	background-color: whitesmoke;
+	border: 0;
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	flex-flow: row wrap;
+}
+
+/* ABOVE THE FOLD STYLING */
+#atf {
+	height: 100vh;
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+
+h1 {
+	font-weight: 400;
+	font-size: 5rem;
+	margin: -5rem 2rem 2rem 2rem;
+	text-align: center;
+}
+input {
+	display: none;
+}
+
+#button,
+h2,
+h4 {
+	font-weight: 400;
+	font-style: italic;
+	padding: .5rem;
+}
+
+#button:hover,
+ol > li:hover,
+li > a:hover {
+	text-decoration: underline;
+}
+
+#sidebar {
+	visibility: hidden;
+	opacity: 0;
+	margin: .5rem;
+	font-style: italic;
+	padding: 1rem;
+	text-align: center;
+	transition: visibility 0s, opacity 0.4s linear;
+}
+
+input[type="checkbox"]:checked ~ #sidebar {
+	visibility: visible;
+	opacity: 1;
+}
+
+ol li {
+	margin: .1rem;
+	padding: .1rem;
+}
+
+/* MAIN STYLING */
+
+main {
+	max-width: 700px;
+	display: flex;
+	flex-flow: row wrap;
+	align-items: flex-start;
+	align-content: flex-start;
+	margin: 0 auto;
+	height: 150vh;
+}
+
+#skills,
+#interests {
+	width: 40%;
+}
+
+#contact {
+	width: 20%;
+}
+
+#experience,
+#education {
+	width: 100%;
+}
+
+.detail {
+	display: flex;
+	flex-flow: row wrap;
+	margin-left: 1rem;
+}
+.breakdown1,
+.breakdown2 {
+	width: 50%;
+}
+
+.breakdown1 ul {
+	border-right: 1px solid black;
+}
+
+.overview,
+.takeaways {
+	width: 100%;
+}
+
+h2 {
+	margin-top: 1.5rem;
+}
+h4 {
+	font-size: .8rem;
+}
+
+h3 {
+	font-size: 2rem;
+	margin: .5rem 0 .5rem 1rem;
+}
+
+p {
+	font-style: italic;
+	padding: 0 0 0 1rem;
+}
+
+p.info {
+	font-size: .9rem;
+	font-style: normal;
+	text-align: unset;
+	margin-right: 1rem;
+}
+
+.breakdown1 ul,
+.breakdown2 > ul,
+.takeaways > ul {
+	margin: 0rem 0rem 0rem 2rem;
+}
+
+address > ul {
+	padding-left: 1rem;
+	font-size: .9rem;
+}
+
+#skills > h2,
+#interests > h2,
+address > h2 {
+	font-size: .8rem;
+}
+
+.takeaways p {
+	margin-bottom: 1rem;
+}
+
+.overview p {
+	margin-bottom: .25rem;
+}

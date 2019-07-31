@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from '../../components/Header';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Grid } from 'semantic-ui-react';
@@ -16,6 +17,7 @@ class HomePage extends React.Component {
 	render() {
 		return (
 			<div>
+				<Header />
 				<div>
 					<Grid className="Container">
 						<Grid.Row>

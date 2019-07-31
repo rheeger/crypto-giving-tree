@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Router, Route, Switch } from 'react-router-dom';
-import Header from '../components/Header';
+
 import history from '../history';
 import { Web3Connect, startWatching, initialize } from '../store/reducers/web3connect';
 import { setAddresses } from '../store/reducers/swapAddresses';
@@ -15,6 +15,7 @@ const AsyncOrgIndex = asyncComponent(() => import('./orgs'));
 const AsyncOrgShow = asyncComponent(() => import('./orgs/show'));
 const AsyncNewGrant = asyncComponent(() => import('./trees/grants/new'));
 const AsyncAdminPanel = asyncComponent(() => import('./admin'));
+const AsyncSplash = asyncComponent(() => import('./splash/splash'));
 
 class App extends React.Component {
 	componentWillMount() {
@@ -43,10 +44,11 @@ class App extends React.Component {
 			<div className="ui container">
 				<Router history={history}>
 					<div className="app__wrapper">
-						<Header />
+						{/* <Header /> */}
 						<Web3Connect />
 						<Switch>
-							<Route path="/" exact component={AsyncHome} />
+							<Route path="/" exact component={AsyncSplash} />
+							<Route path="/alpha" exact component={AsyncHome} />
 							<Route path="/trees" exact component={AsyncManager} />
 							<Route path="/trees/new" exact component={AsyncNewTree} />
 							<Route path="/trees/:address" exact component={AsyncTreeShow} />
