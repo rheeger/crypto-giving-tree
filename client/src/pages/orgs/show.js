@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Button, Card, Grid, Table } from 'semantic-ui-react';
 import { selectOrg, fetchOrg, fetchOrgLifetimeGrants, fetchOrgApprovedGrants } from '../../store/actions';
 import OrgGrantRow from '../../components/tables/OrgGrantRow';
+import NavHeader from '../../components/Header';
 
 class OrgShow extends React.Component {
 	initialState = {};
@@ -98,42 +99,45 @@ class OrgShow extends React.Component {
 			return <div> Loading... </div>;
 		}
 		return (
-			<div style={{ display: 'flex', justifyContent: 'center' }}>
-				<div style={{ maxWidth: '900px' }}>
-					<Grid style={{ margin: '0 auto' }} className="Container">
-						<Grid.Column width={11}>{this.renderOrgDetails()}</Grid.Column>
-						<Grid.Column width={5}>
-							<h3>Actions:</h3>
-							<Link to={`/orgs/${this.props.match.params.ein}/claim`}>
-								<Button basic color="yellow">
-									Claim Org
-								</Button>
-							</Link>
+			<div>
+				<NavHeader />
+				<div style={{ display: 'flex', justifyContent: 'center' }}>
+					<div style={{ maxWidth: '900px' }}>
+						<Grid style={{ margin: '0 auto' }} className="Container">
+							<Grid.Column width={11}>{this.renderOrgDetails()}</Grid.Column>
+							<Grid.Column width={5}>
+								<h3>Actions:</h3>
+								<Link to={`/orgs/${this.props.match.params.ein}/claim`}>
+									<Button basic color="yellow">
+										Claim Org
+									</Button>
+								</Link>
 
-							<Link to={`/orgs/${this.props.match.params.ein}/grants/new`}>
-								<Button floated="left" basic color="red">
-									<i className="paper plane icon" />send grant
-								</Button>
-							</Link>
-						</Grid.Column>
-						<Grid.Row>
-							<Grid.Column width={16}>
-								<h3>Completed Grants:</h3>
-								<Table>
-									<Header>
-										<Row>
-											<HeaderCell>Request Date</HeaderCell>
-											<HeaderCell>Issuing Tree</HeaderCell>
-											<HeaderCell>Description</HeaderCell>
-											<HeaderCell>Amount</HeaderCell>
-											<HeaderCell>Status</HeaderCell>
-										</Row>
-									</Header>
-									<Body>{this.renderRow()}</Body>
-								</Table>
+								<Link to={`/orgs/${this.props.match.params.ein}/grants/new`}>
+									<Button floated="left" basic color="red">
+										<i className="paper plane icon" />send grant
+									</Button>
+								</Link>
 							</Grid.Column>
-						</Grid.Row>
-					</Grid>
+							<Grid.Row>
+								<Grid.Column width={16}>
+									<h3>Completed Grants:</h3>
+									<Table>
+										<Header>
+											<Row>
+												<HeaderCell>Request Date</HeaderCell>
+												<HeaderCell>Issuing Tree</HeaderCell>
+												<HeaderCell>Description</HeaderCell>
+												<HeaderCell>Amount</HeaderCell>
+												<HeaderCell>Status</HeaderCell>
+											</Row>
+										</Header>
+										<Body>{this.renderRow()}</Body>
+									</Table>
+								</Grid.Column>
+							</Grid.Row>
+						</Grid>
+					</div>
 				</div>
 			</div>
 		);

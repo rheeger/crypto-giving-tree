@@ -12,6 +12,7 @@ import { Card, Grid, Table } from 'semantic-ui-react';
 import ContributionForm from '../../components/ContributionForm';
 import GrantRow from '../../components/tables/GrantRow';
 import DonationRow from '../../components/tables/DonationRow';
+import NavHeader from '../../components/Header';
 
 class TreeShow extends Component {
 	componentWillMount = () => {
@@ -138,6 +139,7 @@ class TreeShow extends Component {
 
 		return (
 			<div style={{ display: 'flex', justifyContent: 'center' }}>
+				<NavHeader />
 				<div style={{ maxWidth: '900px' }}>
 					<Grid className="Container">
 						<Grid.Row>

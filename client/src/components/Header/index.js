@@ -1,13 +1,12 @@
 import React from 'react';
 import { Menu } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import Logo from '../../assets/images/givingTreeWide.svg';
 
 export default () => {
 	return (
 		<Menu position="center" style={{ marginTop: '1rem' }}>
-			<Link to="/" className="item">
-				<img style={{ width: '15vh' }} alt="The Charity Tree" src={Logo} />
+			<Link to="/alpha" className="item">
+				The Charity Block
 			</Link>
 
 			<Menu.Menu position="right">

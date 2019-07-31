@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react';
 import { plantTreeAndContract } from '../../store/actions';
 import BranchForm from '../../components/BranchForm';
+import Header from '../../components/Header';
 
 class NewTree extends React.Component {
 	state = {
@@ -27,65 +28,73 @@ class NewTree extends React.Component {
 	render() {
 		if (this.state.ready === 'true') {
 			return (
-				<div
-					style={{
-						margin: '0px auto',
-						textAlign: 'left',
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						height: 'auto',
-						width: '700px'
-					}}
-				>
-					<div style={{ width: '500px' }}>
-						<h1>Plant your Tree:</h1>
+				<div>
+					<Header />
 
-						<BranchForm onSubmit={this.onSubmit} loading={this.state.loading} />
+					<div
+						style={{
+							margin: '0px auto',
+							textAlign: 'left',
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center',
+							height: 'auto',
+							width: '700px'
+						}}
+					>
+						<div style={{ width: '500px' }}>
+							<h1>Plant your Tree:</h1>
+
+							<BranchForm onSubmit={this.onSubmit} loading={this.state.loading} />
+						</div>
 					</div>
 				</div>
 			);
 		}
 
 		return (
-			<div
-				style={{
-					margin: '0px auto',
-					textAlign: 'left',
-					display: 'flex',
-					justifyContent: 'flex-start',
-					alignItems: 'center',
-					height: '50vh',
-					maxWidth: '350px'
-				}}
-			>
-				<div>
-					<h1>What is this? </h1>
-					<p>some things to know...</p>
-					<h3>
-						1. Each Charity Tree is functionally equivalent to a{' '}
-						<a href="https://en.wikipedia.org/wiki/Donor-advised_fund" target="blank">
-							Donor Advised Fund.
-						</a>
-					</h3>
-					<h3>
-						2. You can easily contribute ERC-20 tokens to your Tree. The Charity Tree supports{' '}
-						<a href="https://beta.uniswap.info/" target="blank">
-							all tokens with Uniswap Exchange Contracts.
-						</a>
-					</h3>
-					<h3>
-						3. Donated tokens are exchanged for{' '}
-						<a href="https://makerdao.com/en/dai/" target="blank">
-							DAI
-						</a>. 1 DAI = 1 USD. Use the DAI to reccomend grants to any qualifyiing 501(c)(3) at your own
-						pace.
-					</h3>
-					<br />
+			<div>
+				<Header />
 
-					<Button onClick={this.renderBranchForm} floated="left" className="ui button green">
-						Got It!
-					</Button>
+				<div
+					style={{
+						margin: '0px auto',
+						textAlign: 'left',
+						display: 'flex',
+						justifyContent: 'flex-start',
+						alignItems: 'center',
+						height: '50vh',
+						maxWidth: '350px'
+					}}
+				>
+					<div>
+						<h1>What is this? </h1>
+						<p>some things to know...</p>
+						<h3>
+							1. Each Giving Tree is functionally equivalent to a{' '}
+							<a href="https://en.wikipedia.org/wiki/Donor-advised_fund" target="blank">
+								Donor Advised Fund.
+							</a>
+						</h3>
+						<h3>
+							2. You can easily contribute tokens to your Tree. The Charity Block supports{' '}
+							<a href="https://beta.uniswap.info/" target="blank">
+								all tokens with Uniswap Exchange Contracts.
+							</a>
+						</h3>
+						<h3>
+							3. Donated tokens are exchanged for{' '}
+							<a href="https://makerdao.com/en/dai/" target="blank">
+								DAI
+							</a>. 1 DAI = 1 USD. Use the DAI to reccomend grants to any qualifyiing 501(c)(3) at your
+							own pace.
+						</h3>
+						<br />
+
+						<Button onClick={this.renderBranchForm} floated="left" className="ui button green">
+							Got It!
+						</Button>
+					</div>
 				</div>
 			</div>
 		);

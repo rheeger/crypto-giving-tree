@@ -1,41 +1,65 @@
 import React from 'react';
-import './style.css';
+// import './style.css';
 import './heegerreset.css';
 
 class Splash extends React.Component {
 	render() {
 		return (
-			<div
-				style={{
-					fontFamily: 'EB Garamond',
-					backgroundColor: 'whitesmoke',
-					border: '0',
-					display: 'flex',
-					justifyContent: 'flex-start',
-					alignItems: 'flex-start',
-					flexFlow: 'row wrap'
-				}}
-			>
+			<div>
 				<div
 					style={{
-						height: '100vh',
+						fontFamily: 'EB Garamond',
+						border: '0',
 						display: 'flex',
-						flexFlow: 'column',
-						justifyContent: 'center',
-						alignItems: 'center',
-						width: '100%'
+						justifyContent: 'flex-start',
+						alignItems: 'flex-start',
+						flexFlow: 'row wrap'
 					}}
 				>
-					<h1
+					<div
 						style={{
-							fontWeight: '400',
-							fontSize: '5rem',
-							margin: '-5rem 2rem 2rem 2rem',
-							textAlign: 'center'
+							height: '100vh',
+							display: 'flex',
+							flexFlow: 'column',
+							justifyContent: 'center',
+							alignItems: 'center',
+							width: '100%'
 						}}
 					>
-						The Charity Block
-					</h1>
+						<h3
+							style={{
+								fontWeight: '2rem',
+								fontStyle: 'italic',
+								fontSize: '2rem',
+								padding: '2rem',
+								margin: '-20rem 2rem 2rem 2rem',
+								textAlign: 'center'
+							}}
+						>
+							The future home of:
+						</h3>
+						<h1
+							style={{
+								fontWeight: '400',
+								margin: '-3rem 2rem 2rem 2rem',
+								fontSize: '5rem',
+								padding: '2rem',
+								textAlign: 'center'
+							}}
+						>
+							The Charity Block
+						</h1>
+						<h3
+							style={{
+								fontSize: '1.75rem',
+								padding: '2rem',
+								margin: '-3rem 2rem 2rem 2rem',
+								textAlign: 'center'
+							}}
+						>
+							Blockchain-based giving.
+						</h3>
+					</div>
 				</div>
 			</div>
 		);

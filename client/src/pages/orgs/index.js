@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import { Button, Card } from 'semantic-ui-react';
-
+import Header from '../../components/Header';
 import SearchBar from '../../components/SearchBar';
 import { connect } from 'react-redux';
 import { searchOrgs, fetchOrgs } from '../../store/actions/index';
@@ -56,12 +56,15 @@ class OrgIndex extends React.Component {
 		}, 800);
 
 		return (
-			<div style={{ display: 'flex', justifyContent: 'center' }}>
-				<div style={{ width: '900px' }}>
-					<SearchBar onSearchTermChange={orgSearch} onSubmit={orgSearch} />
-					<div style={{ margin: '0 auto', maxWidth: '80vw' }}>
-						<p>Found {this.props.orgs.total_results} organizations</p>
-						{this.renderOrgs()}
+			<div>
+				<Header />
+				<div style={{ display: 'flex', justifyContent: 'center' }}>
+					<div style={{ width: '900px' }}>
+						<SearchBar onSearchTermChange={orgSearch} onSubmit={orgSearch} />
+						<div style={{ margin: '0 auto', maxWidth: '80vw' }}>
+							<p>Found {this.props.orgs.total_results} organizations</p>
+							{this.renderOrgs()}
+						</div>
 					</div>
 				</div>
 			</div>
