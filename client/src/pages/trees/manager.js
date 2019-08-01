@@ -29,7 +29,7 @@ class Manager extends React.Component {
 				<Header />
 				<div style={{ display: 'flex', justifyContent: 'center' }}>
 					<div style={{ width: '800px' }}>
-						<h2>My Charity Trees:</h2>
+						<h2>Active Giving Trees:</h2>
 						<div className="ui celled list">{this.renderList()}</div>
 					</div>
 				</div>

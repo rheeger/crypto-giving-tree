@@ -33,7 +33,7 @@ class HomePage extends React.Component {
 								width={16}
 							>
 								<div>
-									<h1>Plant your Giving Tree today.</h1>
+									<h1>Plant a Giving Tree today.</h1>
 									<h3>
 										Create your own charitable fund. Extend grants to qualifying non-profit
 										organizations.

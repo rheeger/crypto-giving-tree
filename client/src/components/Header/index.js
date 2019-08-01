@@ -4,8 +4,15 @@ import { Link } from 'react-router-dom';
 
 export default () => {
 	return (
-		<Menu position="center" style={{ marginTop: '1rem' }}>
-			<Link to="/alpha" className="item">
+		<Menu style={{ marginTop: '1rem' }}>
+			<Link
+				to="/alpha"
+				className="item"
+				style={{
+					fontFamily: 'EB Garamond',
+					fontSize: '1.5rem'
+				}}
+			>
 				The Charity Block
 			</Link>
 

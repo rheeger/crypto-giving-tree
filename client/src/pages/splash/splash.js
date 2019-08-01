@@ -36,7 +36,7 @@ class Splash extends React.Component {
 								textAlign: 'center'
 							}}
 						>
-							The future home of:
+							future home of:
 						</h3>
 						<h1
 							style={{
@@ -57,7 +57,7 @@ class Splash extends React.Component {
 								textAlign: 'center'
 							}}
 						>
-							Blockchain-based giving.
+							Donate crypto to any non-profit organization.
 						</h3>
 					</div>
 				</div>
