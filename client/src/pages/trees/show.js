@@ -138,56 +138,57 @@ class TreeShow extends Component {
 		}
 
 		return (
-			<div style={{ display: 'flex', justifyContent: 'center' }}>
+			<div>
 				<NavHeader />
-				<div style={{ maxWidth: '900px' }}>
-					<Grid className="Container">
-						<Grid.Row>
-							<Grid.Column width={10}>
-								<h3>Tree Details:</h3>
-								{this.renderCards()}
-							</Grid.Column>
+				<div style={{ display: 'flex', justifyContent: 'center' }}>
+					<div style={{ maxWidth: '900px' }}>
+						<Grid className="Container">
+							<Grid.Row>
+								<Grid.Column width={10}>
+									<h3>Tree Details:</h3>
+									{this.renderCards()}
+								</Grid.Column>
 
-							<Grid.Column width={6}>
-								<h3>Donate to {this.props.gtTrees[this.props.match.params.address].branchName}:</h3>
-								<ContributionForm recievingTree={this.props.match.params.address} />
-							</Grid.Column>
-						</Grid.Row>
-						<Grid.Row>
-							<Grid.Column width={16}>
-								<h3>Extended Grants:</h3>
-								<Table>
-									<Header>
-										<Row>
-											<HeaderCell>Request Date</HeaderCell>
-											<HeaderCell>Recipient</HeaderCell>
-											<HeaderCell>Description</HeaderCell>
-											<HeaderCell>Amount</HeaderCell>
-											<HeaderCell>Status</HeaderCell>
-										</Row>
-									</Header>
-									<Body>{this.renderGrantRow()}</Body>
-								</Table>
-							</Grid.Column>
-						</Grid.Row>
-						<Grid.Row>
-							<Grid.Column width={16}>
-								<h3>Recieved Donations:</h3>
-								<Table>
-									<Header>
-										<Row>
-											<HeaderCell>Donation Date</HeaderCell>
-											<HeaderCell>From</HeaderCell>
-											<HeaderCell>Property Donated</HeaderCell>
-											<HeaderCell>Exchanged Amount</HeaderCell>
-											<HeaderCell>Status</HeaderCell>
-										</Row>
-									</Header>
-									<Body>{this.renderDonationRow()}</Body>
-								</Table>
-							</Grid.Column>
-						</Grid.Row>
-						{/* 
+								<Grid.Column width={6}>
+									<h3>Donate to {this.props.gtTrees[this.props.match.params.address].branchName}:</h3>
+									<ContributionForm recievingTree={this.props.match.params.address} />
+								</Grid.Column>
+							</Grid.Row>
+							<Grid.Row>
+								<Grid.Column width={16}>
+									<h3>Extended Grants:</h3>
+									<Table>
+										<Header>
+											<Row>
+												<HeaderCell>Request Date</HeaderCell>
+												<HeaderCell>Recipient</HeaderCell>
+												<HeaderCell>Description</HeaderCell>
+												<HeaderCell>Amount</HeaderCell>
+												<HeaderCell>Status</HeaderCell>
+											</Row>
+										</Header>
+										<Body>{this.renderGrantRow()}</Body>
+									</Table>
+								</Grid.Column>
+							</Grid.Row>
+							<Grid.Row>
+								<Grid.Column width={16}>
+									<h3>Recieved Donations:</h3>
+									<Table>
+										<Header>
+											<Row>
+												<HeaderCell>Donation Date</HeaderCell>
+												<HeaderCell>From</HeaderCell>
+												<HeaderCell>Property Donated</HeaderCell>
+												<HeaderCell>Exchanged Amount</HeaderCell>
+												<HeaderCell>Status</HeaderCell>
+											</Row>
+										</Header>
+										<Body>{this.renderDonationRow()}</Body>
+									</Table>
+								</Grid.Column>
+							</Grid.Row>
+							{/* 
 					<Link route={`/trees/${this.props.address}/grants`}>
 						<a>
 							<Button primary>View Grants</Button>
@@ -198,7 +199,8 @@ class TreeShow extends Component {
 							<Button secondary>See All</Button>
 						</a>
 					</Link> */}
-					</Grid>
+						</Grid>
+					</div>
 				</div>
 			</div>
 		);
