@@ -240,6 +240,8 @@ export const approveGrant = (id, treeAddress, grantNonce) => async (dispatch, ge
 		approvalDetails,
 		dateApproved: Date.now()
 	});
+	const grantDetails = await localDB.get(`/grants/${id}`);
+	await fetchOrgLifetimeGrants(grantDetails.selectedOrg);
 
 	dispatch({ type: EDIT_GRANT, payload: response.data });
 	window.location.reload();

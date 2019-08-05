@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Button, Card, Grid, Table } from 'semantic-ui-react';
-import { selectOrg, fetchOrg, fetchOrgLifetimeGrants, fetchOrgApprovedGrants } from '../../store/actions';
+import { selectOrg, fetchOrg, fetchOrgLifetimeGrants, fetchOrgApprovedGrants, fetchOrgs } from '../../store/actions';
 import OrgGrantRow from '../../components/tables/OrgGrantRow';
 import NavHeader from '../../components/Header';
 
@@ -10,10 +10,11 @@ class OrgShow extends React.Component {
 	initialState = {};
 
 	componentWillMount() {
-		const { selectOrg, fetchOrgApprovedGrants, match, fetchOrgLifetimeGrants } = this.props;
+		const { selectOrg, fetchOrgApprovedGrants, match, fetchOrgLifetimeGrants, fetchOrgs } = this.props;
 		selectOrg(match.params.ein);
 		fetchOrgApprovedGrants(match.params.ein);
 		fetchOrgLifetimeGrants(match.params.ein);
+		fetchOrgs();
 	}
 
 	renderRow() {
@@ -152,6 +153,10 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { selectOrg, fetchOrgApprovedGrants, fetchOrg, fetchOrgLifetimeGrants })(
-	OrgShow
-);
+export default connect(mapStateToProps, {
+	selectOrg,
+	fetchOrgApprovedGrants,
+	fetchOrg,
+	fetchOrgLifetimeGrants,
+	fetchOrgs
+})(OrgShow);

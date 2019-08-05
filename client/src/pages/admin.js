@@ -6,6 +6,7 @@ import DonationRow from '../components/tables/DonationRow';
 import { GT_ADMIN } from '../store/actions/types';
 import history from '../history';
 import AdminGrantRow from '../components/tables/AdminGrantRow';
+import NavHeader from '../components/Header';
 
 class AdminPanel extends Component {
 	componentWillMount = () => {
@@ -129,52 +130,54 @@ class AdminPanel extends Component {
 		}
 
 		return (
-			<div style={{ display: 'flex', justifyContent: 'center' }}>
-				<div style={{ maxWidth: '900px' }}>
-					<Grid className="Container">
-						<Grid.Row>
-							<Grid.Column width={16}>
-								<h3>Admin Panel:</h3>
-								{/* {this.renderCards()} */}
-							</Grid.Column>
-						</Grid.Row>
-						<Grid.Row>
-							<Grid.Column width={16}>
-								<h3>Grants Awaiting Approval:</h3>
-								<Table>
-									<Header>
-										<Row>
-											<HeaderCell>Request Date</HeaderCell>
-											<HeaderCell>Recipient</HeaderCell>
-											<HeaderCell>Description</HeaderCell>
-											<HeaderCell>Amount</HeaderCell>
-											<HeaderCell>View</HeaderCell>
-											<HeaderCell>Approve</HeaderCell>
-											<HeaderCell>Reject</HeaderCell>
-										</Row>
-									</Header>
-									<Body>{this.renderGrantRow()}</Body>
-								</Table>
-							</Grid.Column>
-						</Grid.Row>
-						<Grid.Row>
-							<Grid.Column width={16}>
-								<h3>Recieved Donations:</h3>
-								<Table>
-									<Header>
-										<Row>
-											<HeaderCell>Donation Date</HeaderCell>
-											<HeaderCell>From</HeaderCell>
-											<HeaderCell>Property Donated</HeaderCell>
-											<HeaderCell>Exchanged Amount</HeaderCell>
-											<HeaderCell>Status</HeaderCell>
-										</Row>
-									</Header>
-									<Body>{this.renderDonationRow()}</Body>
-								</Table>
-							</Grid.Column>
-						</Grid.Row>
-						{/* 
+			<div>
+				<NavHeader />
+				<div style={{ display: 'flex', justifyContent: 'center' }}>
+					<div style={{ maxWidth: '900px' }}>
+						<Grid className="Container">
+							<Grid.Row>
+								<Grid.Column width={16}>
+									<h3>Admin Panel:</h3>
+									{/* {this.renderCards()} */}
+								</Grid.Column>
+							</Grid.Row>
+							<Grid.Row>
+								<Grid.Column width={16}>
+									<h3>Grants Awaiting Approval:</h3>
+									<Table>
+										<Header>
+											<Row>
+												<HeaderCell>Request Date</HeaderCell>
+												<HeaderCell>Recipient</HeaderCell>
+												<HeaderCell>Description</HeaderCell>
+												<HeaderCell>Amount</HeaderCell>
+												<HeaderCell>View</HeaderCell>
+												<HeaderCell>Approve</HeaderCell>
+												<HeaderCell>Reject</HeaderCell>
+											</Row>
+										</Header>
+										<Body>{this.renderGrantRow()}</Body>
+									</Table>
+								</Grid.Column>
+							</Grid.Row>
+							<Grid.Row>
+								<Grid.Column width={16}>
+									<h3>Recieved Donations:</h3>
+									<Table>
+										<Header>
+											<Row>
+												<HeaderCell>Donation Date</HeaderCell>
+												<HeaderCell>From</HeaderCell>
+												<HeaderCell>Property Donated</HeaderCell>
+												<HeaderCell>Exchanged Amount</HeaderCell>
+												<HeaderCell>Status</HeaderCell>
+											</Row>
+										</Header>
+										<Body>{this.renderDonationRow()}</Body>
+									</Table>
+								</Grid.Column>
+							</Grid.Row>
+							{/* 
 					<Link route={`/trees/${this.props.address}/grants`}>
 						<a>
 							<Button primary>View Grants</Button>
@@ -185,7 +188,8 @@ class AdminPanel extends Component {
 							<Button secondary>See All</Button>
 						</a>
 					</Link> */}
-					</Grid>
+						</Grid>
+					</div>
 				</div>
 			</div>
 		);
