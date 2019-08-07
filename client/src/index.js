@@ -5,13 +5,16 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import App from './pages/App';
 import reducers from './store/reducers';
+import HttpsRedirect from 'react-https-redirect';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
 
 ReactDOM.render(
-	<Provider store={store}>
-		<App />
-	</Provider>,
+	<HttpsRedirect>
+		<Provider store={store}>
+			<App />
+		</Provider>
+	</HttpsRedirect>,
 	document.querySelector('#root')
 );
