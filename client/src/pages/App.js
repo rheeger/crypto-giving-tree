@@ -13,6 +13,7 @@ const AsyncNewTree = asyncComponent(() => import('./trees/new'));
 const AsyncTreeShow = asyncComponent(() => import('./trees/show'));
 const AsyncOrgIndex = asyncComponent(() => import('./orgs'));
 const AsyncOrgShow = asyncComponent(() => import('./orgs/show'));
+const AsyncNewClaim = asyncComponent(() => import('./orgs/claim'));
 const AsyncNewGrant = asyncComponent(() => import('./trees/grants/new'));
 const AsyncAdminPanel = asyncComponent(() => import('./admin'));
 const AsyncSplash = asyncComponent(() => import('./splash/splash'));
@@ -55,6 +56,7 @@ class App extends React.Component {
 							<Route path="/orgs" exact component={AsyncOrgIndex} />
 							<Route path="/orgs/:ein" exact component={AsyncOrgShow} />
 							<Route path="/orgs/:ein/grants/new" exact component={AsyncNewGrant} />
+							<Route path="/orgs/:ein/claim" exact component={AsyncNewClaim} />
 							<Route path="/admin" exact component={AsyncAdminPanel} />
 						</Switch>
 					</div>
