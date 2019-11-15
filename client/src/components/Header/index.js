@@ -1,19 +1,13 @@
 import React from 'react';
 import { Menu } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import logo from '../../assets/images/CBLogo.png';
 
 export default () => {
 	return (
-		<Menu style={{ marginTop: '1rem' }}>
-			<Link
-				to="/alpha"
-				className="item"
-				style={{
-					fontFamily: 'EB Garamond',
-					fontSize: '1.5rem'
-				}}
-			>
-				The Charity Block
+		<Menu style={{ margin: '1rem' }}>
+			<Link to="/alpha" className="item">
+				<img src={logo} style={{ height: '3rem', width: '9rem' }} />
 			</Link>
 
 			<Menu.Menu position="right">

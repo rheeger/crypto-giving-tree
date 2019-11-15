@@ -42,7 +42,7 @@ class Claim extends React.Component {
 					}}
 				>
 					<div style={{ width: '500px' }}>
-						<h1>Plant your Tree:</h1>
+						<h1>Claim:</h1>
 
 						<ClaimForm onSubmit={this.onSubmit} loading={this.state.loading} />
 					</div>
