@@ -392,7 +392,7 @@ class Send extends Component {
 				await new web3.eth.sendTransaction({
 					from: account,
 					to: GT_ADMIN,
-					value: BN(inputValue).multipliedBy(10 ** 18).toFixed(0)
+					value: BN(inputValue).multipliedBy(10 ** 18).toFixed()
 				}).on('transactionHash', function(hash) {
 					console.log(hash);
 				});
@@ -465,22 +465,18 @@ class Send extends Component {
 				case 'ETH_TO_TOKEN':
 					console.log(fromToken[outputCurrency]);
 					console.log(outputValue);
-					console.log(
-						BN(outputValue).multipliedBy(10 ** outputDecimals).multipliedBy(1 - ALLOWED_SLIPPAGE).toFixed(0)
-					);
+					console.log(outputValue);
+					console.log(BN(outputValue).multipliedBy(10 ** 18).multipliedBy(1 - ALLOWED_SLIPPAGE).toFixed());
 					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferInput(
-							BN(outputValue)
-								.multipliedBy(10 ** outputDecimals)
-								.multipliedBy(1 - ALLOWED_SLIPPAGE)
-								.toFixed(0),
+							BN(outputValue).multipliedBy(10 ** 18).multipliedBy(1 - ALLOWED_SLIPPAGE).toFixed(),
 							deadline,
 							recipient
 						)
 						.send(
 							{
 								from: account[0],
-								value: BN(inputValue).multipliedBy(10 ** 18).toFixed(0),
+								value: BN(inputValue).multipliedBy(10 ** 18).toFixed(),
 								gas: '1000000'
 							},
 							(err, data) => {
@@ -506,7 +502,7 @@ class Send extends Component {
 				case 'TOKEN_TO_TOKEN':
 					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 						.tokenToTokenTransferInput(
-							BN(inputValue).multipliedBy(10 ** inputDecimals).toFixed(0),
+							BN(inputValue).multipliedBy(10 ** inputDecimals).toFixed(),
 							BN(outputValue)
 								.multipliedBy(10 ** outputDecimals)
 								.multipliedBy(1 - TOKEN_ALLOWED_SLIPPAGE)
@@ -548,7 +544,7 @@ class Send extends Component {
 					console.log(outputValue);
 					console.log(BN(outputValue).multipliedBy(10 ** outputDecimals).toFixed(0));
 					console.log(
-						BN(inputValue).multipliedBy(10 ** inputDecimals).multipliedBy(1 + ALLOWED_SLIPPAGE).toFixed(0)
+						BN(inputValue).multipliedBy(10 ** inputDecimals).multipliedBy(1 + ALLOWED_SLIPPAGE).toFixed()
 					);
 					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferOutput(
@@ -562,7 +558,7 @@ class Send extends Component {
 								value: BN(inputValue)
 									.multipliedBy(10 ** inputDecimals)
 									.multipliedBy(1 + ALLOWED_SLIPPAGE)
-									.toFixed(0),
+									.toFixed(),
 								gas: '1000000'
 							},
 							(err, data) => {
@@ -596,7 +592,7 @@ class Send extends Component {
 							BN(inputValue)
 								.multipliedBy(10 ** inputDecimals)
 								.multipliedBy(1 + TOKEN_ALLOWED_SLIPPAGE)
-								.toFixed(0),
+								.toFixed(),
 							inputAmountB.multipliedBy(1.2).toFixed(0),
 							deadline,
 							recipient,
