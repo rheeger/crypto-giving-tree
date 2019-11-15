@@ -8,7 +8,8 @@ import Header from '../../components/Header';
 class Claim extends React.Component {
 	state = {
 		ready: 'false',
-		loading: false
+		loading: false,
+		orgName: 'hello this is a test form'
 	};
 
 	componentDidMount() {
@@ -44,7 +45,7 @@ class Claim extends React.Component {
 					<div style={{ width: '500px' }}>
 						<h1>Claim:</h1>
 
-						<ClaimForm onSubmit={this.onSubmit} loading={this.state.loading} />
+						<ClaimForm orgName={this.state.orgName} onSubmit={this.onSubmit} loading={this.state.loading} />
 					</div>
 				</div>
 			</div>

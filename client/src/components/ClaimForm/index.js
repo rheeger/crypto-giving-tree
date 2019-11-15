@@ -28,8 +28,21 @@ class BranchForm extends React.Component {
 	render() {
 		return (
 			<form className="ui form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
-				<Field name="title" component={this.renderInput} label="Title:" />
-				<Field name="description" component={this.renderInput} label="Description:" />
+				<Field
+					name="Organization"
+					component={this.renderInput}
+					disabled
+					label="Title:"
+					value={this.props.orgName}
+				/>
+				<Field name="orgWallet" component={this.renderInput} label="Ethereum Wallet Address:" />
+				<Field name="primaryAdvisorFirstName" component={this.renderInput} label="First name:" />
+				<Field name="primaryAdvisorLastName" component={this.renderInput} label="Last name:" />
+				<Field name="primaryAdvisorEmail" component={this.renderInput} type="email" label="eMail:" />
+				<Field name="primaryAdvisorAddress" component={this.renderInput} label="Address:" />
+				<Field name="primaryAdvisorCity" component={this.renderInput} label="City:" />
+				<Field name="primaryAdvisorState" component={this.renderInput} label="State:" />
+				<Field name="primaryAdvisorZip" component={this.renderInput} type="number" label="ZIP" />
 				<button className="ui button primary">Submit</button>
 			</form>
 		);
