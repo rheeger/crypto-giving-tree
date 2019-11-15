@@ -443,7 +443,7 @@ class Send extends Component {
 			lastEditedField,
 			recipient
 		} = this.state;
-		const ALLOWED_SLIPPAGE = 0.025;
+		const ALLOWED_SLIPPAGE = 0.05;
 		const TOKEN_ALLOWED_SLIPPAGE = 0.04;
 
 		const type = getSendType(inputCurrency, outputCurrency);
@@ -463,6 +463,11 @@ class Send extends Component {
 			// send input
 			switch (type) {
 				case 'ETH_TO_TOKEN':
+					console.log(fromToken[outputCurrency]);
+					console.log(outputValue);
+					console.log(
+						BN(outputValue).multipliedBy(10 ** outputDecimals).multipliedBy(1 - ALLOWED_SLIPPAGE).toFixed(0)
+					);
 					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferInput(
 							BN(outputValue)
@@ -540,6 +545,11 @@ class Send extends Component {
 
 			switch (type) {
 				case 'ETH_TO_TOKEN':
+					console.log(outputValue);
+					console.log(BN(outputValue).multipliedBy(10 ** outputDecimals).toFixed(0));
+					console.log(
+						BN(inputValue).multipliedBy(10 ** inputDecimals).multipliedBy(1 + ALLOWED_SLIPPAGE).toFixed(0)
+					);
 					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferOutput(
 							BN(outputValue).multipliedBy(10 ** outputDecimals).toFixed(0),
