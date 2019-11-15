@@ -7,7 +7,7 @@ export default () => {
 	return (
 		<Menu style={{ margin: '1rem' }}>
 			<Link to="/alpha" className="item">
-				<img src={logo} style={{ height: '3rem', width: '9rem' }} />
+				<img alt="Charity Block" src={logo} style={{ height: '3rem', width: '9rem' }} />
 			</Link>
 
 			<Menu.Menu position="right">

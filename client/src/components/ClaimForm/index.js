@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
-class BranchForm extends React.Component {
+class ClaimForm extends React.Component {
 	renderError({ error, touched }) {
 		if (touched && error) {
 			return (
@@ -11,12 +11,12 @@ class BranchForm extends React.Component {
 			);
 		}
 	}
-	renderInput = ({ input, label, meta }) => {
+	renderInput = ({ input, label, meta, ...custom }) => {
 		const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
 		return (
 			<div className={className}>
 				<label>{label}</label>
-				<input {...input} autoComplete="off" />
+				<input {...input} {...custom} autoComplete="off" />
 				{this.renderError(meta)}
 			</div>
 		);
@@ -28,21 +28,21 @@ class BranchForm extends React.Component {
 	render() {
 		return (
 			<form className="ui form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
-				<Field
-					name="Organization"
-					component={this.renderInput}
-					disabled
-					label="Title:"
-					value={this.props.orgName}
-				/>
-				<Field name="orgWallet" component={this.renderInput} label="Ethereum Wallet Address:" />
+				<Field name="orgAddress" component={this.renderInput} label="Organization's Ethereum Wallet Address:" />
 				<Field name="primaryAdvisorFirstName" component={this.renderInput} label="First name:" />
 				<Field name="primaryAdvisorLastName" component={this.renderInput} label="Last name:" />
 				<Field name="primaryAdvisorEmail" component={this.renderInput} type="email" label="eMail:" />
 				<Field name="primaryAdvisorAddress" component={this.renderInput} label="Address:" />
 				<Field name="primaryAdvisorCity" component={this.renderInput} label="City:" />
 				<Field name="primaryAdvisorState" component={this.renderInput} label="State:" />
-				<Field name="primaryAdvisorZip" component={this.renderInput} type="number" label="ZIP" />
+				<Field name="primaryAdvisorZip" component={this.renderInput} type="number" label="ZIP:" />
+				<Field
+					name="verificationUpload"
+					component={this.renderInput}
+					label="Upload Verification Letter:"
+					type="file"
+					accept=".jpg, .png, .jpeg, .pdf"
+				/>
 				<button className="ui button primary">Submit</button>
 			</form>
 		);
@@ -61,4 +61,4 @@ const validate = (formValues) => {
 	return errors;
 };
 
-export default reduxForm({ form: 'streamForm', validate })(BranchForm);
+export default reduxForm({ form: 'streamForm', validate })(ClaimForm);

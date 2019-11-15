@@ -1,32 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button } from 'semantic-ui-react';
-import { plantTreeAndContract } from '../../store/actions';
+// import { Button } from 'semantic-ui-react';
+import { selectOrg } from '../../store/actions';
 import ClaimForm from '../../components/ClaimForm';
 import Header from '../../components/Header';
 
 class Claim extends React.Component {
-	state = {
-		ready: 'false',
-		loading: false,
-		orgName: 'hello this is a test form'
-	};
-
 	componentDidMount() {
-		this.setState({ ready: 'false' });
+		const { selectOrg, match } = this.props;
+		selectOrg(match.params.ein);
+		console.log();
 	}
 
-	onSubmit = async (formValues) => {
-		this.setState({ loading: true });
-
-		this.setState({ loading: false });
-	};
-
-	renderClaimForm = () => {
-		this.setState({ ready: 'true' });
-	};
+	onSubmit = async (formValues) => {};
 
 	render() {
+		if (!this.props.org.organization) {
+			return <div> Loading... </div>;
+		}
 		return (
 			<div>
 				<Header />
@@ -43,9 +34,9 @@ class Claim extends React.Component {
 					}}
 				>
 					<div style={{ width: '500px' }}>
-						<h1>Claim:</h1>
-
-						<ClaimForm orgName={this.state.orgName} onSubmit={this.onSubmit} loading={this.state.loading} />
+						<h1>Submit claim for: {this.props.org.organization.name}</h1>
+						<p>Tax ID (EIN): {this.props.org.organization.ein}</p>
+						<ClaimForm orgName={this.props.org.organization.name} onSubmit={this.onSubmit} />
 					</div>
 				</div>
 			</div>
@@ -55,9 +46,10 @@ class Claim extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		org: state.org,
 		gtTrees: state.gtTrees,
 		web3: state.web3connect
 	};
 };
 
-export default connect(mapStateToProps, { plantTreeAndContract })(Claim);
+export default connect(mapStateToProps, { selectOrg })(Claim);
