@@ -12,8 +12,12 @@ contract OrgFactory {
         emit orgCreated(newOrg);
     }
 
-    function getDeployedOrgs() public view returns (Org[] memory) {
-        return deployedOrgs;
+    function countDeployedOrgs() public view returns (uint) {
+        return deployedOrgs.length;
+    }
+
+    function getDeployedOrg(uint index) public view returns (address) {
+        return deployedOrgs[index-1];
     }
 
     function getAllowedOrgs(address Org) public view returns (bool){
@@ -51,8 +55,8 @@ contract Org {
     Claim[] public claims;
 
     function checkAdmin() public view returns (address) {
-        AbstractAdmin x = AbstractAdmin ( 0xfb4536335bd7ee65ee7bb4ef9aaafa689c3c2606 );
-    
+        AbstractAdmin x = AbstractAdmin ( 0xFB4536335Bd7Ee65EE7Bb4EF9aaAFa689c3C2606 );
+
         return x.getAdmin();
     }
     

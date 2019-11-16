@@ -1,5 +1,6 @@
 pragma solidity ^0.4.25;
 
+
 contract AbstractOrgFactory {
     function getAllowedOrgs(address recipient) public view returns (bool);
 }
@@ -25,19 +26,20 @@ contract TreeNursery {
     Tree[] public plantedTrees;
     address public admin;
     event treePlanted(address newAddress);
+    
 
     constructor() public {
         admin = checkAdmin();
     }
 
     function checkAdmin() public view returns (address) {
-        AbstractAdmin x = AbstractAdmin ( 0xfb4536335bd7ee65ee7bb4ef9aaafa689c3c2606 );
+        AbstractAdmin x = AbstractAdmin ( 0xFB4536335Bd7Ee65EE7Bb4EF9aaAFa689c3C2606 );
     
         return x.getAdmin();
     }
     
     modifier adminRestricted() {
-        require(msg.sender == admin);
+        require(msg.sender == checkAdmin());
         _;
     }
 
@@ -47,8 +49,12 @@ contract TreeNursery {
         emit treePlanted(newTree);
     }
 
-    function getPlantedTrees() public view returns (Tree[] memory) {
-        return plantedTrees;
+    function countPlantedTrees() public view returns (uint) {
+        return plantedTrees.length;
+    }
+
+    function getPlantedTree(uint index) public view returns (address) {
+        return plantedTrees[index-1]; 
     }
 
 }
@@ -95,14 +101,14 @@ contract Tree {
     }
 
     function checkAdmin() public view returns (address) {
-        AbstractAdmin x = AbstractAdmin ( 0xfb4536335bd7ee65ee7bb4ef9aaafa689c3c2606 );
+        AbstractAdmin x = AbstractAdmin ( 0xFB4536335Bd7Ee65EE7Bb4EF9aaAFa689c3C2606 );
     
         return x.getAdmin();
     }
     
 
     function checkRecipient(address recipient) public view returns (bool) {
-        AbstractOrgFactory x = AbstractOrgFactory ( 0x6b9d901467795364c40877cec5dd3f2602e6ece9 );
+        AbstractOrgFactory x = AbstractOrgFactory ( 0x6B9D901467795364C40877cEc5DD3F2602e6ECE9 );
     
         return x.getAllowedOrgs(recipient);
 
