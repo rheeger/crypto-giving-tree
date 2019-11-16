@@ -88,7 +88,7 @@ contract Tree {
     }
     
     modifier adminRestricted() {
-        require(msg.sender == admin);
+        require(msg.sender == checkAdmin());
         _;
     }
     
@@ -108,7 +108,7 @@ contract Tree {
     
 
     function checkRecipient(address recipient) public view returns (bool) {
-        AbstractOrgFactory x = AbstractOrgFactory ( 0x6B9D901467795364C40877cEc5DD3F2602e6ECE9 );
+        AbstractOrgFactory x = AbstractOrgFactory ( 0xE06e8ae3ae3C888Ccc2733318ea4D80f88Fe8E9c );
     
         return x.getAllowedOrgs(recipient);
 

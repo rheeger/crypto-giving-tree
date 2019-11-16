@@ -13,7 +13,7 @@ export const createOrg = async (id) => {
 
 	const web3 = new Web3(provider);
 	const accounts = await web3.eth.getAccounts();
-	const address = '0x6b9d901467795364c40877cec5dd3f2602e6ece9';
+	const address = '0xE06e8ae3ae3C888Ccc2733318ea4D80f88Fe8E9c';
 	const orgFactory = new web3.eth.Contract(JSON.parse(OrgFactory.interface), address);
 
 	const createContract = await orgFactory.methods.createOrg(id).send({ from: accounts[0], gas: '1000000' });
@@ -24,7 +24,7 @@ export const createOrg = async (id) => {
 };
 
 export function getOrgFactoryInstance() {
-	const address = '0x6b9d901467795364c40877cec5dd3f2602e6ece9';
+	const address = '0xE06e8ae3ae3C888Ccc2733318ea4D80f88Fe8E9c';
 	const orgFactory = new web3.eth.Contract(JSON.parse(OrgFactory.interface), address);
 
 	return orgFactory;
