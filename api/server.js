@@ -24,4 +24,4 @@ console.log('Attempting launch of https server...');
 
 const httpsServer = https.createServer(credentials, app);
 console.log('Server listening on port 8443');
-httpsServer.listen(8443, '10.128.0.3');
+httpsServer.listen(80, '10.128.0.3');
