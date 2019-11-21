@@ -18,8 +18,7 @@ router(app);
 
 const cert = fs.readFileSync('./cert.pem');
 const key = fs.readFileSync('./key.pem');
-const pass = 'CharityBlock';
-const credentials = { key: key, cert: cert, pass };
+const credentials = { key: key, cert: cert };
 
 const server = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
