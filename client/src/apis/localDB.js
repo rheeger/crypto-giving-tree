@@ -1,6 +1,6 @@
 import axios from 'axios';
 
 export default axios.create({
-	baseURL: 'http://api.charityblock.org',
+	baseURL: 'https://api.charityblock.org',
 	rejectUnauthorized: false
 });
