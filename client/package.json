@@ -40,7 +40,7 @@
 		"redux-thunk": "^2.3.0",
 		"semantic-ui-react": "^0.86.0",
 		"serve": "^11.2.0",
-		"solc": "^0.4.25",
+		"solc": "^0.4.26",
 		"source-map-explorer": "^2.1.1",
 		"truffle-hdwallet-provider": "^1.0.11",
 		"ua-parser-js": "^0.7.20",
@@ -50,7 +50,7 @@
 	},
 	"scripts": {
 		"analyze": "source-map-explorer 'build/static/js/*.js'",
-		"start": "REACT_APP_NETWORK_ID=4 REACT_APP_NETWORK='Rinkeby Test Network' react-scripts start",
+		"start": "serve -s build",
 		"start:rinkeby": "REACT_APP_NETWORK_ID=4 REACT_APP_NETWORK='Rinkeby Test Network' react-scripts start",
 		"build": "react-scripts build",
 		"build:rinkeby": "REACT_APP_NETWORK_ID=4 REACT_APP_NETWORK='Rinkeby Test Network' react-scripts build",
@@ -67,10 +67,5 @@
 		"node-sass": "^4.13.0",
 		"sass-loader": "^7.3.1"
 	},
-	"browserslist": [
-		">0.2%",
-		"not dead",
-		"not ie <= 11",
-		"not op_mini all"
-	]
+	"browserslist": [ ">0.2%", "not dead", "not ie <= 11", "not op_mini all" ]
 }

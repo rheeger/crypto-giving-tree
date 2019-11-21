@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { BigNumber as BN } from 'bignumber.js';
+import { ethers } from 'ethers';
 import { Button } from 'semantic-ui-react';
 import { startWatching, initialize, selectors, addPendingTx } from '../../store/reducers/web3connect';
 import { setAddresses } from '../../store/reducers/swapAddresses';
@@ -18,6 +19,7 @@ import ERC20_ABI from '../../ethereum/uniSwap/abi/erc20';
 import './contributionForm.scss';
 import { GT_ADMIN } from '../../store/actions/types';
 import { fetchTreeDAIBalance, createDonation } from '../../store/actions';
+import logo from '../../assets/images/logo.png';
 
 const INPUT = 0;
 const OUTPUT = 1;
@@ -382,9 +384,9 @@ class Send extends Component {
 	};
 
 	onContribution = async () => {
-		const { web3, account } = this.props;
+		const { web3, account, selectors } = this.props;
 		const { inputValue, inputCurrency, outputCurrency } = this.state;
-
+		const { decimals: inputDecimals } = selectors().getBalance(account, inputCurrency);
 		const type = getSendType(inputCurrency, outputCurrency);
 
 		switch (type) {
@@ -399,7 +401,7 @@ class Send extends Component {
 				break;
 			case 'TOKEN_TO_TOKEN':
 				await new web3.eth.Contract(ERC20_ABI, inputCurrency).methods
-					.transfer(GT_ADMIN, inputValue)
+					.transfer(GT_ADMIN, BN(inputValue).multipliedBy(10 ** inputDecimals).toFixed())
 					.send({ from: account })
 					.on('transactionHash', function(hash) {
 						console.log(hash);
@@ -444,7 +446,7 @@ class Send extends Component {
 			recipient
 		} = this.state;
 		const ALLOWED_SLIPPAGE = 0.05;
-		const TOKEN_ALLOWED_SLIPPAGE = 0.04;
+		const TOKEN_ALLOWED_SLIPPAGE = 0.1;
 
 		const type = getSendType(inputCurrency, outputCurrency);
 		const { decimals: inputDecimals } = selectors().getBalance(account[0], inputCurrency);
@@ -500,13 +502,24 @@ class Send extends Component {
 						.then(this.setState({ loading: false }));
 					break;
 				case 'TOKEN_TO_TOKEN':
+					console.log(
+						BN(inputValue).multipliedBy(10 ** inputDecimals).toFixed(),
+						BN(outputValue)
+							.multipliedBy(10 ** outputDecimals)
+							.multipliedBy(1 - TOKEN_ALLOWED_SLIPPAGE)
+							.toFixed(),
+						'0x01',
+						deadline,
+						recipient,
+						outputCurrency
+					);
 					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 						.tokenToTokenTransferInput(
 							BN(inputValue).multipliedBy(10 ** inputDecimals).toFixed(),
 							BN(outputValue)
 								.multipliedBy(10 ** outputDecimals)
 								.multipliedBy(1 - TOKEN_ALLOWED_SLIPPAGE)
-								.toFixed(0),
+								.toFixed(),
 							'1',
 							deadline,
 							recipient,
@@ -860,7 +873,7 @@ class Send extends Component {
 					<OversizedPanel>
 						<div className="swap__down-arrow-background" style={{ margin: '0 auto', padding: '10px' }}>
 							<div>
-								<i className="arrow down small icon" />will be sent to{' '}
+								<i className="arrow down small icon" />will be deposited into{' '}
 								<i className="arrow down small icon" />
 							</div>
 						</div>
@@ -878,6 +891,13 @@ class Send extends Component {
 
 					<div style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
 						{this.renderDonateButton()}
+					</div>
+					<br />
+					<div style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+						Exchange powered by {''}
+						<a href="http://uniswap.io" target="new">
+							<img style={{ marginLeft: '.25rem', height: '1.15rem' }} src={logo} /> Uniswap
+						</a>
 					</div>
 				</div>
 			</div>

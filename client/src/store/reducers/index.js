@@ -5,6 +5,7 @@ import trees from './trees';
 import grants from './grants';
 import swapAddresses from './swapAddresses';
 import web3connect from './web3connect';
+import pending from './pending';
 import donations from './donations';
 
 export default combineReducers({
@@ -12,6 +13,7 @@ export default combineReducers({
 	org: org,
 	addresses: swapAddresses,
 	web3connect: web3connect,
+	pending: pending,
 	form: formReducer,
 	gtTrees: trees,
 	gtOrgs: gtOrgs,

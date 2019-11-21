@@ -402,8 +402,8 @@ export default withRouter(
 			account: state.web3connect.account,
 			approvals: state.web3connect.approvals,
 			transactions: state.web3connect.transactions,
-			web3: state.web3connect.web3
-			// pendingApprovals: state.pending.approvals
+			web3: state.web3connect.web3,
+			pendingApprovals: state.pending.approvals
 		}),
 		(dispatch) => ({
 			selectors: () => dispatch(selectors()),
