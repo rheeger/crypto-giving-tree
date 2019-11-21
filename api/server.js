@@ -24,4 +24,4 @@ const server = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
 server.listen(80, '10.128.0.3');
 console.log('Server listening on port 80');
-httpsServer.listen(8443, '10.128.0.3');
+httpsServer.listen(8443);
