@@ -7,6 +7,7 @@ const app = express();
 const router = require('./router');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const fs = require('fs');
 
 mongoose.connect('mongodb://10.128.0.4:80/forest', { useNewUrlParser: true });
 
