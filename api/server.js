@@ -21,9 +21,10 @@ const key = fs.readFileSync('./key.pem');
 const credentials = { key: key, cert: cert };
 
 const server = http.createServer(app);
-console.log('Server listening on port 8443');
-console.log('Attempting launch of https server...');
-
-const httpsServer = https.createServer(credentials, app);
 server.listen(80, '10.128.0.3');
+console.log('Server listening on port 80');
+
+console.log('Attempting launch of https server...');
+const httpsServer = https.createServer(credentials, app);
 httpsServer.listen(8443, '10.128.0.3');
+console.log('Secure server listening on port 8443');
