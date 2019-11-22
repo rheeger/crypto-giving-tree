@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { BigNumber as BN } from 'bignumber.js';
-import { ethers } from 'ethers';
 import { Button } from 'semantic-ui-react';
 import { startWatching, initialize, selectors, addPendingTx } from '../../store/reducers/web3connect';
 import { setAddresses } from '../../store/reducers/swapAddresses';
@@ -109,20 +108,6 @@ class Send extends Component {
 			isValid: isValid && !inputError && !outputError
 		};
 	}
-
-	flipInputOutput = () => {
-		const { state } = this;
-		this.setState(
-			{
-				inputValue: state.outputValue,
-				outputValue: state.inputValue,
-				inputCurrency: state.outputCurrency,
-				outputCurrency: state.inputCurrency,
-				lastEditedField: state.lastEditedField === INPUT ? OUTPUT : INPUT
-			},
-			() => this.recalcForm()
-		);
-	};
 
 	isUnapproved() {
 		const { account, exchangeAddresses, selectors } = this.props;
@@ -447,7 +432,7 @@ class Send extends Component {
 		} = this.state;
 		const ALLOWED_SLIPPAGE = 0.05;
 		const TOKEN_ALLOWED_SLIPPAGE = 0.1;
-
+		const tokenName = this.renderTokenName(inputCurrency);
 		const type = getSendType(inputCurrency, outputCurrency);
 		const { decimals: inputDecimals } = selectors().getBalance(account[0], inputCurrency);
 		const { decimals: outputDecimals } = selectors().getBalance(account[0], outputCurrency);
@@ -494,7 +479,7 @@ class Send extends Component {
 									receipt.transactionHash,
 									recipient,
 									account[0],
-									inputCurrency,
+									tokenName,
 									inputValue,
 									receipt.events.TokenPurchase.returnValues.tokens_bought
 								));
@@ -537,7 +522,7 @@ class Send extends Component {
 									receipt.transactionHash,
 									recipient,
 									account[0],
-									inputCurrency,
+									tokenName,
 									inputValue,
 									receipt.events.TokenPurchase.returnValues.tokens_bought
 								));
@@ -587,7 +572,7 @@ class Send extends Component {
 									receipt.transactionHash,
 									recipient,
 									account[0],
-									inputCurrency,
+									tokenName,
 									inputValue,
 									receipt.events.TokenPurchase.returnValues.tokens_bought
 								));
@@ -623,7 +608,7 @@ class Send extends Component {
 									receipt.transactionHash,
 									recipient,
 									account[0],
-									inputCurrency,
+									tokenName,
 									inputValue,
 									receipt.events.TokenPurchase.returnValues.tokens_bought
 								));
@@ -823,15 +808,31 @@ class Send extends Component {
 		return `balance: ${balanceInput}`;
 	}
 
+	renderTokenName(address) {
+		const { tokenAddresses } = this.props;
+		var result;
+
+		for (var i = 0, len = tokenAddresses.addresses.length; i < len; i++) {
+			if (tokenAddresses.addresses[i][1] === address) {
+				result = tokenAddresses.addresses[i][0];
+				break;
+			} else {
+				result = 'ETH';
+			}
+		}
+
+		return result;
+	}
+
 	render() {
-		const { t, selectors, account } = this.props;
+		const { t, selectors, account, exchangeAddresses } = this.props;
 		const { lastEditedField, inputCurrency, outputCurrency, inputValue, outputValue, recipient } = this.state;
+
 		const estimatedText = `(${t('estimated')})`;
 
 		const { value: inputBalance, decimals: inputDecimals } = selectors().getBalance(account, inputCurrency);
 		const { value: outputBalance, decimals: outputDecimals } = selectors().getBalance(account, outputCurrency);
 		const { inputError, outputError } = this.validate();
-		console.log(inputCurrency, inputBalance.c[0], inputDecimals, account);
 		return (
 			<div className="send">
 				<div
@@ -896,7 +897,7 @@ class Send extends Component {
 					<div style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
 						Exchange powered by {''}
 						<a href="http://uniswap.io" target="new">
-							<img style={{ marginLeft: '.25rem', height: '1.15rem' }} src={logo} /> Uniswap
+							<img alt="unicorn" style={{ marginLeft: '.25rem', height: '1.15rem' }} src={logo} /> Uniswap
 						</a>
 					</div>
 				</div>
@@ -914,6 +915,7 @@ const mapStateToProps = (state, ownProps) => {
 		account: state.web3connect.account,
 		web3: state.web3connect.web3,
 		exchangeAddresses: state.addresses.exchangeAddresses,
+		tokenAddresses: state.addresses.tokenAddresses,
 		gtTree: state.gtTrees
 	};
 };
