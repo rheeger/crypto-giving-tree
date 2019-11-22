@@ -825,7 +825,7 @@ class Send extends Component {
 	}
 
 	render() {
-		const { t, selectors, account, exchangeAddresses } = this.props;
+		const { t, selectors, account } = this.props;
 		const { lastEditedField, inputCurrency, outputCurrency, inputValue, outputValue, recipient } = this.state;
 
 		const estimatedText = `(${t('estimated')})`;
