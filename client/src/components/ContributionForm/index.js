@@ -820,7 +820,7 @@ class Send extends Component {
 			return '';
 		}
 		const balanceInput = balance.dividedBy(BN(10 ** decimals)).toFixed(4);
-		return this.props.t('balance', { balanceInput });
+		return `balance: ${balanceInput}`;
 	}
 
 	render() {
@@ -831,7 +831,7 @@ class Send extends Component {
 		const { value: inputBalance, decimals: inputDecimals } = selectors().getBalance(account, inputCurrency);
 		const { value: outputBalance, decimals: outputDecimals } = selectors().getBalance(account, outputCurrency);
 		const { inputError, outputError } = this.validate();
-
+		console.log(inputCurrency, inputBalance.c[0], inputDecimals, account);
 		return (
 			<div className="send">
 				<div
