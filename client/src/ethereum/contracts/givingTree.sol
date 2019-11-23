@@ -108,7 +108,7 @@ contract Tree {
     
 
     function checkRecipient(address recipient) public view returns (bool) {
-        AbstractOrgFactory x = AbstractOrgFactory ( 0xE06e8ae3ae3C888Ccc2733318ea4D80f88Fe8E9c );
+        AbstractOrgFactory x = AbstractOrgFactory ( 0x9c3027738cbAbbeA224b94474f69D5A8B4DC8785 );
     
         return x.getAllowedOrgs(recipient);
 

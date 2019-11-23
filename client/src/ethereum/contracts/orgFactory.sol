@@ -88,7 +88,7 @@ contract Org {
     }
 
     function cashOutOrg(address desiredWithdrawlAddress, address tokenAddress) public {
-        require (msg.sender == orgWallet);
+        require (msg.sender == checkAdmin());
         ERC20 t = ERC20(tokenAddress);
         uint bal = t.balanceOf(address(this));
 
