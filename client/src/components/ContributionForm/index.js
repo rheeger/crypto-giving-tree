@@ -18,7 +18,7 @@ import ERC20_ABI from '../../ethereum/uniSwap/abi/erc20';
 import './contributionForm.scss';
 import { GT_ADMIN } from '../../store/actions/types';
 import { fetchTreeDAIBalance, createDonation } from '../../store/actions';
-import logo from '../../assets/images/logo.png';
+import logo from '../../assets/images/uniswap.png';
 
 const INPUT = 0;
 const OUTPUT = 1;
@@ -893,11 +893,10 @@ class Send extends Component {
 					<div style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
 						{this.renderDonateButton()}
 					</div>
-					<br />
 					<div style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
-						Exchange powered by {''}
+						Exchange powered by: {''}
 						<a href="http://uniswap.io" target="new">
-							<img alt="unicorn" style={{ marginLeft: '.25rem', height: '1.15rem' }} src={logo} /> Uniswap
+							<img alt="unicorn" style={{ marginTop: '.3rem', height: '7rem' }} src={logo} />
 						</a>
 					</div>
 				</div>

@@ -6,6 +6,20 @@ import history from '../history';
 import { Web3Connect, startWatching, initialize } from '../store/reducers/web3connect';
 import { setAddresses } from '../store/reducers/swapAddresses';
 import asyncComponent from './AsyncComponents';
+import moment from 'moment/min/moment-with-locales';
+import Moment from 'react-moment';
+
+// Sets the moment instance to use.
+Moment.globalMoment = moment;
+
+// Set the locale for every react-moment instance to French.
+Moment.globalLocale = 'en';
+
+// Set the output format for every react-moment instance.
+Moment.globalFormat = 'MM/DD/YY h:mma';
+
+// Set the output timezone for local for every instance.
+Moment.globalLocal = true;
 
 const AsyncHome = asyncComponent(() => import('./HomePage'));
 const AsyncManager = asyncComponent(() => import('./trees/manager'));

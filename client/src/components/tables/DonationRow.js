@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Button } from 'semantic-ui-react';
+import Moment from 'react-moment';
 
 class DonationRow extends Component {
 	state = {
@@ -12,7 +13,9 @@ class DonationRow extends Component {
 		const { id, from, finalTradeOutput, donationAmount, inputCurrency, date } = this.props;
 		return (
 			<Table.Row>
-				<Table.Cell>{date}</Table.Cell>
+				<Table.Cell>
+					<Moment>{date}</Moment>
+				</Table.Cell>
 				<Table.Cell>{from}</Table.Cell>
 				<Table.Cell>
 					{donationAmount} {inputCurrency}

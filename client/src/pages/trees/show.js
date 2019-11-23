@@ -13,6 +13,7 @@ import ContributionForm from '../../components/ContributionForm';
 import GrantRow from '../../components/tables/GrantRow';
 import DonationRow from '../../components/tables/DonationRow';
 import NavHeader from '../../components/Header';
+import moment from 'moment';
 
 class TreeShow extends Component {
 	componentWillMount = () => {
@@ -100,7 +101,7 @@ class TreeShow extends Component {
 			{
 				style: { overflowWrap: 'break-word' },
 				header: branchName,
-				meta: 'Planted: ' + datePlanted.toLocaleString('en'),
+				meta: 'Planted: ' + moment(datePlanted).format('MM/DD/YY h:mma'),
 				description: 'Address: ' + id,
 				fluid: true
 			},

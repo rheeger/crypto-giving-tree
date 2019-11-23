@@ -5,6 +5,7 @@ import { Button, Card, Grid, Table } from 'semantic-ui-react';
 import { selectOrg, fetchOrg, fetchOrgLifetimeGrants, fetchOrgApprovedGrants, fetchOrgs } from '../../store/actions';
 import OrgGrantRow from '../../components/tables/OrgGrantRow';
 import NavHeader from '../../components/Header';
+import moment from 'moment';
 
 class OrgShow extends React.Component {
 	initialState = {};
@@ -74,7 +75,7 @@ class OrgShow extends React.Component {
 			{
 				style: { overflowWrap: 'break-word' },
 				header: name,
-				description: 'last updated: ' + updated_at,
+				description: 'last updated: ' + moment(updated_at).format('MM/DD/YY h:mma'),
 				extra: 'est: ' + ruling_date,
 				fluid: true
 			},

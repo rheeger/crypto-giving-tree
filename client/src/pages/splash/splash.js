@@ -1,6 +1,7 @@
 import React from 'react';
 // import './style.css';
 import './heegerreset.css';
+import logo from '../../assets/images/CBLogo.png';
 
 class Splash extends React.Component {
 	render() {
@@ -8,12 +9,7 @@ class Splash extends React.Component {
 			<div>
 				<div
 					style={{
-						fontFamily: 'EB Garamond',
-						border: '0',
-						display: 'flex',
-						justifyContent: 'flex-start',
-						alignItems: 'flex-start',
-						flexFlow: 'row wrap'
+						fontFamily: 'EB Garamond'
 					}}
 				>
 					<div
@@ -21,7 +17,7 @@ class Splash extends React.Component {
 							height: '100vh',
 							display: 'flex',
 							flexFlow: 'column',
-							justifyContent: 'center',
+							justifyContent: 'flex-start',
 							alignItems: 'center',
 							width: '100%'
 						}}
@@ -30,34 +26,25 @@ class Splash extends React.Component {
 							style={{
 								fontWeight: '2rem',
 								fontStyle: 'italic',
-								fontSize: '2rem',
+								fontSize: '1.25rem',
 								padding: '2rem',
-								margin: '-20rem 2rem 2rem 2rem',
+								margin: '2rem 2rem 0rem 2rem',
 								textAlign: 'center'
 							}}
 						>
 							future home of:
 						</h3>
-						<h1
-							style={{
-								fontWeight: '400',
-								margin: '-3rem 2rem 2rem 2rem',
-								fontSize: '5rem',
-								padding: '2rem',
-								textAlign: 'center'
-							}}
-						>
-							The Charity Block
-						</h1>
+						<div style={{ margin: '0 auto' }}>
+							<img style={{ maxHeight: '10rem' }} src={logo} alt="logo" />
+						</div>
 						<h3
 							style={{
-								fontSize: '1.75rem',
-								padding: '2rem',
-								margin: '-3rem 2rem 2rem 2rem',
+								fontSize: '1.5rem',
+								margin: '2rem',
 								textAlign: 'center'
 							}}
 						>
-							Donate crypto to any non-profit organization.
+							...the best way to donate cryptocurrency.
 						</h3>
 					</div>
 				</div>

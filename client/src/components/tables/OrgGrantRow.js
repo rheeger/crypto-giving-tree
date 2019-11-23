@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import Moment from 'react-moment';
 
 class OrgGrantRow extends Component {
 	state = {
@@ -13,7 +14,9 @@ class OrgGrantRow extends Component {
 		const { id, tree, amount, description, date } = this.props;
 		return (
 			<Table.Row>
-				<Table.Cell>{date}</Table.Cell>
+				<Table.Cell>
+					<Moment>{date}</Moment>
+				</Table.Cell>
 				<Table.Cell>
 					<Link to={`/trees/${tree}`}>{tree}</Link>
 				</Table.Cell>

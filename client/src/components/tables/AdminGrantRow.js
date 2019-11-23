@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Table, Button } from 'semantic-ui-react';
 import { approveGrant, deleteGrant } from '../../store/actions';
 import history from '../../history';
+import Moment from 'react-moment';
 
 class AdminGrantRow extends Component {
 	state = {
@@ -34,7 +35,9 @@ class AdminGrantRow extends Component {
 
 		return (
 			<Table.Row>
-				<Table.Cell>{date}</Table.Cell>
+				<Table.Cell>
+					<Moment>{date}</Moment>
+				</Table.Cell>
 				<Table.Cell>
 					<Link to={`/orgs/${recipient}`}>{recipient} </Link>
 				</Table.Cell>
