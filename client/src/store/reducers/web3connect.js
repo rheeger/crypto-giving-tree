@@ -523,7 +523,7 @@ export class _Web3Connect extends Component {
 		initialize() {}
 	};
 
-	componentWillMount() {
+	componentDidMount() {
 		this.props.initialize().then(this.props.startWatching());
 	}
 

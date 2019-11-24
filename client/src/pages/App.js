@@ -33,14 +33,14 @@ const AsyncAdminPanel = asyncComponent(() => import('./admin'));
 const AsyncSplash = asyncComponent(() => import('./splash/splash'));
 
 class App extends React.Component {
-	componentWillMount() {
+	componentDidMount() {
 		const { initialize, startWatching } = this.props;
 		initialize().then(startWatching);
 
 		require('dotenv').config();
 	}
 
-	componentWillUpdate() {
+	componentDidUpdate() {
 		const { web3, setAddresses } = this.props;
 
 		if (this.hasSetNetworkId || !web3 || !web3.eth || !web3.eth.net || !web3.eth.net.getId) {
@@ -54,13 +54,14 @@ class App extends React.Component {
 			}
 		});
 	}
+
 	render() {
 		return (
 			<div className="ui container">
+				<Web3Connect />
 				<Router history={history}>
+					{/* <Header /> */}
 					<div className="app__wrapper">
-						{/* <Header /> */}
-						<Web3Connect />
 						<Switch>
 							<Route path="/" exact component={AsyncSplash} />
 							<Route path="/alpha" exact component={AsyncHome} />

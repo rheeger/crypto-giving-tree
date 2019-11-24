@@ -16,7 +16,7 @@ import NavHeader from '../../components/Header';
 import moment from 'moment';
 
 class TreeShow extends Component {
-	componentWillMount = () => {
+	componentDidMount = () => {
 		const {
 			fetchTreeDAIBalance,
 			fetchTree,

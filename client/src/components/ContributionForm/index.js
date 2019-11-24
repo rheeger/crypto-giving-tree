@@ -419,7 +419,8 @@ class Send extends Component {
 			selectors,
 			addPendingTx,
 			fetchTreeDAIBalance,
-			createDonation
+			createDonation,
+			web3connect
 		} = this.props;
 		const {
 			inputValue,
@@ -453,7 +454,9 @@ class Send extends Component {
 					console.log(fromToken[outputCurrency]);
 					console.log(outputValue);
 					console.log(outputValue);
-					console.log(BN(outputValue).multipliedBy(10 ** 18).multipliedBy(1 - ALLOWED_SLIPPAGE).toFixed());
+					console.log(
+						BN(outputValue).multipliedBy(10 ** outputDecimals).multipliedBy(1 - ALLOWED_SLIPPAGE).toFixed()
+					);
 					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferInput(
 							BN(outputValue).multipliedBy(10 ** 18).multipliedBy(1 - ALLOWED_SLIPPAGE).toFixed(),
@@ -478,7 +481,7 @@ class Send extends Component {
 								(await createDonation(
 									receipt.transactionHash,
 									recipient,
-									account[0],
+									web3connect.account,
 									tokenName,
 									inputValue,
 									receipt.events.TokenPurchase.returnValues.tokens_bought
@@ -521,7 +524,7 @@ class Send extends Component {
 								(await createDonation(
 									receipt.transactionHash,
 									recipient,
-									account[0],
+									web3connect.account,
 									tokenName,
 									inputValue,
 									receipt.events.TokenPurchase.returnValues.tokens_bought
@@ -571,7 +574,7 @@ class Send extends Component {
 								(await createDonation(
 									receipt.transactionHash,
 									recipient,
-									account[0],
+									web3connect.account,
 									tokenName,
 									inputValue,
 									receipt.events.TokenPurchase.returnValues.tokens_bought
@@ -607,7 +610,7 @@ class Send extends Component {
 								(await createDonation(
 									receipt.transactionHash,
 									recipient,
-									account[0],
+									web3connect.account,
 									tokenName,
 									inputValue,
 									receipt.events.TokenPurchase.returnValues.tokens_bought
@@ -913,6 +916,7 @@ const mapStateToProps = (state, ownProps) => {
 			!!state.web3connect.account && state.web3connect.networkId === (process.env.REACT_APP_NETWORK_ID || 1),
 		account: state.web3connect.account,
 		web3: state.web3connect.web3,
+		web3connect: state.web3connect,
 		exchangeAddresses: state.addresses.exchangeAddresses,
 		tokenAddresses: state.addresses.tokenAddresses,
 		gtTree: state.gtTrees
