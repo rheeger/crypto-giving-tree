@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Table, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
+import { fetchTree } from '../../store/actions';
+import { connect } from 'react-redux';
 
 class OrgGrantRow extends Component {
 	state = {
@@ -10,15 +12,24 @@ class OrgGrantRow extends Component {
 		errorMessage: ''
 	};
 
+	componentDidMount() {
+		const { tree, fetchTree, gtTrees } = this.props;
+		fetchTree(tree);
+	}
+
 	render() {
-		const { id, tree, amount, description, date } = this.props;
+		const { id, tree, amount, description, date, gtTrees } = this.props;
+		if (!gtTrees[tree]) {
+			return <div>Loading...</div>;
+		}
+
 		return (
 			<Table.Row>
 				<Table.Cell>
 					<Moment>{date}</Moment>
 				</Table.Cell>
 				<Table.Cell>
-					<Link to={`/trees/${tree}`}>{tree}</Link>
+					<Link to={`/trees/${tree}`}>{gtTrees[tree].branchName}</Link>
 				</Table.Cell>
 				<Table.Cell>{description}</Table.Cell>
 				<Table.Cell>${amount} DAI</Table.Cell>
@@ -33,5 +44,10 @@ class OrgGrantRow extends Component {
 		);
 	}
 }
+const mapStateToProps = (state) => {
+	return {
+		gtTrees: state.gtTrees
+	};
+};
 
-export default OrgGrantRow;
+export default connect(mapStateToProps, { fetchTree })(OrgGrantRow);

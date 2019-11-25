@@ -85,7 +85,7 @@ export const plantTreeAndContract = (formValues) => async (dispatch, getState) =
 export const fetchTrees = () => async (dispatch) => {
 	const response = await localDB.get('/trees');
 
-	dispatch({ type: FETCH_TREES, payload: response });
+	dispatch({ type: FETCH_TREES, payload: response.data });
 };
 
 export const fetchUserTrees = (address) => async (dispatch) => {

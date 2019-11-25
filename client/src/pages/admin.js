@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchTrees, fetchDonations, fetchOrgs, fetchUnapprovedGrants } from '../store/actions';
-import { Card, Grid, Table } from 'semantic-ui-react';
-import DonationRow from '../components/tables/DonationRow';
+import { Grid, Table } from 'semantic-ui-react';
+import AdminDonationRow from '../components/tables/AdminDonationRow';
 import { GT_ADMIN } from '../store/actions/types';
 import history from '../history';
 import AdminGrantRow from '../components/tables/AdminGrantRow';
@@ -40,6 +40,7 @@ class AdminPanel extends Component {
 						selectedTree={grant.selectedTree}
 						grantIndex={grant.grantIndex}
 						onSubmit={this.onApproveSubmit}
+						gtTrees={this.props.gtTrees}
 					/>
 				);
 			} else {
@@ -51,65 +52,19 @@ class AdminPanel extends Component {
 	renderDonationRow() {
 		return Object.values(this.props.gtDonations).map((donation, index) => {
 			return (
-				<DonationRow
+				<AdminDonationRow
 					from={donation.from}
+					recipient={donation.to}
 					finalTradeOutput={donation.finalTradeOutput}
 					donationAmount={donation.inputAmount}
 					inputCurrency={donation.inputCurrency}
 					date={donation.donationDate}
 					key={donation.id}
 					id={donation.id}
+					gtTrees={this.props.gtTrees}
 				/>
 			);
 		});
-	}
-
-	renderCards() {
-		const {
-			id,
-			branchName,
-			datePlanted,
-			managerAddress,
-			primaryAdvisorFirstName,
-			primaryAdvisorLastName,
-			primaryAdvisorEmail,
-			primaryAdvisorAddress,
-			primaryAdvisorCity,
-			primaryAdvisorState,
-			primaryAdvisorZip,
-			treeDAI,
-			grantableDAI
-		} = this.props.gtTrees[this.props.match.params.address];
-
-		const items = [
-			{
-				style: { overflowWrap: 'break-word' },
-				header: branchName,
-				meta: 'Planted: ' + datePlanted.toLocaleString('en'),
-				description: 'Address: ' + id,
-				fluid: true
-			},
-			{
-				style: { overflowWrap: 'break-word' },
-				header: '$' + treeDAI,
-				meta: 'Tree Balance',
-				description: 'Available to Grant: $' + grantableDAI
-			},
-			{
-				style: { overflowWrap: 'break-word' },
-				header: primaryAdvisorFirstName + ' ' + primaryAdvisorLastName,
-				meta: 'Primary Advisor',
-				description: 'Managing Wallet: ' + managerAddress
-			},
-			{
-				style: { overflowWrap: 'break-word' },
-				header: primaryAdvisorAddress,
-				meta: primaryAdvisorCity + ', ' + primaryAdvisorState + ' ' + primaryAdvisorZip,
-				description: 'e-Mail: ' + primaryAdvisorEmail
-			}
-		];
-
-		return <Card.Group items={items} />;
 	}
 
 	render() {
@@ -118,6 +73,10 @@ class AdminPanel extends Component {
 		if (!this.props.gtTrees) {
 			return <div> Loading... </div>;
 		}
+		if (Object.values(this.props.gtTrees).length < 1) {
+			return <div> Loading...</div>;
+		}
+
 		if (!this.props.gtDonations) {
 			return <div> Loading... </div>;
 		}
@@ -148,6 +107,7 @@ class AdminPanel extends Component {
 										<Header>
 											<Row>
 												<HeaderCell>Request Date</HeaderCell>
+												<HeaderCell>Issuing Tree</HeaderCell>
 												<HeaderCell>Recipient</HeaderCell>
 												<HeaderCell>Description</HeaderCell>
 												<HeaderCell>Amount</HeaderCell>
@@ -168,6 +128,7 @@ class AdminPanel extends Component {
 											<Row>
 												<HeaderCell>Donation Date</HeaderCell>
 												<HeaderCell>From</HeaderCell>
+												<HeaderCell>To</HeaderCell>
 												<HeaderCell>Property Donated</HeaderCell>
 												<HeaderCell>Exchanged Amount</HeaderCell>
 												<HeaderCell>Status</HeaderCell>

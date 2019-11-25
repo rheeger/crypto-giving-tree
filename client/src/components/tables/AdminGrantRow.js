@@ -5,14 +5,19 @@ import { Table, Button } from 'semantic-ui-react';
 import { approveGrant, deleteGrant } from '../../store/actions';
 import history from '../../history';
 import Moment from 'react-moment';
+import { fetchOrg } from '../../store/actions';
 
 class AdminGrantRow extends Component {
 	state = {
 		approveloading: false,
 		rejectloading: false,
-		errorMessage: ''
+		errorMessage: '',
+		treeName: this.props.selectedTree
 	};
 
+	componentDidMount() {
+		this.renderTreeName();
+	}
 	onApprove = async () => {
 		const { approveGrant, id, grantIndex, selectedTree } = this.props;
 		this.setState({ approveloading: true });
@@ -30,8 +35,21 @@ class AdminGrantRow extends Component {
 		history.push('/admin');
 	};
 
+	renderTreeName() {
+		const { gtTrees, selectedTree } = this.props;
+		return Object.values(gtTrees).map((gtTrees, key) => {
+			if (selectedTree === gtTrees.id) {
+				console.log('match found');
+				this.setState({ treeName: gtTrees.branchName });
+			}
+		});
+	}
+
 	render() {
-		const { id, recipient, amount, description, date } = this.props;
+		const { id, selectedTree, recipient, amount, description, date, gtOrgs, gtTrees } = this.props;
+		if (!gtOrgs[recipient]) {
+			return <div>Loading...</div>;
+		}
 
 		return (
 			<Table.Row>
@@ -39,7 +57,12 @@ class AdminGrantRow extends Component {
 					<Moment>{date}</Moment>
 				</Table.Cell>
 				<Table.Cell>
-					<Link to={`/orgs/${recipient}`}>{recipient} </Link>
+					<Link to={`/trees/${selectedTree}`}>{this.state.treeName}</Link>
+				</Table.Cell>
+				<Table.Cell>
+					<Link to={`/orgs/${recipient}`}>
+						{gtOrgs[recipient].name} (EIN: {recipient})
+					</Link>
 				</Table.Cell>
 				<Table.Cell>{description}</Table.Cell>
 				<Table.Cell>${amount} DAI</Table.Cell>
@@ -64,5 +87,10 @@ class AdminGrantRow extends Component {
 		);
 	}
 }
+const mapStateToProps = (state) => {
+	return {
+		gtOrgs: state.gtOrgs
+	};
+};
 
-export default connect(null, { approveGrant, deleteGrant })(AdminGrantRow);
+export default connect(mapStateToProps, { approveGrant, deleteGrant, fetchOrg })(AdminGrantRow);
