@@ -40,13 +40,15 @@ class AdminGrantRow extends Component {
 		return Object.values(gtTrees).map((gtTrees, key) => {
 			if (selectedTree === gtTrees.id) {
 				console.log('match found');
-				this.setState({ treeName: gtTrees.branchName });
+				return this.setState({ treeName: gtTrees.branchName });
+			} else {
+				return this.setState({ treeName: 'Unknown Giving Tree' });
 			}
 		});
 	}
 
 	render() {
-		const { id, selectedTree, recipient, amount, description, date, gtOrgs, gtTrees } = this.props;
+		const { id, selectedTree, recipient, amount, description, date, gtOrgs } = this.props;
 		if (!gtOrgs[recipient]) {
 			return <div>Loading...</div>;
 		}

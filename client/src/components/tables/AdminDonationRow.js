@@ -13,7 +13,6 @@ class AdminDonationRow extends Component {
 	};
 
 	componentDidMount() {
-		const { from } = this.props;
 		this.renderDonorName();
 		this.renderTreeName();
 	}
@@ -22,8 +21,11 @@ class AdminDonationRow extends Component {
 		const { gtTrees, from } = this.props;
 		return Object.values(gtTrees).map((gtTrees, key) => {
 			if (from === gtTrees.managerAddress) {
-				console.log('match found');
-				this.setState({ donorName: `${gtTrees.primaryAdvisorFirstName} ${gtTrees.primaryAdvisorLastName}` });
+				return this.setState({
+					donorName: `${gtTrees.primaryAdvisorFirstName} ${gtTrees.primaryAdvisorLastName}`
+				});
+			} else {
+				return this.props.recipient;
 			}
 		});
 	}
@@ -32,8 +34,9 @@ class AdminDonationRow extends Component {
 		const { gtTrees, recipient } = this.props;
 		return Object.values(gtTrees).map((gtTrees, key) => {
 			if (recipient === gtTrees.id) {
-				console.log('match found');
-				this.setState({ treeName: gtTrees.branchName });
+				return this.setState({ treeName: gtTrees.branchName });
+			} else {
+				return this.setState({ treeName: 'Unknown Giving Tree' });
 			}
 		});
 	}

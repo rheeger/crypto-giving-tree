@@ -13,7 +13,7 @@ class OrgGrantRow extends Component {
 	};
 
 	componentDidMount() {
-		const { tree, fetchTree, gtTrees } = this.props;
+		const { tree, fetchTree } = this.props;
 		fetchTree(tree);
 	}
 

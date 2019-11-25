@@ -12,8 +12,7 @@ class DonationRow extends Component {
 	};
 
 	componentDidMount() {
-		const { from } = this.props;
-		this.renderDonorName(from);
+		this.renderDonorName();
 	}
 
 	renderDonorName() {
@@ -23,18 +22,17 @@ class DonationRow extends Component {
 			if (from === gtTrees.managerAddress) {
 				console.log('match found');
 				console.log(gtTrees);
-				this.setState({ donorName: `${gtTrees.primaryAdvisorFirstName} ${gtTrees.primaryAdvisorLastName}` });
+				return this.setState({
+					donorName: `${gtTrees.primaryAdvisorFirstName} ${gtTrees.primaryAdvisorLastName}`
+				});
 			} else {
-				this.setState({ donorName: 'Unknown Donor' });
+				return this.setState({ donorName: 'Unknown Donor' });
 			}
 		});
 	}
 
 	render() {
-		const { id, finalTradeOutput, donationAmount, inputCurrency, date, gtTrees, tree } = this.props;
-		if (!gtTrees[tree]) {
-			return <div>Loading...</div>;
-		}
+		const { id, finalTradeOutput, donationAmount, inputCurrency, date } = this.props;
 
 		return (
 			<Table.Row>
