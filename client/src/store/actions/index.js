@@ -236,7 +236,7 @@ export const createOrgClaim = (formValues, orgAdminWallet, orgContractAddress, t
 		selectedOrg: taxID,
 		...formValues,
 		claimIndex: index - 1,
-		approvalDetails: {}
+		approvalDetails: { claimApproval: false, dateApproved: null, transactionHash: '' }
 	});
 
 	dispatch({ type: MAKE_ORG_CLAIM, payload: response.data });
