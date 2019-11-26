@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchTrees, fetchDonations, fetchOrgs, fetchUnapprovedGrants } from '../store/actions';
+import { fetchTrees, fetchDonations, fetchOrgs, fetchUnapprovedGrants, fetchUnapprovedClaims } from '../store/actions';
 import { Grid, Table } from 'semantic-ui-react';
 import AdminDonationRow from '../components/tables/AdminDonationRow';
 import { GT_ADMIN } from '../store/actions/types';
@@ -10,12 +10,13 @@ import NavHeader from '../components/Header';
 
 class AdminPanel extends Component {
 	componentWillMount = () => {
-		const { fetchTrees, fetchDonations, fetchOrgs, fetchUnapprovedGrants } = this.props;
+		const { fetchTrees, fetchDonations, fetchOrgs, fetchUnapprovedGrants, fetchUnapprovedClaims } = this.props;
 
 		fetchUnapprovedGrants();
 		fetchTrees();
 		fetchDonations();
 		fetchOrgs();
+		fetchUnapprovedClaims();
 	};
 
 	onApproveSubmit = async () => {
@@ -49,6 +50,33 @@ class AdminPanel extends Component {
 		});
 	}
 
+	renderClaimRow() {
+		if (Object.keys(this.props.gtClaims).length === 0) {
+			return <div style={{ textAlign: 'center', padding: '10px' }}>Nothing to approve.</div>;
+		}
+
+		return Object.values(this.props.gtClaims).map((grant, index) => {
+			if (grant.grantApproval === false) {
+				return (
+					<AdminGrantRow
+						key={grant.id}
+						id={grant.id}
+						recipient={grant.selectedOrg}
+						amount={grant.grantAmount}
+						date={grant.grantDate}
+						description={grant.grantDescription}
+						selectedTree={grant.selectedTree}
+						grantIndex={grant.grantIndex}
+						onSubmit={this.onApproveSubmit}
+						gtOrgs={this.props.gtOrgs}
+					/>
+				);
+			} else {
+				return <div style={{ textAlign: 'center', padding: '10px' }}>Nothing to approve.</div>;
+			}
+		});
+	}
+
 	renderDonationRow() {
 		return Object.values(this.props.gtDonations).map((donation, index) => {
 			return (
@@ -72,19 +100,15 @@ class AdminPanel extends Component {
 
 		if (!this.props.gtTrees) {
 			return <div> Loading... </div>;
-		}
-		if (Object.values(this.props.gtTrees).length < 1) {
+		} else if (Object.values(this.props.gtTrees).length < 1) {
 			return <div> Loading...</div>;
-		}
-
-		if (!this.props.gtDonations) {
+		} else if (!this.props.gtClaims) {
 			return <div> Loading... </div>;
-		}
-		if (this.props.web3 === 'null') {
+		} else if (Object.values(this.props.gtDonations).length < 1) {
 			return <div> Loading... </div>;
-		}
-
-		if (this.props.web3.account && this.props.web3.account !== GT_ADMIN) {
+		} else if (this.props.web3 === 'null') {
+			return <div> Loading... </div>;
+		} else if (this.props.web3.account && this.props.web3.account !== GT_ADMIN) {
 			history.push('/');
 		}
 
@@ -117,6 +141,26 @@ class AdminPanel extends Component {
 											</Row>
 										</Header>
 										<Body>{this.renderGrantRow()}</Body>
+									</Table>
+								</Grid.Column>
+							</Grid.Row>
+							<Grid.Row>
+								<Grid.Column width={16}>
+									<h3>Claims Awaiting Approval:</h3>
+									<Table>
+										<Header>
+											<Row>
+												<HeaderCell>Request Date</HeaderCell>
+												<HeaderCell>Requesting Organization</HeaderCell>
+												<HeaderCell>Desired Wallet</HeaderCell>
+												<HeaderCell>Requesting Admin</HeaderCell>
+												<HeaderCell>Contact</HeaderCell>
+												<HeaderCell>View</HeaderCell>
+												<HeaderCell>Approve</HeaderCell>
+												<HeaderCell>Reject</HeaderCell>
+											</Row>
+										</Header>
+										<Body>{this.renderClaimRow()}</Body>
 									</Table>
 								</Grid.Column>
 							</Grid.Row>
@@ -163,7 +207,8 @@ const mapStateToProps = (state) => {
 		web3: state.web3connect,
 		gtGrants: state.gtGrants,
 		gtOrgs: state.gtOrgs,
-		gtDonations: state.gtDonations
+		gtDonations: state.gtDonations,
+		gtClaims: state.gtClaims
 	};
 };
 
@@ -171,5 +216,6 @@ export default connect(mapStateToProps, {
 	fetchUnapprovedGrants,
 	fetchTrees,
 	fetchDonations,
-	fetchOrgs
+	fetchOrgs,
+	fetchUnapprovedClaims
 })(AdminPanel);

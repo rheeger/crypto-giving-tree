@@ -39,7 +39,7 @@ import history from '../../history';
 import { createOrg } from '../../ethereum/orgFactoryAdmin';
 import { plantTree } from '../../ethereum/treeNursreyAdmin';
 import { treeContract, approveTreeGrant } from '../../ethereum/tree';
-import { orgContract, approveOrgGrant } from '../../ethereum/org';
+import { orgContract, approveOrgClaim } from '../../ethereum/org';
 
 //PRO PUBLICA ACTIONS
 export const selectOrg = (ein) => async (dispatch) => {
@@ -278,6 +278,20 @@ export const fetchClaim = (id) => async (dispatch) => {
 	const response = await localDB.get(`/claims/${id}`);
 
 	dispatch({ type: FETCH_CLAIM, payload: response.data });
+};
+
+export const approveClaim = (id, orgAddress, grantNonce) => async (dispatch, getState) => {
+	const trans = await approveOrgClaim(orgAddress, grantNonce, RINKEBY_DAI);
+	const response = await localDB.patch(`/grants/${id}`, {
+		approvalDetails: {
+			claimApproval: true,
+			dateApproved: Date.now(),
+			transactionHash: trans
+		}
+	});
+
+	dispatch({ type: EDIT_GRANT, payload: response.data });
+	window.location.reload();
 };
 
 export const editClaim = (id, formValues) => async (dispatch) => {

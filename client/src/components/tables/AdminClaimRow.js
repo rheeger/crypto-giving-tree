@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Table, Button } from 'semantic-ui-react';
-import { approveGrant, deleteGrant } from '../../store/actions';
+import { approveClaim, deleteClaim } from '../../store/actions';
 import history from '../../history';
 import Moment from 'react-moment';
 import { fetchOrg } from '../../store/actions';
@@ -12,41 +12,41 @@ class AdminGrantRow extends Component {
 		approveloading: false,
 		rejectloading: false,
 		errorMessage: '',
-		treeName: this.props.selectedTree
+		orgName: this.props.selectedOrg
 	};
 
 	componentDidMount() {
 		this.renderTreeName();
 	}
+
 	onApprove = async () => {
-		const { approveGrant, id, grantIndex, selectedTree } = this.props;
+		const { approveClaim, id, claimIndex, selectedOrg } = this.props;
 		this.setState({ approveloading: true });
-		await approveGrant(id, selectedTree, grantIndex);
+		await approveClaim(id, selectedOrg, claimIndex);
 		this.setState({ approveloading: false });
 		this.props.onSubmit();
 		history.push('/admin');
 	};
 
 	onReject = async () => {
-		const { deleteGrant, id } = this.props;
+		const { deleteClaim, id } = this.props;
 		this.setState({ rejectloading: true });
-		await deleteGrant(id);
+		await deleteClaim(id);
 		this.setState({ rejectloading: false });
 		history.push('/admin');
 	};
 
-	renderTreeName() {
-		const { gtTrees, selectedTree } = this.props;
-		return Object.values(gtTrees).map((gtTrees, key) => {
-			if (selectedTree === gtTrees.id) {
-				console.log('match found');
-				return this.setState({ treeName: gtTrees.branchName });
+	renderOrgName() {
+		const { gtOrgs, selectedOrg } = this.props;
+		return Object.values(gtOrgs).map((gtOrgs, key) => {
+			if (selectedOrg === gtOrgs.id) {
+				return this.setState({ orgName: gtOrgs.name });
 			}
 		});
 	}
 
 	render() {
-		const { id, selectedTree, recipient, amount, description, date, gtOrgs } = this.props;
+		const { id, selectedOrg, recipient, amount, description, date, gtOrgs } = this.props;
 		if (!gtOrgs[recipient]) {
 			return <div>Loading...</div>;
 		}
@@ -57,7 +57,7 @@ class AdminGrantRow extends Component {
 					<Moment>{date}</Moment>
 				</Table.Cell>
 				<Table.Cell>
-					<Link to={`/trees/${selectedTree}`}>{this.state.treeName}</Link>
+					<Link to={`/orgs/${selectedOrg}`}>{this.state.orgName}</Link>
 				</Table.Cell>
 				<Table.Cell>
 					<Link to={`/orgs/${recipient}`}>
@@ -93,4 +93,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { approveGrant, deleteGrant, fetchOrg })(AdminGrantRow);
+export default connect(mapStateToProps, { approveClaim, deleteClaim, fetchOrg })(AdminGrantRow);

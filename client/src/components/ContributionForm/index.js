@@ -433,6 +433,7 @@ class Send extends Component {
 		} = this.state;
 		const ALLOWED_SLIPPAGE = 0.05;
 		const TOKEN_ALLOWED_SLIPPAGE = 0.1;
+		const CHARTIY_BLOCK_FEE = 0.05;
 		const tokenName = this.renderTokenName(inputCurrency);
 		const type = getSendType(inputCurrency, outputCurrency);
 		const { decimals: inputDecimals } = selectors().getBalance(account[0], inputCurrency);
@@ -459,14 +460,21 @@ class Send extends Component {
 					);
 					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferInput(
-							BN(outputValue).multipliedBy(10 ** 18).multipliedBy(1 - ALLOWED_SLIPPAGE).toFixed(),
+							BN(outputValue)
+								.multipliedBy(10 ** 18)
+								.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+								.multipliedBy(1 - ALLOWED_SLIPPAGE)
+								.toFixed(),
 							deadline,
 							recipient
 						)
 						.send(
 							{
 								from: account[0],
-								value: BN(inputValue).multipliedBy(10 ** 18).toFixed(),
+								value: BN(inputValue)
+									.multipliedBy(10 ** 18)
+									.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+									.toFixed(),
 								gas: '1000000'
 							},
 							(err, data) => {
@@ -490,22 +498,15 @@ class Send extends Component {
 						.then(this.setState({ loading: false }));
 					break;
 				case 'TOKEN_TO_TOKEN':
-					console.log(
-						BN(inputValue).multipliedBy(10 ** inputDecimals).toFixed(),
-						BN(outputValue)
-							.multipliedBy(10 ** outputDecimals)
-							.multipliedBy(1 - TOKEN_ALLOWED_SLIPPAGE)
-							.toFixed(),
-						'0x01',
-						deadline,
-						recipient,
-						outputCurrency
-					);
 					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 						.tokenToTokenTransferInput(
-							BN(inputValue).multipliedBy(10 ** inputDecimals).toFixed(),
+							BN(inputValue)
+								.multipliedBy(10 ** inputDecimals)
+								.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+								.toFixed(),
 							BN(outputValue)
 								.multipliedBy(10 ** outputDecimals)
+								.multipliedBy(1 - CHARTIY_BLOCK_FEE)
 								.multipliedBy(1 - TOKEN_ALLOWED_SLIPPAGE)
 								.toFixed(),
 							'1',
@@ -542,14 +543,12 @@ class Send extends Component {
 
 			switch (type) {
 				case 'ETH_TO_TOKEN':
-					console.log(outputValue);
-					console.log(BN(outputValue).multipliedBy(10 ** outputDecimals).toFixed(0));
-					console.log(
-						BN(inputValue).multipliedBy(10 ** inputDecimals).multipliedBy(1 + ALLOWED_SLIPPAGE).toFixed()
-					);
 					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferOutput(
-							BN(outputValue).multipliedBy(10 ** outputDecimals).toFixed(0),
+							BN(outputValue)
+								.multipliedBy(10 ** outputDecimals)
+								.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+								.toFixed(0),
 							deadline,
 							recipient
 						)
@@ -558,6 +557,7 @@ class Send extends Component {
 								from: account[0],
 								value: BN(inputValue)
 									.multipliedBy(10 ** inputDecimals)
+									.multipliedBy(1 - CHARTIY_BLOCK_FEE)
 									.multipliedBy(1 + ALLOWED_SLIPPAGE)
 									.toFixed(),
 								gas: '1000000'
@@ -586,12 +586,15 @@ class Send extends Component {
 					if (!inputAmountB) {
 						return;
 					}
-
 					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 						.tokenToTokenTransferOutput(
-							BN(outputValue).multipliedBy(10 ** outputDecimals).toFixed(0),
+							BN(outputValue)
+								.multipliedBy(10 ** outputDecimals)
+								.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+								.toFixed(0),
 							BN(inputValue)
 								.multipliedBy(10 ** inputDecimals)
+								.multipliedBy(1 - CHARTIY_BLOCK_FEE)
 								.multipliedBy(1 + TOKEN_ALLOWED_SLIPPAGE)
 								.toFixed(),
 							inputAmountB.multipliedBy(1.2).toFixed(0),

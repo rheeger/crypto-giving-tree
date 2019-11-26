@@ -108,7 +108,7 @@ contract Tree {
     
 
     function checkRecipient(address recipient) public view returns (bool) {
-        AbstractOrgFactory x = AbstractOrgFactory ( 0x9c3027738cbAbbeA224b94474f69D5A8B4DC8785 );
+        AbstractOrgFactory x = AbstractOrgFactory ( 0xAa6524C3a1df835eF8d21506260C004962eea934 );
     
         return x.getAllowedOrgs(recipient);
 
@@ -154,9 +154,16 @@ contract Tree {
 
     function finalizeGrant(uint index, address tokenAddress) public adminRestricted {
         require(grant.complete == false);
+        admin = checkAdmin();
         ERC20 t = ERC20(tokenAddress);
+        
         Grant storage grant = grants[index];
-        t.transfer(grant.recipient, grant.value);
+        uint fee = (grant.value)/100;
+        uint finalGrant = (grant.value * 99)/100;
+        
+        t.transfer(grant.recipient, finalGrant);
+        t.transfer(admin, fee);
+
         grant.complete = true;
     }
 

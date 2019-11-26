@@ -35,8 +35,6 @@ class AdminDonationRow extends Component {
 		return Object.values(gtTrees).map((gtTrees, key) => {
 			if (recipient === gtTrees.id) {
 				return this.setState({ treeName: gtTrees.branchName });
-			} else {
-				return this.setState({ treeName: 'Unknown Giving Tree' });
 			}
 		});
 	}
