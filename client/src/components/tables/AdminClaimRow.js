@@ -20,10 +20,10 @@ class AdminGrantRow extends Component {
 	}
 
 	onApprove = async () => {
-		const { approveClaim, id, claimIndex, gtOrgs, recipient } = this.props;
+		const { approveClaim, id, claimIndex, gtOrgs, recipient, selectedOrg } = this.props;
 		this.setState({ approveloading: true });
-		console.log(id, gtOrgs[recipient].contractAddress, claimIndex);
-		await approveClaim(id, gtOrgs[recipient].contractAddress, claimIndex);
+		console.log(id, selectedOrg, gtOrgs[recipient].contractAddress, claimIndex);
+		await approveClaim(id, selectedOrg, gtOrgs[recipient].contractAddress, claimIndex);
 		this.setState({ approveloading: false });
 		this.props.onSubmit();
 		history.push('/admin');
@@ -54,9 +54,9 @@ class AdminGrantRow extends Component {
 
 		return (
 			<Table.Row>
-				{/* <Table.Cell>
+				<Table.Cell>
 					<Moment>{date}</Moment>
-				</Table.Cell> */}
+				</Table.Cell>
 				<Table.Cell>
 					<Link to={`/orgs/${selectedOrg}`}>{this.state.orgName}</Link>
 				</Table.Cell>

@@ -252,7 +252,7 @@ export const fetchClaims = () => async (dispatch) => {
 export const fetchOrgApprovedClaims = (ein) => async (dispatch) => {
 	const allClaims = await localDB.get('/claims');
 	const response = allClaims.data.filter((claim) => {
-		if (claim.approvalDetails.claimApproval === true && claim.selectedOrg === ein) {
+		if (claim.claimApprovalDetails.claimApproval === true && claim.selectedOrg === ein) {
 			return { claim };
 		}
 		return '';
@@ -264,7 +264,7 @@ export const fetchOrgApprovedClaims = (ein) => async (dispatch) => {
 export const fetchUnapprovedClaims = () => async (dispatch) => {
 	const allClaims = await localDB.get('/claims');
 	const response = allClaims.data.filter((claim) => {
-		if (claim.approvalDetails.claimApproval === false) {
+		if (claim.claimApprovalDetails.claimApproval === false) {
 			return { claim };
 		}
 		return '';
@@ -293,14 +293,14 @@ export const fetchClaim = (id) => async (dispatch) => {
 
 export const approveClaim = (id, selectedOrg, orgAddress, grantNonce) => async (dispatch, getState) => {
 	const trans = await approveOrgClaim(orgAddress, grantNonce);
-	const approvalDetails = {
-		approvalDetails: {
+	const claimApprovalDetails = {
+		claimApprovalDetails: {
 			claimApproval: true,
 			dateApproved: Date.now(),
 			transactionHash: trans
 		}
 	};
-	const response = await localDB.patch(`/claims/${id}`, approvalDetails);
+	const response = await localDB.patch(`/claims/${id}`, claimApprovalDetails);
 	const claimDetails = await localDB.get(`/claims/${id}`);
 	await this.claimOrg(selectedOrg, claimDetails);
 
