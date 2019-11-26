@@ -5,13 +5,17 @@ const Schema = mongoose.Schema;
 const claimSchema = new Schema({
 	id: { type: String, unique: true },
 	selectedOrg: String,
-	selectedTree: String,
-	claimAmount: String,
-	claimDescription: String,
-	claimDate: String,
-	claimApproval: String,
-	claimIndex: String,
-	approvalDetails: { approvalId: { type: String, unique: true }, approvalDate: String }
+	orgAdminWallet: String,
+	orgAdminFirstName: String,
+	orgAdminLastName: String,
+	orgAdminEmail: String,
+	orgAdminAddress: String,
+	orgAdminCity: String,
+	orgAdminState: String,
+	orgAdminZip: Number,
+	claimIndex: Number,
+	claimDate: { type: Date, default: Date.now, required: true },
+	approvalDetails: { claimApproval: Boolean, dateApproved: Date, transactionHash: String }
 });
 
 //modelClass

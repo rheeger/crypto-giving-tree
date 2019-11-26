@@ -27,12 +27,19 @@ import {
 	FETCH_DONATIONS,
 	FETCH_TREE_DONATIONS,
 	FETCH_DONATION,
-	DELETE_DONATION
+	DELETE_DONATION,
+	MAKE_ORG_CLAIM,
+	FETCH_CLAIMS,
+	FETCH_ORG_CLAIMS,
+	FETCH_CLAIM,
+	EDIT_CLAIM,
+	DELETE_CLAIM
 } from './types';
 import history from '../../history';
 import { createOrg } from '../../ethereum/orgFactoryAdmin';
 import { plantTree } from '../../ethereum/treeNursreyAdmin';
 import { treeContract, approveTreeGrant } from '../../ethereum/tree';
+import { orgContract, approveOrgGrant } from '../../ethereum/org';
 
 //PRO PUBLICA ACTIONS
 export const selectOrg = (ein) => async (dispatch) => {
@@ -204,6 +211,89 @@ export const deleteOrg = (id) => async (dispatch) => {
 	history.push('/');
 };
 
+export const createOrgClaim = (formValues, orgAdminWallet) => async (dispatch, getState) => {
+	const org = orgContract(formValues.selectedOrg);
+	const id = await org.methods
+		.claimRequest(formValues.orgAdminFirstName, formValues.orgAdminLastName, true, formValues.orgAdminEmail)
+		.send({ from: orgAdminWallet })
+		.on('transactionHash', function(transId) {
+			console.log(transId);
+			return transId;
+		});
+	const index = await org.methods.getClaimsCount().call();
+	const response = await localDB.post(`/claims`, {
+		id: id.transactionHash,
+		...formValues,
+		claimIndex: index - 1,
+		approvalDetails: { claimApproval: false, dateApproved: null }
+	});
+
+	dispatch({ type: MAKE_ORG_CLAIM, payload: response.data });
+	history.push(`/orgs/${formValues.selectedOrg}`);
+};
+
+export const fetchClaims = () => async (dispatch) => {
+	const response = await localDB.get('/claims');
+
+	dispatch({ type: FETCH_CLAIMS, payload: response.data });
+};
+
+export const fetchOrgApprovedClaims = (ein) => async (dispatch) => {
+	const allClaims = await localDB.get('/claims');
+	const response = allClaims.data.filter((claim) => {
+		if (claim.approvalDetails.claimApproval === true && claim.selectedOrg === ein) {
+			return { claim };
+		}
+		return '';
+	});
+
+	dispatch({ type: FETCH_CLAIMS, payload: response });
+};
+
+export const fetchUnapprovedClaims = () => async (dispatch) => {
+	const allClaims = await localDB.get('/claims');
+	const response = allClaims.data.filter((claim) => {
+		if (claim.approvalDetails.claimApproval === false) {
+			return { claim };
+		}
+		return '';
+	});
+
+	dispatch({ type: FETCH_CLAIMS, payload: response });
+};
+
+export const fetchOrgClaims = (ein) => async (dispatch) => {
+	const allClaims = await localDB.get('/claims');
+	const response = allClaims.data.filter((claim) => {
+		if (claim.selectedOrg === ein) {
+			return { claim };
+		}
+		return '';
+	});
+
+	dispatch({ type: FETCH_ORG_CLAIMS, payload: response });
+};
+
+export const fetchClaim = (id) => async (dispatch) => {
+	const response = await localDB.get(`/claims/${id}`);
+
+	dispatch({ type: FETCH_CLAIM, payload: response.data });
+};
+
+export const editClaim = (id, formValues) => async (dispatch) => {
+	const response = await localDB.patch(`/claims/${id}`, formValues);
+
+	dispatch({ type: EDIT_CLAIM, payload: response.data });
+	history.push('/admin');
+};
+
+export const deleteClaim = (id) => async (dispatch) => {
+	await localDB.delete(`/claims/${id}`);
+
+	dispatch({ type: DELETE_CLAIM, payload: id });
+	history.push('/admin');
+};
+
 //LOCAL DB ACTIONS: GRANTS
 
 export const createGrant = (formValues, recipientAddress, recipientEIN, managerAddress) => async (
@@ -212,7 +302,7 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 ) => {
 	const tree = treeContract(formValues.selectedTree);
 	const id = await tree.methods
-		.createGrant(formValues.grantDescription, formValues.grantAmount * 1000000000000000000, recipientAddress)
+		.createGrant(formValues.claimDescription, formValues.grantAmount * 1000000000000000000, recipientAddress)
 		.send({ from: managerAddress })
 		.on('transactionHash', function(transId) {
 			console.log(transId);

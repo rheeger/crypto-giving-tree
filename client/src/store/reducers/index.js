@@ -7,6 +7,7 @@ import swapAddresses from './swapAddresses';
 import web3connect from './web3connect';
 import pending from './pending';
 import donations from './donations';
+import claims from './claims';
 
 export default combineReducers({
 	orgs: orgs,
@@ -18,5 +19,6 @@ export default combineReducers({
 	gtTrees: trees,
 	gtOrgs: gtOrgs,
 	gtGrants: grants,
-	gtDonations: donations
+	gtDonations: donations,
+	gtClaims: claims
 });

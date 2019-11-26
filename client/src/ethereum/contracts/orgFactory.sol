@@ -62,10 +62,12 @@ contract Org {
     
     constructor(uint ein) public {
         taxId = ein;
+        orgWallet = checkAdmin();
     }
 
-    function claimRequest(string memory fName, string memory lName, bool fSub, string eMail) public {
+    function claimRequest(string memory fName, string memory lName, bool fSub, string eMail, address orgAdminAddress) public {
         require (fSub == true);
+        require (msg.sender == orgAdminAddress);
         
         Claim memory newClaim = Claim({
             firstName: fName,
@@ -109,5 +111,9 @@ contract Org {
 
         return bal;
      }
+
+       function getClaimsCount() public view returns (uint) {
+        return claims.length;
+    }
 
 }

@@ -22,29 +22,11 @@ exports.oneClaim = function(req, res, next) {
 
 exports.createClaim = function(req, res, next) {
 	// use mongoose to create one claim in the database
-	Claim.create(
-		{
-			id: req.body.id,
-			branchName: req.body.branchName,
-			primaryAdvisorFirstName: req.body.primaryAdvisorFirstName,
-			primaryAdvisorLastName: req.body.primaryAdvisorLastName,
-			primaryAdvisorEmail: req.body.primaryAdvisorEmail,
-			primaryAdvisorAddress: req.body.primaryAdvisorAddress,
-			primaryAdvisorCity: req.body.primaryAdvisorCity,
-			primaryAdvisorState: req.body.primaryAdvisorState,
-			primaryAdvisorZip: req.body.primaryAdvisorZip,
-			primaryAdvisorBirthday: req.body.primaryAdvisorBirthday,
-			managerAddress: req.body.managerAddress,
-			claimDAI: req.body.claimDAI,
-			datePlanted: req.body.datePlanted,
-			grantableDAI: req.body.grantableDAI
-		},
-		function(err, claim) {
-			if (err) res.send(err);
+	Claim.create(req.body, function(err, claim) {
+		if (err) res.send(err);
 
-			res.json(claim); // return claim in JSON format
-		}
-	);
+		res.json(claim); // return claim in JSON format
+	});
 };
 
 exports.updateClaim = function(req, res, next) {
