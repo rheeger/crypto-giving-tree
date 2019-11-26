@@ -15,7 +15,7 @@ const claimSchema = new Schema({
 	orgAdminZip: Number,
 	claimIndex: Number,
 	claimDate: { type: Date, default: Date.now, required: true },
-	approvalDetails: { claimApproval: Boolean, dateApproved: Date, transactionHash: String }
+	approvalDetails: {}
 });
 
 //modelClass

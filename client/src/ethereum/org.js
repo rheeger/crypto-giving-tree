@@ -5,7 +5,7 @@ export const orgContract = (address) => {
 	return new web3.eth.Contract(JSON.parse(Org.interface), address);
 };
 
-export const approveOrgClaim = async (orgAddress, claimNonce, tokenAddress) => {
+export const approveOrgClaim = async (orgAddress, claimNonce) => {
 	const Web3 = require('web3');
 	const HDWalletProvider = require('truffle-hdwallet-provider');
 
@@ -19,9 +19,7 @@ export const approveOrgClaim = async (orgAddress, claimNonce, tokenAddress) => {
 	const accounts = await web3.eth.getAccounts();
 	const org = new web3.eth.Contract(JSON.parse(Org.interface), orgAddress);
 
-	const approvedClaim = await org.methods
-		.approveClaim(claimNonce, tokenAddress)
-		.send({ from: accounts[0], gas: '1500000' });
+	const approvedClaim = await org.methods.approveClaim(claimNonce).send({ from: accounts[0], gas: '1500000' });
 
 	return approvedClaim.transactionHash;
 };

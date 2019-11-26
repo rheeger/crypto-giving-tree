@@ -6,6 +6,7 @@ import AdminDonationRow from '../components/tables/AdminDonationRow';
 import { GT_ADMIN } from '../store/actions/types';
 import history from '../history';
 import AdminGrantRow from '../components/tables/AdminGrantRow';
+import AdminClaimRow from '../components/tables/AdminClaimRow';
 import NavHeader from '../components/Header';
 
 class AdminPanel extends Component {
@@ -55,18 +56,19 @@ class AdminPanel extends Component {
 			return <div style={{ textAlign: 'center', padding: '10px' }}>Nothing to approve.</div>;
 		}
 
-		return Object.values(this.props.gtClaims).map((grant, index) => {
-			if (grant.grantApproval === false) {
+		return Object.values(this.props.gtClaims).map((claim, index) => {
+			if (claim.approvalDetails.claimApproval === false) {
 				return (
-					<AdminGrantRow
-						key={grant.id}
-						id={grant.id}
-						recipient={grant.selectedOrg}
-						amount={grant.grantAmount}
-						date={grant.grantDate}
-						description={grant.grantDescription}
-						selectedTree={grant.selectedTree}
-						grantIndex={grant.grantIndex}
+					<AdminClaimRow
+						key={claim.id}
+						id={claim.id}
+						recipient={claim.selectedOrg}
+						date={claim.claimDate}
+						fname={claim.orgAdminFirstName}
+						lname={claim.orgAdminLastName}
+						contact={claim.orgAdminEmail}
+						wallet={claim.orgAdminWallet}
+						claimIndex={claim.claimIndex}
 						onSubmit={this.onApproveSubmit}
 						gtOrgs={this.props.gtOrgs}
 					/>
@@ -152,7 +154,6 @@ class AdminPanel extends Component {
 											<Row>
 												<HeaderCell>Request Date</HeaderCell>
 												<HeaderCell>Requesting Organization</HeaderCell>
-												<HeaderCell>Desired Wallet</HeaderCell>
 												<HeaderCell>Requesting Admin</HeaderCell>
 												<HeaderCell>Contact</HeaderCell>
 												<HeaderCell>View</HeaderCell>

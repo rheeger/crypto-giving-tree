@@ -1,18 +1,33 @@
 import React from 'react';
 import { connect } from 'react-redux';
 // import { Button } from 'semantic-ui-react';
-import { selectOrg } from '../../store/actions';
+import { selectOrg, createOrgClaim, fetchOrgs } from '../../store/actions';
 import ClaimForm from '../../components/ClaimForm';
 import Header from '../../components/Header';
 
 class Claim extends React.Component {
+	state = {
+		loading: false
+	};
+
 	componentDidMount() {
-		const { selectOrg, match } = this.props;
+		const { selectOrg, match, fetchOrgs } = this.props;
 		selectOrg(match.params.ein);
-		console.log();
+		fetchOrgs();
+		console.log(this.props.gtOrgs);
 	}
 
-	onSubmit = async (formValues) => {};
+	onSubmit = async (formValues) => {
+		this.setState({ loading: true });
+		console.log(this.props.gtOrgs);
+		await this.props.createOrgClaim(
+			formValues,
+			this.props.web3.account,
+			this.props.gtOrgs[this.props.match.params.ein].contractAddress,
+			this.props.match.params.ein
+		);
+		this.setState({ loading: false });
+	};
 
 	render() {
 		if (!this.props.org.organization) {
@@ -48,8 +63,9 @@ const mapStateToProps = (state) => {
 	return {
 		org: state.org,
 		gtTrees: state.gtTrees,
-		web3: state.web3connect
+		web3: state.web3connect,
+		gtOrgs: state.gtOrgs
 	};
 };
 
-export default connect(mapStateToProps, { selectOrg })(Claim);
+export default connect(mapStateToProps, { selectOrg, createOrgClaim, fetchOrgs })(Claim);

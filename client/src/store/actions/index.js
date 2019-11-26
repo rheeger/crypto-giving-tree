@@ -196,7 +196,11 @@ export const fetchOrgLifetimeGrants = (id) => async (dispatch) => {
 
 	dispatch({ type: EDIT_ORG, payload: response.data });
 };
+export const claimOrg = (id, approvalDetails) => async (dispatch) => {
+	const response = await localDB.patch(`/orgs/${id}`, { claimDetails: approvalDetails });
 
+	dispatch({ type: EDIT_ORG, payload: response.data });
+};
 export const editOrg = (id, formValues) => async (dispatch) => {
 	const response = await localDB.patch(`/orgs/${id}`, formValues);
 
@@ -211,10 +215,16 @@ export const deleteOrg = (id) => async (dispatch) => {
 	history.push('/');
 };
 
-export const createOrgClaim = (formValues, orgAdminWallet) => async (dispatch, getState) => {
-	const org = orgContract(formValues.selectedOrg);
+export const createOrgClaim = (formValues, orgAdminWallet, orgContractAddress, taxID) => async (dispatch, getState) => {
+	const org = orgContract(orgContractAddress);
 	const id = await org.methods
-		.claimRequest(formValues.orgAdminFirstName, formValues.orgAdminLastName, true, formValues.orgAdminEmail)
+		.claimRequest(
+			formValues.orgAdminFirstName,
+			formValues.orgAdminLastName,
+			true,
+			formValues.orgAdminEmail,
+			orgAdminWallet
+		)
 		.send({ from: orgAdminWallet })
 		.on('transactionHash', function(transId) {
 			console.log(transId);
@@ -223,13 +233,14 @@ export const createOrgClaim = (formValues, orgAdminWallet) => async (dispatch, g
 	const index = await org.methods.getClaimsCount().call();
 	const response = await localDB.post(`/claims`, {
 		id: id.transactionHash,
+		selectedOrg: taxID,
 		...formValues,
 		claimIndex: index - 1,
-		approvalDetails: { claimApproval: false, dateApproved: null }
+		approvalDetails: {}
 	});
 
 	dispatch({ type: MAKE_ORG_CLAIM, payload: response.data });
-	history.push(`/orgs/${formValues.selectedOrg}`);
+	history.push(`/orgs/${taxID}`);
 };
 
 export const fetchClaims = () => async (dispatch) => {
@@ -280,17 +291,19 @@ export const fetchClaim = (id) => async (dispatch) => {
 	dispatch({ type: FETCH_CLAIM, payload: response.data });
 };
 
-export const approveClaim = (id, orgAddress, grantNonce) => async (dispatch, getState) => {
-	const trans = await approveOrgClaim(orgAddress, grantNonce, RINKEBY_DAI);
-	const response = await localDB.patch(`/grants/${id}`, {
+export const approveClaim = (id, selectedOrg, orgAddress, grantNonce) => async (dispatch, getState) => {
+	const trans = await approveOrgClaim(orgAddress, grantNonce);
+	const approvalDetails = {
 		approvalDetails: {
 			claimApproval: true,
 			dateApproved: Date.now(),
 			transactionHash: trans
 		}
-	});
+	};
+	await this.claimOrg(selectedOrg, approvalDetails);
+	const response = await localDB.patch(`/claims/${id}`, approvalDetails);
 
-	dispatch({ type: EDIT_GRANT, payload: response.data });
+	dispatch({ type: EDIT_CLAIM, payload: response.data });
 	window.location.reload();
 };
 
@@ -316,7 +329,7 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 ) => {
 	const tree = treeContract(formValues.selectedTree);
 	const id = await tree.methods
-		.createGrant(formValues.claimDescription, formValues.grantAmount * 1000000000000000000, recipientAddress)
+		.createGrant(formValues.grantDescription, formValues.grantAmount * 1000000000000000000, recipientAddress)
 		.send({ from: managerAddress })
 		.on('transactionHash', function(transId) {
 			console.log(transId);

@@ -433,7 +433,7 @@ class Send extends Component {
 		} = this.state;
 		const ALLOWED_SLIPPAGE = 0.05;
 		const TOKEN_ALLOWED_SLIPPAGE = 0.1;
-		const CHARTIY_BLOCK_FEE = 0.05;
+		const CHARTIY_BLOCK_FEE = 0.005;
 		const tokenName = this.renderTokenName(inputCurrency);
 		const type = getSendType(inputCurrency, outputCurrency);
 		const { decimals: inputDecimals } = selectors().getBalance(account[0], inputCurrency);

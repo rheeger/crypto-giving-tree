@@ -16,13 +16,14 @@ class AdminGrantRow extends Component {
 	};
 
 	componentDidMount() {
-		this.renderTreeName();
+		this.renderOrgName();
 	}
 
 	onApprove = async () => {
-		const { approveClaim, id, claimIndex, selectedOrg } = this.props;
+		const { approveClaim, id, claimIndex, gtOrgs, recipient } = this.props;
 		this.setState({ approveloading: true });
-		await approveClaim(id, selectedOrg, claimIndex);
+		console.log(id, gtOrgs[recipient].contractAddress, claimIndex);
+		await approveClaim(id, gtOrgs[recipient].contractAddress, claimIndex);
 		this.setState({ approveloading: false });
 		this.props.onSubmit();
 		history.push('/admin');
@@ -46,16 +47,16 @@ class AdminGrantRow extends Component {
 	}
 
 	render() {
-		const { id, selectedOrg, recipient, amount, description, date, gtOrgs } = this.props;
+		const { id, selectedOrg, recipient, contact, fname, lname, wallet, date, gtOrgs } = this.props;
 		if (!gtOrgs[recipient]) {
 			return <div>Loading...</div>;
 		}
 
 		return (
 			<Table.Row>
-				<Table.Cell>
+				{/* <Table.Cell>
 					<Moment>{date}</Moment>
-				</Table.Cell>
+				</Table.Cell> */}
 				<Table.Cell>
 					<Link to={`/orgs/${selectedOrg}`}>{this.state.orgName}</Link>
 				</Table.Cell>
@@ -64,8 +65,12 @@ class AdminGrantRow extends Component {
 						{gtOrgs[recipient].name} (EIN: {recipient})
 					</Link>
 				</Table.Cell>
-				<Table.Cell>{description}</Table.Cell>
-				<Table.Cell>${amount} DAI</Table.Cell>
+				<Table.Cell>
+					<a href={`http://rinkeby.etherscan.io/address/${wallet}`}>{`${fname} ${lname}`}</a>
+				</Table.Cell>
+				<Table.Cell>
+					<a href={`mailto:${contact}`}>{contact}</a>
+				</Table.Cell>
 				<Table.Cell>
 					<a href={`http://rinkeby.etherscan.io/tx/${id}`} target="blank">
 						<Button color="blue" basic>

@@ -28,14 +28,19 @@ class ClaimForm extends React.Component {
 	render() {
 		return (
 			<form className="ui form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
-				<Field name="orgAddress" component={this.renderInput} label="Organization's Ethereum Wallet Address:" />
-				<Field name="primaryAdvisorFirstName" component={this.renderInput} label="First name:" />
-				<Field name="primaryAdvisorLastName" component={this.renderInput} label="Last name:" />
-				<Field name="primaryAdvisorEmail" component={this.renderInput} type="email" label="eMail:" />
-				<Field name="primaryAdvisorAddress" component={this.renderInput} label="Address:" />
-				<Field name="primaryAdvisorCity" component={this.renderInput} label="City:" />
-				<Field name="primaryAdvisorState" component={this.renderInput} label="State:" />
-				<Field name="primaryAdvisorZip" component={this.renderInput} type="number" label="ZIP:" />
+				<Field
+					name="orgAdminWallet"
+					component={this.renderInput}
+					label="Organization's Ethereum Wallet Address:"
+					autoComplete="disabled"
+				/>
+				<Field name="orgAdminFirstName" component={this.renderInput} label="First name:" />
+				<Field name="orgAdminLastName" component={this.renderInput} label="Last name:" />
+				<Field name="orgAdminEmail" component={this.renderInput} type="email" label="eMail:" />
+				<Field name="orgAdminAddress" component={this.renderInput} label="Address:" />
+				<Field name="orgAdminCity" component={this.renderInput} label="City:" />
+				<Field name="orgAdminState" component={this.renderInput} label="State:" />
+				<Field name="orgAdminZip" component={this.renderInput} type="number" label="ZIP:" />
 				<Field
 					name="verificationUpload"
 					component={this.renderInput}
