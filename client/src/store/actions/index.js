@@ -196,8 +196,8 @@ export const fetchOrgLifetimeGrants = (id) => async (dispatch) => {
 
 	dispatch({ type: EDIT_ORG, payload: response.data });
 };
-export const claimOrg = (id, approvalDetails) => async (dispatch) => {
-	const response = await localDB.patch(`/orgs/${id}`, { claimDetails: approvalDetails });
+export const claimOrg = (id, claimDetails) => async (dispatch) => {
+	const response = await localDB.patch(`/orgs/${id}`, { claimDetails });
 
 	dispatch({ type: EDIT_ORG, payload: response.data });
 };
@@ -236,7 +236,7 @@ export const createOrgClaim = (formValues, orgAdminWallet, orgContractAddress, t
 		selectedOrg: taxID,
 		...formValues,
 		claimIndex: index - 1,
-		approvalDetails: { claimApproval: false, dateApproved: null, transactionHash: '' }
+		claimApprovalDetails: { claimApproval: false, dateApproved: null, transactionHash: '' }
 	});
 
 	dispatch({ type: MAKE_ORG_CLAIM, payload: response.data });
@@ -300,8 +300,9 @@ export const approveClaim = (id, selectedOrg, orgAddress, grantNonce) => async (
 			transactionHash: trans
 		}
 	};
-	await this.claimOrg(selectedOrg, approvalDetails);
 	const response = await localDB.patch(`/claims/${id}`, approvalDetails);
+	const claimDetails = await localDB.get(`/claims/${id}`);
+	await this.claimOrg(selectedOrg, claimDetails);
 
 	dispatch({ type: EDIT_CLAIM, payload: response.data });
 	window.location.reload();

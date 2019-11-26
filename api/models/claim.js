@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 //model
 const claimSchema = new Schema({
-	id: { type: String, unique: true },
+	id: { type: String },
 	selectedOrg: String,
 	orgAdminWallet: String,
 	orgAdminFirstName: String,
@@ -15,7 +15,7 @@ const claimSchema = new Schema({
 	orgAdminZip: Number,
 	claimIndex: Number,
 	claimDate: { type: Date, default: Date.now, required: true },
-	calimApprovalDetails: {}
+	claimApprovalDetails: {}
 });
 
 //modelClass
