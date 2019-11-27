@@ -293,6 +293,7 @@ export const fetchClaim = (id) => async (dispatch) => {
 
 export const approveClaim = (id, selectedOrg, orgAddress, grantNonce) => async (dispatch, getState) => {
 	const trans = await approveOrgClaim(orgAddress, grantNonce);
+	console.log('claim approved on chain');
 	const claimApprovalDetails = {
 		claimApprovalDetails: {
 			claimApproval: true,
@@ -301,8 +302,11 @@ export const approveClaim = (id, selectedOrg, orgAddress, grantNonce) => async (
 		}
 	};
 	const response = await localDB.patch(`/claims/${id}`, claimApprovalDetails);
+	console.log('claim details updated on /claims');
 	const claimDetails = await localDB.get(`/claims/${id}`);
+	console.log('new claim details grabbed');
 	await this.claimOrg(selectedOrg, claimDetails);
+	console.log('claim deatials added on /org');
 
 	dispatch({ type: EDIT_CLAIM, payload: response.data });
 	window.location.reload();

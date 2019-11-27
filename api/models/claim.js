@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 //model
 const claimSchema = new Schema({
-	id: { type: String },
+	id: { type: String, unique: true },
 	selectedOrg: String,
 	orgAdminWallet: String,
 	orgAdminFirstName: String,
@@ -15,7 +15,11 @@ const claimSchema = new Schema({
 	orgAdminZip: Number,
 	claimIndex: Number,
 	claimDate: { type: Date, default: Date.now, required: true },
-	claimApprovalDetails: {}
+	claimApprovalDetails: {
+		claimApproval: { type: Boolean, default: false },
+		dateApproved: { type: Date, default: null },
+		transactionHash: { type: String, default: '' }
+	}
 });
 
 //modelClass
