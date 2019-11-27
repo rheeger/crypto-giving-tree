@@ -100,6 +100,11 @@ contract Tree {
 
     }
 
+    function changeManager (address newManager) public adminRestricted {
+        manager = newManager;
+
+    }
+
     function checkAdmin() public view returns (address) {
         AbstractAdmin x = AbstractAdmin ( 0xFB4536335Bd7Ee65EE7Bb4EF9aaAFa689c3C2606 );
     

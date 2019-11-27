@@ -292,6 +292,7 @@ export const fetchClaim = (id) => async (dispatch) => {
 };
 
 export const approveClaim = (id, selectedOrg, orgAddress, grantNonce) => async (dispatch, getState) => {
+	console.log('attempting to approve claim on chain');
 	const trans = await approveOrgClaim(orgAddress, grantNonce);
 	console.log('claim approved on chain');
 	const claimApprovalDetails = {
