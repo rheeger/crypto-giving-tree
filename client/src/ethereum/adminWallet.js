@@ -1,6 +1,6 @@
 export const getAdminWeb3 = async () => {
 	const Web3 = require('web3');
-	const HDWalletProvider = require('truffle-hdwallet-provider');
+	const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 	const mnemonic = process.env.REACT_APP_METAMASK_MNEMONIC;
 	const infuraKey = process.env.REACT_APP_INFURA_KEY;

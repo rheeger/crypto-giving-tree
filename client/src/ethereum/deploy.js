@@ -1,6 +1,6 @@
 const assert = require('assert');
 const Web3 = require('web3');
-const HDWalletProvider = require('truffle-hdwallet-provider');
+const HDWalletProvider = require('@truffle/hdwallet-provider');
 const compiledFactory = require('./build/GivingTree.json');
 
 const mnemonic = process.env.METAMASK_MNEMONIC;

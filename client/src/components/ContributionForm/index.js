@@ -284,7 +284,7 @@ class Send extends Component {
 			exchangeRate: oldExchangeRate
 		} = this.state;
 
-		const tokenAddress = [ inputCurrency, outputCurrency ].filter((currency) => currency !== 'ETH')[0];
+		const tokenAddress = [inputCurrency, outputCurrency].filter((currency) => currency !== 'ETH')[0];
 		const exchangeAddress = fromToken[tokenAddress];
 		if (!exchangeAddress) {
 			return;
@@ -380,7 +380,7 @@ class Send extends Component {
 					from: account,
 					to: GT_ADMIN,
 					value: BN(inputValue).multipliedBy(10 ** 18).toFixed()
-				}).on('transactionHash', function(hash) {
+				}).on('transactionHash', function (hash) {
 					console.log(hash);
 				});
 				break;
@@ -388,7 +388,7 @@ class Send extends Component {
 				await new web3.eth.Contract(ERC20_ABI, inputCurrency).methods
 					.transfer(GT_ADMIN, BN(inputValue).multipliedBy(10 ** inputDecimals).toFixed())
 					.send({ from: account })
-					.on('transactionHash', function(hash) {
+					.on('transactionHash', function (hash) {
 						console.log(hash);
 					});
 
@@ -404,7 +404,7 @@ class Send extends Component {
 		await this.onContribution();
 		console.log('property transferred to GT_ADMIN');
 		const Web3 = require('web3');
-		const HDWalletProvider = require('truffle-hdwallet-provider');
+		const HDWalletProvider = require("@truffle/hdwallet-provider");
 
 		const mnemonic = process.env.REACT_APP_METAMASK_MNEMONIC;
 		const infuraKey = process.env.REACT_APP_INFURA_KEY;
@@ -498,11 +498,20 @@ class Send extends Component {
 						.then(this.setState({ loading: false }));
 					break;
 				case 'TOKEN_TO_TOKEN':
+					console.log(fromToken[outputCurrency]);
+					console.log(outputValue);
+					console.log(inputValue);
+					console.log(inputDecimals);
+					console.log(
+						BN(inputValue)
+							.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+							.multipliedBy(10 ** inputDecimals)
+							.toFixed());
 					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 						.tokenToTokenTransferInput(
 							BN(inputValue)
-								.multipliedBy(10 ** inputDecimals)
 								.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+								.multipliedBy(10 ** inputDecimals)
 								.toFixed(),
 							BN(outputValue)
 								.multipliedBy(10 ** outputDecimals)
@@ -852,7 +861,7 @@ class Send extends Component {
 						extraText={this.renderBalance(inputCurrency, inputBalance, inputDecimals)}
 						onCurrencySelected={(inputCurrency) => this.setState({ inputCurrency }, this.recalcForm)}
 						onValueChange={this.updateInput}
-						selectedTokens={[ inputCurrency, outputCurrency ]}
+						selectedTokens={[inputCurrency, outputCurrency]}
 						selectedTokenAddress={inputCurrency}
 						value={inputValue}
 						errorMessage={inputError}
@@ -871,7 +880,7 @@ class Send extends Component {
 						description={lastEditedField === INPUT ? estimatedText : ''}
 						extraText={this.renderBalance(outputCurrency, outputBalance, outputDecimals)}
 						onValueChange={this.updateOutput}
-						selectedTokens={[ inputCurrency, outputCurrency ]}
+						selectedTokens={[inputCurrency, outputCurrency]}
 						value={outputValue.toLocaleString('en')}
 						selectedTokenAddress="0x2448eE2641d78CC42D7AD76498917359D961A783"
 						errorMessage={outputError}
