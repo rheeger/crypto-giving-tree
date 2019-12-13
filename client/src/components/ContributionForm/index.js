@@ -39,7 +39,8 @@ class Send extends Component {
 		inputAmountB: '',
 		lastEditedField: '',
 		recipient: this.props.recievingTree,
-		loading: false
+		loading: false,
+		tncconsent: false
 	};
 
 	componentDidMount() {
@@ -59,7 +60,9 @@ class Send extends Component {
 			inputAmountB: '',
 			lastEditedField: '',
 			recipient: this.props.recievingTree,
-			outputCurrency: '0x2448eE2641d78CC42D7AD76498917359D961A783'
+			outputCurrency: '0x2448eE2641d78CC42D7AD76498917359D961A783',
+			loading: false,
+			tncconsent: false
 		});
 	}
 
@@ -69,7 +72,7 @@ class Send extends Component {
 
 	validate() {
 		const { selectors, account, web3 } = this.props;
-		const { inputValue, outputValue, inputCurrency, outputCurrency, recipient } = this.state;
+		const { inputValue, outputValue, inputCurrency, outputCurrency, recipient, tncconsent } = this.state;
 
 		let inputError = '';
 		let outputError = '';
@@ -87,7 +90,8 @@ class Send extends Component {
 			!outputCurrency ||
 			!recipient ||
 			this.isUnapproved() ||
-			!validRecipientAddress
+			!validRecipientAddress ||
+			!tncconsent
 		) {
 			isValid = false;
 		}
@@ -96,6 +100,11 @@ class Send extends Component {
 
 		if (inputBalance.isLessThan(BN(inputValue * 10 ** inputDecimals))) {
 			inputError = this.props.t('insufficientBalance');
+		}
+
+		if (inputValue && !tncconsent) {
+			inputError = 'please review and accept terms'
+			outputError = 'please review and accept terms'
 		}
 
 		if (inputValue === 'N/A') {
@@ -413,9 +422,9 @@ class Send extends Component {
 		const provider = new HDWalletProvider(mnemonic, infuraRinkebyEndpoint);
 
 		const web3 = new Web3(provider);
-		const account = await web3.eth.getAccounts();
+		const accounts = await web3.eth.getAccounts();
 		const {
-			exchangeAddresses: { fromToken },
+			account, exchangeAddresses: { fromToken },
 			selectors,
 			addPendingTx,
 			fetchTreeDAIBalance,
@@ -436,8 +445,8 @@ class Send extends Component {
 		const CHARTIY_BLOCK_FEE = 0.005;
 		const tokenName = this.renderTokenName(inputCurrency);
 		const type = getSendType(inputCurrency, outputCurrency);
-		const { decimals: inputDecimals } = selectors().getBalance(account[0], inputCurrency);
-		const { decimals: outputDecimals } = selectors().getBalance(account[0], outputCurrency);
+		const { decimals: inputDecimals } = selectors().getBalance(account, inputCurrency);
+		const { decimals: outputDecimals } = selectors().getBalance(account, outputCurrency);
 		let deadline;
 		try {
 			deadline = await retry(() => getBlockDeadline(web3, 600));
@@ -470,7 +479,7 @@ class Send extends Component {
 						)
 						.send(
 							{
-								from: account[0],
+								from: accounts[0],
 								value: BN(inputValue)
 									.multipliedBy(10 ** 18)
 									.multipliedBy(1 - CHARTIY_BLOCK_FEE)
@@ -523,7 +532,7 @@ class Send extends Component {
 							recipient,
 							outputCurrency
 						)
-						.send({ from: account[0] }, (err, data) => {
+						.send({ from: accounts[0] }, (err, data) => {
 							if (!err) {
 								addPendingTx(data);
 								this.reset();
@@ -563,7 +572,7 @@ class Send extends Component {
 						)
 						.send(
 							{
-								from: account[0],
+								from: accounts[0],
 								value: BN(inputValue)
 									.multipliedBy(10 ** inputDecimals)
 									.multipliedBy(1 - CHARTIY_BLOCK_FEE)
@@ -611,7 +620,7 @@ class Send extends Component {
 							recipient,
 							outputCurrency
 						)
-						.send({ from: account[0] }, (err, data) => {
+						.send({ from: accounts[0] }, (err, data) => {
 							if (!err) {
 								addPendingTx(data);
 								this.reset();
@@ -785,7 +794,7 @@ class Send extends Component {
 
 	renderDonateButton() {
 		const { isValid } = this.validate();
-		const { outputValue } = this.state;
+		const { outputValue, tncconsent } = this.state;
 
 		if (!outputValue) {
 			return (
@@ -793,7 +802,7 @@ class Send extends Component {
 					className={classnames('primary centered', {
 						inactive: !this.props.isConnected
 					})}
-					disabled={!isValid}
+					disabled={!isValid || !tncconsent}
 					onClick={this.onSend}
 				>
 					Donate
@@ -802,17 +811,42 @@ class Send extends Component {
 		}
 
 		return (
-			<Button
-				className={classnames('primary centered', {
-					inactive: !this.props.isConnected
-				})}
-				disabled={!isValid}
-				onClick={this.onSend}
-				loading={this.state.loading}
-			>
-				Donate ~${outputValue.toLocaleString('en')}
-			</Button>
+			<div>
+				<Button
+					className={classnames('primary centered', {
+						inactive: !this.props.isConnected
+					})}
+					disabled={!isValid || !tncconsent}
+					onClick={this.onSend}
+					loading={this.state.loading}
+				>
+					Donate ~${outputValue.toLocaleString('en')}
+				</Button>
+			</div >
 		);
+	}
+
+	handleCheckboxChange = event =>
+		this.setState({ tncconsent: event.target.checked })
+
+	renderTnCconsent() {
+		const Checkbox = props => (
+			<input type="checkbox" {...props} />
+		)
+
+
+		return (
+			<OversizedPanel >
+				<div className="swap__exchange-rate-wrapper" style={{ margin: '2.5px', padding: '10px' }}>
+					<label>Accept Terms and Conditions?</label>
+					<Checkbox style={{ marginLeft: '1rem' }}
+						checked={this.state.tncconsent}
+						onChange={this.handleCheckboxChange}
+					/>
+					<span>{`  I agree`}</span>
+				</div>
+			</OversizedPanel>
+		)
 	}
 
 	renderBalance(currency, balance, decimals) {
@@ -903,6 +937,9 @@ class Send extends Component {
 					/>
 
 					{this.renderExchangeRate()}
+					<div style={{ display: 'flex' }}>
+						{this.renderTnCconsent()}
+					</div>
 					{this.renderSummary(inputError, outputError)}
 
 					<div style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>

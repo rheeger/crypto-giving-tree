@@ -23,6 +23,17 @@ class GrantForm extends React.Component {
 		);
 	};
 
+	renderCheckbox = ({ input, label, type, meta }) => {
+		const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
+		return (
+			<div className={className}>
+				<label>{label}</label>
+				<input {...input} type={type} /> I Agree
+				{this.renderError(meta)}
+			</div>
+		);
+	};
+
 	renderTreeSelect = ({ input, label, options, meta, value, ...rest }) => {
 		const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
 		const parse = (event) => {
@@ -38,13 +49,13 @@ class GrantForm extends React.Component {
 				>
 					<option>select a tree:</option>
 					{options.map((option, key) => (
-						<option key={key} value={JSON.stringify(option.id)}>
+						<option key={key} value={JSON.stringify(option)} >
 							{option.branchName} -- (Available Balance: ${option.grantableDAI})
 						</option>
 					))}
 				</select>
 				{this.renderError(meta)}
-			</div>
+			</div >
 		);
 	};
 
@@ -66,12 +77,10 @@ class GrantForm extends React.Component {
 				<Field name="grantDescription" component={this.renderInput} type="text" label="Grant memo:" />
 				<Field
 					name="tncconsent"
-					component={this.renderInput}
-					value="null"
-					type="radio"
+					component={this.renderCheckbox}
+					type="checkbox"
 					label="Terms and Conditions:"
 				>
-					I Agree
 				</Field>
 				<Button loading={this.props.loading} className="ui button primary">
 					Submit
@@ -83,14 +92,30 @@ class GrantForm extends React.Component {
 
 const validate = (formValues) => {
 	const errors = {};
-	if (!formValues.title) {
-		errors.title = 'You must enter a Title';
+	if (!formValues.selectedTree) {
+		errors.selectedTree = 'You must select a Giving Tree';
 	}
-	if (!formValues.description) {
-		errors.description = 'You must enter a description';
+	if (!formValues.grantAmount) {
+		errors.grantAmount = 'You must enter a amount to grant';
+	}
+	if (!formValues.grantDescription) {
+		errors.grantDescription = 'You must enter a description';
+	}
+
+	if (formValues.selectedTree) {
+		if (formValues.grantAmount > formValues.selectedTree.grantableDAI) {
+			errors.grantAmount = 'Grant amount exceeds grantable balance. Please lower grant amount';
+		}
+		if (formValues.selectedTree.grantableDAI < .01) {
+			errors.selectedTree = 'Insuficient Funds. Please contribute to this Giving Tree'
+		}
+
+	}
+	if (!formValues.tncconsent) {
+		errors.tncconsent = 'You must accept the terms and conditions';
 	}
 
 	return errors;
 };
 
-export default reduxForm({ form: 'branchForm', validate })(GrantForm);
+export default reduxForm({ form: 'grantForm', validate })(GrantForm);

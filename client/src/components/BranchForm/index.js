@@ -22,6 +22,19 @@ class BranchForm extends React.Component {
 			</div>
 		);
 	};
+
+	renderCheckbox = ({ input, label, type, meta }) => {
+		const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
+
+		return (
+			<div className={className}>
+				<label>{label}</label>
+				<input {...input} type={type} value='true' /> I Agree
+				{this.renderError(meta)}
+			</div>
+		);
+	};
+
 	onSubmit = async (formValues) => {
 		this.props.onSubmit(formValues);
 	};
@@ -40,12 +53,10 @@ class BranchForm extends React.Component {
 				<Field name="primaryAdvisorBirthday" component={this.renderInput} type="date" label="Birthdate:" />
 				<Field
 					name="tncconsent"
-					component={this.renderInput}
-					value="null"
-					type="radio"
+					component={this.renderCheckbox}
+					type="checkbox"
 					label="Terms and Conditions:"
 				>
-					I Agree
 				</Field>
 				<Button loading={this.props.loading} className="ui button primary">
 					Submit
@@ -57,11 +68,35 @@ class BranchForm extends React.Component {
 
 const validate = (formValues) => {
 	const errors = {};
-	if (!formValues.title) {
-		errors.title = 'You must enter a Title';
+	if (!formValues.branchName) {
+		errors.branchName = 'Please type in a name for your Giving Tree.';
 	}
-	if (!formValues.description) {
-		errors.description = 'You must enter a description';
+	if (!formValues.primaryAdvisorFirstName) {
+		errors.primaryAdvisorFirstName = 'You must enter a First Name';
+	}
+	if (!formValues.primaryAdvisorLastName) {
+		errors.primaryAdvisorLastName = 'You must enter a Last Name';
+	}
+	if (!formValues.primaryAdvisorEmail) {
+		errors.primaryAdvisorEmail = 'You must enter an eMail address';
+	}
+	if (!formValues.primaryAdvisorAddress) {
+		errors.primaryAdvisorAddress = 'You must enter an address';
+	}
+	if (!formValues.primaryAdvisorCity) {
+		errors.primaryAdvisorCity = 'You must enter a city';
+	}
+	if (!formValues.primaryAdvisorState) {
+		errors.primaryAdvisorState = 'You must enter a State';
+	}
+	if (!formValues.primaryAdvisorZip) {
+		errors.primaryAdvisorZip = 'You must enter a Zip';
+	}
+	if (!formValues.primaryAdvisorBirthday) {
+		errors.primaryAdvisorBirthday = 'You must enter a birthday';
+	}
+	if (!formValues.tncconsent) {
+		errors.tncconsent = 'You must agree to the Terms and Conditions';
 	}
 
 	return errors;

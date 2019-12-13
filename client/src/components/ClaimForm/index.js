@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import web3 from 'web3'
 
 class ClaimForm extends React.Component {
 	renderError({ error, touched }) {
@@ -21,6 +22,20 @@ class ClaimForm extends React.Component {
 			</div>
 		);
 	};
+
+	renderCheckbox = ({ input, label, type, meta }) => {
+		const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
+
+		return (
+			<div className={className}>
+				<label>{label}</label>
+				<input {...input} type={type} value='true' /> I Agree
+				{this.renderError(meta)}
+			</div>
+		);
+	};
+
+
 	onSubmit = (formValues) => {
 		this.props.onSubmit(formValues);
 	};
@@ -42,12 +57,12 @@ class ClaimForm extends React.Component {
 				<Field name="orgAdminState" component={this.renderInput} label="State:" />
 				<Field name="orgAdminZip" component={this.renderInput} type="number" label="ZIP:" />
 				<Field
-					name="verificationUpload"
-					component={this.renderInput}
-					label="Upload Verification Letter:"
-					type="file"
-					accept=".jpg, .png, .jpeg, .pdf"
-				/>
+					name="tncconsent"
+					component={this.renderCheckbox}
+					type="checkbox"
+					label="Terms and Conditions:"
+				>
+				</Field>
 				<button className="ui button primary">Submit</button>
 			</form>
 		);
@@ -56,11 +71,40 @@ class ClaimForm extends React.Component {
 
 const validate = (formValues) => {
 	const errors = {};
-	if (!formValues.title) {
-		errors.title = 'You must enter a Title';
+	if (!formValues.orgAdminWallet) {
+		errors.orgAdminWallet = 'You must enter an Address';
 	}
-	if (!formValues.description) {
-		errors.description = 'You must enter a description';
+	if (formValues.orgAdminWallet) {
+		try {
+			const address = web3.utils.toChecksumAddress(formValues.orgAdminWallet)
+		} catch (e) {
+			errors.orgAdminWallet = 'Please enter a valid ethereum address'
+		}
+
+	}
+	if (!formValues.orgAdminFirstName) {
+		errors.orgAdminFirstName = 'You must enter a First Name';
+	}
+	if (!formValues.orgAdminLastName) {
+		errors.orgAdminLastName = 'You must enter a Last Name';
+	}
+	if (!formValues.orgAdminEmail) {
+		errors.orgAdminEmail = 'You must enter an eMail address';
+	}
+	if (!formValues.orgAdminAddress) {
+		errors.orgAdminAddress = 'You must enter a valid address';
+	}
+	if (!formValues.orgAdminCity) {
+		errors.orgAdminCity = 'You must enter a city';
+	}
+	if (!formValues.orgAdminState) {
+		errors.orgAdminState = 'You must enter a state';
+	}
+	if (!formValues.orgAdminZip) {
+		errors.orgAdminZip = 'You must enter a zip code';
+	}
+	if (!formValues.tncconsent) {
+		errors.tncconsent = 'You must accept the Terms and Conditions';
 	}
 
 	return errors;

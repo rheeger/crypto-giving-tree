@@ -40,10 +40,11 @@ import { createOrg } from '../../ethereum/orgFactoryAdmin';
 import { plantTree } from '../../ethereum/treeNursreyAdmin';
 import { treeContract, approveTreeGrant } from '../../ethereum/tree';
 import { orgContract, approveOrgClaim } from '../../ethereum/org';
+import BN from 'bignumber.js'
 
 //PRO PUBLICA ACTIONS
 export const selectOrg = (ein) => async (dispatch) => {
-	const response = await ProPublica.get(`/organizations/${ein}.json`).catch(function(error) {
+	const response = await ProPublica.get(`/organizations/${ein}.json`).catch(function (error) {
 		console.error(error);
 	});
 
@@ -56,7 +57,7 @@ export const selectOrg = (ein) => async (dispatch) => {
 export const searchOrgs = (term) => async (dispatch) => {
 	const response = await ProPublica.get('/search.json?c_code%5Bid%5D=3', {
 		params: { q: term }
-	}).catch(function(error) {
+	}).catch(function (error) {
 		console.error(error);
 	});
 
@@ -226,7 +227,7 @@ export const createOrgClaim = (formValues, orgAdminWallet, orgContractAddress, t
 			orgAdminWallet
 		)
 		.send({ from: orgAdminWallet })
-		.on('transactionHash', function(transId) {
+		.on('transactionHash', function (transId) {
 			console.log(transId);
 			return transId;
 		});
@@ -333,11 +334,11 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 	dispatch,
 	getState
 ) => {
-	const tree = treeContract(formValues.selectedTree);
+	const tree = treeContract(formValues.selectedTree.id);
 	const id = await tree.methods
-		.createGrant(formValues.grantDescription, formValues.grantAmount * 1000000000000000000, recipientAddress)
+		.createGrant(formValues.grantDescription, BN(formValues.grantAmount).multipliedBy(10 ** 18).toFixed(), recipientAddress)
 		.send({ from: managerAddress })
-		.on('transactionHash', function(transId) {
+		.on('transactionHash', function (transId) {
 			console.log(transId);
 			return transId;
 		});
