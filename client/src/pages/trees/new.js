@@ -8,7 +8,8 @@ import Header from '../../components/Header';
 class NewTree extends React.Component {
 	state = {
 		ready: 'false',
-		loading: false
+		loading: false,
+		isShowingModal: false
 	};
 
 	componentDidMount() {

@@ -28,7 +28,7 @@ class GrantForm extends React.Component {
 		return (
 			<div className={className}>
 				<label>{label}</label>
-				<input {...input} type={type} /> I Agree
+				<input {...input} type={type} /> The suggested distribution does not represent the payment of any pledge or other financial obligation. I/we will not accept any benefits or privileges offered in connection with the above grant distribution(s), including goods or services (including auction items), admission to charitable events, dues, or membership, other than a synagogue or other religious institution. This grant is not intended to be combined with my/our personal check to support my/our attendance or that of others at a charity’s event.
 				{this.renderError(meta)}
 			</div>
 		);
@@ -79,8 +79,9 @@ class GrantForm extends React.Component {
 					name="tncconsent"
 					component={this.renderCheckbox}
 					type="checkbox"
-					label="Terms and Conditions:"
+					label="Legal Verification:"
 				>
+
 				</Field>
 				<Button loading={this.props.loading} className="ui button primary">
 					Submit
