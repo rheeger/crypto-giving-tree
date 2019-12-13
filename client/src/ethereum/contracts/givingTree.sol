@@ -163,11 +163,13 @@ contract Tree {
         ERC20 t = ERC20(tokenAddress);
         
         Grant storage grant = grants[index];
-        uint fee = (grant.value)/100;
-        uint finalGrant = (grant.value * 99)/100;
+
+        // //donation based fees
+        // uint fee = (grant.value)/100;
+        // uint finalGrant = (grant.value * 99)/100;
+        // t.transfer(admin, fee);
         
-        t.transfer(grant.recipient, finalGrant);
-        t.transfer(admin, fee);
+        t.transfer(grant.recipient, grant.value);
 
         grant.complete = true;
     }

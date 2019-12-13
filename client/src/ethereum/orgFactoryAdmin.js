@@ -13,7 +13,7 @@ export const createOrg = async (id) => {
 
 	const web3 = new Web3(provider);
 	const accounts = await web3.eth.getAccounts();
-	const address = '0xAa6524C3a1df835eF8d21506260C004962eea934';
+	const address = process.env.REACT_APP_RINKEBY_ORG_FACTORY;
 	const orgFactory = new web3.eth.Contract(JSON.parse(OrgFactory.interface), address);
 
 	const createContract = await orgFactory.methods.createOrg(id).send({ from: accounts[0], gas: '1000000' });
@@ -24,7 +24,7 @@ export const createOrg = async (id) => {
 };
 
 export function getOrgFactoryInstance() {
-	const address = '0xAa6524C3a1df835eF8d21506260C004962eea934';
+	const address = process.env.REACT_APP_RINKEBY_ORG_FACTORY;
 	const orgFactory = new web3.eth.Contract(JSON.parse(OrgFactory.interface), address);
 
 	return orgFactory;
