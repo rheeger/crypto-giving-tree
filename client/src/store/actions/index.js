@@ -303,11 +303,9 @@ export const approveClaim = (id, selectedOrg, orgAddress, grantNonce) => async (
 			transactionHash: trans
 		}
 	};
-	const response = await localDB.patch(`/claims/${id}`, claimApprovalDetails);
-	console.log('claim details updated on /claims');
-	const claimDetails = await localDB.get(`/claims/${id}`);
-	console.log('new claim details grabbed');
-	await this.claimOrg(selectedOrg, claimDetails);
+	await localDB.patch(`/claims/${id}`, claimApprovalDetails);
+	const response = await localDB.patch(`/orgs/${selectedOrg}`, claimApprovalDetails);
+
 	console.log('claim deatials added on /org');
 
 	dispatch({ type: EDIT_CLAIM, payload: response.data });

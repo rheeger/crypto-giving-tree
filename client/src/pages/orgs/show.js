@@ -95,9 +95,22 @@ class OrgShow extends React.Component {
 		return <Card.Group items={items} />;
 	}
 
+	renderCashOut() {
+		const { match, gtOrgs } = this.props;
+		if (!gtOrgs[match.params.ein].claimed) {
+			return
+		}
+
+		return (
+			<Button floated="left" basic color="green">
+				<i className="dollar icon" />cash out org
+			</Button>
+		)
+	}
+
 	render() {
 		const { Header, Row, HeaderCell, Body } = Table;
-		if (!this.props.org.organization || !this.props.gtGrants) {
+		if (!this.props.org.organization || !this.props.gtGrants || !this.props.gtOrgs) {
 			return <div> Loading... </div>;
 		}
 		return (
@@ -120,6 +133,7 @@ class OrgShow extends React.Component {
 										<i className="paper plane icon" />send grant
 									</Button>
 								</Link>
+								{this.renderCashOut}
 							</Grid.Column>
 							<Grid.Row>
 								<Grid.Column width={16}>
