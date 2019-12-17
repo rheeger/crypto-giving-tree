@@ -461,12 +461,6 @@ class Send extends Component {
 			// send input
 			switch (type) {
 				case 'ETH_TO_TOKEN':
-					console.log(fromToken[outputCurrency]);
-					console.log(outputValue);
-					console.log(outputValue);
-					console.log(
-						BN(outputValue).multipliedBy(10 ** outputDecimals).multipliedBy(1 - ALLOWED_SLIPPAGE).toFixed()
-					);
 					console.log('attempting to convert fee to USD')
 					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferInput(
@@ -540,29 +534,21 @@ class Send extends Component {
 
 
 				case 'TOKEN_TO_TOKEN':
-					console.log(fromToken[outputCurrency]);
-					console.log(outputValue);
-					console.log(inputValue);
-					console.log(inputDecimals);
-					console.log(
-						BN(inputValue)
-							.multipliedBy(1 - CHARTIY_BLOCK_FEE)
-							.multipliedBy(10 ** inputDecimals)
-							.toFixed());
+					console.log('attempting to convert fee to USD')
 					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 						.tokenToTokenTransferInput(
 							BN(inputValue)
-								.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+								.multipliedBy(CHARTIY_BLOCK_FEE)
 								.multipliedBy(10 ** inputDecimals)
 								.toFixed(),
 							BN(outputValue)
 								.multipliedBy(10 ** outputDecimals)
-								.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+								.multipliedBy(CHARTIY_BLOCK_FEE)
 								.multipliedBy(1 - TOKEN_ALLOWED_SLIPPAGE)
 								.toFixed(),
 							'1',
 							deadline,
-							recipient,
+							GT_ADMIN,
 							outputCurrency
 						)
 						.send({ from: accounts[0] }, (err, data) => {
@@ -571,18 +557,44 @@ class Send extends Component {
 								this.reset();
 							}
 						})
-						.then(async (receipt) => {
-							fetchTreeDAIBalance(recipient) &&
-								(await createDonation(
-									receipt.transactionHash,
+						.then(async () => {
+							console.log('attempting to convert contribution to USD')
+							await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
+								.tokenToTokenTransferInput(
+									BN(inputValue)
+										.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+										.multipliedBy(10 ** inputDecimals)
+										.toFixed(),
+									BN(outputValue)
+										.multipliedBy(10 ** outputDecimals)
+										.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+										.multipliedBy(1 - TOKEN_ALLOWED_SLIPPAGE)
+										.toFixed(),
+									'1',
+									deadline,
 									recipient,
-									web3connect.account,
-									tokenName,
-									inputValue,
-									receipt.events.TokenPurchase.returnValues.tokens_bought
-								));
-						})
-						.then(this.setState({ loading: false }));
+									outputCurrency
+								)
+								.send({ from: accounts[0] }, (err, data) => {
+									if (!err) {
+										addPendingTx(data);
+										this.reset();
+									}
+								})
+								.then(console.log('exchange complete'))
+								.then(async (receipt) => {
+									fetchTreeDAIBalance(recipient) &&
+										(await createDonation(
+											receipt.transactionHash,
+											recipient,
+											web3connect.account,
+											tokenName,
+											inputValue,
+											receipt.events.TokenPurchase.returnValues.tokens_bought
+										));
+								})
+								.then(this.setState({ loading: false }))
+						});
 					break;
 				default:
 					break;
@@ -594,21 +606,22 @@ class Send extends Component {
 
 			switch (type) {
 				case 'ETH_TO_TOKEN':
+					console.log('attempting to convert fee to USD')
 					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferOutput(
 							BN(outputValue)
 								.multipliedBy(10 ** outputDecimals)
-								.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+								.multipliedBy(CHARTIY_BLOCK_FEE)
 								.toFixed(0),
 							deadline,
-							recipient
+							GT_ADMIN
 						)
 						.send(
 							{
 								from: accounts[0],
 								value: BN(inputValue)
 									.multipliedBy(10 ** inputDecimals)
-									.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+									.multipliedBy(CHARTIY_BLOCK_FEE)
 									.multipliedBy(1 + ALLOWED_SLIPPAGE)
 									.toFixed(),
 								gas: '1000000'
@@ -620,32 +633,64 @@ class Send extends Component {
 								}
 							}
 						)
-						.then(async (receipt) => {
-							fetchTreeDAIBalance(recipient) &&
-								(await createDonation(
-									receipt.transactionHash,
-									recipient,
-									web3connect.account,
-									tokenName,
-									inputValue,
-									receipt.events.TokenPurchase.returnValues.tokens_bought
-								));
+
+						.then(async () => {
+							console.log('attempting to convert contribution to USD')
+							await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
+								.ethToTokenTransferOutput(
+									BN(outputValue)
+										.multipliedBy(10 ** outputDecimals)
+										.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+										.toFixed(0),
+									deadline,
+									recipient
+								)
+								.send(
+									{
+										from: accounts[0],
+										value: BN(inputValue)
+											.multipliedBy(10 ** inputDecimals)
+											.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+											.multipliedBy(1 + ALLOWED_SLIPPAGE)
+											.toFixed(),
+										gas: '1000000'
+									},
+									(err, data) => {
+										if (!err) {
+											addPendingTx(data);
+											this.reset();
+										}
+									}
+								)
+								.then(console.log('exchange complete'))
+								.then(async (receipt) => {
+									fetchTreeDAIBalance(recipient) &&
+										(await createDonation(
+											receipt.transactionHash,
+											recipient,
+											web3connect.account,
+											tokenName,
+											inputValue,
+											receipt.events.TokenPurchase.returnValues.tokens_bought
+										));
+								})
+								.then(this.setState({ loading: false }));
 						})
-						.then(this.setState({ loading: false }));
 					break;
 				case 'TOKEN_TO_TOKEN':
 					if (!inputAmountB) {
 						return;
 					}
+					console.log('attempting to convert fee to USD')
 					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 						.tokenToTokenTransferOutput(
 							BN(outputValue)
 								.multipliedBy(10 ** outputDecimals)
-								.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+								.multipliedBy(CHARTIY_BLOCK_FEE)
 								.toFixed(0),
 							BN(inputValue)
 								.multipliedBy(10 ** inputDecimals)
-								.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+								.multipliedBy(CHARTIY_BLOCK_FEE)
 								.multipliedBy(1 + TOKEN_ALLOWED_SLIPPAGE)
 								.toFixed(),
 							inputAmountB.multipliedBy(1.2).toFixed(0),
@@ -659,18 +704,44 @@ class Send extends Component {
 								this.reset();
 							}
 						})
-						.then(async (receipt) => {
-							fetchTreeDAIBalance(recipient) &&
-								(await createDonation(
-									receipt.transactionHash,
+						.then(async () => {
+							console.log('attempting to convert contribution to USD')
+							await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
+								.tokenToTokenTransferOutput(
+									BN(outputValue)
+										.multipliedBy(10 ** outputDecimals)
+										.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+										.toFixed(0),
+									BN(inputValue)
+										.multipliedBy(10 ** inputDecimals)
+										.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+										.multipliedBy(1 + TOKEN_ALLOWED_SLIPPAGE)
+										.toFixed(),
+									inputAmountB.multipliedBy(1.2).toFixed(0),
+									deadline,
 									recipient,
-									web3connect.account,
-									tokenName,
-									inputValue,
-									receipt.events.TokenPurchase.returnValues.tokens_bought
-								));
+									outputCurrency
+								)
+								.send({ from: accounts[0] }, (err, data) => {
+									if (!err) {
+										addPendingTx(data);
+										this.reset();
+									}
+								})
+								.then(console.log('exchange complete'))
+								.then(async (receipt) => {
+									fetchTreeDAIBalance(recipient) &&
+										(await createDonation(
+											receipt.transactionHash,
+											recipient,
+											web3connect.account,
+											tokenName,
+											inputValue,
+											receipt.events.TokenPurchase.returnValues.tokens_bought
+										));
+								})
+								.then(this.setState({ loading: false }));
 						})
-						.then(this.setState({ loading: false }));
 					break;
 				default:
 					break;
