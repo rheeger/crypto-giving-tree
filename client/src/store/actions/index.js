@@ -189,7 +189,8 @@ export const createOrgAndContract = (id, name) => async (
     name,
     contractAddress,
     lifetimeGrants: 0,
-    claimed: false
+    claimed: false,
+    claimApprovalDetails: {}
   });
 
   dispatch({ type: CREATE_CONTRACT_ADDRESS, payload: response.data });
