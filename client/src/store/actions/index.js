@@ -33,7 +33,13 @@ import {
   FETCH_ORG_CLAIMS,
   FETCH_CLAIM,
   EDIT_CLAIM,
-  DELETE_CLAIM
+  DELETE_CLAIM,
+  MAKE_ORG_WITHDRAWL,
+  FETCH_WITHDRAWLS,
+  FETCH_ORG_WITHDRAWLS,
+  FETCH_WITHDRAWL,
+  EDIT_WITHDRAWL,
+  DELETE_WITHDRAWL
 } from "./types";
 import history from "../../history";
 import { createOrg } from "../../ethereum/orgFactoryAdmin";
@@ -260,6 +266,8 @@ export const deleteOrg = id => async dispatch => {
   dispatch({ type: DELETE_ORG, payload: id });
   history.push("/");
 };
+
+//DB ACTIONS: CLAIMS
 
 export const createOrgClaim = (
   formValues,
@@ -570,4 +578,69 @@ export const deleteDonation = id => async dispatch => {
 
   dispatch({ type: DELETE_DONATION, payload: id });
   history.push("/");
+};
+
+// DB ACTIONS: WOITHDRAWLS
+export const createOrgWithdrawl = (
+  selectedOrg,
+  orgContractAddress,
+  orgAdminWallet
+  //   currentOrgContractBalance
+) => async dispatch => {
+  console.log(orgContractAddress);
+  const org = orgContract(orgContractAddress);
+  const id = await org.methods
+    .cashOutOrg(orgAdminWallet, RINKEBY_DAI)
+    .send({ from: orgAdminWallet })
+    .on("transactionHash", function(transId) {
+      console.log(transId);
+      return transId;
+    });
+  const response = await localDB.post(`/withdrawls`, {
+    id: id.transactionHash,
+    selectedOrg,
+    orgAdminWallet
+    // withdrawlAmount: currentOrgContractBalance
+  });
+
+  dispatch({ type: MAKE_ORG_WITHDRAWL, payload: response.data });
+  history.push(`/orgs/${selectOrg}`);
+};
+
+export const fetchWithdrawls = () => async dispatch => {
+  const response = await localDB.get("/withdrawls");
+
+  dispatch({ type: FETCH_WITHDRAWLS, payload: response.data });
+};
+
+export const fetchOrgWithdrawls = ein => async dispatch => {
+  const allWithdrawls = await localDB.get("/withdrawls");
+  const response = allWithdrawls.data.filter(withdrawl => {
+    if (withdrawl.selectedOrg === ein) {
+      return { withdrawl };
+    }
+    return "";
+  });
+
+  dispatch({ type: FETCH_ORG_WITHDRAWLS, payload: response });
+};
+
+export const fetchWithdrawl = id => async dispatch => {
+  const response = await localDB.get(`/withdrawls/${id}`);
+
+  dispatch({ type: FETCH_WITHDRAWL, payload: response.data });
+};
+
+export const editWithdrawl = (id, formValues) => async dispatch => {
+  const response = await localDB.patch(`/withdrawls/${id}`, formValues);
+
+  dispatch({ type: EDIT_WITHDRAWL, payload: response.data });
+  history.push("/admin");
+};
+
+export const deleteWithdrawl = id => async dispatch => {
+  await localDB.delete(`/withdrawls/${id}`);
+
+  dispatch({ type: DELETE_WITHDRAWL, payload: id });
+  history.push("/admin");
 };
