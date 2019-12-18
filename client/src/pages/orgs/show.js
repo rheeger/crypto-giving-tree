@@ -139,8 +139,7 @@ class OrgShow extends React.Component {
 
     if (
       gtOrgs[match.params.ein].claimed &&
-      gtOrgs[match.params.ein].claimApprovalDetails.orgAdminWallet !==
-        web3connect.account
+      process.env.REACT_APP_GT_ADMIN !== web3connect.account
     ) {
       return;
     }
