@@ -236,7 +236,7 @@ export const claimOrg = (id, claimId) => async dispatch => {
   const response = await localDB.patch(`/orgs/${id}`, {
     claimed: true,
     claimApprovalDetails: {
-      approvalDate: claimDetails.data.claimApprovalDetails.dateApproved,
+      dateApproved: claimDetails.data.claimApprovalDetails.dateApproved,
       orgAdminWallet: claimDetails.data.orgAdminWallet,
       claimId: claimDetails.data.id,
       transactionHash: claimDetails.data.claimApprovalDetails.transactionHash
