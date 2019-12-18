@@ -417,7 +417,9 @@ export const createGrant = (
   const response = await localDB.post(`/grants`, {
     id: id.transactionHash,
     selectedOrg: recipientEIN,
-    ...formValues,
+    selectedTree: formValues.selectedTree.id,
+    grantAmount: formValues.grantAmount,
+    grantMemo: formValues.grantMemo,
     grantApproval: false,
     grantIndex: index - 1,
     approvalDetails: {},

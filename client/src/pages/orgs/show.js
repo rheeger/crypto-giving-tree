@@ -155,7 +155,7 @@ class OrgShow extends React.Component {
   }
 
   onCashOut = async () => {
-    const { match, gtOrgs } = this.props;
+    const { match, gtOrgs, createOrgWithdrawl } = this.props;
     console.log("cashing out");
     await createOrgWithdrawl(
       match.params.ein,
