@@ -8,7 +8,7 @@ const orgSchema = new Schema({
 	contractAddress: String,
 	lifetimeGrants: String,
 	claimed: Boolean,
-	claimDetails: {
+	claimApprovalDetails: {
 		dateApproved: { type: Date, default: null },
 		orgAdminWallet: { type: string, default: null },
 		claimId: { type: string, default: null },
