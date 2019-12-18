@@ -197,11 +197,18 @@ export const fetchOrgLifetimeGrants = (id) => async (dispatch) => {
 
 	dispatch({ type: EDIT_ORG, payload: response.data });
 };
-export const claimOrg = (id, claimDetails) => async (dispatch) => {
-	const response = await localDB.patch(`/orgs/${id}`, { claimDetails });
+
+export const claimOrg = (id, claimId) => async (dispatch) => {
+	console.log('getting details for: ' + claimId)
+	const claimDetails = await localDB.get(`/claims/${claimId}`);
+	console.log('final claim details grabbed:')
+	console.log(claimDetails.data);
+	const response = await localDB.patch(`/orgs/${id}`, { claimed: true, claimApprovalDetails: { orgAdminWallet: claimDetails.data.orgAdminWallet, transactionHash: claimDetails.data.claimApprovalDetails.transactionHash, approvalDate: claimDetails.data.claimApprovalDetails.dateApproved } });
 
 	dispatch({ type: EDIT_ORG, payload: response.data });
+	history.push(`/admin`)
 };
+
 export const editOrg = (id, formValues) => async (dispatch) => {
 	const response = await localDB.patch(`/orgs/${id}`, formValues);
 
@@ -292,9 +299,9 @@ export const fetchClaim = (id) => async (dispatch) => {
 	dispatch({ type: FETCH_CLAIM, payload: response.data });
 };
 
-export const approveClaim = (id, selectedOrg, orgAddress, grantNonce) => async (dispatch, getState) => {
+export const approveClaim = (id, orgAddress, claimNonce) => async (dispatch, getState) => {
 	console.log('attempting to approve claim on chain');
-	const trans = await approveOrgClaim(orgAddress, grantNonce);
+	const trans = await approveOrgClaim(orgAddress, claimNonce);
 	console.log('claim approved on chain');
 	const claimApprovalDetails = {
 		claimApprovalDetails: {
@@ -303,13 +310,10 @@ export const approveClaim = (id, selectedOrg, orgAddress, grantNonce) => async (
 			transactionHash: trans
 		}
 	};
-	await localDB.patch(`/claims/${id}`, claimApprovalDetails);
-	const response = await localDB.patch(`/orgs/${selectedOrg}`, claimApprovalDetails);
-
-	console.log('claim deatials added on /org');
+	const response = await localDB.patch(`/claims/${id}`, claimApprovalDetails);
+	console.log('claim details updated on /claims');
 
 	dispatch({ type: EDIT_CLAIM, payload: response.data });
-	window.location.reload();
 };
 
 export const editClaim = (id, formValues) => async (dispatch) => {
@@ -352,7 +356,7 @@ export const createGrant = (formValues, recipientAddress, recipientEIN, managerA
 	});
 
 	dispatch({ type: CREATE_GRANT, payload: response.data });
-	history.push(`/trees/${formValues.selectedTree}`);
+	history.push(`/trees/${formValues.selectedTree.id}`);
 };
 
 export const approveGrant = (id, treeAddress, grantNonce) => async (dispatch, getState) => {

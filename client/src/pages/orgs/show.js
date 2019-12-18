@@ -101,11 +101,12 @@ class OrgShow extends React.Component {
 			return
 		}
 
-		return (
-			<Button floated="left" basic color="green">
-				<i className="dollar icon" />cash out org
+		if (gtOrgs[match.params.ein].claimed)
+			return (
+				<Button floated="left" basic color="green">
+					<i className="dollar icon" />cash out org
 			</Button>
-		)
+			)
 	}
 
 	render() {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Table, Button } from 'semantic-ui-react';
-import { approveClaim, deleteClaim } from '../../store/actions';
+import { approveClaim, deleteClaim, claimOrg } from '../../store/actions';
 import history from '../../history';
 import Moment from 'react-moment';
 import { fetchOrg } from '../../store/actions';
@@ -20,10 +20,10 @@ class AdminGrantRow extends Component {
 	}
 
 	onApprove = async () => {
-		const { approveClaim, id, claimIndex, gtOrgs, recipient, selectedOrg } = this.props;
+		const { approveClaim, id, claimIndex, gtOrgs, selectedOrg, claimOrg } = this.props;
 		this.setState({ approveloading: true });
-		console.log(id, selectedOrg, gtOrgs[recipient].contractAddress, claimIndex);
-		await approveClaim(id, selectedOrg, gtOrgs[recipient].contractAddress, claimIndex);
+		await approveClaim(id, gtOrgs[selectedOrg].contractAddress, claimIndex);
+		await claimOrg(selectedOrg, id);
 		this.setState({ approveloading: false });
 		this.props.onSubmit();
 		history.push('/admin');
@@ -47,8 +47,8 @@ class AdminGrantRow extends Component {
 	}
 
 	render() {
-		const { id, selectedOrg, recipient, contact, fname, lname, wallet, date, gtOrgs } = this.props;
-		if (!gtOrgs[recipient]) {
+		const { id, selectedOrg, contact, fname, lname, wallet, date, gtOrgs } = this.props;
+		if (!gtOrgs[selectedOrg]) {
 			return <div>Loading...</div>;
 		}
 
@@ -58,11 +58,8 @@ class AdminGrantRow extends Component {
 					<Moment>{date}</Moment>
 				</Table.Cell>
 				<Table.Cell>
-					<Link to={`/orgs/${selectedOrg}`}>{this.state.orgName}</Link>
-				</Table.Cell>
-				<Table.Cell>
-					<Link to={`/orgs/${recipient}`}>
-						{gtOrgs[recipient].name} (EIN: {recipient})
+					<Link to={`/orgs/${selectedOrg}`}>
+						{gtOrgs[selectedOrg].name} (EIN: {selectedOrg})
 					</Link>
 				</Table.Cell>
 				<Table.Cell>
@@ -98,4 +95,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { approveClaim, deleteClaim, fetchOrg })(AdminGrantRow);
+export default connect(mapStateToProps, { approveClaim, deleteClaim, fetchOrg, claimOrg })(AdminGrantRow);

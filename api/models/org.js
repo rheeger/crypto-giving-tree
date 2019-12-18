@@ -7,7 +7,13 @@ const orgSchema = new Schema({
 	name: String,
 	contractAddress: String,
 	lifetimeGrants: String,
-	claimed: Boolean
+	claimed: Boolean,
+	claimDetails: {
+		dateApproved: { type: Date, default: null },
+		orgAdminWallet: { type: string, default: null },
+		claimId: { type: string, default: null },
+		transactionHash: { type: String, default: null }
+	}
 });
 
 //modelClass

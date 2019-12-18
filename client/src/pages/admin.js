@@ -57,12 +57,15 @@ class AdminPanel extends Component {
 		}
 
 		return Object.values(this.props.gtClaims).map((claim, index) => {
+			if (!claim.claimApprovalDetails) {
+				return
+			}
 			if (claim.claimApprovalDetails.claimApproval === false) {
 				return (
 					<AdminClaimRow
 						key={claim.id}
 						id={claim.id}
-						recipient={claim.selectedOrg}
+						selectedOrg={claim.selectedOrg}
 						date={claim.claimDate}
 						fname={claim.orgAdminFirstName}
 						lname={claim.orgAdminLastName}
