@@ -39,7 +39,8 @@ import {
   FETCH_ORG_WITHDRAWLS,
   FETCH_WITHDRAWL,
   EDIT_WITHDRAWL,
-  DELETE_WITHDRAWL
+  DELETE_WITHDRAWL,
+  GT_ADMIN
 } from "./types";
 import history from "../../history";
 import { createOrg } from "../../ethereum/orgFactoryAdmin";
@@ -593,7 +594,7 @@ export const createOrgWithdrawl = (
   const org = orgContract(orgContractAddress);
   const id = await org.methods
     .cashOutOrg(orgAdminWallet, RINKEBY_DAI)
-    .send({ from: orgAdminWallet })
+    .send({ from: GT_ADMIN })
     .on("transactionHash", function(transId) {
       console.log(transId);
       return transId;
@@ -606,7 +607,7 @@ export const createOrgWithdrawl = (
   });
 
   dispatch({ type: MAKE_ORG_WITHDRAWL, payload: response.data });
-  history.push(`/orgs/${selectOrg}`);
+  history.push(`/orgs/${selectedOrg}`);
 };
 
 export const fetchWithdrawls = () => async dispatch => {

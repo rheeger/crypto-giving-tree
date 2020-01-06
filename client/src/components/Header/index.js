@@ -16,7 +16,7 @@ export default () => {
 
       <Menu.Menu position="right">
         <h6 style={{ paddingRight: "2rem", color: "red" }}>
-          THIS IS AN ALPHA DEMO, USE AT YOUR OWN RISK!
+          THIS IS A DEMO, USE AT YOUR OWN RISK!
         </h6>
         <Link
           to="/trees"

@@ -148,8 +148,17 @@ class OrgShow extends React.Component {
       return (
         <Button onClick={this.onCashOut} floated="left" basic color="green">
           <i className="dollar icon" />
-          cash out org
+          Cash Out
         </Button>
+      );
+
+    if (!gtOrgs[match.params.ein].claimed)
+      return (
+        <Link to={`/orgs/${this.props.match.params.ein}/claim`}>
+          <Button basic color="yellow">
+            Claim Org
+          </Button>
+        </Link>
       );
   }
 
@@ -181,12 +190,6 @@ class OrgShow extends React.Component {
               <Grid.Column width={11}>{this.renderOrgDetails()}</Grid.Column>
               <Grid.Column width={5}>
                 <h3>Actions:</h3>
-                <Link to={`/orgs/${this.props.match.params.ein}/claim`}>
-                  <Button basic color="yellow">
-                    Claim Org
-                  </Button>
-                </Link>
-
                 <Link to={`/orgs/${this.props.match.params.ein}/grants/new`}>
                   <Button floated="left" basic color="red">
                     <i className="paper plane icon" />

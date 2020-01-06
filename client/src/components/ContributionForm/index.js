@@ -35,7 +35,7 @@ class Send extends Component {
 		inputValue: '',
 		outputValue: '',
 		inputCurrency: 'ETH',
-		outputCurrency: '0x2448eE2641d78CC42D7AD76498917359D961A783',
+		outputCurrency: process.env.REACT_APP_STABLECOIN_ADDRESS,
 		inputAmountB: '',
 		lastEditedField: '',
 		recipient: this.props.recievingTree,
@@ -45,7 +45,7 @@ class Send extends Component {
 
 	componentDidMount() {
 		console.log(this.props);
-		this.setState({ outputCurrency: '0x2448eE2641d78CC42D7AD76498917359D961A783' });
+		this.setState({ outputCurrency: process.env.REACT_APP_STABLECOIN_ADDRESS });
 		this.setState({ recipient: this.props.recievingTree });
 	}
 
@@ -60,7 +60,7 @@ class Send extends Component {
 			inputAmountB: '',
 			lastEditedField: '',
 			recipient: this.props.recievingTree,
-			outputCurrency: '0x2448eE2641d78CC42D7AD76498917359D961A783',
+			outputCurrency: process.env.REACT_APP_STABLECOIN_ADDRESS,
 			loading: false,
 			tncconsent: false
 		});
@@ -1020,7 +1020,7 @@ class Send extends Component {
 						onValueChange={this.updateOutput}
 						selectedTokens={[inputCurrency, outputCurrency]}
 						value={outputValue.toLocaleString('en')}
-						selectedTokenAddress="0x2448eE2641d78CC42D7AD76498917359D961A783"
+						selectedTokenAddress={process.env.REACT_APP_STABLECOIN_ADDRESS}
 						errorMessage={outputError}
 						disableUnlock
 					/>
