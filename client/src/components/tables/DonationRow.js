@@ -49,7 +49,7 @@ class DonationRow extends Component {
         <Table.Cell>
           {donationAmount} {inputCurrency}
         </Table.Cell>
-        <Table.Cell>${finalTradeOutput} DAI</Table.Cell>
+        <Table.Cell>${finalTradeOutput}</Table.Cell>
         <Table.Cell>
           <a
             href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}.etherscan.io/tx/${id}`}

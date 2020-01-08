@@ -133,32 +133,26 @@ class OrgShow extends React.Component {
       return <div> Loading... </div>;
     }
 
-    if (gtOrgs[match.params.ein].claimed === false) {
-      return;
-    }
-
     if (
       gtOrgs[match.params.ein].claimed &&
       process.env.REACT_APP_GT_ADMIN !== web3connect.account
     ) {
       return;
     }
-
-    if (gtOrgs[match.params.ein].claimed)
-      return (
-        <Button onClick={this.onCashOut} floated="left" basic color="green">
-          <i className="dollar icon" />
-          Cash Out
-        </Button>
-      );
-
-    if (!gtOrgs[match.params.ein].claimed)
+    if (gtOrgs[match.params.ein].claimed === false)
       return (
         <Link to={`/orgs/${this.props.match.params.ein}/claim`}>
           <Button basic color="yellow">
             Claim Org
           </Button>
         </Link>
+      );
+    if (gtOrgs[match.params.ein].claimed)
+      return (
+        <Button onClick={this.onCashOut} floated="left" basic color="green">
+          <i className="dollar icon" />
+          Cash Out
+        </Button>
       );
   }
 

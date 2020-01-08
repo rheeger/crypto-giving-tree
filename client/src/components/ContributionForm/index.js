@@ -442,7 +442,7 @@ class Send extends Component {
 			recipient
 		} = this.state;
 		const ALLOWED_SLIPPAGE = 0.05;
-		const TOKEN_ALLOWED_SLIPPAGE = 0.1;
+		const TOKEN_ALLOWED_SLIPPAGE = 0.04;
 		const CHARTIY_BLOCK_FEE = 0.01;
 		const tokenName = this.renderTokenName(inputCurrency);
 		const type = getSendType(inputCurrency, outputCurrency);
@@ -466,7 +466,7 @@ class Send extends Component {
 					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferInput(
 							BN(outputValue)
-								.multipliedBy(10 ** 18)
+								.multipliedBy(10 ** 6)
 								.multipliedBy(CHARTIY_BLOCK_FEE)
 								.multipliedBy(1 - ALLOWED_SLIPPAGE)
 								.toFixed(),
@@ -480,7 +480,6 @@ class Send extends Component {
 									.multipliedBy(10 ** 18)
 									.multipliedBy(CHARTIY_BLOCK_FEE)
 									.toFixed(),
-								gas: '1000000'
 							},
 							(err, data) => {
 								if (!err) {
@@ -494,7 +493,7 @@ class Send extends Component {
 							await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 								.ethToTokenTransferInput(
 									BN(outputValue)
-										.multipliedBy(10 ** 18)
+										.multipliedBy(10 ** 6)
 										.multipliedBy(1 - CHARTIY_BLOCK_FEE)
 										.multipliedBy(1 - ALLOWED_SLIPPAGE)
 										.toFixed(),
@@ -508,7 +507,6 @@ class Send extends Component {
 											.multipliedBy(10 ** 18)
 											.multipliedBy(1 - CHARTIY_BLOCK_FEE)
 											.toFixed(),
-										gas: '1000000'
 									},
 									(err, data) => {
 										if (!err) {
@@ -527,7 +525,8 @@ class Send extends Component {
 											web3connect.account,
 											tokenName,
 											inputValue,
-											receipt.events.TokenPurchase.returnValues.tokens_bought
+											receipt.events.TokenPurchase.returnValues.tokens_bought,
+											outputDecimals
 										));
 								})
 						})
@@ -591,7 +590,8 @@ class Send extends Component {
 											web3connect.account,
 											tokenName,
 											inputValue,
-											receipt.events.TokenPurchase.returnValues.tokens_bought
+											receipt.events.TokenPurchase.returnValues.tokens_bought,
+											outputDecimals
 										));
 								})
 								.then(this.setState({ loading: false }))
@@ -672,7 +672,8 @@ class Send extends Component {
 											web3connect.account,
 											tokenName,
 											inputValue,
-											receipt.events.TokenPurchase.returnValues.tokens_bought
+											receipt.events.TokenPurchase.returnValues.tokens_bought,
+											outputDecimals
 										));
 								})
 								.then(this.setState({ loading: false }));
@@ -738,7 +739,8 @@ class Send extends Component {
 											web3connect.account,
 											tokenName,
 											inputValue,
-											receipt.events.TokenPurchase.returnValues.tokens_bought
+											receipt.events.TokenPurchase.returnValues.tokens_bought,
+											outputDecimals
 										));
 								})
 								.then(this.setState({ loading: false }));

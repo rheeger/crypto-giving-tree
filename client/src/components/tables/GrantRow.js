@@ -31,7 +31,7 @@ class GrantRow extends Component {
           <Link to={`/orgs/${recipient}`}>{gtOrgs[recipient].name} </Link>
         </Table.Cell>
         <Table.Cell>{description}</Table.Cell>
-        <Table.Cell>${amount} DAI</Table.Cell>
+        <Table.Cell>${amount}</Table.Cell>
         <Table.Cell>
           <a
             href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}.etherscan.io/tx/${id}`}

@@ -55,7 +55,10 @@ contract Org {
     Claim[] public claims;
 
     function checkAdmin() public view returns (address) {
-        AbstractAdmin x = AbstractAdmin ( 0xFB4536335Bd7Ee65EE7Bb4EF9aaAFa689c3C2606 );
+        // // RINKEBY
+        // AbstractAdmin x = AbstractAdmin ( 0xFB4536335Bd7Ee65EE7Bb4EF9aaAFa689c3C2606 );
+        // MAINNET
+        AbstractAdmin x = AbstractAdmin ( 0x47E0B7Cc929B1AFEC0C4313dA4acF94B75302bC0 );
 
         return x.getAdmin();
     }

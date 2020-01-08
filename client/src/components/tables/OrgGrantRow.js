@@ -32,7 +32,7 @@ class OrgGrantRow extends Component {
           <Link to={`/trees/${tree}`}>{gtTrees[tree].branchName}</Link>
         </Table.Cell>
         <Table.Cell>{description}</Table.Cell>
-        <Table.Cell>${amount} DAI</Table.Cell>
+        <Table.Cell>${amount}</Table.Cell>
         <Table.Cell>
           <a
             href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}.etherscan.io/tx/${id}`}

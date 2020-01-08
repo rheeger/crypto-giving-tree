@@ -123,10 +123,7 @@ export const fetchTreeDAIBalance = address => async dispatch => {
   const treeDAIBalance = await tree.methods
     .getSummary(process.env.REACT_APP_STABLECOIN_ADDRESS)
     .call();
-  const treeDAI = (
-    parseFloat(treeDAIBalance[0]) / 1000000000000000000 -
-    0.01
-  ).toFixed(2);
+  const treeDAI = (parseFloat(treeDAIBalance[0]) / 1000000 - 0.01).toFixed(2);
 
   const response = await localDB.patch(`/trees/${address}`, {
     treeDAI: treeDAI
@@ -140,10 +137,7 @@ export const fetchGrantableDAIBalance = address => async dispatch => {
   const treeDAIBalance = await tree.methods
     .getSummary(process.env.REACT_APP_STABLECOIN_ADDRESS)
     .call();
-  const treeDAI = (
-    parseFloat(treeDAIBalance[0]) / 1000000000000000000 -
-    0.01
-  ).toFixed(2);
+  const treeDAI = (parseFloat(treeDAIBalance[0]) / 1000000 - 0.01).toFixed(2);
 
   const allGrants = await localDB.get("/grants");
   const treeGrants = allGrants.data.filter(grant => {
@@ -407,7 +401,7 @@ export const createGrant = (
     .createGrant(
       formValues.grantDescription,
       BN(formValues.grantAmount)
-        .multipliedBy(10 ** 18)
+        .multipliedBy(10 ** 6)
         .toFixed(),
       recipientAddress
     )
@@ -536,11 +530,10 @@ export const createDonation = (
   fromAddress,
   inputCurrency,
   inputAmount,
-  outputAmount
+  outputAmount,
+  outputDecimals
 ) => async dispatch => {
-  const finalTradeOutput = (outputAmount / 1000000000000000000 - 0.01).toFixed(
-    2
-  );
+  const finalTradeOutput = (outputAmount / 10 ** outputDecimals).toFixed(2);
   const response = await localDB.post(`/donations`, {
     id: txID,
     to: treeAddress,
