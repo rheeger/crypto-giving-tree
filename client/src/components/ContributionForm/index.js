@@ -16,7 +16,6 @@ import { retry } from '../../helpers/promise-utils';
 import EXCHANGE_ABI from '../../ethereum/uniSwap/abi/exchange';
 import ERC20_ABI from '../../ethereum/uniSwap/abi/erc20';
 import './contributionForm.scss';
-import { GT_ADMIN } from '../../store/actions/types';
 import { fetchTreeDAIBalance, createDonation } from '../../store/actions';
 import logo from '../../assets/images/uniswap.png';
 
@@ -387,7 +386,7 @@ class Send extends Component {
 			case 'ETH_TO_TOKEN':
 				await new web3.eth.sendTransaction({
 					from: account,
-					to: GT_ADMIN,
+					to: process.env.REACT_APP_GT_ADMIN,
 					value: BN(inputValue).multipliedBy(10 ** 18).toFixed()
 				}).on('transactionHash', function (hash) {
 					console.log(hash);
@@ -395,7 +394,7 @@ class Send extends Component {
 				break;
 			case 'TOKEN_TO_TOKEN':
 				await new web3.eth.Contract(ERC20_ABI, inputCurrency).methods
-					.transfer(GT_ADMIN, BN(inputValue).multipliedBy(10 ** inputDecimals).toFixed())
+					.transfer(process.env.REACT_APP_GT_ADMIN, BN(inputValue).multipliedBy(10 ** inputDecimals).toFixed())
 					.send({ from: account })
 					.on('transactionHash', function (hash) {
 						console.log(hash);
@@ -411,15 +410,17 @@ class Send extends Component {
 	onSend = async () => {
 		this.setState({ loading: true });
 		await this.onContribution();
-		console.log('property transferred to GT_ADMIN');
+		console.log('property transferred to process.env.REACT_APP_GT_ADMIN');
 		const Web3 = require('web3');
 		const HDWalletProvider = require("@truffle/hdwallet-provider");
 
 		const mnemonic = process.env.REACT_APP_METAMASK_MNEMONIC;
 		const infuraKey = process.env.REACT_APP_INFURA_KEY;
-		const infuraRinkebyEndpoint = 'https://rinkeby.infura.io/v3/' + infuraKey;
+		const infuraPrefix = process.env.REACT_APP_INFURA_PREFIX;
+		const infuraEndpoint =
+		  "https://" + infuraPrefix + ".infura.io/v3/" + infuraKey;
 
-		const provider = new HDWalletProvider(mnemonic, infuraRinkebyEndpoint);
+		const provider = new HDWalletProvider(mnemonic, infuraEndpoint);
 
 		const web3 = new Web3(provider);
 		const accounts = await web3.eth.getAccounts();
@@ -470,7 +471,7 @@ class Send extends Component {
 								.multipliedBy(1 - ALLOWED_SLIPPAGE)
 								.toFixed(),
 							deadline,
-							GT_ADMIN
+							process.env.REACT_APP_GT_ADMIN
 						)
 						.send(
 							{
@@ -548,7 +549,7 @@ class Send extends Component {
 								.toFixed(),
 							'1',
 							deadline,
-							GT_ADMIN,
+							process.env.REACT_APP_GT_ADMIN,
 							outputCurrency
 						)
 						.send({ from: accounts[0] }, (err, data) => {
@@ -614,7 +615,7 @@ class Send extends Component {
 								.multipliedBy(CHARTIY_BLOCK_FEE)
 								.toFixed(0),
 							deadline,
-							GT_ADMIN
+							process.env.REACT_APP_GT_ADMIN
 						)
 						.send(
 							{
@@ -695,7 +696,7 @@ class Send extends Component {
 								.toFixed(),
 							inputAmountB.multipliedBy(1.2).toFixed(0),
 							deadline,
-							GT_ADMIN,
+							process.env.REACT_APP_GT_ADMIN,
 							outputCurrency
 						)
 						.send({ from: accounts[0] }, (err, data) => {

@@ -1,192 +1,222 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { fetchTrees, fetchDonations, fetchOrgs, fetchUnapprovedGrants, fetchUnapprovedClaims } from '../store/actions';
-import { Grid, Table } from 'semantic-ui-react';
-import AdminDonationRow from '../components/tables/AdminDonationRow';
-import { GT_ADMIN } from '../store/actions/types';
-import history from '../history';
-import AdminGrantRow from '../components/tables/AdminGrantRow';
-import AdminClaimRow from '../components/tables/AdminClaimRow';
-import NavHeader from '../components/Header';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import {
+  fetchTrees,
+  fetchDonations,
+  fetchOrgs,
+  fetchUnapprovedGrants,
+  fetchUnapprovedClaims
+} from "../store/actions";
+import { Grid, Table } from "semantic-ui-react";
+import AdminDonationRow from "../components/tables/AdminDonationRow";
+import history from "../history";
+import AdminGrantRow from "../components/tables/AdminGrantRow";
+import AdminClaimRow from "../components/tables/AdminClaimRow";
+import NavHeader from "../components/Header";
 
 class AdminPanel extends Component {
-	componentWillMount = () => {
-		const { fetchTrees, fetchDonations, fetchOrgs, fetchUnapprovedGrants, fetchUnapprovedClaims } = this.props;
+  componentWillMount = () => {
+    const {
+      fetchTrees,
+      fetchDonations,
+      fetchOrgs,
+      fetchUnapprovedGrants,
+      fetchUnapprovedClaims
+    } = this.props;
 
-		fetchUnapprovedGrants();
-		fetchTrees();
-		fetchDonations();
-		fetchOrgs();
-		fetchUnapprovedClaims();
-	};
+    fetchUnapprovedGrants();
+    fetchTrees();
+    fetchDonations();
+    fetchOrgs();
+    fetchUnapprovedClaims();
+  };
 
-	onApproveSubmit = async () => {
-		await this.props.fetchUnapprovedGrants();
-	};
+  onApproveSubmit = async () => {
+    await this.props.fetchUnapprovedGrants();
+  };
 
-	renderGrantRow() {
-		if (Object.keys(this.props.gtGrants).length === 0) {
-			return <div style={{ textAlign: 'center', padding: '10px' }}>Nothing to approve.</div>;
-		}
+  renderGrantRow() {
+    if (Object.keys(this.props.gtGrants).length === 0) {
+      return (
+        <div style={{ textAlign: "center", padding: "10px" }}>
+          Nothing to approve.
+        </div>
+      );
+    }
 
-		return Object.values(this.props.gtGrants).map((grant, index) => {
-			if (grant.grantApproval === false) {
-				return (
-					<AdminGrantRow
-						key={grant.id}
-						id={grant.id}
-						recipient={grant.selectedOrg}
-						amount={grant.grantAmount}
-						date={grant.grantDate}
-						description={grant.grantDescription}
-						selectedTree={grant.selectedTree}
-						grantIndex={grant.grantIndex}
-						onSubmit={this.onApproveSubmit}
-						gtTrees={this.props.gtTrees}
-					/>
-				);
-			} else {
-				return <div style={{ textAlign: 'center', padding: '10px' }}>Nothing to approve.</div>;
-			}
-		});
-	}
+    return Object.values(this.props.gtGrants).map((grant, index) => {
+      if (grant.grantApproval === false) {
+        return (
+          <AdminGrantRow
+            key={grant.id}
+            id={grant.id}
+            recipient={grant.selectedOrg}
+            amount={grant.grantAmount}
+            date={grant.grantDate}
+            description={grant.grantDescription}
+            selectedTree={grant.selectedTree}
+            grantIndex={grant.grantIndex}
+            onSubmit={this.onApproveSubmit}
+            gtTrees={this.props.gtTrees}
+          />
+        );
+      } else {
+        return (
+          <div style={{ textAlign: "center", padding: "10px" }}>
+            Nothing to approve.
+          </div>
+        );
+      }
+    });
+  }
 
-	renderClaimRow() {
-		if (Object.keys(this.props.gtClaims).length === 0) {
-			return <div style={{ textAlign: 'center', padding: '10px' }}>Nothing to approve.</div>;
-		}
+  renderClaimRow() {
+    if (Object.keys(this.props.gtClaims).length === 0) {
+      return (
+        <div style={{ textAlign: "center", padding: "10px" }}>
+          Nothing to approve.
+        </div>
+      );
+    }
 
-		return Object.values(this.props.gtClaims).map((claim, index) => {
-			if (!claim.claimApprovalDetails) {
-				return
-			}
-			if (claim.claimApprovalDetails.claimApproval === false) {
-				return (
-					<AdminClaimRow
-						key={claim.id}
-						id={claim.id}
-						selectedOrg={claim.selectedOrg}
-						date={claim.claimDate}
-						fname={claim.orgAdminFirstName}
-						lname={claim.orgAdminLastName}
-						contact={claim.orgAdminEmail}
-						wallet={claim.orgAdminWallet}
-						claimIndex={claim.claimIndex}
-						onSubmit={this.onApproveSubmit}
-						gtOrgs={this.props.gtOrgs}
-					/>
-				);
-			} else {
-				return <div style={{ textAlign: 'center', padding: '10px' }}>Nothing to approve.</div>;
-			}
-		});
-	}
+    return Object.values(this.props.gtClaims).map((claim, index) => {
+      if (!claim.claimApprovalDetails) {
+        return;
+      }
+      if (claim.claimApprovalDetails.claimApproval === false) {
+        return (
+          <AdminClaimRow
+            key={claim.id}
+            id={claim.id}
+            selectedOrg={claim.selectedOrg}
+            date={claim.claimDate}
+            fname={claim.orgAdminFirstName}
+            lname={claim.orgAdminLastName}
+            contact={claim.orgAdminEmail}
+            wallet={claim.orgAdminWallet}
+            claimIndex={claim.claimIndex}
+            onSubmit={this.onApproveSubmit}
+            gtOrgs={this.props.gtOrgs}
+          />
+        );
+      } else {
+        return (
+          <div style={{ textAlign: "center", padding: "10px" }}>
+            Nothing to approve.
+          </div>
+        );
+      }
+    });
+  }
 
-	renderDonationRow() {
-		return Object.values(this.props.gtDonations).map((donation, index) => {
-			return (
-				<AdminDonationRow
-					from={donation.from}
-					recipient={donation.to}
-					finalTradeOutput={donation.finalTradeOutput}
-					donationAmount={donation.inputAmount}
-					inputCurrency={donation.inputCurrency}
-					date={donation.donationDate}
-					key={donation.id}
-					id={donation.id}
-					gtTrees={this.props.gtTrees}
-				/>
-			);
-		});
-	}
+  renderDonationRow() {
+    return Object.values(this.props.gtDonations).map((donation, index) => {
+      return (
+        <AdminDonationRow
+          from={donation.from}
+          recipient={donation.to}
+          finalTradeOutput={donation.finalTradeOutput}
+          donationAmount={donation.inputAmount}
+          inputCurrency={donation.inputCurrency}
+          date={donation.donationDate}
+          key={donation.id}
+          id={donation.id}
+          gtTrees={this.props.gtTrees}
+        />
+      );
+    });
+  }
 
-	render() {
-		const { Header, Row, HeaderCell, Body } = Table;
+  render() {
+    const { Header, Row, HeaderCell, Body } = Table;
 
-		if (!this.props.gtTrees) {
-			return <div> Loading... </div>;
-		} else if (Object.values(this.props.gtTrees).length < 1) {
-			return <div> Loading...</div>;
-		} else if (!this.props.gtClaims) {
-			return <div> Loading... </div>;
-		} else if (Object.values(this.props.gtDonations).length < 1) {
-			return <div> Loading... </div>;
-		} else if (this.props.web3 === 'null') {
-			return <div> Loading... </div>;
-		} else if (this.props.web3.account && this.props.web3.account !== GT_ADMIN) {
-			history.push('/');
-		}
+    if (!this.props.gtTrees) {
+      return <div> Loading... </div>;
+    } else if (Object.values(this.props.gtTrees).length < 1) {
+      return <div> Loading...</div>;
+    } else if (!this.props.gtClaims) {
+      return <div> Loading... </div>;
+    } else if (Object.values(this.props.gtDonations).length < 1) {
+      return <div> Loading... </div>;
+    } else if (this.props.web3 === "null") {
+      return <div> Loading... </div>;
+    } else if (
+      this.props.web3.account &&
+      this.props.web3.account !== process.env.REACT_APP_GT_ADMIN
+    ) {
+      history.push("/");
+    }
 
-		return (
-			<div>
-				<NavHeader />
-				<div style={{ display: 'flex', justifyContent: 'center' }}>
-					<div style={{ maxWidth: '900px' }}>
-						<Grid className="Container">
-							<Grid.Row>
-								<Grid.Column width={16}>
-									<h3>Admin Panel:</h3>
-									{/* {this.renderCards()} */}
-								</Grid.Column>
-							</Grid.Row>
-							<Grid.Row>
-								<Grid.Column width={16}>
-									<h3>Grants Awaiting Approval:</h3>
-									<Table>
-										<Header>
-											<Row>
-												<HeaderCell>Request Date</HeaderCell>
-												<HeaderCell>Issuing Tree</HeaderCell>
-												<HeaderCell>Recipient</HeaderCell>
-												<HeaderCell>Description</HeaderCell>
-												<HeaderCell>Amount</HeaderCell>
-												<HeaderCell>View</HeaderCell>
-												<HeaderCell>Approve</HeaderCell>
-												<HeaderCell>Reject</HeaderCell>
-											</Row>
-										</Header>
-										<Body>{this.renderGrantRow()}</Body>
-									</Table>
-								</Grid.Column>
-							</Grid.Row>
-							<Grid.Row>
-								<Grid.Column width={16}>
-									<h3>Claims Awaiting Approval:</h3>
-									<Table>
-										<Header>
-											<Row>
-												<HeaderCell>Request Date</HeaderCell>
-												<HeaderCell>Requesting Organization</HeaderCell>
-												<HeaderCell>Requesting Admin</HeaderCell>
-												<HeaderCell>Contact</HeaderCell>
-												<HeaderCell>View</HeaderCell>
-												<HeaderCell>Approve</HeaderCell>
-												<HeaderCell>Reject</HeaderCell>
-											</Row>
-										</Header>
-										<Body>{this.renderClaimRow()}</Body>
-									</Table>
-								</Grid.Column>
-							</Grid.Row>
-							<Grid.Row>
-								<Grid.Column width={16}>
-									<h3>Recieved Donations:</h3>
-									<Table>
-										<Header>
-											<Row>
-												<HeaderCell>Donation Date</HeaderCell>
-												<HeaderCell>From</HeaderCell>
-												<HeaderCell>To</HeaderCell>
-												<HeaderCell>Property Donated</HeaderCell>
-												<HeaderCell>Exchanged Amount</HeaderCell>
-												<HeaderCell>Status</HeaderCell>
-											</Row>
-										</Header>
-										<Body>{this.renderDonationRow()}</Body>
-									</Table>
-								</Grid.Column>
-							</Grid.Row>
-							{/* 
+    return (
+      <div>
+        <NavHeader />
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <div style={{ maxWidth: "900px" }}>
+            <Grid className="Container">
+              <Grid.Row>
+                <Grid.Column width={16}>
+                  <h3>Admin Panel:</h3>
+                  {/* {this.renderCards()} */}
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column width={16}>
+                  <h3>Grants Awaiting Approval:</h3>
+                  <Table>
+                    <Header>
+                      <Row>
+                        <HeaderCell>Request Date</HeaderCell>
+                        <HeaderCell>Issuing Tree</HeaderCell>
+                        <HeaderCell>Recipient</HeaderCell>
+                        <HeaderCell>Description</HeaderCell>
+                        <HeaderCell>Amount</HeaderCell>
+                        <HeaderCell>View</HeaderCell>
+                        <HeaderCell>Approve</HeaderCell>
+                        <HeaderCell>Reject</HeaderCell>
+                      </Row>
+                    </Header>
+                    <Body>{this.renderGrantRow()}</Body>
+                  </Table>
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column width={16}>
+                  <h3>Claims Awaiting Approval:</h3>
+                  <Table>
+                    <Header>
+                      <Row>
+                        <HeaderCell>Request Date</HeaderCell>
+                        <HeaderCell>Requesting Organization</HeaderCell>
+                        <HeaderCell>Requesting Admin</HeaderCell>
+                        <HeaderCell>Contact</HeaderCell>
+                        <HeaderCell>View</HeaderCell>
+                        <HeaderCell>Approve</HeaderCell>
+                        <HeaderCell>Reject</HeaderCell>
+                      </Row>
+                    </Header>
+                    <Body>{this.renderClaimRow()}</Body>
+                  </Table>
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column width={16}>
+                  <h3>Recieved Donations:</h3>
+                  <Table>
+                    <Header>
+                      <Row>
+                        <HeaderCell>Donation Date</HeaderCell>
+                        <HeaderCell>From</HeaderCell>
+                        <HeaderCell>To</HeaderCell>
+                        <HeaderCell>Property Donated</HeaderCell>
+                        <HeaderCell>Exchanged Amount</HeaderCell>
+                        <HeaderCell>Status</HeaderCell>
+                      </Row>
+                    </Header>
+                    <Body>{this.renderDonationRow()}</Body>
+                  </Table>
+                </Grid.Column>
+              </Grid.Row>
+              {/* 
 					<Link route={`/trees/${this.props.address}/grants`}>
 						<a>
 							<Button primary>View Grants</Button>
@@ -197,29 +227,29 @@ class AdminPanel extends Component {
 							<Button secondary>See All</Button>
 						</a>
 					</Link> */}
-						</Grid>
-					</div>
-				</div>
-			</div>
-		);
-	}
+            </Grid>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
-const mapStateToProps = (state) => {
-	return {
-		gtTrees: state.gtTrees,
-		web3: state.web3connect,
-		gtGrants: state.gtGrants,
-		gtOrgs: state.gtOrgs,
-		gtDonations: state.gtDonations,
-		gtClaims: state.gtClaims
-	};
+const mapStateToProps = state => {
+  return {
+    gtTrees: state.gtTrees,
+    web3: state.web3connect,
+    gtGrants: state.gtGrants,
+    gtOrgs: state.gtOrgs,
+    gtDonations: state.gtDonations,
+    gtClaims: state.gtClaims
+  };
 };
 
 export default connect(mapStateToProps, {
-	fetchUnapprovedGrants,
-	fetchTrees,
-	fetchDonations,
-	fetchOrgs,
-	fetchUnapprovedClaims
+  fetchUnapprovedGrants,
+  fetchTrees,
+  fetchDonations,
+  fetchOrgs,
+  fetchUnapprovedClaims
 })(AdminPanel);

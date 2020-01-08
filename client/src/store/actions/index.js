@@ -21,7 +21,6 @@ import {
   FETCH_GRANT,
   EDIT_GRANT,
   DELETE_GRANT,
-  RINKEBY_DAI,
   FETCH_ORG_GRANTS,
   CREATE_DONATION,
   FETCH_DONATIONS,
@@ -39,8 +38,7 @@ import {
   FETCH_ORG_WITHDRAWLS,
   FETCH_WITHDRAWL,
   EDIT_WITHDRAWL,
-  DELETE_WITHDRAWL,
-  GT_ADMIN
+  DELETE_WITHDRAWL
 } from "./types";
 import history from "../../history";
 import { createOrg } from "../../ethereum/orgFactoryAdmin";
@@ -122,7 +120,9 @@ export const fetchUserTrees = address => async dispatch => {
 
 export const fetchTreeDAIBalance = address => async dispatch => {
   const tree = treeContract(address);
-  const treeDAIBalance = await tree.methods.getSummary(RINKEBY_DAI).call();
+  const treeDAIBalance = await tree.methods
+    .getSummary(process.env.REACT_APP_STABLECOIN_ADDRESS)
+    .call();
   const treeDAI = (
     parseFloat(treeDAIBalance[0]) / 1000000000000000000 -
     0.01
@@ -137,7 +137,9 @@ export const fetchTreeDAIBalance = address => async dispatch => {
 
 export const fetchGrantableDAIBalance = address => async dispatch => {
   const tree = treeContract(address);
-  const treeDAIBalance = await tree.methods.getSummary(RINKEBY_DAI).call();
+  const treeDAIBalance = await tree.methods
+    .getSummary(process.env.REACT_APP_STABLECOIN_ADDRESS)
+    .call();
   const treeDAI = (
     parseFloat(treeDAIBalance[0]) / 1000000000000000000 -
     0.01
@@ -438,7 +440,7 @@ export const approveGrant = (id, treeAddress, grantNonce) => async (
   const approvalDetails = await approveTreeGrant(
     treeAddress,
     grantNonce,
-    RINKEBY_DAI
+    process.env.REACT_APP_STABLECOIN_ADDRESS
   );
   const response = await localDB.patch(`/grants/${id}`, {
     grantApproval: true,
@@ -593,8 +595,8 @@ export const createOrgWithdrawl = (
   console.log(orgContractAddress);
   const org = orgContract(orgContractAddress);
   const id = await org.methods
-    .cashOutOrg(orgAdminWallet, RINKEBY_DAI)
-    .send({ from: GT_ADMIN })
+    .cashOutOrg(orgAdminWallet, process.env.REACT_APP_STABLECOIN_ADDRESS)
+    .send({ from: process.env.REACT_APP_GT_ADMIN })
     .on("transactionHash", function(transId) {
       console.log(transId);
       return transId;
