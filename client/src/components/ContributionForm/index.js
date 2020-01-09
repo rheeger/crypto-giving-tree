@@ -466,7 +466,7 @@ class Send extends Component {
 					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferInput(
 							BN(outputValue)
-								.multipliedBy(10 ** 6)
+								.multipliedBy(10 ** process.env.REACT_APP_STABLECOIN_DECIMALS)
 								.multipliedBy(CHARTIY_BLOCK_FEE)
 								.multipliedBy(1 - ALLOWED_SLIPPAGE)
 								.toFixed(),
@@ -493,7 +493,7 @@ class Send extends Component {
 							await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 								.ethToTokenTransferInput(
 									BN(outputValue)
-										.multipliedBy(10 ** 6)
+										.multipliedBy(10 ** process.env.REACT_APP_STABLECOIN_DECIMALS)
 										.multipliedBy(1 - CHARTIY_BLOCK_FEE)
 										.multipliedBy(1 - ALLOWED_SLIPPAGE)
 										.toFixed(),

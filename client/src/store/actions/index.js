@@ -401,7 +401,7 @@ export const createGrant = (
     .createGrant(
       formValues.grantDescription,
       BN(formValues.grantAmount)
-        .multipliedBy(10 ** 6)
+        .multipliedBy(10 ** process.env.REACT_APP_STABLECOIN_DECIMALS)
         .toFixed(),
       recipientAddress
     )

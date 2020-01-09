@@ -76,7 +76,7 @@ class AdminGrantRow extends Component {
         <Table.Cell>${amount}</Table.Cell>
         <Table.Cell>
           <a
-            href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}.etherscan.io/tx/${id}`}
+            href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}etherscan.io/tx/${id}`}
             target="blank"
           >
             <Button color="blue" basic>
