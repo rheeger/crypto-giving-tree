@@ -58,7 +58,7 @@ class HomePage extends React.Component {
                 width={16}
               >
                 <div>
-                  <h1>The best way to give crypto.</h1>
+                  <h1>A new way to give crypto.</h1>
                   <h3>
                     Create your own charitable fund today. Extend grants to any
                     non-profit organization.

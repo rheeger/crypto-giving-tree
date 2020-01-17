@@ -87,15 +87,14 @@ class NewFund extends React.Component {
             <h1>What is this? </h1>
             <p>some things to know...</p>
             <h3>
-              1. Each individual fund is equivalent to a U.S. Donor-Advised Fund
-              (
+              1. Each new fund is equivalent to a{" "}
               <a
                 href="https://en.wikipedia.org/wiki/Donor-advised_fund"
                 target="blank"
               >
-                read more
+                U.S. Donor-Advised Fund
               </a>
-              ).
+              .
             </h3>
             <h3>
               2. You can easily contribute cryptocurrency to your Fund.&nbsp;
@@ -119,8 +118,8 @@ class NewFund extends React.Component {
                 endaoment
               </span>
               &nbsp; for USDC (
-              <a href="https://usdc.circle.com" target="blank">
-                more here
+              <a href="https://www.centre.io/usdc" target="blank">
+                learn more
               </a>
               ). <br></br>Use the exchanged funds to reccomend grants to any
               501(c)(3) at your own pace.

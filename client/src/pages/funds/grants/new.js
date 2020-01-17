@@ -71,7 +71,7 @@ class NewGrant extends React.Component {
             style={{ display: "flex-flow", justifyContent: "center" }}
           >
             <div
-              style={{ padding: "1rem", marginBottom: "1rem", width: "700px" }}
+              style={{ padding: "1rem", marginBottom: "1rem", width: "600px" }}
             >
               <h4>You're reccomending a grant to:</h4>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -154,12 +154,12 @@ class NewGrant extends React.Component {
             <h1>What is a Grant? </h1>
             <p>some things to know...</p>
             <h3>
-              1. Each grant represents an instruction to a Fund to make a
-              donation to a qualifyiing 501(c)3 organziation.
+              1. Each grant represents an reccomendation for your Fund to make a
+              donation to an organziation.
             </h3>
             <h3>
-              2. Set the amount to grant and provide a short description memo,
-              if needed.
+              2. Set an amount you'd like to grant and provide a short
+              description memo, if desired.
             </h3>
             <h3>
               3. The staff at &nbsp;
