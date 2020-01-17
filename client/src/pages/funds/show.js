@@ -117,7 +117,7 @@ class FundShow extends Component {
       {
         style: { overflowWrap: "break-word" },
         header: branchName,
-        meta: "Planted: " + moment(datePlanted).format("MM/DD/YY h:mma"),
+        meta: "Created: " + moment(datePlanted).format("MM/DD/YY h:mma"),
         description: "Address: " + id,
         fluid: true
       },
@@ -152,10 +152,10 @@ class FundShow extends Component {
   render() {
     const { Header, Row, HeaderCell, Body } = Table;
 
-    if (!this.props.gtFunds[this.props.match.params.address]) {
-      return <div> Loading... </div>;
-    }
-    if (this.props.web3 === "null") {
+    if (
+      !this.props.gtFunds[this.props.match.params.address] ||
+      this.props.web3 === "null"
+    ) {
       return <div> Loading... </div>;
     }
 
@@ -167,7 +167,7 @@ class FundShow extends Component {
             <Grid className="Container">
               <Grid.Row>
                 <Grid.Column width={10}>
-                  <h3>Fund Details:</h3>
+                  <h3>Fund details:</h3>
                   {this.renderCards()}
                 </Grid.Column>
 

@@ -40,16 +40,17 @@ class Splash extends React.Component {
             >
               endaoment
             </h1>
-            <h3
-              style={{
-                fontSize: "1.5rem",
-                fontStyle: "italic",
-                margin: "2rem",
-                textAlign: "center"
-              }}
-            >
-              smart contract powered charitable funds
-            </h3>
+            <div style={{ display: "flex", margin: "2rem" }}>
+              <h3
+                style={{
+                  fontSize: "1.5rem",
+                  fontStyle: "italic",
+                  textAlign: "center"
+                }}
+              >
+                smart contract charitable funds
+              </h3>
+            </div>
           </div>
         </div>
       </div>

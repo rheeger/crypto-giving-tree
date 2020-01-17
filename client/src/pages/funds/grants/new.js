@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Button } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 import {
   createGrant,
   selectOrg,
@@ -43,18 +44,12 @@ class NewGrant extends React.Component {
     this.setState({ ready: "true" });
   };
 
+  renderWhatsThis = () => {
+    this.setState({ ready: "false" });
+  };
+
   render() {
-    if (!this.props.org.organization) {
-      return (
-        <div>
-          <Header />
-
-          <div>Loading Organization Details</div>
-        </div>
-      );
-    }
-
-    if (!this.props.gtOrgs) {
+    if (!this.props.org.organization || !this.props.gtOrgs) {
       return (
         <div>
           <Header />
@@ -71,10 +66,32 @@ class NewGrant extends React.Component {
       return (
         <div>
           <Header />
-          <div className="ui container">
-            <div style={{ padding: "1rem", marginBottom: "1rem" }}>
+          <div
+            className="ui container"
+            style={{ display: "flex-flow", justifyContent: "center" }}
+          >
+            <div
+              style={{ padding: "1rem", marginBottom: "1rem", width: "700px" }}
+            >
               <h4>You're reccomending a grant to:</h4>
-              <h1>{this.props.org.organization.name}</h1>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <h1>{this.props.org.organization.name}</h1>
+                <div>
+                  <Button
+                    onClick={this.renderWhatsThis}
+                    className="ui button basic yellow"
+                  >
+                    What's this?
+                  </Button>
+                  <Link
+                    to={`/orgs/${this.props.org.organization.ein}`}
+                    className="ui button basic green"
+                  >
+                    <i className="address card icon" />
+                    Org Details
+                  </Link>
+                </div>
+              </div>
 
               <GrantForm
                 onSubmit={this.onSubmit}
@@ -88,9 +105,11 @@ class NewGrant extends React.Component {
     }
 
     if (
-      this.state.ready === "true" &&
-      this.props.gtOrgs &&
-      !this.props.gtOrgs[`${this.props.match.params.ein}`]
+      (this.state.ready === "true" &&
+        this.props.gtOrgs &&
+        !this.props.gtOrgs[`${this.props.match.params.ein}`]) ||
+      (this.state.loading === true &&
+        this.props.gtOrgs[`${this.props.match.params.ein}`] === undefined)
     ) {
       this.setupOrg(this.props.match.params.ein);
       return (
@@ -117,82 +136,6 @@ class NewGrant extends React.Component {
       );
     }
 
-    if (
-      this.state.ready === "false" &&
-      this.props.gtOrgs &&
-      !this.props.gtOrgs[`${this.props.match.params.ein}`]
-    ) {
-      return (
-        <div>
-          <Header />
-          <div
-            style={{
-              margin: "0px auto",
-              textAlign: "left",
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-              height: "50vh",
-              maxWidth: "350px"
-            }}
-          >
-            <div>
-              <h1>What is a Grant? </h1>
-              <p>some things to know...</p>
-              <h3>
-                1. Each grant represents an instruction for your individual
-                Donor-Advised Fund to make a donation to a qualifyiing 501(c)3
-                organziation.
-              </h3>
-              <h3>
-                2. Set the amount to grant and provide a short description memo,
-                if needed.
-              </h3>
-              <h3>
-                3. The staff at endaoment will review the grant within 24 hours,
-                notify the organization and finalize the distribution of the
-                grant.
-              </h3>
-              <br />
-
-              <Button
-                onClick={this.renderBranchForm}
-                loading={this.state.loading}
-                floated="left"
-                className="ui button green"
-              >
-                Got It!
-              </Button>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    if (
-      this.state.loading === true &&
-      this.props.gtOrgs[`${this.props.match.params.ein}`] === undefined
-    ) {
-      return (
-        <div>
-          <Header />
-          <div className="ui container">
-            <div
-              style={{
-                textAlign: "center",
-                display: "flex-flow",
-                alignContent: "center"
-              }}
-            >
-              <h1>Hang tight!</h1>
-              <p>We're submitting your grant reccomendation to: </p>
-              <h3>{this.props.org.organization.name}</h3>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
     return (
       <div>
         <Header />
@@ -203,7 +146,7 @@ class NewGrant extends React.Component {
             display: "flex",
             justifyContent: "flex-start",
             alignItems: "center",
-            height: "50vh",
+            height: "40vh",
             maxWidth: "350px"
           }}
         >
@@ -211,25 +154,29 @@ class NewGrant extends React.Component {
             <h1>What is a Grant? </h1>
             <p>some things to know...</p>
             <h3>
-              1. Each grant represents an instruction for your individual
-              Donor-Advised Fund to make a donation to a qualifyiing 501(c)3
-              organziation.
+              1. Each grant represents an instruction to a Fund to make a
+              donation to a qualifyiing 501(c)3 organziation.
             </h3>
             <h3>
               2. Set the amount to grant and provide a short description memo,
               if needed.
             </h3>
             <h3>
-              3. The staff at endaoment will review the grant within 24 hours,
-              notify the organization and finalize the distribution of the
-              grant.
+              3. The staff at &nbsp;
+              <span
+                style={{ fontFamily: "all-round-gothic", fontSize: "1.5rem" }}
+              >
+                endaoment
+              </span>
+              &nbsp; will review the grant, notify the organization and finalize
+              distribution.
             </h3>
             <br />
 
             <Button
               onClick={this.renderBranchForm}
               floated="left"
-              className="ui button green"
+              className="ui button basic green"
             >
               Got It!
             </Button>

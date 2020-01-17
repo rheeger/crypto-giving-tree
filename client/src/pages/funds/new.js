@@ -25,6 +25,9 @@ class NewFund extends React.Component {
   renderBranchForm = () => {
     this.setState({ ready: "true" });
   };
+  renderWhatsThis = () => {
+    this.setState({ ready: "false" });
+  };
 
   render() {
     if (this.state.ready === "true") {
@@ -44,8 +47,17 @@ class NewFund extends React.Component {
             }}
           >
             <div style={{ width: "500px" }}>
-              <h1>Plant your Fund:</h1>
-
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <h2>Start a Fund:</h2>
+                <div>
+                  <Button
+                    onClick={this.renderWhatsThis}
+                    className="ui button basic yellow"
+                  >
+                    What's this?
+                  </Button>
+                </div>
+              </div>
               <BranchForm
                 onSubmit={this.onSubmit}
                 loading={this.state.loading}
@@ -67,7 +79,7 @@ class NewFund extends React.Component {
             display: "flex",
             justifyContent: "flex-start",
             alignItems: "center",
-            height: "50vh",
+            height: "40vh",
             maxWidth: "350px"
           }}
         >
@@ -75,35 +87,50 @@ class NewFund extends React.Component {
             <h1>What is this? </h1>
             <p>some things to know...</p>
             <h3>
-              1. Each Giving Fund is functionally equivalent to a{" "}
+              1. Each individual fund is equivalent to a U.S. Donor-Advised Fund
+              (
               <a
                 href="https://en.wikipedia.org/wiki/Donor-advised_fund"
                 target="blank"
               >
-                Donor Advised Fund.
+                read more
+              </a>
+              ).
+            </h3>
+            <h3>
+              2. You can easily contribute cryptocurrency to your Fund.&nbsp;
+              {"  "}
+              <span
+                style={{ fontFamily: "all-round-gothic", fontSize: "1.5rem" }}
+              >
+                endaoment
+              </span>
+              &nbsp; supports{" "}
+              <a href="https://uniswap.info/" target="blank">
+                any token with a Uniswap Exchange Contract.
               </a>
             </h3>
             <h3>
-              2. You can easily contribute tokens to your Fund. The Charity
-              Block supports{" "}
-              <a href="https://beta.uniswap.info/" target="blank">
-                all tokens with Uniswap Exchange Contracts.
+              3. Contributed tokens are exchanged by &nbsp;
+              {"  "}
+              <span
+                style={{ fontFamily: "all-round-gothic", fontSize: "1.5rem" }}
+              >
+                endaoment
+              </span>
+              &nbsp; for USDC (
+              <a href="https://usdc.circle.com" target="blank">
+                more here
               </a>
-            </h3>
-            <h3>
-              3. Donated tokens are exchanged for{" "}
-              <a href="https://makerdao.com/en/dai/" target="blank">
-                DAI
-              </a>
-              . 1 DAI = 1 USD. Use the DAI to reccomend grants to any
-              qualifyiing 501(c)(3) at your own pace.
+              ). <br></br>Use the exchanged funds to reccomend grants to any
+              501(c)(3) at your own pace.
             </h3>
             <br />
 
             <Button
               onClick={this.renderBranchForm}
               floated="left"
-              className="ui button green"
+              className="ui button basic forest green"
             >
               Got It!
             </Button>

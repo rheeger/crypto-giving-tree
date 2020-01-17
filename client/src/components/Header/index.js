@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Menu } from "semantic-ui-react";
+import { Menu, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import {
   Web3Connect,
@@ -12,7 +12,11 @@ import { setAddresses } from "../../store/reducers/swapAddresses";
 class Header extends React.Component {
   componentDidMount() {
     const { initialize, startWatching } = this.props;
-    initialize().then(startWatching);
+    try {
+      initialize().then(startWatching);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   componentDidUpdate() {
@@ -36,7 +40,41 @@ class Header extends React.Component {
     });
   }
 
-  renderButton() {
+  truncateAccount() {
+    const { account } = this.props;
+    return account.substring(0, 4) + "..." + account.substring(39, 42);
+  }
+
+  renderAccount() {
+    const { account, initialized } = this.props;
+
+    if (!account && !initialized) {
+      return (
+        <div>
+          <Web3Connect />
+          <Button
+            style={{ margin: "1rem 1rem 1rem auto", padding: "10px" }}
+            className="ui button basic grey"
+            loading
+          >
+            Connecting
+          </Button>
+        </div>
+      );
+    }
+
+    return (
+      <Button
+        className="ui button basic black"
+        disabled
+        style={{ margin: "auto 1rem 1rem auto", padding: "10px" }}
+      >
+        <i className="user circle outline icon" />
+        {this.truncateAccount()}
+      </Button>
+    );
+  }
+  renderFundsButton() {
     if (!this.props.gtFunds) {
       return;
     }
@@ -44,7 +82,7 @@ class Header extends React.Component {
       return (
         <Link
           to="/funds/new"
-          className="ui button green"
+          className="ui button basic green"
           style={{ margin: "1rem auto", padding: "10px" }}
         >
           <i className="plus circle icon" />
@@ -56,7 +94,7 @@ class Header extends React.Component {
       return (
         <Link
           to="/funds"
-          className="ui button green"
+          className="ui button basic green"
           style={{ margin: "1rem auto", padding: "10px" }}
         >
           <i className="eye icon" />
@@ -69,7 +107,6 @@ class Header extends React.Component {
   render() {
     return (
       <div>
-        <Web3Connect />
         <Menu style={{ margin: "1rem" }}>
           <Link to="/alpha" className="item">
             <h1
@@ -89,15 +126,16 @@ class Header extends React.Component {
             <h6 style={{ paddingRight: "2rem", color: "red" }}>
               THIS IS A DEMO, USE AT YOUR OWN RISK!
             </h6>
-            {this.renderButton()}
+            {this.renderFundsButton()}
             <Link
               to="/orgs"
               style={{ margin: "1rem", padding: "10px" }}
-              className="ui button blue"
+              className="ui button basic blue"
             >
               <i className="sistrix medium icon" />
               Organizations
             </Link>
+            {this.renderAccount()}
           </Menu.Menu>
         </Menu>
       </div>

@@ -25,7 +25,7 @@ export default (state = {}, action) => {
     case EDIT_FUND:
       return { ...state, [action.payload.id]: action.payload };
     case FETCH_FUNDS:
-      return { ...state, ..._.mapKeys(action.payload, "id") };
+      return { ..._.mapKeys(action.payload, "id") };
     case DELETE_FUND:
       return _.omit(state, action.payload);
     default:

@@ -8,8 +8,8 @@ class Manager extends React.Component {
     return Object.values(this.props.gtFunds).map(function(fund, index) {
       return (
         <div className="item" key={fund.id}>
-          <div className="right floated content">Balance: ${fund.fundDAI}</div>
-          <i className="large middle aligned icon fund" />
+          <div className="right floated content">balance: ${fund.fundDAI}</div>
+          <i className="large middle aligned icon file alternate outline" />
           <div className="content">
             <Link to={`/funds/${fund.id}`}>{fund.branchName}</Link>
             <div className="description">{fund.id}</div>
@@ -28,8 +28,16 @@ class Manager extends React.Component {
       <div>
         <Header />
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <div style={{ width: "800px" }}>
-            <h2>Active Donor-Advised Funds:</h2>
+          <div style={{ width: "700px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <h2>Active Funds:</h2>
+              <div>
+                <Link to="/funds/new" className="ui button basic forest green">
+                  <i className="plus circle icon" />
+                  New Fund
+                </Link>
+              </div>
+            </div>
             <div className="ui celled list">{this.renderList()}</div>
           </div>
         </div>

@@ -22,7 +22,7 @@ class HomePage extends React.Component {
       return (
         <Link to="/funds" className="ui button green">
           <i className="eye icon" />
-          See My Funds
+          My Funds
         </Link>
       );
     }
