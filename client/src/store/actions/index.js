@@ -3,28 +3,28 @@ import localDB from "../../apis/localDB";
 import {
   ORG_SELECT,
   ORG_SEARCH,
-  PLANT_TREE,
-  FETCH_TREES,
-  FETCH_TREE,
-  EDIT_TREE,
-  DELETE_TREE,
+  PLANT_FUND,
+  FETCH_FUNDS,
+  FETCH_FUND,
+  EDIT_FUND,
+  DELETE_FUND,
   FETCH_ORGS,
   FETCH_ORG,
   EDIT_ORG,
   DELETE_ORG,
   CREATE_CONTRACT_ADDRESS,
-  FETCH_TREE_DAI,
+  FETCH_FUND_DAI,
   FETCH_GRANTABLE_DAI,
   CREATE_GRANT,
   FETCH_GRANTS,
-  FETCH_TREE_GRANTS,
+  FETCH_FUND_GRANTS,
   FETCH_GRANT,
   EDIT_GRANT,
   DELETE_GRANT,
   FETCH_ORG_GRANTS,
   CREATE_DONATION,
   FETCH_DONATIONS,
-  FETCH_TREE_DONATIONS,
+  FETCH_FUND_DONATIONS,
   FETCH_DONATION,
   DELETE_DONATION,
   MAKE_ORG_CLAIM,
@@ -42,8 +42,8 @@ import {
 } from "./types";
 import history from "../../history";
 import { createOrg } from "../../ethereum/orgFactoryAdmin";
-import { plantTree } from "../../ethereum/treeNursreyAdmin";
-import { treeContract, approveTreeGrant } from "../../ethereum/tree";
+import { plantFund } from "../../ethereum/fundNursreyAdmin";
+import { fundContract, approveFundGrant } from "../../ethereum/fund";
 import { orgContract, approveOrgClaim } from "../../ethereum/org";
 import BN from "bignumber.js";
 
@@ -81,101 +81,109 @@ export const searchOrgs = term => async dispatch => {
   }
 };
 
-//LOCAL DB ACTIONS: TREES
-export const plantTreeAndContract = formValues => async (
+//LOCAL DB ACTIONS: FUNDS
+export const plantFundAndContract = formValues => async (
   dispatch,
   getState
 ) => {
   const { account } = getState().web3connect;
-  const createdContract = await plantTree(account);
-  const response = await localDB.post("/trees", {
+  const createdContract = await plantFund(account);
+  const response = await localDB.post("/funds", {
     ...formValues,
     managerAddress: account,
     id: createdContract.id,
-    treeDAI: "0.00",
+    fundDAI: "0.00",
     grantableDAI: 0.0
   });
 
-  dispatch({ type: PLANT_TREE, payload: response.data });
-  history.push(`/trees/${createdContract.id}`);
+  dispatch({ type: PLANT_FUND, payload: response.data });
+  history.push(`/funds/${createdContract.id}`);
 };
 
-export const fetchTrees = () => async dispatch => {
-  const response = await localDB.get("/trees");
+export const fetchFunds = () => async dispatch => {
+  const response = await localDB.get("/funds");
 
-  dispatch({ type: FETCH_TREES, payload: response.data });
+  dispatch({ type: FETCH_FUNDS, payload: response.data });
 };
 
-export const fetchUserTrees = address => async dispatch => {
-  const allTrees = await localDB.get("/trees");
-  const response = allTrees.data.filter(tree => {
-    if (tree.managerAddress === address) {
-      return { tree };
+export const fetchUserFunds = address => async dispatch => {
+  const allFunds = await localDB.get("/funds");
+  const response = allFunds.data.filter(fund => {
+    if (fund.managerAddress === address) {
+      return { fund };
     }
     return "";
   });
 
-  dispatch({ type: FETCH_TREES, payload: response });
+  dispatch({ type: FETCH_FUNDS, payload: response });
 };
 
-export const fetchTreeDAIBalance = address => async dispatch => {
-  const tree = treeContract(address);
-  const treeDAIBalance = await tree.methods
+export const fetchFundDAIBalance = address => async dispatch => {
+  const fund = fundContract(address);
+  const fundDAIBalance = await fund.methods
     .getSummary(process.env.REACT_APP_STABLECOIN_ADDRESS)
     .call();
-  const treeDAI = (parseFloat(treeDAIBalance[0]) / 1000000 - 0.01).toFixed(2);
+  const fundDAI = (
+    parseFloat(fundDAIBalance[0]) /
+      10 ** process.env.REACT_APP_STABLECOIN_DECIMALS -
+    0.01
+  ).toFixed(2);
 
-  const response = await localDB.patch(`/trees/${address}`, {
-    treeDAI: treeDAI
+  const response = await localDB.patch(`/funds/${address}`, {
+    fundDAI: fundDAI
   });
 
-  dispatch({ type: FETCH_TREE_DAI, payload: response.data });
+  dispatch({ type: FETCH_FUND_DAI, payload: response.data });
 };
 
 export const fetchGrantableDAIBalance = address => async dispatch => {
-  const tree = treeContract(address);
-  const treeDAIBalance = await tree.methods
+  const fund = fundContract(address);
+  const fundDAIBalance = await fund.methods
     .getSummary(process.env.REACT_APP_STABLECOIN_ADDRESS)
     .call();
-  const treeDAI = (parseFloat(treeDAIBalance[0]) / 1000000 - 0.01).toFixed(2);
+  const fundDAI = (
+    parseFloat(fundDAIBalance[0]) /
+      10 ** process.env.REACT_APP_STABLECOIN_DECIMALS -
+    0.01
+  ).toFixed(2);
 
   const allGrants = await localDB.get("/grants");
-  const treeGrants = allGrants.data.filter(grant => {
-    if (grant.selectedTree === address && grant.grantApproval === false) {
+  const fundGrants = allGrants.data.filter(grant => {
+    if (grant.selectedFund === address && grant.grantApproval === false) {
       return { grant };
     }
     return "";
   });
 
-  const pendingGrants = Object.values(treeGrants).reduce(
+  const pendingGrants = Object.values(fundGrants).reduce(
     (a, b) => a + (parseFloat(b["grantAmount"]) || 0),
     0
   );
-  const grantableDAI = (treeDAI - pendingGrants).toFixed(2);
+  const grantableDAI = (fundDAI - pendingGrants).toFixed(2);
 
-  const response = await localDB.patch(`/trees/${address}`, {
+  const response = await localDB.patch(`/funds/${address}`, {
     grantableDAI: grantableDAI
   });
 
   dispatch({ type: FETCH_GRANTABLE_DAI, payload: response.data });
 };
-export const fetchTree = id => async dispatch => {
-  const response = await localDB.get(`/trees/${id}`);
+export const fetchFund = id => async dispatch => {
+  const response = await localDB.get(`/funds/${id}`);
 
-  dispatch({ type: FETCH_TREE, payload: response.data });
+  dispatch({ type: FETCH_FUND, payload: response.data });
 };
 
-export const editTree = (id, formValues) => async dispatch => {
-  const response = await localDB.patch(`/trees/${id}`, formValues);
+export const editFund = (id, formValues) => async dispatch => {
+  const response = await localDB.patch(`/funds/${id}`, formValues);
 
-  dispatch({ type: EDIT_TREE, payload: response.data });
+  dispatch({ type: EDIT_FUND, payload: response.data });
   history.push("/");
 };
 
-export const deleteTree = id => async dispatch => {
-  await localDB.delete(`/trees/${id}`);
+export const deleteFund = id => async dispatch => {
+  await localDB.delete(`/funds/${id}`);
 
-  dispatch({ type: DELETE_TREE, payload: id });
+  dispatch({ type: DELETE_FUND, payload: id });
   history.push("/");
 };
 
@@ -396,8 +404,8 @@ export const createGrant = (
   recipientEIN,
   managerAddress
 ) => async (dispatch, getState) => {
-  const tree = treeContract(formValues.selectedTree.id);
-  const id = await tree.methods
+  const fund = fundContract(formValues.selectedFund.id);
+  const id = await fund.methods
     .createGrant(
       formValues.grantDescription,
       BN(formValues.grantAmount)
@@ -410,11 +418,11 @@ export const createGrant = (
       console.log(transId);
       return transId;
     });
-  const index = await tree.methods.getGrantsCount().call();
+  const index = await fund.methods.getGrantsCount().call();
   const response = await localDB.post(`/grants`, {
     id: id.transactionHash,
     selectedOrg: recipientEIN,
-    selectedTree: formValues.selectedTree.id,
+    selectedFund: formValues.selectedFund.id,
     grantAmount: formValues.grantAmount,
     grantMemo: formValues.grantMemo,
     grantApproval: false,
@@ -424,15 +432,15 @@ export const createGrant = (
   });
 
   dispatch({ type: CREATE_GRANT, payload: response.data });
-  history.push(`/trees/${formValues.selectedTree.id}`);
+  history.push(`/funds/${formValues.selectedFund.id}`);
 };
 
-export const approveGrant = (id, treeAddress, grantNonce) => async (
+export const approveGrant = (id, fundAddress, grantNonce) => async (
   dispatch,
   getState
 ) => {
-  const approvalDetails = await approveTreeGrant(
-    treeAddress,
+  const approvalDetails = await approveFundGrant(
+    fundAddress,
     grantNonce,
     process.env.REACT_APP_STABLECOIN_ADDRESS
   );
@@ -478,16 +486,16 @@ export const fetchUnapprovedGrants = () => async dispatch => {
   dispatch({ type: FETCH_GRANTS, payload: response });
 };
 
-export const fetchTreeGrants = address => async dispatch => {
+export const fetchFundGrants = address => async dispatch => {
   const allGrants = await localDB.get("/grants");
   const response = allGrants.data.filter(grant => {
-    if (grant.selectedTree === address) {
+    if (grant.selectedFund === address) {
       return { grant };
     }
     return "";
   });
 
-  dispatch({ type: FETCH_TREE_GRANTS, payload: response });
+  dispatch({ type: FETCH_FUND_GRANTS, payload: response });
 };
 
 export const fetchOrgGrants = ein => async dispatch => {
@@ -526,7 +534,7 @@ export const deleteGrant = id => async dispatch => {
 
 export const createDonation = (
   txID,
-  treeAddress,
+  fundAddress,
   fromAddress,
   inputCurrency,
   inputAmount,
@@ -536,7 +544,7 @@ export const createDonation = (
   const finalTradeOutput = (outputAmount / 10 ** outputDecimals).toFixed(2);
   const response = await localDB.post(`/donations`, {
     id: txID,
-    to: treeAddress,
+    to: fundAddress,
     from: fromAddress,
     inputCurrency,
     inputAmount,
@@ -553,7 +561,7 @@ export const fetchDonations = () => async dispatch => {
   dispatch({ type: FETCH_DONATIONS, payload: response.data });
 };
 
-export const fetchTreeDonations = address => async dispatch => {
+export const fetchFundDonations = address => async dispatch => {
   const allDonations = await localDB.get("/donations");
   const response = allDonations.data.filter(donation => {
     if (donation.to === address) {
@@ -562,7 +570,7 @@ export const fetchTreeDonations = address => async dispatch => {
     return "";
   });
 
-  dispatch({ type: FETCH_TREE_DONATIONS, payload: response });
+  dispatch({ type: FETCH_FUND_DONATIONS, payload: response });
 };
 
 export const fetchDonation = id => async dispatch => {

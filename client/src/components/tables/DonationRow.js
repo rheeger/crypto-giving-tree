@@ -16,14 +16,14 @@ class DonationRow extends Component {
   }
 
   renderDonorName() {
-    const { gtTrees, from } = this.props;
+    const { gtFunds, from } = this.props;
     console.log(from);
-    return Object.values(gtTrees).map((gtTrees, key) => {
-      if (from === gtTrees.managerAddress) {
+    return Object.values(gtFunds).map((gtFunds, key) => {
+      if (from === gtFunds.managerAddress) {
         console.log("match found");
-        console.log(gtTrees);
+        console.log(gtFunds);
         return this.setState({
-          donorName: `${gtTrees.primaryAdvisorFirstName} ${gtTrees.primaryAdvisorLastName}`
+          donorName: `${gtFunds.primaryAdvisorFirstName} ${gtFunds.primaryAdvisorLastName}`
         });
       } else {
         return this.setState({ donorName: "Unknown Donor" });
@@ -67,7 +67,7 @@ class DonationRow extends Component {
 
 const mapStateToProps = state => {
   return {
-    gtTrees: state.gtTrees
+    gtFunds: state.gtFunds
   };
 };
 

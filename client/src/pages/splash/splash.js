@@ -1,56 +1,60 @@
-import React from 'react';
+import React from "react";
 // import './style.css';
-import './heegerreset.css';
-import logo from '../../assets/images/CBLogo.png';
+import "./heegerreset.css";
+import logo from "../../assets/images/CBLogo.png";
 
 class Splash extends React.Component {
-	render() {
-		return (
-			<div>
-				<div
-					style={{
-						fontFamily: 'EB Garamond'
-					}}
-				>
-					<div
-						style={{
-							height: '100vh',
-							display: 'flex',
-							flexFlow: 'column',
-							justifyContent: 'flex-start',
-							alignItems: 'center',
-							width: '100%'
-						}}
-					>
-						<h3
-							style={{
-								fontWeight: '2rem',
-								fontStyle: 'italic',
-								fontSize: '1.25rem',
-								padding: '2rem',
-								margin: '2rem 2rem 0rem 2rem',
-								textAlign: 'center'
-							}}
-						>
-							future home of:
-						</h3>
-						<div style={{ margin: '0 auto' }}>
-							<img style={{ maxHeight: '10rem' }} src={logo} alt="logo" />
-						</div>
-						<h3
-							style={{
-								fontSize: '1.5rem',
-								margin: '2rem',
-								textAlign: 'center'
-							}}
-						>
-							...the best way to donate cryptocurrency.
-						</h3>
-					</div>
-				</div>
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div>
+        <div style={{}}>
+          <div
+            style={{
+              height: "100vh",
+              display: "flex",
+              flexFlow: "column",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              width: "100%"
+            }}
+          >
+            <h3
+              style={{
+                fontWeight: "2rem",
+                fontStyle: "italic",
+                fontSize: "1.25rem",
+                padding: "2rem",
+                margin: "2rem 2rem 0rem 2rem",
+                textAlign: "center"
+              }}
+            >
+              future home of:
+            </h3>
+            <h1
+              style={{
+                fontFamily: "all-round-gothic, sans-serif",
+                fontWeight: "600",
+                // fontStyle: "italic",
+                fontSize: "7rem"
+              }}
+            >
+              endaoment
+            </h1>
+            <h3
+              style={{
+                fontSize: "1.5rem",
+                fontStyle: "italic",
+                margin: "2rem",
+                textAlign: "center"
+              }}
+            >
+              smart contract powered charitable funds
+            </h3>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default Splash;

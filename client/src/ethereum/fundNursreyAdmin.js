@@ -1,7 +1,7 @@
 import web3 from "./web3";
 import TreeNursery from "./build/TreeNursery.json";
 
-export const plantTree = async managerAddress => {
+export const plantFund = async managerAddress => {
   const Web3 = require("web3");
   const HDWalletProvider = require("@truffle/hdwallet-provider");
 

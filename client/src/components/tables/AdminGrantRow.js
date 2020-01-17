@@ -12,16 +12,16 @@ class AdminGrantRow extends Component {
     approveloading: false,
     rejectloading: false,
     errorMessage: "",
-    treeName: this.props.selectedTree
+    fundName: this.props.selectedFund
   };
 
   componentDidMount() {
-    this.renderTreeName();
+    this.renderFundName();
   }
   onApprove = async () => {
-    const { approveGrant, id, grantIndex, selectedTree } = this.props;
+    const { approveGrant, id, grantIndex, selectedFund } = this.props;
     this.setState({ approveloading: true });
-    await approveGrant(id, selectedTree, grantIndex);
+    await approveGrant(id, selectedFund, grantIndex);
     this.setState({ approveloading: false });
     this.props.onSubmit();
     history.push("/admin");
@@ -35,12 +35,12 @@ class AdminGrantRow extends Component {
     history.push("/admin");
   };
 
-  renderTreeName() {
-    const { gtTrees, selectedTree } = this.props;
-    return Object.values(gtTrees).map((gtTrees, key) => {
-      if (selectedTree === gtTrees.id) {
+  renderFundName() {
+    const { gtFunds, selectedFund } = this.props;
+    return Object.values(gtFunds).map((gtFunds, key) => {
+      if (selectedFund === gtFunds.id) {
         console.log("match found");
-        return this.setState({ treeName: gtTrees.branchName });
+        return this.setState({ fundName: gtFunds.branchName });
       }
     });
   }
@@ -48,7 +48,7 @@ class AdminGrantRow extends Component {
   render() {
     const {
       id,
-      selectedTree,
+      selectedFund,
       recipient,
       amount,
       description,
@@ -65,7 +65,7 @@ class AdminGrantRow extends Component {
           <Moment>{date}</Moment>
         </Table.Cell>
         <Table.Cell>
-          <Link to={`/trees/${selectedTree}`}>{this.state.treeName}</Link>
+          <Link to={`/funds/${selectedFund}`}>{this.state.fundName}</Link>
         </Table.Cell>
         <Table.Cell>
           <Link to={`/orgs/${recipient}`}>

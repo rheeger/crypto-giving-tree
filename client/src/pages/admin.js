@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
-  fetchTrees,
+  fetchFunds,
   fetchDonations,
   fetchOrgs,
   fetchUnapprovedGrants,
@@ -17,7 +17,7 @@ import NavHeader from "../components/Header";
 class AdminPanel extends Component {
   componentWillMount = () => {
     const {
-      fetchTrees,
+      fetchFunds,
       fetchDonations,
       fetchOrgs,
       fetchUnapprovedGrants,
@@ -25,7 +25,7 @@ class AdminPanel extends Component {
     } = this.props;
 
     fetchUnapprovedGrants();
-    fetchTrees();
+    fetchFunds();
     fetchDonations();
     fetchOrgs();
     fetchUnapprovedClaims();
@@ -54,10 +54,10 @@ class AdminPanel extends Component {
             amount={grant.grantAmount}
             date={grant.grantDate}
             description={grant.grantDescription}
-            selectedTree={grant.selectedTree}
+            selectedFund={grant.selectedFund}
             grantIndex={grant.grantIndex}
             onSubmit={this.onApproveSubmit}
-            gtTrees={this.props.gtTrees}
+            gtFunds={this.props.gtFunds}
           />
         );
       } else {
@@ -121,7 +121,7 @@ class AdminPanel extends Component {
           date={donation.donationDate}
           key={donation.id}
           id={donation.id}
-          gtTrees={this.props.gtTrees}
+          gtFunds={this.props.gtFunds}
         />
       );
     });
@@ -130,9 +130,9 @@ class AdminPanel extends Component {
   render() {
     const { Header, Row, HeaderCell, Body } = Table;
 
-    if (!this.props.gtTrees) {
+    if (!this.props.gtFunds) {
       return <div> Loading... </div>;
-    } else if (Object.values(this.props.gtTrees).length < 1) {
+    } else if (Object.values(this.props.gtFunds).length < 1) {
       return <div> Loading...</div>;
     } else if (!this.props.gtClaims) {
       return <div> Loading... </div>;
@@ -166,7 +166,7 @@ class AdminPanel extends Component {
                     <Header>
                       <Row>
                         <HeaderCell>Request Date</HeaderCell>
-                        <HeaderCell>Issuing Tree</HeaderCell>
+                        <HeaderCell>Issuing Fund</HeaderCell>
                         <HeaderCell>Recipient</HeaderCell>
                         <HeaderCell>Description</HeaderCell>
                         <HeaderCell>Amount</HeaderCell>
@@ -217,7 +217,7 @@ class AdminPanel extends Component {
                 </Grid.Column>
               </Grid.Row>
               {/* 
-					<Link route={`/trees/${this.props.address}/grants`}>
+					<Link route={`/funds/${this.props.address}/grants`}>
 						<a>
 							<Button primary>View Grants</Button>
 						</a>
@@ -237,7 +237,7 @@ class AdminPanel extends Component {
 
 const mapStateToProps = state => {
   return {
-    gtTrees: state.gtTrees,
+    gtFunds: state.gtFunds,
     web3: state.web3connect,
     gtGrants: state.gtGrants,
     gtOrgs: state.gtOrgs,
@@ -248,7 +248,7 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
   fetchUnapprovedGrants,
-  fetchTrees,
+  fetchFunds,
   fetchDonations,
   fetchOrgs,
   fetchUnapprovedClaims

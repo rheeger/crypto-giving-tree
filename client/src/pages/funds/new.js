@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Button } from "semantic-ui-react";
-import { plantTreeAndContract } from "../../store/actions";
+import { plantFundAndContract } from "../../store/actions";
 import BranchForm from "../../components/BranchForm";
 import Header from "../../components/Header";
 
-class NewTree extends React.Component {
+class NewFund extends React.Component {
   state = {
     ready: "false",
     loading: false,
@@ -18,7 +18,7 @@ class NewTree extends React.Component {
 
   onSubmit = async formValues => {
     this.setState({ loading: true });
-    await this.props.plantTreeAndContract(formValues);
+    await this.props.plantFundAndContract(formValues);
     this.setState({ loading: false });
   };
 
@@ -44,7 +44,7 @@ class NewTree extends React.Component {
             }}
           >
             <div style={{ width: "500px" }}>
-              <h1>Plant your Tree:</h1>
+              <h1>Plant your Fund:</h1>
 
               <BranchForm
                 onSubmit={this.onSubmit}
@@ -75,7 +75,7 @@ class NewTree extends React.Component {
             <h1>What is this? </h1>
             <p>some things to know...</p>
             <h3>
-              1. Each Giving Tree is functionally equivalent to a{" "}
+              1. Each Giving Fund is functionally equivalent to a{" "}
               <a
                 href="https://en.wikipedia.org/wiki/Donor-advised_fund"
                 target="blank"
@@ -84,7 +84,7 @@ class NewTree extends React.Component {
               </a>
             </h3>
             <h3>
-              2. You can easily contribute tokens to your Tree. The Charity
+              2. You can easily contribute tokens to your Fund. The Charity
               Block supports{" "}
               <a href="https://beta.uniswap.info/" target="blank">
                 all tokens with Uniswap Exchange Contracts.
@@ -116,9 +116,9 @@ class NewTree extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    gtTrees: state.gtTrees,
+    gtFunds: state.gtFunds,
     web3: state.web3connect
   };
 };
 
-export default connect(mapStateToProps, { plantTreeAndContract })(NewTree);
+export default connect(mapStateToProps, { plantFundAndContract })(NewFund);

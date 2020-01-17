@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import { orgs, org, gtOrgs } from "./orgs";
-import trees from "./trees";
+import funds from "./funds";
 import grants from "./grants";
 import swapAddresses from "./swapAddresses";
 import web3connect from "./web3connect";
@@ -17,7 +17,7 @@ export default combineReducers({
   web3connect: web3connect,
   pending: pending,
   form: formReducer,
-  gtTrees: trees,
+  gtFunds: funds,
   gtOrgs: gtOrgs,
   gtGrants: grants,
   gtDonations: donations,

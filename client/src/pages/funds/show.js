@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
-  fetchTree,
-  fetchTreeDAIBalance,
-  fetchTreeGrants,
+  fetchFund,
+  fetchFundDAIBalance,
+  fetchFundGrants,
   fetchOrgs,
   fetchGrantableDAIBalance,
-  fetchTreeDonations
+  fetchFundDonations
 } from "../../store/actions";
 import { Card, Grid, Table } from "semantic-ui-react";
 import ContributionForm from "../../components/ContributionForm";
@@ -15,23 +15,23 @@ import DonationRow from "../../components/tables/DonationRow";
 import NavHeader from "../../components/Header";
 import moment from "moment";
 
-class TreeShow extends Component {
+class FundShow extends Component {
   componentDidMount = () => {
     const {
-      fetchTreeDAIBalance,
-      fetchTree,
+      fetchFundDAIBalance,
+      fetchFund,
       match,
-      fetchTreeGrants,
+      fetchFundGrants,
       fetchOrgs,
       fetchGrantableDAIBalance,
-      fetchTreeDonations
+      fetchFundDonations
     } = this.props;
 
-    fetchTree(match.params.address);
-    fetchTreeDAIBalance(match.params.address);
+    fetchFund(match.params.address);
+    fetchFundDAIBalance(match.params.address);
     fetchGrantableDAIBalance(match.params.address);
-    fetchTreeDonations(match.params.address);
-    fetchTreeGrants(match.params.address);
+    fetchFundDonations(match.params.address);
+    fetchFundGrants(match.params.address);
     fetchOrgs();
   };
 
@@ -44,7 +44,7 @@ class TreeShow extends Component {
       );
     }
     return Object.values(this.props.gtGrants).map((grant, key) => {
-      if (grant.selectedTree === this.props.match.params.address) {
+      if (grant.selectedFund === this.props.match.params.address) {
         return (
           <GrantRow
             key={key}
@@ -109,9 +109,9 @@ class TreeShow extends Component {
       primaryAdvisorCity,
       primaryAdvisorState,
       primaryAdvisorZip,
-      treeDAI,
+      fundDAI,
       grantableDAI
-    } = this.props.gtTrees[this.props.match.params.address];
+    } = this.props.gtFunds[this.props.match.params.address];
 
     const items = [
       {
@@ -123,8 +123,8 @@ class TreeShow extends Component {
       },
       {
         style: { overflowWrap: "break-word" },
-        header: "$" + treeDAI,
-        meta: "Tree Balance",
+        header: "$" + fundDAI,
+        meta: "Fund Balance",
         description: "Available to Grant: $" + grantableDAI
       },
       {
@@ -152,7 +152,7 @@ class TreeShow extends Component {
   render() {
     const { Header, Row, HeaderCell, Body } = Table;
 
-    if (!this.props.gtTrees[this.props.match.params.address]) {
+    if (!this.props.gtFunds[this.props.match.params.address]) {
       return <div> Loading... </div>;
     }
     if (this.props.web3 === "null") {
@@ -167,7 +167,7 @@ class TreeShow extends Component {
             <Grid className="Container">
               <Grid.Row>
                 <Grid.Column width={10}>
-                  <h3>Tree Details:</h3>
+                  <h3>Fund Details:</h3>
                   {this.renderCards()}
                 </Grid.Column>
 
@@ -175,13 +175,13 @@ class TreeShow extends Component {
                   <h3>
                     Donate to{" "}
                     {
-                      this.props.gtTrees[this.props.match.params.address]
+                      this.props.gtFunds[this.props.match.params.address]
                         .branchName
                     }
                     :
                   </h3>
                   <ContributionForm
-                    recievingTree={this.props.match.params.address}
+                    recievingFund={this.props.match.params.address}
                   />
                 </Grid.Column>
               </Grid.Row>
@@ -220,7 +220,7 @@ class TreeShow extends Component {
                 </Grid.Column>
               </Grid.Row>
               {/* 
-					<Link route={`/trees/${this.props.address}/grants`}>
+					<Link route={`/funds/${this.props.address}/grants`}>
 						<a>
 							<Button primary>View Grants</Button>
 						</a>
@@ -240,7 +240,7 @@ class TreeShow extends Component {
 
 const mapStateToProps = state => {
   return {
-    gtTrees: state.gtTrees,
+    gtFunds: state.gtFunds,
     web3: state.web3connect.web3,
     gtGrants: state.gtGrants,
     gtOrgs: state.gtOrgs,
@@ -249,10 +249,10 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, {
-  fetchTreeDAIBalance,
-  fetchTree,
-  fetchTreeGrants,
+  fetchFundDAIBalance,
+  fetchFund,
+  fetchFundGrants,
   fetchOrgs,
   fetchGrantableDAIBalance,
-  fetchTreeDonations
-})(TreeShow);
+  fetchFundDonations
+})(FundShow);

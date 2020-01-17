@@ -1,12 +1,12 @@
 import Tree from "./build/Tree.json";
 import web3 from "./web3";
 
-export const treeContract = address => {
+export const fundContract = address => {
   return new web3.eth.Contract(JSON.parse(Tree.interface), address);
 };
 
-export const approveTreeGrant = async (
-  treeAddress,
+export const approveFundGrant = async (
+  fundAddress,
   grantNonce,
   tokenAddress
 ) => {
@@ -22,9 +22,9 @@ export const approveTreeGrant = async (
 
   const web3 = new Web3(provider);
   const accounts = await web3.eth.getAccounts();
-  const tree = new web3.eth.Contract(JSON.parse(Tree.interface), treeAddress);
+  const fund = new web3.eth.Contract(JSON.parse(Tree.interface), fundAddress);
 
-  const approvedGrant = await tree.methods
+  const approvedGrant = await fund.methods
     .finalizeGrant(grantNonce, tokenAddress)
     .send({ from: accounts[0], gas: "1500000" });
 

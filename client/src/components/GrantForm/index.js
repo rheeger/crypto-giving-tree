@@ -41,7 +41,7 @@ class GrantForm extends React.Component {
     );
   };
 
-  renderTreeSelect = ({ input, label, options, meta, value, ...rest }) => {
+  renderFundSelect = ({ input, label, options, meta, value, ...rest }) => {
     const className = `field ${meta.error && meta.touched ? "error" : ""}`;
     const parse = event => {
       return JSON.parse(event.target.value);
@@ -54,7 +54,7 @@ class GrantForm extends React.Component {
           onChange={event => input.onChange(parse(event))}
           {...rest}
         >
-          <option>select a tree:</option>
+          <option>select a fund:</option>
           {options.map((option, key) => (
             <option key={option.id} value={JSON.stringify(option)}>
               {option.branchName} -- (Available Balance: ${option.grantableDAI})
@@ -77,10 +77,10 @@ class GrantForm extends React.Component {
         onSubmit={this.props.handleSubmit(this.onSubmit)}
       >
         <Field
-          name="selectedTree"
-          component={this.renderTreeSelect}
+          name="selectedFund"
+          component={this.renderFundSelect}
           type="ObjectSelect"
-          options={Object.values(this.props.gtTrees)}
+          options={Object.values(this.props.gtFunds)}
           label="Sending from:"
         />
         <Field
@@ -111,8 +111,8 @@ class GrantForm extends React.Component {
 
 const validate = formValues => {
   const errors = {};
-  if (!formValues.selectedTree) {
-    errors.selectedTree = "You must select a Giving Tree";
+  if (!formValues.selectedFund) {
+    errors.selectedFund = "You must select a Giving Fund";
   }
   if (!formValues.grantAmount) {
     errors.grantAmount = "You must enter a amount to grant";
@@ -121,14 +121,14 @@ const validate = formValues => {
     errors.grantDescription = "You must enter a description";
   }
 
-  if (formValues.selectedTree) {
-    if (formValues.grantAmount > formValues.selectedTree.grantableDAI) {
+  if (formValues.selectedFund) {
+    if (formValues.grantAmount > formValues.selectedFund.grantableDAI) {
       errors.grantAmount =
         "Grant amount exceeds grantable balance. Please lower grant amount";
     }
-    if (formValues.selectedTree.grantableDAI < 0.01) {
-      errors.selectedTree =
-        "Insuficient Funds. Please contribute to this Giving Tree";
+    if (formValues.selectedFund.grantableDAI < 0.01) {
+      errors.selectedFund =
+        "Insuficient Funds. Please contribute to this Giving Fund";
     }
   }
   if (!formValues.tncconsent) {

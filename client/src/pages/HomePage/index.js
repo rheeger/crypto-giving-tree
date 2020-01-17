@@ -6,12 +6,25 @@ import { Grid } from "semantic-ui-react";
 import history from "../../history";
 
 class HomePage extends React.Component {
-  renderManager() {
-    if (!this.props.gtTrees.Object) {
-      return "Plant a Tree";
+  renderButton() {
+    if (!this.props.gtFunds) {
+      return;
     }
-    if (Object.keys(this.props.gtTrees).length > 0) {
-      return "View My Trees";
+    if (Object.keys(this.props.gtFunds).length === 0) {
+      return (
+        <Link to="/funds/new" className="ui button green">
+          <i className="plus circle icon" />
+          Start a Fund
+        </Link>
+      );
+    }
+    if (Object.keys(this.props.gtFunds).length > 0) {
+      return (
+        <Link to="/funds" className="ui button green">
+          <i className="eye icon" />
+          See My Funds
+        </Link>
+      );
     }
   }
 
@@ -40,21 +53,18 @@ class HomePage extends React.Component {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  height: "50vh"
+                  height: "30vh"
                 }}
                 width={16}
               >
                 <div>
-                  <h1>Plant a Giving Tree today.</h1>
+                  <h1>The best way to give crypto.</h1>
                   <h3>
-                    Create your own charitable fund. Extend grants to qualifying
-                    non-profit organizations.
+                    Create your own charitable fund today. Extend grants to any
+                    non-profit organization.
                   </h3>
                   <br />
-                  <Link to="/trees/new" className="ui button green">
-                    <i className="plus circle icon" />
-                    {this.renderManager()}
-                  </Link>
+                  {this.renderButton()}
                 </div>
               </Grid.Column>
             </Grid.Row>
@@ -66,7 +76,7 @@ class HomePage extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return { gtTrees: state.gtTrees, web3: state.web3connect };
+  return { gtFunds: state.gtFunds, web3: state.web3connect };
 };
 
 export default connect(mapStateToProps)(HomePage);

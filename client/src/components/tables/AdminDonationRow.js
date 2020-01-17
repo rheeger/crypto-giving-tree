@@ -9,20 +9,20 @@ class AdminDonationRow extends Component {
     finalizeloading: false,
     errorMessage: "",
     donorName: "Unknown Donor",
-    treeName: this.props.recipient
+    fundName: this.props.recipient
   };
 
   componentDidMount() {
     this.renderDonorName();
-    this.renderTreeName();
+    this.renderFundName();
   }
 
   renderDonorName() {
-    const { gtTrees, from } = this.props;
-    return Object.values(gtTrees).map((gtTrees, key) => {
-      if (from === gtTrees.managerAddress) {
+    const { gtFunds, from } = this.props;
+    return Object.values(gtFunds).map((gtFunds, key) => {
+      if (from === gtFunds.managerAddress) {
         return this.setState({
-          donorName: `${gtTrees.primaryAdvisorFirstName} ${gtTrees.primaryAdvisorLastName}`
+          donorName: `${gtFunds.primaryAdvisorFirstName} ${gtFunds.primaryAdvisorLastName}`
         });
       } else {
         return this.props.recipient;
@@ -30,11 +30,11 @@ class AdminDonationRow extends Component {
     });
   }
 
-  renderTreeName() {
-    const { gtTrees, recipient } = this.props;
-    return Object.values(gtTrees).map((gtTrees, key) => {
-      if (recipient === gtTrees.id) {
-        return this.setState({ treeName: gtTrees.branchName });
+  renderFundName() {
+    const { gtFunds, recipient } = this.props;
+    return Object.values(gtFunds).map((gtFunds, key) => {
+      if (recipient === gtFunds.id) {
+        return this.setState({ fundName: gtFunds.branchName });
       }
     });
   }
@@ -56,7 +56,7 @@ class AdminDonationRow extends Component {
         </Table.Cell>
         <Table.Cell>{this.state.donorName}</Table.Cell>
         <Table.Cell>
-          <Link to={`/trees/${recipient}`}>{this.state.treeName}</Link>
+          <Link to={`/funds/${recipient}`}>{this.state.fundName}</Link>
         </Table.Cell>
         <Table.Cell>
           {donationAmount} {inputCurrency}

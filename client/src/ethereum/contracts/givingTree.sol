@@ -33,7 +33,7 @@ contract TreeNursery {
     }
 
     function checkAdmin() public view returns (address) {
-        AbstractAdmin x = AbstractAdmin ( 0x47E0B7Cc929B1AFEC0C4313dA4acF94B75302bC0 );
+        AbstractAdmin x = AbstractAdmin ( 0xFB4536335Bd7Ee65EE7Bb4EF9aaAFa689c3C2606 );
     
         return x.getAdmin();
     }
@@ -106,14 +106,14 @@ contract Tree {
     }
 
     function checkAdmin() public view returns (address) {
-        AbstractAdmin x = AbstractAdmin ( 0x47E0B7Cc929B1AFEC0C4313dA4acF94B75302bC0 );
+        AbstractAdmin x = AbstractAdmin ( 0xFB4536335Bd7Ee65EE7Bb4EF9aaAFa689c3C2606 );
     
         return x.getAdmin();
     }
     
 
     function checkRecipient(address recipient) public view returns (bool) {
-        AbstractOrgFactory x = AbstractOrgFactory ( 0x985F44660Fd330C90AdA88C018335ecA98580326 );
+        AbstractOrgFactory x = AbstractOrgFactory ( 0xAa6524C3a1df835eF8d21506260C004962eea934 );
     
         return x.getAllowedOrgs(recipient);
 

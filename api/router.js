@@ -3,15 +3,15 @@ const Withdrawls = require("./controllers/withdrawls");
 const Donations = require("./controllers/donations");
 const Grants = require("./controllers/grants");
 const Orgs = require("./controllers/orgs");
-const Trees = require("./controllers/trees");
+const Funds = require("./controllers/funds");
 
 module.exports = function(app) {
-  //Trees
-  app.get("/trees", Trees.allTrees);
-  app.get("/trees/:id", Trees.oneTree);
-  app.post("/trees", Trees.createTree);
-  app.patch("/trees/:id", Trees.updateTree);
-  app.delete("/trees/:id", Trees.deleteTree);
+  //Funds
+  app.get("/funds", Funds.allFunds);
+  app.get("/funds/:id", Funds.oneFund);
+  app.post("/funds", Funds.createFund);
+  app.patch("/funds/:id", Funds.updateFund);
+  app.delete("/funds/:id", Funds.deleteFund);
   //Orgs
   app.get("/orgs", Orgs.allOrgs);
   app.get("/orgs/:id", Orgs.oneOrg);

@@ -16,7 +16,7 @@ import { retry } from '../../helpers/promise-utils';
 import EXCHANGE_ABI from '../../ethereum/uniSwap/abi/exchange';
 import ERC20_ABI from '../../ethereum/uniSwap/abi/erc20';
 import './contributionForm.scss';
-import { fetchTreeDAIBalance, createDonation } from '../../store/actions';
+import { fetchFundDAIBalance, createDonation } from '../../store/actions';
 import logo from '../../assets/images/uniswap.png';
 
 const INPUT = 0;
@@ -37,7 +37,7 @@ class Send extends Component {
 		outputCurrency: process.env.REACT_APP_STABLECOIN_ADDRESS,
 		inputAmountB: '',
 		lastEditedField: '',
-		recipient: this.props.recievingTree,
+		recipient: this.props.recievingFund,
 		loading: false,
 		tncconsent: false
 	};
@@ -45,7 +45,7 @@ class Send extends Component {
 	componentDidMount() {
 		console.log(this.props);
 		this.setState({ outputCurrency: process.env.REACT_APP_STABLECOIN_ADDRESS });
-		this.setState({ recipient: this.props.recievingTree });
+		this.setState({ recipient: this.props.recievingFund });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -58,7 +58,7 @@ class Send extends Component {
 			outputValue: '',
 			inputAmountB: '',
 			lastEditedField: '',
-			recipient: this.props.recievingTree,
+			recipient: this.props.recievingFund,
 			outputCurrency: process.env.REACT_APP_STABLECOIN_ADDRESS,
 			loading: false,
 			tncconsent: false
@@ -428,7 +428,7 @@ class Send extends Component {
 			account, exchangeAddresses: { fromToken },
 			selectors,
 			addPendingTx,
-			fetchTreeDAIBalance,
+			fetchFundDAIBalance,
 			createDonation,
 			web3connect
 		} = this.props;
@@ -518,7 +518,7 @@ class Send extends Component {
 								)
 								.then(console.log('exchange complete'))
 								.then(async (receipt) => {
-									fetchTreeDAIBalance(recipient) &&
+									fetchFundDAIBalance(recipient) &&
 										(await createDonation(
 											receipt.transactionHash,
 											recipient,
@@ -583,7 +583,7 @@ class Send extends Component {
 								})
 								.then(console.log('exchange complete'))
 								.then(async (receipt) => {
-									fetchTreeDAIBalance(recipient) &&
+									fetchFundDAIBalance(recipient) &&
 										(await createDonation(
 											receipt.transactionHash,
 											recipient,
@@ -665,7 +665,7 @@ class Send extends Component {
 								)
 								.then(console.log('exchange complete'))
 								.then(async (receipt) => {
-									fetchTreeDAIBalance(recipient) &&
+									fetchFundDAIBalance(recipient) &&
 										(await createDonation(
 											receipt.transactionHash,
 											recipient,
@@ -732,7 +732,7 @@ class Send extends Component {
 								})
 								.then(console.log('exchange complete'))
 								.then(async (receipt) => {
-									fetchTreeDAIBalance(recipient) &&
+									fetchFundDAIBalance(recipient) &&
 										(await createDonation(
 											receipt.transactionHash,
 											recipient,
@@ -997,7 +997,7 @@ class Send extends Component {
 					})}
 				>
 					<CurrencyInputPanel
-						title={t('tokens to be donated:')}
+						title={'tokens to be donated:'}
 						description={lastEditedField === OUTPUT ? estimatedText : ''}
 						extraText={this.renderBalance(inputCurrency, inputBalance, inputDecimals)}
 						onCurrencySelected={(inputCurrency) => this.setState({ inputCurrency }, this.recalcForm)}
@@ -1017,7 +1017,7 @@ class Send extends Component {
 					</OversizedPanel>
 					<CurrencyInputPanel
 						disableTokenSelect
-						title={t('dollar value:')}
+						title={'dollar value:'}
 						description={lastEditedField === INPUT ? estimatedText : ''}
 						extraText={this.renderBalance(outputCurrency, outputBalance, outputDecimals)}
 						onValueChange={this.updateOutput}
@@ -1040,7 +1040,7 @@ class Send extends Component {
 						t={this.props.t}
 						value={recipient}
 						onChange={(address) => this.setState({ recipient: address })}
-						recievingTree={this.props.recievingTree}
+						recievingFund={this.props.recievingFund}
 					/>
 
 					{this.renderExchangeRate()}
@@ -1075,7 +1075,7 @@ const mapStateToProps = (state, ownProps) => {
 		web3connect: state.web3connect,
 		exchangeAddresses: state.addresses.exchangeAddresses,
 		tokenAddresses: state.addresses.tokenAddresses,
-		gtTree: state.gtTrees
+		gtFund: state.gtFunds
 	};
 };
 
@@ -1085,9 +1085,9 @@ export default connect(mapStateToProps, (dispatch) => ({
 	startWatching: () => dispatch(startWatching()),
 	selectors: () => dispatch(selectors()),
 	addPendingTx: (id) => dispatch(addPendingTx(id)),
-	fetchTreeDAIBalance: (address) => dispatch(fetchTreeDAIBalance(address)),
-	createDonation: (txID, treeAddress, fromAddress, inputCurrency, inputAmount, outputAmount, donationDate) =>
-		dispatch(createDonation(txID, treeAddress, fromAddress, inputCurrency, inputAmount, outputAmount, donationDate))
+	fetchFundDAIBalance: (address) => dispatch(fetchFundDAIBalance(address)),
+	createDonation: (txID, fundAddress, fromAddress, inputCurrency, inputAmount, outputAmount, donationDate) =>
+		dispatch(createDonation(txID, fundAddress, fromAddress, inputCurrency, inputAmount, outputAmount, donationDate))
 }))(withTranslation()(Send));
 
 const b = (text) => <span className="swap__highlight-text">{text}</span>;
