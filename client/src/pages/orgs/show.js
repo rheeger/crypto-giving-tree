@@ -48,7 +48,7 @@ class OrgShow extends React.Component {
           <OrgGrantRow
             key={grant.id}
             id={grant.id}
-            tree={grant.selectedTree}
+            fund={grant.selectedFund}
             amount={grant.grantAmount}
             date={grant.grantDate}
             description={grant.grantDescription}
