@@ -1,29 +1,25 @@
 import Org from "./build/Org.json";
-import web3 from "./web3";
+import adminWeb3 from "./adminWeb3";
+import adminWeb3Wallet from "./adminWeb3Wallet";
 
 export const orgContract = address => {
-  return new web3.eth.Contract(JSON.parse(Org.interface), address);
+  return new adminWeb3.eth.Contract(JSON.parse(Org.interface), address);
 };
 
 export const approveOrgClaim = async (orgAddress, claimNonce) => {
-  const Web3 = require("web3");
-  const HDWalletProvider = require("@truffle/hdwallet-provider");
-
-  const mnemonic = process.env.REACT_APP_METAMASK_MNEMONIC;
-  const infuraKey = process.env.REACT_APP_INFURA_KEY;
-  const infuraPrefix = process.env.REACT_APP_INFURA_PREFIX;
-  const infuraEndpoint =
-    "https://" + infuraPrefix + ".infura.io/v3/" + infuraKey;
-
-  const provider = new HDWalletProvider(mnemonic, infuraEndpoint);
-
-  const web3 = new Web3(provider);
-  const accounts = await web3.eth.getAccounts();
-  const org = new web3.eth.Contract(JSON.parse(Org.interface), orgAddress);
+  const accounts = await adminWeb3Wallet.eth.getAccounts();
+  const org = new adminWeb3Wallet.eth.Contract(
+    JSON.parse(Org.interface),
+    orgAddress
+  );
+  const currentNonce = await adminWeb3Wallet.eth.getTransactionCount(
+    accounts[0],
+    "pending"
+  );
 
   const approvedClaim = await org.methods
     .approveClaim(claimNonce)
-    .send({ from: accounts[0], gas: "1500000" });
+    .send({ from: accounts[0], nonce: currentNonce });
 
   return approvedClaim.transactionHash;
 };

@@ -74,7 +74,7 @@ class NewFund extends React.Component {
 
         <div
           style={{
-            margin: "0px auto",
+            margin: "75px auto",
             textAlign: "left",
             display: "flex",
             justifyContent: "flex-start",

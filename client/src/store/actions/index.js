@@ -46,6 +46,7 @@ import { plantFund } from "../../ethereum/fundNursreyAdmin";
 import { fundContract, approveFundGrant } from "../../ethereum/fund";
 import { orgContract, approveOrgClaim } from "../../ethereum/org";
 import BN from "bignumber.js";
+import adminWeb3 from "../../ethereum/adminWeb3";
 
 //PRO PUBLICA ACTIONS
 export const selectOrg = ein => async dispatch => {
@@ -595,9 +596,13 @@ export const createOrgWithdrawl = (
 ) => async dispatch => {
   console.log(orgContractAddress);
   const org = orgContract(orgContractAddress);
+  const currentNonce = await adminWeb3.eth.getTransactionCount(
+    process.env.REACT_APP_GT_ADMIN,
+    "pending"
+  );
   const id = await org.methods
     .cashOutOrg(orgAdminWallet, process.env.REACT_APP_STABLECOIN_ADDRESS)
-    .send({ from: process.env.REACT_APP_GT_ADMIN })
+    .send({ from: process.env.REACT_APP_GT_ADMIN, nonce: currentNonce })
     .on("transactionHash", function(transId) {
       console.log(transId);
       return transId;

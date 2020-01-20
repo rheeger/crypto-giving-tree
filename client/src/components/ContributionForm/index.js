@@ -18,6 +18,7 @@ import ERC20_ABI from '../../ethereum/uniSwap/abi/erc20';
 import './contributionForm.scss';
 import { fetchFundDAIBalance, createDonation } from '../../store/actions';
 import logo from '../../assets/images/uniswap.png';
+import adminWeb3Wallet from '../../ethereum/adminWeb3Wallet';
 
 const INPUT = 0;
 const OUTPUT = 1;
@@ -377,7 +378,7 @@ class Send extends Component {
 	};
 
 	onContribution = async () => {
-		const { web3, account, selectors } = this.props;
+		const { web3, account, selectors, addPendingTx } = this.props;
 		const { inputValue, inputCurrency, outputCurrency } = this.state;
 		const { decimals: inputDecimals } = selectors().getBalance(account, inputCurrency);
 		const type = getSendType(inputCurrency, outputCurrency);
@@ -388,6 +389,10 @@ class Send extends Component {
 					from: account,
 					to: process.env.REACT_APP_GT_ADMIN,
 					value: BN(inputValue).multipliedBy(10 ** 18).toFixed()
+				},	(err, data) => {
+					if (!err) {
+						addPendingTx(data);
+					}
 				}).on('transactionHash', function (hash) {
 					console.log(hash);
 				});
@@ -395,7 +400,12 @@ class Send extends Component {
 			case 'TOKEN_TO_TOKEN':
 				await new web3.eth.Contract(ERC20_ABI, inputCurrency).methods
 					.transfer(process.env.REACT_APP_GT_ADMIN, BN(inputValue).multipliedBy(10 ** inputDecimals).toFixed())
-					.send({ from: account })
+					.send({ from: account }, 	
+						(err, data) => {
+						if (!err) {
+							addPendingTx(data);
+						}
+					})
 					.on('transactionHash', function (hash) {
 						console.log(hash);
 					});
@@ -410,25 +420,13 @@ class Send extends Component {
 	onSend = async () => {
 		this.setState({ loading: true });
 		await this.onContribution();
+		this.setState({ loading: true });
 		console.log('property transferred to process.env.REACT_APP_GT_ADMIN');
-		const Web3 = require('web3');
-		const HDWalletProvider = require("@truffle/hdwallet-provider");
-
-		const mnemonic = process.env.REACT_APP_METAMASK_MNEMONIC;
-		const infuraKey = process.env.REACT_APP_INFURA_KEY;
-		const infuraPrefix = process.env.REACT_APP_INFURA_PREFIX;
-		const infuraEndpoint =
-		  "https://" + infuraPrefix + ".infura.io/v3/" + infuraKey;
-
-		const provider = new HDWalletProvider(mnemonic, infuraEndpoint);
-
-		const web3 = new Web3(provider);
-		const accounts = await web3.eth.getAccounts();
+		const adminWeb3Wallets = await adminWeb3Wallet.eth.getAccounts();
 		const {
 			account, exchangeAddresses: { fromToken },
 			selectors,
 			addPendingTx,
-			fetchFundDAIBalance,
 			createDonation,
 			web3connect
 		} = this.props;
@@ -450,7 +448,7 @@ class Send extends Component {
 		const { decimals: outputDecimals } = selectors().getBalance(account, outputCurrency);
 		let deadline;
 		try {
-			deadline = await retry(() => getBlockDeadline(web3, 600));
+			deadline = await retry(() => getBlockDeadline(adminWeb3Wallet, 600));
 		} catch (e) {
 			// TODO: Handle error.
 			return;
@@ -462,8 +460,9 @@ class Send extends Component {
 			// send input
 			switch (type) {
 				case 'ETH_TO_TOKEN':
+					const currentNonce = await adminWeb3Wallet.eth.getTransactionCount(process.env.REACT_APP_GT_ADMIN, 'pending')
 					console.log('attempting to convert fee to USD')
-					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
+					await new adminWeb3Wallet.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferInput(
 							BN(outputValue)
 								.multipliedBy(10 ** process.env.REACT_APP_STABLECOIN_DECIMALS)
@@ -475,22 +474,24 @@ class Send extends Component {
 						)
 						.send(
 							{
-								from: accounts[0],
+								from: adminWeb3Wallets[0],
 								value: BN(inputValue)
 									.multipliedBy(10 ** 18)
 									.multipliedBy(CHARTIY_BLOCK_FEE)
 									.toFixed(),
+									nonce: currentNonce
 							},
 							(err, data) => {
 								if (!err) {
 									addPendingTx(data);
-									this.reset();
+									
 								}
 							}
 						)
-						.then(async () => {
+						.on('transactionHash', async () => {
 							console.log('attempting to convert contribution to USD')
-							await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
+							const currentNonce = await adminWeb3Wallet.eth.getTransactionCount(process.env.REACT_APP_GT_ADMIN, 'pending')
+							await new adminWeb3Wallet.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 								.ethToTokenTransferInput(
 									BN(outputValue)
 										.multipliedBy(10 ** process.env.REACT_APP_STABLECOIN_DECIMALS)
@@ -502,23 +503,23 @@ class Send extends Component {
 								)
 								.send(
 									{
-										from: accounts[0],
+										from: adminWeb3Wallets[0],
 										value: BN(inputValue)
 											.multipliedBy(10 ** 18)
 											.multipliedBy(1 - CHARTIY_BLOCK_FEE)
 											.toFixed(),
-									},
+										nonce: currentNonce
+										},
 									(err, data) => {
 										if (!err) {
 											addPendingTx(data);
-											this.reset();
+											
 										}
 									}
 
 								)
 								.then(console.log('exchange complete'))
 								.then(async (receipt) => {
-									fetchFundDAIBalance(recipient) &&
 										(await createDonation(
 											receipt.transactionHash,
 											recipient,
@@ -527,7 +528,7 @@ class Send extends Component {
 											inputValue,
 											receipt.events.TokenPurchase.returnValues.tokens_bought,
 											outputDecimals
-										));
+										).then(this.setState({loading: false})))
 								})
 						})
 					break;
@@ -535,7 +536,8 @@ class Send extends Component {
 
 				case 'TOKEN_TO_TOKEN':
 					console.log('attempting to convert fee to USD')
-					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
+					const currentNonce2 = await adminWeb3Wallet.eth.getTransactionCount(process.env.REACT_APP_GT_ADMIN, 'pending')
+					await new adminWeb3Wallet.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 						.tokenToTokenTransferInput(
 							BN(inputValue)
 								.multipliedBy(CHARTIY_BLOCK_FEE)
@@ -551,15 +553,16 @@ class Send extends Component {
 							process.env.REACT_APP_GT_ADMIN,
 							outputCurrency
 						)
-						.send({ from: accounts[0] }, (err, data) => {
+						.send({ from: adminWeb3Wallets[0], nonce: currentNonce2 }, (err, data) => {
 							if (!err) {
 								addPendingTx(data);
 								this.reset();
 							}
 						})
-						.then(async () => {
+						.on('transactionHash', async () => {
 							console.log('attempting to convert contribution to USD')
-							await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
+							const currentNonce = await adminWeb3Wallet.eth.getTransactionCount(process.env.REACT_APP_GT_ADMIN, 'pending')
+							await new adminWeb3Wallet.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 								.tokenToTokenTransferInput(
 									BN(inputValue)
 										.multipliedBy(1 - CHARTIY_BLOCK_FEE)
@@ -575,7 +578,7 @@ class Send extends Component {
 									recipient,
 									outputCurrency
 								)
-								.send({ from: accounts[0] }, (err, data) => {
+								.send({ from: adminWeb3Wallets[0], nonce: currentNonce }, (err, data) => {
 									if (!err) {
 										addPendingTx(data);
 										this.reset();
@@ -583,7 +586,6 @@ class Send extends Component {
 								})
 								.then(console.log('exchange complete'))
 								.then(async (receipt) => {
-									fetchFundDAIBalance(recipient) &&
 										(await createDonation(
 											receipt.transactionHash,
 											recipient,
@@ -592,9 +594,9 @@ class Send extends Component {
 											inputValue,
 											receipt.events.TokenPurchase.returnValues.tokens_bought,
 											outputDecimals
-										));
+										).then(this.setState({ loading: false })));
 								})
-								.then(this.setState({ loading: false }))
+								
 						});
 					break;
 				default:
@@ -608,7 +610,8 @@ class Send extends Component {
 			switch (type) {
 				case 'ETH_TO_TOKEN':
 					console.log('attempting to convert fee to USD')
-					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
+					const currentNonce = await adminWeb3Wallet.eth.getTransactionCount(process.env.REACT_APP_GT_ADMIN, 'pending')
+					await new adminWeb3Wallet.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferOutput(
 							BN(outputValue)
 								.multipliedBy(10 ** outputDecimals)
@@ -619,13 +622,14 @@ class Send extends Component {
 						)
 						.send(
 							{
-								from: accounts[0],
+								from: adminWeb3Wallets[0],
 								value: BN(inputValue)
 									.multipliedBy(10 ** inputDecimals)
 									.multipliedBy(CHARTIY_BLOCK_FEE)
 									.multipliedBy(1 + ALLOWED_SLIPPAGE)
 									.toFixed(),
-								gas: '1000000'
+								gas: '1000000',
+								nonce: currentNonce
 							},
 							(err, data) => {
 								if (!err) {
@@ -635,9 +639,10 @@ class Send extends Component {
 							}
 						)
 
-						.then(async () => {
+						.on('transactionHash', async () => {
 							console.log('attempting to convert contribution to USD')
-							await new web3.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
+							const currentNonce = await adminWeb3Wallet.eth.getTransactionCount(process.env.REACT_APP_GT_ADMIN, 'pending')
+							await new adminWeb3Wallet.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 								.ethToTokenTransferOutput(
 									BN(outputValue)
 										.multipliedBy(10 ** outputDecimals)
@@ -648,13 +653,14 @@ class Send extends Component {
 								)
 								.send(
 									{
-										from: accounts[0],
+										from: adminWeb3Wallets[0],
 										value: BN(inputValue)
 											.multipliedBy(10 ** inputDecimals)
 											.multipliedBy(1 - CHARTIY_BLOCK_FEE)
 											.multipliedBy(1 + ALLOWED_SLIPPAGE)
 											.toFixed(),
-										gas: '1000000'
+										gas: '1000000',
+										nonce: currentNonce
 									},
 									(err, data) => {
 										if (!err) {
@@ -665,7 +671,6 @@ class Send extends Component {
 								)
 								.then(console.log('exchange complete'))
 								.then(async (receipt) => {
-									fetchFundDAIBalance(recipient) &&
 										(await createDonation(
 											receipt.transactionHash,
 											recipient,
@@ -676,7 +681,7 @@ class Send extends Component {
 											outputDecimals
 										));
 								})
-								.then(this.setState({ loading: false }));
+								// .then(this.setState({ loading: false }));
 						})
 					break;
 				case 'TOKEN_TO_TOKEN':
@@ -684,7 +689,8 @@ class Send extends Component {
 						return;
 					}
 					console.log('attempting to convert fee to USD')
-					await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
+					const currentNonce2 = await adminWeb3Wallet.eth.getTransactionCount(process.env.REACT_APP_GT_ADMIN, 'pending')
+					await new adminWeb3Wallet.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 						.tokenToTokenTransferOutput(
 							BN(outputValue)
 								.multipliedBy(10 ** outputDecimals)
@@ -700,15 +706,16 @@ class Send extends Component {
 							process.env.REACT_APP_GT_ADMIN,
 							outputCurrency
 						)
-						.send({ from: accounts[0] }, (err, data) => {
+						.send({ from: adminWeb3Wallets[0], nonce: currentNonce2 }, (err, data) => {
 							if (!err) {
 								addPendingTx(data);
 								this.reset();
 							}
 						})
-						.then(async () => {
+						.on('transactionHash', async () => {
 							console.log('attempting to convert contribution to USD')
-							await new web3.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
+							const currentNonce = await adminWeb3Wallet.eth.getTransactionCount(process.env.REACT_APP_GT_ADMIN, 'pending')
+							await new adminWeb3Wallet.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 								.tokenToTokenTransferOutput(
 									BN(outputValue)
 										.multipliedBy(10 ** outputDecimals)
@@ -724,7 +731,7 @@ class Send extends Component {
 									recipient,
 									outputCurrency
 								)
-								.send({ from: accounts[0] }, (err, data) => {
+								.send({ from: adminWeb3Wallets[0], nonce: currentNonce }, (err, data) => {
 									if (!err) {
 										addPendingTx(data);
 										this.reset();
@@ -732,7 +739,6 @@ class Send extends Component {
 								})
 								.then(console.log('exchange complete'))
 								.then(async (receipt) => {
-									fetchFundDAIBalance(recipient) &&
 										(await createDonation(
 											receipt.transactionHash,
 											recipient,
@@ -743,7 +749,7 @@ class Send extends Component {
 											outputDecimals
 										));
 								})
-								.then(this.setState({ loading: false }));
+								// .then(this.setState({ loading: false }));
 						})
 					break;
 				default:

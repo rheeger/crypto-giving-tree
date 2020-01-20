@@ -1,29 +1,22 @@
-import web3 from "./web3";
+import adminWeb3 from "./adminWeb3";
+import adminWeb3Wallet from "./adminWeb3Wallet";
 import OrgFactory from "./build/OrgFactory.json";
+const address = process.env.REACT_APP_ORG_FACTORY;
 
 export const createOrg = async id => {
-  const Web3 = require("web3");
-  const HDWalletProvider = require("@truffle/hdwallet-provider");
-
-  const mnemonic = process.env.REACT_APP_METAMASK_MNEMONIC;
-  const infuraKey = process.env.REACT_APP_INFURA_KEY;
-  const infuraPrefix = process.env.REACT_APP_INFURA_PREFIX;
-  const infuraEndpoint =
-    "https://" + infuraPrefix + ".infura.io/v3/" + infuraKey;
-
-  const provider = new HDWalletProvider(mnemonic, infuraEndpoint);
-
-  const web3 = new Web3(provider);
-  const accounts = await web3.eth.getAccounts();
-  const address = process.env.REACT_APP_ORG_FACTORY;
-  const orgFactory = new web3.eth.Contract(
+  const accounts = await adminWeb3Wallet.eth.getAccounts();
+  const orgFactory = new adminWeb3Wallet.eth.Contract(
     JSON.parse(OrgFactory.interface),
     address
+  );
+  const currentNonce = await adminWeb3Wallet.eth.getTransactionCount(
+    accounts[0],
+    "pending"
   );
 
   const createContract = await orgFactory.methods
     .createOrg(id)
-    .send({ from: accounts[0], gas: "1000000" });
+    .send({ from: accounts[0], nonce: currentNonce });
   console.log(
     "Created contract:" +
       createContract.events.orgCreated.returnValues.newAddress
@@ -35,8 +28,7 @@ export const createOrg = async id => {
 };
 
 export function getOrgFactoryInstance() {
-  const address = process.env.REACT_APP_ORG_FACTORY;
-  const orgFactory = new web3.eth.Contract(
+  const orgFactory = new adminWeb3.eth.Contract(
     JSON.parse(OrgFactory.interface),
     address
   );

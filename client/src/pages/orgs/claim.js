@@ -1,7 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 // import { Button } from 'semantic-ui-react';
-import { selectOrg, createOrgClaim, fetchOrgs } from "../../store/actions";
+import {
+  selectOrg,
+  createOrgClaim,
+  fetchOrgs,
+  createOrgAndContract
+} from "../../store/actions";
 import ClaimForm from "../../components/ClaimForm";
 import Header from "../../components/Header";
 
@@ -29,10 +34,43 @@ class Claim extends React.Component {
     this.setState({ loading: false });
   };
 
+  setupOrg = async id => {
+    await this.props.createOrgAndContract(id, this.props.org.organization.name);
+    await this.props.fetchOrgs();
+  };
+
   render() {
-    if (!this.props.org.organization) {
+    const { org, gtOrgs, match } = this.props;
+    if (!org.organization) {
       return <div> Loading... </div>;
     }
+
+    if (!gtOrgs[match.params.ein]) {
+      this.setupOrg(this.props.match.params.ein);
+      return (
+        <div>
+          <Header />
+          <div className="ui container">
+            <div
+              style={{
+                textAlign: "center",
+                display: "flex-flow",
+                alignContent: "center"
+              }}
+            >
+              <h1>Hang tight!</h1>
+              <p>Looks like nobody's reccomended a grant to: </p>
+              <h3>{this.props.org.organization.name}</h3>
+              <h6>
+                We're setting up an account. We'll process your organization
+                claim next.
+              </h6>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div>
         <Header />
@@ -74,5 +112,6 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   selectOrg,
   createOrgClaim,
-  fetchOrgs
+  fetchOrgs,
+  createOrgAndContract
 })(Claim);

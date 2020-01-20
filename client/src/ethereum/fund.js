@@ -1,8 +1,9 @@
 import Tree from "./build/Tree.json";
-import web3 from "./web3";
+import adminWeb3 from "./adminWeb3";
+import adminWeb3Wallet from "./adminWeb3Wallet";
 
 export const fundContract = address => {
-  return new web3.eth.Contract(JSON.parse(Tree.interface), address);
+  return new adminWeb3.eth.Contract(JSON.parse(Tree.interface), address);
 };
 
 export const approveFundGrant = async (
@@ -10,23 +11,19 @@ export const approveFundGrant = async (
   grantNonce,
   tokenAddress
 ) => {
-  const Web3 = require("web3");
-  const HDWalletProvider = require("@truffle/hdwallet-provider");
-  const mnemonic = process.env.REACT_APP_METAMASK_MNEMONIC;
-  const infuraKey = process.env.REACT_APP_INFURA_KEY;
-  const infuraPrefix = process.env.REACT_APP_INFURA_PREFIX;
-  const infuraEndpoint =
-    "https://" + infuraPrefix + ".infura.io/v3/" + infuraKey;
-
-  const provider = new HDWalletProvider(mnemonic, infuraEndpoint);
-
-  const web3 = new Web3(provider);
-  const accounts = await web3.eth.getAccounts();
-  const fund = new web3.eth.Contract(JSON.parse(Tree.interface), fundAddress);
+  const accounts = await adminWeb3Wallet.eth.getAccounts();
+  const fund = new adminWeb3Wallet.eth.Contract(
+    JSON.parse(Tree.interface),
+    fundAddress
+  );
+  const currentNonce = await adminWeb3Wallet.eth.getTransactionCount(
+    accounts[0],
+    "pending"
+  );
 
   const approvedGrant = await fund.methods
     .finalizeGrant(grantNonce, tokenAddress)
-    .send({ from: accounts[0], gas: "1500000" });
+    .send({ from: accounts[0], nonce: currentNonce });
 
   return {
     approvalId: approvedGrant.transactionHash,
