@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-// import { Button } from 'semantic-ui-react';
 import {
   selectOrg,
   createOrgClaim,
@@ -62,8 +61,8 @@ class Claim extends React.Component {
               <p>Looks like nobody's reccomended a grant to: </p>
               <h3>{this.props.org.organization.name}</h3>
               <h6>
-                We're setting up an account. We'll process your organization
-                claim next.
+                Please wait, while we set up an account. We'll process your
+                organization claim next.
               </h6>
             </div>
           </div>
@@ -92,6 +91,7 @@ class Claim extends React.Component {
             <ClaimForm
               orgName={this.props.org.organization.name}
               onSubmit={this.onSubmit}
+              loading={this.state.loading}
             />
           </div>
         </div>

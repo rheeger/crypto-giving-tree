@@ -46,6 +46,8 @@
     "serve": "^11.2.0",
     "solc": "^0.4.26",
     "source-map-explorer": "^2.1.1",
+    "styled-components": "^5.0.0",
+    "styled-system": "^5.1.4",
     "ua-parser-js": "^0.7.20",
     "url-loader": "^1.1.2",
     "web3": "^1.0.0-beta.35",

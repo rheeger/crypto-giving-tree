@@ -425,6 +425,7 @@ export const createGrant = (
     selectedOrg: recipientEIN,
     selectedFund: formValues.selectedFund.id,
     grantAmount: formValues.grantAmount,
+    grantDescription: formValues.grantDescription,
     grantMemo: formValues.grantMemo,
     grantApproval: false,
     grantIndex: index - 1,

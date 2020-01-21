@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   fetchFund,
   fetchFundDAIBalance,
@@ -19,7 +20,6 @@ class FundShow extends Component {
   componentDidMount = () => {
     const {
       fetchFundDAIBalance,
-      fetchFund,
       match,
       fetchFundGrants,
       fetchOrgs,
@@ -27,7 +27,6 @@ class FundShow extends Component {
       fetchFundDonations
     } = this.props;
 
-    fetchFund(match.params.address);
     fetchFundDAIBalance(match.params.address);
     fetchGrantableDAIBalance(match.params.address);
     fetchFundDonations(match.params.address);
@@ -152,11 +151,42 @@ class FundShow extends Component {
   render() {
     const { Header, Row, HeaderCell, Body } = Table;
 
-    if (
-      !this.props.gtFunds[this.props.match.params.address] ||
-      this.props.web3 === "null"
-    ) {
+    if (!this.props.gtFunds) {
       return <div> Loading... </div>;
+    }
+
+    if (!this.props.gtFunds[this.props.match.params.address]) {
+      return (
+        <div>
+          <NavHeader />
+          <div className="ui container">
+            <div
+              style={{
+                textAlign: "center",
+                display: "flex-flow",
+                alignContent: "center"
+              }}
+            >
+              <h1>Oops!</h1>
+              <h3>
+                Looks like this isn't your Fund. Please choose a different Fund
+                or start a new one.
+              </h3>
+              <br></br>
+              <div>
+                <Link to={`/funds/new`} className="ui button basic green">
+                  <i className="plus circle icon" />
+                  New Fund
+                </Link>
+                <Link to={`/funds`} className="ui button basic green">
+                  <i className="eye icon" />
+                  My Funds
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
     }
 
     return (

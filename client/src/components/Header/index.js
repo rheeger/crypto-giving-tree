@@ -8,6 +8,7 @@ import {
   initialize
 } from "../../store/reducers/web3connect";
 import { setAddresses } from "../../store/reducers/swapAddresses";
+import NotificationCenter from "../NotificationCenter";
 
 class Header extends React.Component {
   componentDidMount() {
@@ -138,6 +139,7 @@ class Header extends React.Component {
             {this.renderAccount()}
           </Menu.Menu>
         </Menu>
+        <NotificationCenter></NotificationCenter>
       </div>
     );
   }
