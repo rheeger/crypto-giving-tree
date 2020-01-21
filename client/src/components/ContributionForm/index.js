@@ -484,7 +484,6 @@ class Send extends Component {
 							(err, data) => {
 								if (!err) {
 									addPendingTx(data);
-									
 								}
 							}
 						)
@@ -513,7 +512,6 @@ class Send extends Component {
 									(err, data) => {
 										if (!err) {
 											addPendingTx(data);
-											
 										}
 									}
 
@@ -556,7 +554,6 @@ class Send extends Component {
 						.send({ from: adminWeb3Wallets[0], nonce: currentNonce2 }, (err, data) => {
 							if (!err) {
 								addPendingTx(data);
-								this.reset();
 							}
 						})
 						.on('transactionHash', async () => {
@@ -581,7 +578,6 @@ class Send extends Component {
 								.send({ from: adminWeb3Wallets[0], nonce: currentNonce }, (err, data) => {
 									if (!err) {
 										addPendingTx(data);
-										this.reset();
 									}
 								})
 								.then(console.log('exchange complete'))

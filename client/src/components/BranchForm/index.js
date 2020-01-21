@@ -3,6 +3,7 @@ import { Field, reduxForm } from "redux-form";
 import { Button } from "semantic-ui-react";
 import { CSSTransitionGroup } from "react-transition-group";
 import Modal from "../uniSwap/Modal";
+import ReCAPTCHA from "react-google-recaptcha";
 
 import "./branch-form.scss";
 
@@ -52,6 +53,17 @@ class BranchForm extends React.Component {
         </label>
         <input {...input} type={type} value="true" /> {rest}
         {this.renderError(meta)}
+      </div>
+    );
+  };
+
+  Captcha = props => {
+    return (
+      <div>
+        <ReCAPTCHA
+          sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
+          onChange={props.input.onChange}
+        />
       </div>
     );
   };
@@ -239,6 +251,8 @@ class BranchForm extends React.Component {
             label="Policies and Procedures:"
             rest="I acknowledge that I have read the Federation's Fund Policies and Procedures, and I agree to the fees, terms and conditions described therein"
           ></Field>
+          <Field name="captcharesponse" component={this.Captcha} />
+          <br />
           <Button loading={this.props.loading} className="ui button primary">
             Submit
           </Button>
@@ -283,6 +297,9 @@ const validate = formValues => {
   }
   if (!formValues.pnpconsent) {
     errors.pnpconsent = "You must agree to the Procedures and Policies";
+  }
+  if (!formValues.captcharesponse) {
+    errors.captcharesponse = "Please confirm you are not a robot";
   }
 
   return errors;
