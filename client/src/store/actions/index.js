@@ -1,4 +1,4 @@
-import ProPublica from "../../apis/ProPublica";
+import ProPublica from "../../helpers/apis/ProPublica";
 import localDB from "../../helpers/apis/localDB";
 import {
   ORG_SELECT,
