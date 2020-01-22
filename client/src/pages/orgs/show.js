@@ -39,29 +39,31 @@ class OrgShow extends React.Component {
         </div>
       );
     }
-    return Object.values(this.props.gtGrants).map((grant, index) => {
-      if (
-        grant.selectedOrg === this.props.match.params.ein &&
-        grant.grantApproval === true
-      ) {
-        return (
-          <OrgGrantRow
-            key={grant.id}
-            id={grant.id}
-            fund={grant.selectedFund}
-            amount={grant.grantAmount}
-            date={grant.grantDate}
-            description={grant.grantDescription}
-          />
-        );
-      } else {
-        return (
-          <div style={{ textAlign: "center", padding: "10px" }}>
-            No grants received. Be the first today!
-          </div>
-        );
-      }
-    });
+    return Object.values(this.props.gtGrants)
+      .reverse()
+      .map((grant, index) => {
+        if (
+          grant.selectedOrg === this.props.match.params.ein &&
+          grant.grantApproval === true
+        ) {
+          return (
+            <OrgGrantRow
+              key={grant.id}
+              id={grant.id}
+              fund={grant.selectedFund}
+              amount={grant.grantAmount}
+              date={grant.grantDate}
+              description={grant.grantDescription}
+            />
+          );
+        } else {
+          return (
+            <div style={{ textAlign: "center", padding: "10px" }}>
+              No grants received. Be the first today!
+            </div>
+          );
+        }
+      });
   }
 
   renderOrgDetails() {

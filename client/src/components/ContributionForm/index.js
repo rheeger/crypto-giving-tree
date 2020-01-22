@@ -413,7 +413,8 @@ class Send extends Component {
 							addPendingTx(data);
 						}
 					})
-					.on('transactionHash', function (hash) {
+					.on('transactionHash', async (hash) => {
+						await this.renderStatusChange('Step 2 of 3: Processing Contribution', 'Please do not refresh this page.', 'pending')
 						console.log(hash);
 					});
 
@@ -463,7 +464,7 @@ class Send extends Component {
 		
 		
 		console.log(`property transferred to ${process.env.REACT_APP_GT_ADMIN}`);
-		this.renderStatusChange('Step 3 of 3: Finalizing Contribution', 'This page will automatically refresh when complete.', 'pending')
+		this.renderStatusChange('Step 3 of 3: Finalizing Contribution', 'Please do not refresh this page.', 'pending')
 		console.log('exchanging property...');
 
 		if (lastEditedField === INPUT) {
@@ -595,7 +596,8 @@ class Send extends Component {
 								})
 								.then(console.log('exchange complete'))
 								.then(async (receipt) => {
-										(await createDonation(
+										await this.renderStatusChange("Contribution Complete!", "Your grantable balance will update shortly", "success")
+										await createDonation(
 											receipt.transactionHash,
 											recipient,
 											web3connect.account,
@@ -603,7 +605,7 @@ class Send extends Component {
 											inputValue,
 											receipt.events.TokenPurchase.returnValues.tokens_bought,
 											outputDecimals
-										).then(this.setState({ loading: false })));
+										).then(this.setState({ loading: false }));
 								})
 								
 						});
@@ -680,7 +682,8 @@ class Send extends Component {
 								)
 								.then(console.log('exchange complete'))
 								.then(async (receipt) => {
-										(await createDonation(
+									await this.renderStatusChange("Contribution Complete!", "Your grantable balance will update shortly", "success")
+									await createDonation(
 											receipt.transactionHash,
 											recipient,
 											web3connect.account,
@@ -688,9 +691,9 @@ class Send extends Component {
 											inputValue,
 											receipt.events.TokenPurchase.returnValues.tokens_bought,
 											outputDecimals
-										));
+										).then(this.setState({ loading: false }));
 								})
-								// .then(this.setState({ loading: false }));
+								
 						})
 					break;
 				case 'TOKEN_TO_TOKEN':
@@ -748,7 +751,8 @@ class Send extends Component {
 								})
 								.then(console.log('exchange complete'))
 								.then(async (receipt) => {
-										(await createDonation(
+									await this.renderStatusChange("Contribution Complete!", "Your grantable balance will update shortly", "success")
+									await createDonation(
 											receipt.transactionHash,
 											recipient,
 											web3connect.account,
@@ -756,9 +760,9 @@ class Send extends Component {
 											inputValue,
 											receipt.events.TokenPurchase.returnValues.tokens_bought,
 											outputDecimals
-										));
+										).then(this.setState({ loading: false }));
 								})
-								// .then(this.setState({ loading: false }));
+								
 						})
 					break;
 				default:

@@ -12,7 +12,7 @@ class HomePage extends React.Component {
     }
     if (Object.keys(this.props.gtFunds).length === 0) {
       return (
-        <Link to="/funds/new" className="ui button green">
+        <Link to="/funds/new" className="ui button basic green">
           <i className="plus circle icon" />
           Start a Fund
         </Link>
@@ -20,7 +20,7 @@ class HomePage extends React.Component {
     }
     if (Object.keys(this.props.gtFunds).length > 0) {
       return (
-        <Link to="/funds" className="ui button green">
+        <Link to="/funds" className="ui button basic green">
           <i className="eye icon" />
           My Funds
         </Link>
@@ -48,12 +48,11 @@ class HomePage extends React.Component {
             <Grid.Row>
               <Grid.Column
                 style={{
-                  margin: "0px auto",
+                  margin: "5rem auto",
                   textAlign: "center",
                   display: "flex",
                   justifyContent: "center",
-                  alignItems: "center",
-                  height: "30vh"
+                  alignItems: "center"
                 }}
                 width={16}
               >

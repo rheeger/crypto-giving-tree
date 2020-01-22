@@ -54,6 +54,7 @@ class NewFund extends React.Component {
           <div
             style={{
               margin: "0px auto",
+              marginBottom: "5rem",
               textAlign: "left",
               display: "flex",
               justifyContent: "center",
@@ -87,15 +88,13 @@ class NewFund extends React.Component {
     return (
       <div>
         <Header />
-
         <div
           style={{
-            margin: "75px auto",
+            margin: "5rem auto",
             textAlign: "left",
             display: "flex",
             justifyContent: "flex-start",
             alignItems: "center",
-            height: "40vh",
             maxWidth: "350px"
           }}
         >

@@ -364,6 +364,7 @@ export const approveClaim = (id, orgAddress, claimNonce) => async (
   console.log("claim details updated on /claims");
 
   dispatch({ type: EDIT_CLAIM, payload: response.data });
+  window.location.reload();
 };
 
 export const editClaim = (id, formValues) => async dispatch => {
@@ -522,7 +523,6 @@ export const createDonation = (
   });
 
   dispatch({ type: CREATE_DONATION, payload: response.data });
-  window.location.reload();
 };
 
 export const fetchDonations = () => async dispatch => {

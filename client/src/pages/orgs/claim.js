@@ -112,6 +112,7 @@ class Claim extends React.Component {
         <div
           style={{
             margin: "0px auto",
+            marginBottom: "5rem",
             textAlign: "left",
             display: "flex",
             justifyContent: "center",

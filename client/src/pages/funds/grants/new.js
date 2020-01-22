@@ -102,7 +102,11 @@ class NewGrant extends React.Component {
           <Header />
           <div
             className="ui container"
-            style={{ display: "flex-flow", justifyContent: "center" }}
+            style={{
+              display: "flex-flow",
+              alignItems: "center",
+              justifyContent: "center"
+            }}
           >
             <div
               style={{ padding: "1rem", marginBottom: "1rem", width: "600px" }}
@@ -152,6 +156,7 @@ class NewGrant extends React.Component {
           <div className="ui container">
             <div
               style={{
+                margin: "5rem auto",
                 textAlign: "center",
                 display: "flex-flow",
                 alignContent: "center"
@@ -175,12 +180,11 @@ class NewGrant extends React.Component {
         <Header />
         <div
           style={{
-            margin: "75px auto",
+            margin: "5rem auto",
             textAlign: "left",
             display: "flex",
             justifyContent: "flex-start",
             alignItems: "center",
-            height: "40vh",
             maxWidth: "350px"
           }}
         >

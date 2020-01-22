@@ -44,30 +44,32 @@ class AdminPanel extends Component {
       );
     }
 
-    return Object.values(this.props.gtGrants).map((grant, index) => {
-      if (grant.grantApproval === false) {
-        return (
-          <AdminGrantRow
-            key={grant.id}
-            id={grant.id}
-            recipient={grant.selectedOrg}
-            amount={grant.grantAmount}
-            date={grant.grantDate}
-            description={grant.grantDescription}
-            selectedFund={grant.selectedFund}
-            grantIndex={grant.grantIndex}
-            onSubmit={this.onApproveSubmit}
-            gtFunds={this.props.gtFunds}
-          />
-        );
-      } else {
-        return (
-          <div style={{ textAlign: "center", padding: "10px" }}>
-            Nothing to approve.
-          </div>
-        );
-      }
-    });
+    return Object.values(this.props.gtGrants)
+      .reverse()
+      .map((grant, index) => {
+        if (grant.grantApproval === false) {
+          return (
+            <AdminGrantRow
+              key={grant.id}
+              id={grant.id}
+              recipient={grant.selectedOrg}
+              amount={grant.grantAmount}
+              date={grant.grantDate}
+              description={grant.grantDescription}
+              selectedFund={grant.selectedFund}
+              grantIndex={grant.grantIndex}
+              onSubmit={this.onApproveSubmit}
+              gtFunds={this.props.gtFunds}
+            />
+          );
+        } else {
+          return (
+            <div style={{ textAlign: "center", padding: "10px" }}>
+              Nothing to approve.
+            </div>
+          );
+        }
+      });
   }
 
   renderClaimRow() {

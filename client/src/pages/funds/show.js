@@ -42,26 +42,28 @@ class FundShow extends Component {
         </div>
       );
     }
-    return Object.values(this.props.gtGrants).map((grant, key) => {
-      if (grant.selectedFund === this.props.match.params.address) {
-        return (
-          <GrantRow
-            key={key}
-            id={grant.id}
-            recipient={grant.selectedOrg}
-            amount={grant.grantAmount}
-            date={grant.grantDate}
-            description={grant.grantDescription}
-          />
-        );
-      } else {
-        return (
-          <div style={{ textAlign: "center", padding: "10px" }}>
-            No grants reccommended.
-          </div>
-        );
-      }
-    });
+    return Object.values(this.props.gtGrants)
+      .reverse()
+      .map((grant, key) => {
+        if (grant.selectedFund === this.props.match.params.address) {
+          return (
+            <GrantRow
+              key={key}
+              id={grant.id}
+              recipient={grant.selectedOrg}
+              amount={grant.grantAmount}
+              date={grant.grantDate}
+              description={grant.grantDescription}
+            />
+          );
+        } else {
+          return (
+            <div style={{ textAlign: "center", padding: "10px" }}>
+              No grants reccommended.
+            </div>
+          );
+        }
+      });
   }
 
   renderDonationRow() {
@@ -72,27 +74,29 @@ class FundShow extends Component {
         </div>
       );
     }
-    return Object.values(this.props.gtDonations).map((donation, key) => {
-      if (donation.to === this.props.match.params.address) {
-        return (
-          <DonationRow
-            from={donation.from}
-            finalTradeOutput={donation.finalTradeOutput}
-            donationAmount={donation.inputAmount}
-            inputCurrency={donation.inputCurrency}
-            date={donation.donationDate}
-            key={key}
-            id={donation.id}
-          />
-        );
-      } else {
-        return (
-          <div style={{ textAlign: "center", padding: "10px" }}>
-            No token donations received.
-          </div>
-        );
-      }
-    });
+    return Object.values(this.props.gtDonations)
+      .reverse()
+      .map((donation, key) => {
+        if (donation.to === this.props.match.params.address) {
+          return (
+            <DonationRow
+              from={donation.from}
+              finalTradeOutput={donation.finalTradeOutput}
+              donationAmount={donation.inputAmount}
+              inputCurrency={donation.inputCurrency}
+              date={donation.donationDate}
+              key={key}
+              id={donation.id}
+            />
+          );
+        } else {
+          return (
+            <div style={{ textAlign: "center", padding: "10px" }}>
+              No token donations received.
+            </div>
+          );
+        }
+      });
   }
 
   renderCards() {
