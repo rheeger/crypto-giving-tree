@@ -38,7 +38,8 @@ import {
   FETCH_ORG_WITHDRAWLS,
   FETCH_WITHDRAWL,
   EDIT_WITHDRAWL,
-  DELETE_WITHDRAWL
+  DELETE_WITHDRAWL,
+  UPDATE_NOTIFICATION_CENTER_STATUS
 } from "./types";
 import history from "../../history";
 import { createOrg } from "../../ethereum/orgFactoryAdmin";
@@ -126,8 +127,7 @@ export const fetchFundDAIBalance = address => async dispatch => {
     .call();
   const fundDAI = (
     parseFloat(fundDAIBalance[0]) /
-      10 ** process.env.REACT_APP_STABLECOIN_DECIMALS -
-    0.01
+    10 ** process.env.REACT_APP_STABLECOIN_DECIMALS
   ).toFixed(2);
 
   const response = await localDB.patch(`/funds/${address}`, {
@@ -275,27 +275,10 @@ export const deleteOrg = id => async dispatch => {
 
 //DB ACTIONS: CLAIMS
 
-export const createOrgClaim = (
-  formValues,
-  orgAdminWallet,
-  orgContractAddress,
-  taxID
-) => async (dispatch, getState) => {
-  const org = orgContract(orgContractAddress);
-  const id = await org.methods
-    .claimRequest(
-      formValues.orgAdminFirstName,
-      formValues.orgAdminLastName,
-      true,
-      formValues.orgAdminEmail,
-      orgAdminWallet
-    )
-    .send({ from: orgAdminWallet })
-    .on("transactionHash", function(transId) {
-      console.log(transId);
-      return transId;
-    });
-  const index = await org.methods.getClaimsCount().call();
+export const createOrgClaim = (formValues, id, index, taxID) => async (
+  dispatch,
+  getState
+) => {
   const response = await localDB.post(`/claims`, {
     id: id.transactionHash,
     selectedOrg: taxID,
@@ -401,27 +384,12 @@ export const deleteClaim = id => async dispatch => {
 
 export const createGrant = (
   formValues,
-  recipientAddress,
+  transactionHash,
   recipientEIN,
-  managerAddress
+  index
 ) => async (dispatch, getState) => {
-  const fund = fundContract(formValues.selectedFund.id);
-  const id = await fund.methods
-    .createGrant(
-      formValues.grantDescription,
-      BN(formValues.grantAmount)
-        .multipliedBy(10 ** process.env.REACT_APP_STABLECOIN_DECIMALS)
-        .toFixed(),
-      recipientAddress
-    )
-    .send({ from: managerAddress })
-    .on("transactionHash", function(transId) {
-      console.log(transId);
-      return transId;
-    });
-  const index = await fund.methods.getGrantsCount().call();
   const response = await localDB.post(`/grants`, {
-    id: id.transactionHash,
+    id: transactionHash,
     selectedOrg: recipientEIN,
     selectedFund: formValues.selectedFund.id,
     grantAmount: formValues.grantAmount,
@@ -655,4 +623,10 @@ export const deleteWithdrawl = id => async dispatch => {
 
   dispatch({ type: DELETE_WITHDRAWL, payload: id });
   history.push("/admin");
+};
+
+export const updateNCStatus = (headline, message, status) => async dispatch => {
+  const ncStatus = { headline, message, status };
+  dispatch({ type: UPDATE_NOTIFICATION_CENTER_STATUS, payload: ncStatus });
+  return;
 };

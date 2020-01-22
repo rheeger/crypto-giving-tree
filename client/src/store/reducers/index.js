@@ -9,6 +9,7 @@ import pending from "./pending";
 import donations from "./donations";
 import claims from "./claims";
 import withdrawls from "./withdrawls";
+import { ncStatus } from "./ncStatus";
 
 export default combineReducers({
   orgs: orgs,
@@ -22,5 +23,6 @@ export default combineReducers({
   gtGrants: grants,
   gtDonations: donations,
   gtClaims: claims,
-  gtWithdrawls: withdrawls
+  gtWithdrawls: withdrawls,
+  ncStatus: ncStatus
 });

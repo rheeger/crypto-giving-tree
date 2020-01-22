@@ -16,7 +16,7 @@ import { retry } from '../../helpers/promise-utils';
 import EXCHANGE_ABI from '../../ethereum/uniSwap/abi/exchange';
 import ERC20_ABI from '../../ethereum/uniSwap/abi/erc20';
 import './contributionForm.scss';
-import { fetchFundDAIBalance, createDonation } from '../../store/actions';
+import { fetchFundDAIBalance, createDonation, updateNCStatus } from '../../store/actions';
 import logo from '../../assets/images/uniswap.png';
 import adminWeb3Wallet from '../../ethereum/adminWeb3Wallet';
 
@@ -377,6 +377,12 @@ class Send extends Component {
 		);
 	};
 
+	renderStatusChange = async (headline, message, status) => {
+		const {updateNCStatus} = this.props;
+		await updateNCStatus(headline, message, status);
+		return 
+	}
+
 	onContribution = async () => {
 		const { web3, account, selectors, addPendingTx } = this.props;
 		const { inputValue, inputCurrency, outputCurrency } = this.state;
@@ -393,8 +399,9 @@ class Send extends Component {
 					if (!err) {
 						addPendingTx(data);
 					}
-				}).on('transactionHash', function (hash) {
+				}).on('transactionHash', async (hash) => {
 					console.log(hash);
+					await this.renderStatusChange('Step 2 of 3: Processing Contribution', 'Please do not refresh this page.', 'pending')
 				});
 				break;
 			case 'TOKEN_TO_TOKEN':
@@ -418,17 +425,12 @@ class Send extends Component {
 	};
 
 	onSend = async () => {
-		this.setState({ loading: true });
-		await this.onContribution();
-		this.setState({ loading: true });
-		console.log('property transferred to process.env.REACT_APP_GT_ADMIN');
-		const adminWeb3Wallets = await adminWeb3Wallet.eth.getAccounts();
 		const {
 			account, exchangeAddresses: { fromToken },
 			selectors,
 			addPendingTx,
 			createDonation,
-			web3connect
+			web3connect,
 		} = this.props;
 		const {
 			inputValue,
@@ -439,6 +441,11 @@ class Send extends Component {
 			lastEditedField,
 			recipient
 		} = this.state;
+		this.setState({ loading: true });
+		this.renderStatusChange('Step 1 of 3: Awaiting Contribution', 'Please confirm transaction.', 'pending')
+		await this.onContribution();
+		this.setState({ loading: true });
+		const adminWeb3Wallets = await adminWeb3Wallet.eth.getAccounts();
 		const ALLOWED_SLIPPAGE = 0.05;
 		const TOKEN_ALLOWED_SLIPPAGE = 0.04;
 		const CHARTIY_BLOCK_FEE = 0.01;
@@ -453,7 +460,10 @@ class Send extends Component {
 			// TODO: Handle error.
 			return;
 		}
-
+		
+		
+		console.log(`property transferred to ${process.env.REACT_APP_GT_ADMIN}`);
+		this.renderStatusChange('Step 3 of 3: Finalizing Contribution', 'This page will automatically refresh when complete.', 'pending')
 		console.log('exchanging property...');
 
 		if (lastEditedField === INPUT) {
@@ -518,7 +528,8 @@ class Send extends Component {
 								)
 								.then(console.log('exchange complete'))
 								.then(async (receipt) => {
-										(await createDonation(
+										await this.renderStatusChange("Contribution Complete!", "Your grantable balance will update shortly", "success")
+										await createDonation(
 											receipt.transactionHash,
 											recipient,
 											web3connect.account,
@@ -526,9 +537,11 @@ class Send extends Component {
 											inputValue,
 											receipt.events.TokenPurchase.returnValues.tokens_bought,
 											outputDecimals
-										).then(this.setState({loading: false})))
+										)
+									})
+									
 								})
-						})
+								this.setState({loading: false})
 					break;
 
 
@@ -925,9 +938,8 @@ class Send extends Component {
 					className={classnames('primary centered', {
 						inactive: !this.props.isConnected
 					})}
-					disabled={!isValid || !tncconsent}
+					disabled={!isValid || !tncconsent || this.state.loading}
 					onClick={this.onSend}
-					loading={this.state.loading}
 				>
 					Donate ~${outputValue.toLocaleString('en')}
 				</Button>
@@ -1077,13 +1089,15 @@ const mapStateToProps = (state, ownProps) => {
 		web3connect: state.web3connect,
 		exchangeAddresses: state.addresses.exchangeAddresses,
 		tokenAddresses: state.addresses.tokenAddresses,
-		gtFund: state.gtFunds
+		gtFund: state.gtFunds,
+		ncState: state.ncState
 	};
 };
 
 export default connect(mapStateToProps, (dispatch) => ({
 	setAddresses: (networkId) => dispatch(setAddresses(networkId)),
 	initialize: () => dispatch(initialize()),
+	updateNCStatus: (headline, message, status) => dispatch(updateNCStatus(headline, message, status)),
 	startWatching: () => dispatch(startWatching()),
 	selectors: () => dispatch(selectors()),
 	addPendingTx: (id) => dispatch(addPendingTx(id)),

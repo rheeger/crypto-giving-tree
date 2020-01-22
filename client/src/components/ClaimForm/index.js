@@ -95,7 +95,7 @@ class ClaimForm extends React.Component {
           type="checkbox"
           label="Terms and Conditions:"
         ></Field>
-        <Button className="ui button primary" loading={this.props.loading}>
+        <Button className="ui button primary" disabled={this.props.loading}>
           Submit
         </Button>
       </form>

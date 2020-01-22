@@ -6,10 +6,13 @@ import {
   createGrant,
   selectOrg,
   fetchOrgs,
-  createOrgAndContract
+  createOrgAndContract,
+  updateNCStatus
 } from "../../../store/actions";
 import GrantForm from "../../../components/GrantForm";
 import Header from "../../../components/Header";
+import { fundContract } from "../../../ethereum/fund";
+import { BigNumber as BN } from "bignumber.js";
 
 class NewGrant extends React.Component {
   state = {
@@ -30,12 +33,37 @@ class NewGrant extends React.Component {
   };
 
   onSubmit = async formValues => {
+    const { match, web3, gtOrgs, createGrant } = this.props;
     this.setState({ loading: true });
-    await this.props.createGrant(
-      formValues,
-      this.props.gtOrgs[`${this.props.match.params.ein}`].contractAddress,
-      this.props.match.params.ein,
-      this.props.web3.account
+    await this.renderStatusChange(
+      "Step 1 of 2: Awaiting Submission...",
+      "Please confirm smart contract interaction.",
+      "pending"
+    );
+    const fund = fundContract(formValues.selectedFund.id);
+
+    const id = await fund.methods
+      .createGrant(
+        formValues.grantDescription,
+        BN(formValues.grantAmount)
+          .multipliedBy(10 ** process.env.REACT_APP_STABLECOIN_DECIMALS)
+          .toFixed(),
+        gtOrgs[match.params.ein].contractAddress
+      )
+      .send({ from: web3.account })
+      .on("transactionHash", async tx => {
+        const heading = "Step 2 of 2: Submitting Grant...";
+        const message = "Please do not refresh this page.";
+        const status = "pending";
+        await this.renderStatusChange(heading, message, status);
+        console.log(tx);
+      });
+    const index = await fund.methods.getGrantsCount().call();
+    await createGrant(formValues, id.transactionHash, match.params.ein, index);
+    await this.renderStatusChange(
+      "Reccomendation Submitted!",
+      "Our staff will review your grant for approval.",
+      "success"
     );
     this.setState({ loading: false });
   };
@@ -46,6 +74,12 @@ class NewGrant extends React.Component {
 
   renderWhatsThis = () => {
     this.setState({ ready: "false" });
+  };
+
+  renderStatusChange = async (headline, message, status) => {
+    const { updateNCStatus } = this.props;
+    await updateNCStatus(headline, message, status);
+    return;
   };
 
   render() {
@@ -200,5 +234,6 @@ export default connect(mapStateToProps, {
   selectOrg,
   fetchOrgs,
   createOrgAndContract,
-  createGrant
+  createGrant,
+  updateNCStatus
 })(NewGrant);

@@ -4,48 +4,83 @@ import {
   selectOrg,
   createOrgClaim,
   fetchOrgs,
-  createOrgAndContract
+  createOrgAndContract,
+  updateNCStatus
 } from "../../store/actions";
 import ClaimForm from "../../components/ClaimForm";
 import Header from "../../components/Header";
+import { orgContract } from "../../ethereum/org";
+import { object } from "prop-types";
 
 class Claim extends React.Component {
   state = {
-    loading: false
+    loading: false,
+    ready: false
   };
 
   componentDidMount() {
     const { selectOrg, match, fetchOrgs } = this.props;
     selectOrg(match.params.ein);
     fetchOrgs();
-    console.log(this.props.gtOrgs);
   }
 
+  setupOrg = async () => {
+    const { org, match, fetchOrgs, createOrgAndContract } = this.props;
+    await createOrgAndContract(match.params.ein, org.organization.name);
+    await fetchOrgs();
+  };
+
   onSubmit = async formValues => {
+    const { createOrgClaim, web3, gtOrgs, match } = this.props;
     this.setState({ loading: true });
-    console.log(this.props.gtOrgs);
-    await this.props.createOrgClaim(
-      formValues,
-      this.props.web3.account,
-      this.props.gtOrgs[this.props.match.params.ein].contractAddress,
-      this.props.match.params.ein
+    await this.renderStatusChange(
+      "Step 1 of 2: Awaiting Organization Claim...",
+      "Please approve smart contract interaction.",
+      "pending"
+    );
+    const org = orgContract(gtOrgs[match.params.ein].contractAddress);
+    const id = await org.methods
+      .claimRequest(
+        formValues.orgAdminFirstName,
+        formValues.orgAdminLastName,
+        true,
+        formValues.orgAdminEmail,
+        web3.account
+      )
+      .send({ from: web3.account })
+      .on("transactionHash", async transId => {
+        await this.renderStatusChange(
+          "Step 2 of 2: Submitting Organization Claim...",
+          "Please do not refresh this page.",
+          "pending"
+        );
+        console.log(transId);
+        return transId;
+      });
+    const index = await org.methods.getClaimsCount().call();
+    await createOrgClaim(formValues, id, index - 1, match.params.ein);
+    await this.renderStatusChange(
+      "Claim Submitted!",
+      "Our staff will review your claim for approval.",
+      "success"
     );
     this.setState({ loading: false });
   };
 
-  setupOrg = async id => {
-    await this.props.createOrgAndContract(id, this.props.org.organization.name);
-    await this.props.fetchOrgs();
+  renderStatusChange = async (headline, message, status) => {
+    const { updateNCStatus } = this.props;
+    await updateNCStatus(headline, message, status);
+    return;
   };
 
   render() {
     const { org, gtOrgs, match } = this.props;
-    if (!org.organization) {
+    if (!org.organization || !gtOrgs) {
       return <div> Loading... </div>;
     }
 
-    if (!gtOrgs[match.params.ein]) {
-      this.setupOrg(this.props.match.params.ein);
+    if (Object.keys(gtOrgs).length > 0 && !gtOrgs[match.params.ein]) {
+      this.setupOrg();
       return (
         <div>
           <Header />
@@ -59,7 +94,7 @@ class Claim extends React.Component {
             >
               <h1>Hang tight!</h1>
               <p>Looks like nobody's reccomended a grant to: </p>
-              <h3>{this.props.org.organization.name}</h3>
+              <h3>{org.organization.name}</h3>
               <h6>
                 Please wait, while we set up an account. We'll process your
                 organization claim next.
@@ -86,10 +121,10 @@ class Claim extends React.Component {
           }}
         >
           <div style={{ width: "500px" }}>
-            <h1>Submit claim for: {this.props.org.organization.name}</h1>
-            <p>Tax ID (EIN): {this.props.org.organization.ein}</p>
+            <h1>Submit claim for: {org.organization.name}</h1>
+            <p>Tax ID (EIN): {org.organization.ein}</p>
             <ClaimForm
-              orgName={this.props.org.organization.name}
+              orgName={org.organization.name}
               onSubmit={this.onSubmit}
               loading={this.state.loading}
             />
@@ -113,5 +148,6 @@ export default connect(mapStateToProps, {
   selectOrg,
   createOrgClaim,
   fetchOrgs,
-  createOrgAndContract
+  createOrgAndContract,
+  updateNCStatus
 })(Claim);

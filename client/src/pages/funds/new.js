@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Button } from "semantic-ui-react";
-import { plantFundAndContract } from "../../store/actions";
+import { plantFundAndContract, updateNCStatus } from "../../store/actions";
 import BranchForm from "../../components/BranchForm";
 import Header from "../../components/Header";
 
@@ -16,9 +16,25 @@ class NewFund extends React.Component {
     this.setState({ ready: "false" });
   }
 
+  renderStatusChange = async (headline, message, status) => {
+    const { updateNCStatus } = this.props;
+    await updateNCStatus(headline, message, status);
+    return;
+  };
+
   onSubmit = async formValues => {
     this.setState({ loading: true });
+    await this.renderStatusChange(
+      "Creating Fund...",
+      "Please do not refresh this page.",
+      "pending"
+    );
     await this.props.plantFundAndContract(formValues);
+    await this.renderStatusChange(
+      "Fund Created!",
+      "You may now contribute tokens to your new fund.",
+      "success"
+    );
     this.setState({ loading: false });
   };
 
@@ -147,4 +163,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { plantFundAndContract })(NewFund);
+export default connect(mapStateToProps, {
+  plantFundAndContract,
+  updateNCStatus
+})(NewFund);
