@@ -1,5 +1,5 @@
 import ProPublica from "../../apis/ProPublica";
-import localDB from "../../apis/localDB";
+import localDB from "../../helpers/apis/localDB";
 import {
   ORG_SELECT,
   ORG_SEARCH,
