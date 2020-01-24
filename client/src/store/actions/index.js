@@ -1,52 +1,11 @@
 import ProPublica from "../../helpers/apis/ProPublica";
 import localDB from "../../helpers/apis/localDB";
-import {
-  ORG_SELECT,
-  ORG_SEARCH,
-  PLANT_FUND,
-  FETCH_FUNDS,
-  FETCH_FUND,
-  EDIT_FUND,
-  DELETE_FUND,
-  FETCH_ORGS,
-  FETCH_ORG,
-  EDIT_ORG,
-  DELETE_ORG,
-  CREATE_CONTRACT_ADDRESS,
-  FETCH_FUND_DAI,
-  FETCH_GRANTABLE_DAI,
-  CREATE_GRANT,
-  FETCH_GRANTS,
-  FETCH_FUND_GRANTS,
-  FETCH_GRANT,
-  EDIT_GRANT,
-  DELETE_GRANT,
-  FETCH_ORG_GRANTS,
-  CREATE_DONATION,
-  FETCH_DONATIONS,
-  FETCH_FUND_DONATIONS,
-  FETCH_DONATION,
-  DELETE_DONATION,
-  MAKE_ORG_CLAIM,
-  FETCH_CLAIMS,
-  FETCH_ORG_CLAIMS,
-  FETCH_CLAIM,
-  EDIT_CLAIM,
-  DELETE_CLAIM,
-  MAKE_ORG_WITHDRAWL,
-  FETCH_WITHDRAWLS,
-  FETCH_ORG_WITHDRAWLS,
-  FETCH_WITHDRAWL,
-  EDIT_WITHDRAWL,
-  DELETE_WITHDRAWL,
-  UPDATE_NOTIFICATION_CENTER_STATUS
-} from "./types";
+import * as types from "./types";
 import history from "../../history";
 import { createOrg } from "../../ethereum/orgFactoryAdmin";
 import { plantFund } from "../../ethereum/fundNursreyAdmin";
 import { fundContract, approveFundGrant } from "../../ethereum/fund";
 import { orgContract, approveOrgClaim } from "../../ethereum/org";
-import BN from "bignumber.js";
 import adminWeb3 from "../../ethereum/adminWeb3";
 
 //PRO PUBLICA ACTIONS
@@ -58,7 +17,7 @@ export const selectOrg = ein => async dispatch => {
   );
 
   dispatch({
-    type: ORG_SELECT,
+    type: types.ORG_SELECT,
     payload: response.data
   });
 };
@@ -72,12 +31,12 @@ export const searchOrgs = term => async dispatch => {
 
   if (response === undefined) {
     dispatch({
-      type: ORG_SEARCH,
+      type: types.ORG_SEARCH,
       payload: { organizations: "404", total_results: 0 }
     });
   } else {
     dispatch({
-      type: ORG_SEARCH,
+      type: types.ORG_SEARCH,
       payload: response.data
     });
   }
@@ -98,14 +57,14 @@ export const plantFundAndContract = formValues => async (
     grantableDAI: 0.0
   });
 
-  dispatch({ type: PLANT_FUND, payload: response.data });
+  dispatch({ type: types.PLANT_FUND, payload: response.data });
   history.push(`/funds/${createdContract.id}`);
 };
 
 export const fetchFunds = () => async dispatch => {
   const response = await localDB.get("/funds");
 
-  dispatch({ type: FETCH_FUNDS, payload: response.data });
+  dispatch({ type: types.FETCH_FUNDS, payload: response.data });
 };
 
 export const fetchUserFunds = address => async dispatch => {
@@ -117,7 +76,7 @@ export const fetchUserFunds = address => async dispatch => {
     return "";
   });
 
-  dispatch({ type: FETCH_FUNDS, payload: response });
+  dispatch({ type: types.FETCH_FUNDS, payload: response });
 };
 
 export const fetchFundDAIBalance = address => async dispatch => {
@@ -134,7 +93,7 @@ export const fetchFundDAIBalance = address => async dispatch => {
     fundDAI: fundDAI
   });
 
-  dispatch({ type: FETCH_FUND_DAI, payload: response.data });
+  dispatch({ type: types.FETCH_FUND_DAI, payload: response.data });
 };
 
 export const fetchGrantableDAIBalance = address => async dispatch => {
@@ -166,25 +125,25 @@ export const fetchGrantableDAIBalance = address => async dispatch => {
     grantableDAI: grantableDAI
   });
 
-  dispatch({ type: FETCH_GRANTABLE_DAI, payload: response.data });
+  dispatch({ type: types.FETCH_GRANTABLE_DAI, payload: response.data });
 };
 export const fetchFund = id => async dispatch => {
   const response = await localDB.get(`/funds/${id}`);
 
-  dispatch({ type: FETCH_FUND, payload: response.data });
+  dispatch({ type: types.FETCH_FUND, payload: response.data });
 };
 
 export const editFund = (id, formValues) => async dispatch => {
   const response = await localDB.patch(`/funds/${id}`, formValues);
 
-  dispatch({ type: EDIT_FUND, payload: response.data });
+  dispatch({ type: types.EDIT_FUND, payload: response.data });
   history.push("/");
 };
 
 export const deleteFund = id => async dispatch => {
   await localDB.delete(`/funds/${id}`);
 
-  dispatch({ type: DELETE_FUND, payload: id });
+  dispatch({ type: types.DELETE_FUND, payload: id });
   history.push("/");
 };
 
@@ -205,19 +164,19 @@ export const createOrgAndContract = (id, name) => async (
     claimApprovalDetails: {}
   });
 
-  dispatch({ type: CREATE_CONTRACT_ADDRESS, payload: response.data });
+  dispatch({ type: types.CREATE_CONTRACT_ADDRESS, payload: response.data });
 };
 
 export const fetchOrgs = () => async dispatch => {
   const response = await localDB.get("/orgs");
 
-  dispatch({ type: FETCH_ORGS, payload: response.data });
+  dispatch({ type: types.FETCH_ORGS, payload: response.data });
 };
 
 export const fetchOrg = id => async dispatch => {
   const response = await localDB.get(`/orgs/${id}`);
 
-  dispatch({ type: FETCH_ORG, payload: response.data });
+  dispatch({ type: types.FETCH_ORG, payload: response.data });
 };
 
 export const fetchOrgLifetimeGrants = id => async dispatch => {
@@ -237,7 +196,7 @@ export const fetchOrgLifetimeGrants = id => async dispatch => {
     lifetimeGrants: completedGrants
   });
 
-  dispatch({ type: EDIT_ORG, payload: response.data });
+  dispatch({ type: types.EDIT_ORG, payload: response.data });
 };
 
 export const claimOrg = (id, claimId) => async dispatch => {
@@ -255,21 +214,21 @@ export const claimOrg = (id, claimId) => async dispatch => {
     }
   });
 
-  dispatch({ type: EDIT_ORG, payload: response.data });
+  dispatch({ type: types.EDIT_ORG, payload: response.data });
   history.push(`/admin`);
 };
 
 export const editOrg = (id, formValues) => async dispatch => {
   const response = await localDB.patch(`/orgs/${id}`, formValues);
 
-  dispatch({ type: EDIT_ORG, payload: response.data });
+  dispatch({ type: types.EDIT_ORG, payload: response.data });
   history.push("/");
 };
 
 export const deleteOrg = id => async dispatch => {
   await localDB.delete(`/orgs/${id}`);
 
-  dispatch({ type: DELETE_ORG, payload: id });
+  dispatch({ type: types.DELETE_ORG, payload: id });
   history.push("/");
 };
 
@@ -291,14 +250,14 @@ export const createOrgClaim = (formValues, id, index, taxID) => async (
     }
   });
 
-  dispatch({ type: MAKE_ORG_CLAIM, payload: response.data });
+  dispatch({ type: types.MAKE_ORG_CLAIM, payload: response.data });
   history.push(`/orgs/${taxID}`);
 };
 
 export const fetchClaims = () => async dispatch => {
   const response = await localDB.get("/claims");
 
-  dispatch({ type: FETCH_CLAIMS, payload: response.data });
+  dispatch({ type: types.FETCH_CLAIMS, payload: response.data });
 };
 
 export const fetchOrgApprovedClaims = ein => async dispatch => {
@@ -313,7 +272,7 @@ export const fetchOrgApprovedClaims = ein => async dispatch => {
     return "";
   });
 
-  dispatch({ type: FETCH_CLAIMS, payload: response });
+  dispatch({ type: types.FETCH_CLAIMS, payload: response });
 };
 
 export const fetchUnapprovedClaims = () => async dispatch => {
@@ -325,7 +284,7 @@ export const fetchUnapprovedClaims = () => async dispatch => {
     return "";
   });
 
-  dispatch({ type: FETCH_CLAIMS, payload: response });
+  dispatch({ type: types.FETCH_CLAIMS, payload: response });
 };
 
 export const fetchOrgClaims = ein => async dispatch => {
@@ -337,13 +296,13 @@ export const fetchOrgClaims = ein => async dispatch => {
     return "";
   });
 
-  dispatch({ type: FETCH_ORG_CLAIMS, payload: response });
+  dispatch({ type: types.FETCH_ORG_CLAIMS, payload: response });
 };
 
 export const fetchClaim = id => async dispatch => {
   const response = await localDB.get(`/claims/${id}`);
 
-  dispatch({ type: FETCH_CLAIM, payload: response.data });
+  dispatch({ type: types.FETCH_CLAIM, payload: response.data });
 };
 
 export const approveClaim = (id, orgAddress, claimNonce) => async (
@@ -363,21 +322,21 @@ export const approveClaim = (id, orgAddress, claimNonce) => async (
   const response = await localDB.patch(`/claims/${id}`, claimApprovalDetails);
   console.log("claim details updated on /claims");
 
-  dispatch({ type: EDIT_CLAIM, payload: response.data });
+  dispatch({ type: types.EDIT_CLAIM, payload: response.data });
   window.location.reload();
 };
 
 export const editClaim = (id, formValues) => async dispatch => {
   const response = await localDB.patch(`/claims/${id}`, formValues);
 
-  dispatch({ type: EDIT_CLAIM, payload: response.data });
+  dispatch({ type: types.EDIT_CLAIM, payload: response.data });
   history.push("/admin");
 };
 
 export const deleteClaim = id => async dispatch => {
   await localDB.delete(`/claims/${id}`);
 
-  dispatch({ type: DELETE_CLAIM, payload: id });
+  dispatch({ type: types.DELETE_CLAIM, payload: id });
   history.push("/admin");
 };
 
@@ -402,7 +361,7 @@ export const createGrant = (
     dateApproved: null
   });
 
-  dispatch({ type: CREATE_GRANT, payload: response.data });
+  dispatch({ type: types.CREATE_GRANT, payload: response.data });
   history.push(`/funds/${formValues.selectedFund.id}`);
 };
 
@@ -423,14 +382,14 @@ export const approveGrant = (id, fundAddress, grantNonce) => async (
   const grantDetails = await localDB.get(`/grants/${id}`);
   await fetchOrgLifetimeGrants(grantDetails.selectedOrg);
 
-  dispatch({ type: EDIT_GRANT, payload: response.data });
+  dispatch({ type: types.EDIT_GRANT, payload: response.data });
   window.location.reload();
 };
 
 export const fetchGrants = () => async dispatch => {
   const response = await localDB.get("/grants");
 
-  dispatch({ type: FETCH_GRANTS, payload: response.data });
+  dispatch({ type: types.FETCH_GRANTS, payload: response.data });
 };
 
 export const fetchOrgApprovedGrants = ein => async dispatch => {
@@ -442,7 +401,7 @@ export const fetchOrgApprovedGrants = ein => async dispatch => {
     return "";
   });
 
-  dispatch({ type: FETCH_GRANTS, payload: response });
+  dispatch({ type: types.FETCH_GRANTS, payload: response });
 };
 
 export const fetchUnapprovedGrants = () => async dispatch => {
@@ -454,7 +413,7 @@ export const fetchUnapprovedGrants = () => async dispatch => {
     return "";
   });
 
-  dispatch({ type: FETCH_GRANTS, payload: response });
+  dispatch({ type: types.FETCH_GRANTS, payload: response });
 };
 
 export const fetchFundGrants = address => async dispatch => {
@@ -466,7 +425,7 @@ export const fetchFundGrants = address => async dispatch => {
     return "";
   });
 
-  dispatch({ type: FETCH_FUND_GRANTS, payload: response });
+  dispatch({ type: types.FETCH_FUND_GRANTS, payload: response });
 };
 
 export const fetchOrgGrants = ein => async dispatch => {
@@ -478,26 +437,26 @@ export const fetchOrgGrants = ein => async dispatch => {
     return "";
   });
 
-  dispatch({ type: FETCH_ORG_GRANTS, payload: response });
+  dispatch({ type: types.FETCH_ORG_GRANTS, payload: response });
 };
 
 export const fetchGrant = id => async dispatch => {
   const response = await localDB.get(`/grants/${id}`);
 
-  dispatch({ type: FETCH_GRANT, payload: response.data });
+  dispatch({ type: types.FETCH_GRANT, payload: response.data });
 };
 
 export const editGrant = (id, formValues) => async dispatch => {
   const response = await localDB.patch(`/grants/${id}`, formValues);
 
-  dispatch({ type: EDIT_GRANT, payload: response.data });
+  dispatch({ type: types.EDIT_GRANT, payload: response.data });
   history.push("/admin");
 };
 
 export const deleteGrant = id => async dispatch => {
   await localDB.delete(`/grants/${id}`);
 
-  dispatch({ type: DELETE_GRANT, payload: id });
+  dispatch({ type: types.DELETE_GRANT, payload: id });
   history.push("/admin");
 };
 
@@ -522,13 +481,13 @@ export const createDonation = (
     finalTradeOutput
   });
 
-  dispatch({ type: CREATE_DONATION, payload: response.data });
+  dispatch({ type: types.CREATE_DONATION, payload: response.data });
 };
 
 export const fetchDonations = () => async dispatch => {
   const response = await localDB.get("/donations");
 
-  dispatch({ type: FETCH_DONATIONS, payload: response.data });
+  dispatch({ type: types.FETCH_DONATIONS, payload: response.data });
 };
 
 export const fetchFundDonations = address => async dispatch => {
@@ -540,19 +499,19 @@ export const fetchFundDonations = address => async dispatch => {
     return "";
   });
 
-  dispatch({ type: FETCH_FUND_DONATIONS, payload: response });
+  dispatch({ type: types.FETCH_FUND_DONATIONS, payload: response });
 };
 
 export const fetchDonation = id => async dispatch => {
   const response = await localDB.get(`/donations/${id}`);
 
-  dispatch({ type: FETCH_DONATION, payload: response.data });
+  dispatch({ type: types.FETCH_DONATION, payload: response.data });
 };
 
 export const deleteDonation = id => async dispatch => {
   await localDB.delete(`/donations/${id}`);
 
-  dispatch({ type: DELETE_DONATION, payload: id });
+  dispatch({ type: types.DELETE_DONATION, payload: id });
   history.push("/");
 };
 
@@ -583,14 +542,14 @@ export const createOrgWithdrawl = (
     // withdrawlAmount: currentOrgContractBalance
   });
 
-  dispatch({ type: MAKE_ORG_WITHDRAWL, payload: response.data });
+  dispatch({ type: types.MAKE_ORG_WITHDRAWL, payload: response.data });
   history.push(`/orgs/${selectedOrg}`);
 };
 
 export const fetchWithdrawls = () => async dispatch => {
   const response = await localDB.get("/withdrawls");
 
-  dispatch({ type: FETCH_WITHDRAWLS, payload: response.data });
+  dispatch({ type: types.FETCH_WITHDRAWLS, payload: response.data });
 };
 
 export const fetchOrgWithdrawls = ein => async dispatch => {
@@ -602,31 +561,34 @@ export const fetchOrgWithdrawls = ein => async dispatch => {
     return "";
   });
 
-  dispatch({ type: FETCH_ORG_WITHDRAWLS, payload: response });
+  dispatch({ type: types.FETCH_ORG_WITHDRAWLS, payload: response });
 };
 
 export const fetchWithdrawl = id => async dispatch => {
   const response = await localDB.get(`/withdrawls/${id}`);
 
-  dispatch({ type: FETCH_WITHDRAWL, payload: response.data });
+  dispatch({ type: types.FETCH_WITHDRAWL, payload: response.data });
 };
 
 export const editWithdrawl = (id, formValues) => async dispatch => {
   const response = await localDB.patch(`/withdrawls/${id}`, formValues);
 
-  dispatch({ type: EDIT_WITHDRAWL, payload: response.data });
+  dispatch({ type: types.EDIT_WITHDRAWL, payload: response.data });
   history.push("/admin");
 };
 
 export const deleteWithdrawl = id => async dispatch => {
   await localDB.delete(`/withdrawls/${id}`);
 
-  dispatch({ type: DELETE_WITHDRAWL, payload: id });
+  dispatch({ type: types.DELETE_WITHDRAWL, payload: id });
   history.push("/admin");
 };
 
 export const updateNCStatus = (headline, message, status) => async dispatch => {
   const ncStatus = { headline, message, status };
-  dispatch({ type: UPDATE_NOTIFICATION_CENTER_STATUS, payload: ncStatus });
+  dispatch({
+    type: types.UPDATE_NOTIFICATION_CENTER_STATUS,
+    payload: ncStatus
+  });
   return;
 };

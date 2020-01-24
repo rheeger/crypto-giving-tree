@@ -35,7 +35,7 @@ class AdminDonationRow extends Component {
     return Object.values(gtFunds).map((gtFunds, key) => {
       if (recipient === gtFunds.id) {
         return this.setState({ fundName: gtFunds.branchName });
-      }
+      } else return null;
     });
   }
 

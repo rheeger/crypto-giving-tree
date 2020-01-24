@@ -43,13 +43,14 @@ class BranchForm extends React.Component {
       <div className={className}>
         <label>
           {" "}
-          <a
+          <p
+            href=""
             onClick={() => this.setState({ isShowingModal: true })}
-            style={{ cursor: "hand" }}
+            style={{ cursor: "hand", color: "blue" }}
           >
             {" "}
             {label}
-          </a>
+          </p>
         </label>
         <input {...input} type={type} value="true" /> {rest}
         {this.renderError(meta)}

@@ -49,7 +49,7 @@ class AdminGrantRow extends Component {
     return Object.values(gtOrgs).map((gtOrgs, key) => {
       if (selectedOrg === gtOrgs.id) {
         return this.setState({ orgName: gtOrgs.name });
-      }
+      } else return null;
     });
   }
 

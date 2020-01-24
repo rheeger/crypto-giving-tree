@@ -17,11 +17,9 @@ class DonationRow extends Component {
 
   renderDonorName() {
     const { gtFunds, from } = this.props;
-    console.log(from);
+
     return Object.values(gtFunds).map((gtFunds, key) => {
       if (from === gtFunds.managerAddress) {
-        console.log("match found");
-        console.log(gtFunds);
         return this.setState({
           donorName: `${gtFunds.primaryAdvisorFirstName} ${gtFunds.primaryAdvisorLastName}`
         });

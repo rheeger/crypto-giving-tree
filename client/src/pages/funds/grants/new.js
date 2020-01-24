@@ -202,7 +202,11 @@ class NewGrant extends React.Component {
             <h3>
               3. The staff at &nbsp;
               <span
-                style={{ fontFamily: "all-round-gothic", fontSize: "1.5rem" }}
+                style={{
+                  fontFamily: "all-round-gothic",
+                  fontWeight: "600",
+                  fontSize: "1.5rem"
+                }}
               >
                 endaoment
               </span>

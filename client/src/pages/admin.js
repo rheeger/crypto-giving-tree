@@ -83,7 +83,7 @@ class AdminPanel extends Component {
 
     return Object.values(this.props.gtClaims).map((claim, index) => {
       if (!claim.claimApprovalDetails) {
-        return;
+        return null;
       }
       if (claim.claimApprovalDetails.claimApproval === false) {
         return (

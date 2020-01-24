@@ -49,8 +49,8 @@ const StatusImage = ({ status }) => {
 const NotificationCenterWrapper = styled.div`
   position: fixed;
   right: 20px;
-  bottom: calc(100% - 100vh + 20px);
-  z-index: 100;
+  top: calc(100% - 100vh + 1rem);
+  z-index: 1000;
 `;
 
 const fadeIn = keyframes`

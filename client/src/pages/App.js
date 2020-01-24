@@ -3,7 +3,7 @@ import { Router, Route, Switch } from "react-router-dom";
 
 import history from "../history";
 import asyncComponent from "./AsyncComponents";
-import moment from "moment/min/moment-with-locales";
+import * as moment from "moment";
 import Moment from "react-moment";
 
 // Sets the moment instance to use.

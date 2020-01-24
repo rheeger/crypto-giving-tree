@@ -1,7 +1,7 @@
 import React from "react";
 // import './style.css';
 import "./heegerreset.css";
-import logo from "../../assets/images/CBLogo.png";
+import endaoment from "../../assets/images/endaoment.svg";
 
 class Splash extends React.Component {
   render() {
@@ -15,7 +15,8 @@ class Splash extends React.Component {
               flexFlow: "column",
               justifyContent: "flex-start",
               alignItems: "center",
-              width: "100%"
+              maxWidth: "750px",
+              margin: "0 auto"
             }}
           >
             <h3
@@ -30,20 +31,15 @@ class Splash extends React.Component {
             >
               future home of:
             </h3>
-            <h1
-              style={{
-                fontFamily: "all-round-gothic, sans-serif",
-                fontWeight: "600",
-                // fontStyle: "italic",
-                fontSize: "7rem"
-              }}
-            >
-              endaoment
-            </h1>
+            <img
+              alt="endaoment"
+              style={{ margin: "2rem 2rem 4rem 2rem" }}
+              src={endaoment}
+            ></img>
             <div style={{ display: "flex", margin: "2rem" }}>
               <h3
                 style={{
-                  fontSize: "1.5rem",
+                  fontSize: "2rem",
                   fontStyle: "italic",
                   textAlign: "center"
                 }}

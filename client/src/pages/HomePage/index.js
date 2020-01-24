@@ -3,7 +3,6 @@ import Header from "../../components/Header";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Grid } from "semantic-ui-react";
-import history from "../../history";
 
 class HomePage extends React.Component {
   renderButton() {

@@ -10,7 +10,6 @@ import {
 import ClaimForm from "../../components/ClaimForm";
 import Header from "../../components/Header";
 import { orgContract } from "../../ethereum/org";
-import { object } from "prop-types";
 
 class Claim extends React.Component {
   state = {

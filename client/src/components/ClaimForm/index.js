@@ -110,7 +110,7 @@ const validate = formValues => {
   }
   if (formValues.orgAdminWallet) {
     try {
-      const address = web3.utils.toChecksumAddress(formValues.orgAdminWallet);
+      web3.utils.toChecksumAddress(formValues.orgAdminWallet);
     } catch (e) {
       errors.orgAdminWallet = "Please enter a valid ethereum address";
     }

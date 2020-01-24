@@ -39,9 +39,8 @@ class AdminGrantRow extends Component {
     const { gtFunds, selectedFund } = this.props;
     return Object.values(gtFunds).map((gtFunds, key) => {
       if (selectedFund === gtFunds.id) {
-        console.log("match found");
         return this.setState({ fundName: gtFunds.branchName });
-      }
+      } else return null;
     });
   }
 

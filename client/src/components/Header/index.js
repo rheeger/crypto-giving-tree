@@ -9,6 +9,7 @@ import {
 } from "../../store/reducers/web3connect";
 import { setAddresses } from "../../store/reducers/swapAddresses";
 import NotificationCenter from "../NotificationCenter";
+import endaoment from "../../assets/images/endaoment.svg";
 
 class Header extends React.Component {
   componentDidMount() {
@@ -110,7 +111,7 @@ class Header extends React.Component {
       <div>
         <Menu style={{ margin: "1rem" }}>
           <Link to="/alpha" className="item">
-            <h1
+            {/* <h1
               style={{
                 fontFamily: "all-round-gothic, sans-serif",
                 fontWeight: "500",
@@ -120,7 +121,12 @@ class Header extends React.Component {
               }}
             >
               endaoment
-            </h1>
+            </h1> */}
+            <img
+              alt="endaoment"
+              style={{ width: "12rem", height: "3rem" }}
+              src={endaoment}
+            ></img>
           </Link>
 
           <Menu.Menu position="right">
@@ -139,6 +145,7 @@ class Header extends React.Component {
             {this.renderAccount()}
           </Menu.Menu>
         </Menu>
+
         <NotificationCenter></NotificationCenter>
       </div>
     );

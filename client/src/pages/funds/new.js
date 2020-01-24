@@ -115,7 +115,11 @@ class NewFund extends React.Component {
               2. You can easily contribute cryptocurrency to your Fund.&nbsp;
               {"  "}
               <span
-                style={{ fontFamily: "all-round-gothic", fontSize: "1.5rem" }}
+                style={{
+                  fontFamily: "all-round-gothic",
+                  fontWeight: "600",
+                  fontSize: "1.5rem"
+                }}
               >
                 endaoment
               </span>
@@ -128,7 +132,11 @@ class NewFund extends React.Component {
               3. Contributed tokens are exchanged by &nbsp;
               {"  "}
               <span
-                style={{ fontFamily: "all-round-gothic", fontSize: "1.5rem" }}
+                style={{
+                  fontFamily: "all-round-gothic",
+                  fontWeight: "600",
+                  fontSize: "1.5rem"
+                }}
               >
                 endaoment
               </span>
