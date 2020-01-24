@@ -2,11 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Menu, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import {
-  Web3Connect,
-  startWatching,
-  initialize
-} from "../../store/reducers/web3connect";
+import { startWatching, initialize } from "../../store/reducers/web3connect";
 import { setAddresses } from "../../store/reducers/swapAddresses";
 import NotificationCenter from "../NotificationCenter";
 import endaoment from "../../assets/images/endaoment.svg";
@@ -53,7 +49,6 @@ class Header extends React.Component {
     if (!account && !initialized) {
       return (
         <div>
-          <Web3Connect />
           <Button
             style={{ margin: "1rem 1rem 1rem auto", padding: "10px" }}
             className="ui button basic grey"
@@ -66,44 +61,15 @@ class Header extends React.Component {
     }
 
     return (
-      <Button
+      <Link
         className="ui button basic black"
-        disabled
+        to="/funds"
         style={{ margin: "auto 1rem 1rem auto", padding: "10px" }}
       >
         <i className="user circle outline icon" />
         {this.truncateAccount()}
-      </Button>
+      </Link>
     );
-  }
-  renderFundsButton() {
-    if (!this.props.gtFunds) {
-      return;
-    }
-    if (Object.keys(this.props.gtFunds).length === 0) {
-      return (
-        <Link
-          to="/funds/new"
-          className="ui button basic green"
-          style={{ margin: "1rem auto", padding: "10px" }}
-        >
-          <i className="plus circle icon" />
-          Start a Fund
-        </Link>
-      );
-    }
-    if (Object.keys(this.props.gtFunds).length > 0) {
-      return (
-        <Link
-          to="/funds"
-          className="ui button basic green"
-          style={{ margin: "1rem auto", padding: "10px" }}
-        >
-          <i className="eye icon" />
-          My Funds
-        </Link>
-      );
-    }
   }
 
   render() {
@@ -133,7 +99,6 @@ class Header extends React.Component {
             <h6 style={{ paddingRight: "2rem", color: "red" }}>
               THIS IS A DEMO, USE AT YOUR OWN RISK!
             </h6>
-            {this.renderFundsButton()}
             <Link
               to="/orgs"
               style={{ margin: "1rem", padding: "10px" }}

@@ -22,7 +22,6 @@ class NewGrant extends React.Component {
 
   componentDidMount = async () => {
     const { selectOrg, fetchOrgs, match } = this.props;
-    this.setState({ ready: "false" });
     selectOrg(match.params.ein);
     fetchOrgs();
   };
@@ -83,7 +82,8 @@ class NewGrant extends React.Component {
   };
 
   render() {
-    if (!this.props.org.organization || !this.props.gtOrgs) {
+    const { org, gtOrgs, gtFunds, match } = this.props;
+    if (!org.organization || !gtOrgs) {
       return (
         <div>
           <Header />
@@ -93,10 +93,7 @@ class NewGrant extends React.Component {
       );
     }
 
-    if (
-      this.state.ready === "true" &&
-      this.props.gtOrgs[`${this.props.match.params.ein}`]
-    ) {
+    if (this.state.ready === "true" && gtOrgs[`${match.params.ein}`]) {
       return (
         <div>
           <Header />
@@ -113,17 +110,17 @@ class NewGrant extends React.Component {
             >
               <h4>You're reccomending a grant to:</h4>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <h1>{this.props.org.organization.name}</h1>
+                <h1>{org.organization.name}</h1>
                 <div>
                   <Button
                     onClick={this.renderWhatsThis}
-                    className="ui button basic yellow"
+                    className="small ui button inverted yellow"
                   >
                     What's this?
                   </Button>
                   <Link
-                    to={`/orgs/${this.props.org.organization.ein}`}
-                    className="ui button basic green"
+                    to={`/orgs/${org.organization.ein}`}
+                    className="small ui button inverted green"
                   >
                     <i className="address card icon" />
                     Org Details
@@ -134,7 +131,7 @@ class NewGrant extends React.Component {
               <GrantForm
                 onSubmit={this.onSubmit}
                 loading={this.state.loading}
-                gtFunds={this.props.gtFunds}
+                gtFunds={gtFunds}
               />
             </div>
           </div>
@@ -144,12 +141,12 @@ class NewGrant extends React.Component {
 
     if (
       (this.state.ready === "true" &&
-        this.props.gtOrgs &&
-        !this.props.gtOrgs[`${this.props.match.params.ein}`]) ||
+        gtOrgs &&
+        !gtOrgs[`${match.params.ein}`]) ||
       (this.state.loading === true &&
-        this.props.gtOrgs[`${this.props.match.params.ein}`] === undefined)
+        gtOrgs[`${match.params.ein}`] === undefined)
     ) {
-      this.setupOrg(this.props.match.params.ein);
+      this.setupOrg(match.params.ein);
       return (
         <div>
           <Header />
@@ -164,7 +161,7 @@ class NewGrant extends React.Component {
             >
               <h1>Hang tight!</h1>
               <p>Looks like you'll be the first to reccomend a grant to: </p>
-              <h3>{this.props.org.organization.name}</h3>
+              <h3>{org.organization.name}</h3>
               <h6>
                 We're setting up their account. We'll process your grant
                 reccomendation next.
@@ -218,7 +215,7 @@ class NewGrant extends React.Component {
             <Button
               onClick={this.renderBranchForm}
               floated="left"
-              className="ui button basic green"
+              className="ui button inverted green"
             >
               Got It!
             </Button>

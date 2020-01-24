@@ -35,7 +35,13 @@ class OrgShow extends React.Component {
     if (Object.keys(this.props.gtGrants).length === 0) {
       return (
         <div style={{ textAlign: "center", padding: "10px" }}>
-          No grants received. Be the first today!
+          No grants received. Be the first today! &nbsp;
+          <Link to={`/orgs/${this.props.match.params.ein}/grants/new`}>
+            <Button basic color="red" style={{ marginLeft: "1rem" }}>
+              <i className="paper plane icon" />
+              send grant
+            </Button>
+          </Link>
         </div>
       );
     }
@@ -57,11 +63,7 @@ class OrgShow extends React.Component {
             />
           );
         } else {
-          return (
-            <div style={{ textAlign: "center", padding: "10px" }}>
-              No grants received. Be the first today!
-            </div>
-          );
+          return null;
         }
       });
   }

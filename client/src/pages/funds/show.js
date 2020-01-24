@@ -38,7 +38,15 @@ class FundShow extends Component {
     if (Object.keys(this.props.gtGrants).length === 0) {
       return (
         <div style={{ textAlign: "center", padding: "10px" }}>
-          No grants reccommended.
+          No grants reccommended, yet. &nbsp;
+          <Link
+            to="/orgs"
+            style={{ marginLeft: "1rem" }}
+            className="ui button basic blue"
+          >
+            <i className="sistrix medium icon" />
+            Organizations
+          </Link>
         </div>
       );
     }

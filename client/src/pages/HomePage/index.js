@@ -11,7 +11,7 @@ class HomePage extends React.Component {
     }
     if (Object.keys(this.props.gtFunds).length === 0) {
       return (
-        <Link to="/funds/new" className="ui button basic green">
+        <Link to="/funds/new" className="ui button green">
           <i className="plus circle icon" />
           Start a Fund
         </Link>
@@ -19,9 +19,8 @@ class HomePage extends React.Component {
     }
     if (Object.keys(this.props.gtFunds).length > 0) {
       return (
-        <Link to="/funds" className="ui button basic green">
-          <i className="eye icon" />
-          My Funds
+        <Link to="/funds" className="ui button basic black">
+          See My Funds
         </Link>
       );
     }

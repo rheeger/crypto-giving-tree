@@ -44,7 +44,6 @@ class Send extends Component {
 	};
 
 	componentDidMount() {
-		console.log(this.props);
 		this.setState({ outputCurrency: process.env.REACT_APP_STABLECOIN_ADDRESS });
 		this.setState({ recipient: this.props.recievingFund });
 	}

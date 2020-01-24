@@ -46,7 +46,7 @@ class BranchForm extends React.Component {
           <p
             href=""
             onClick={() => this.setState({ isShowingModal: true })}
-            style={{ cursor: "hand", color: "blue" }}
+            style={{ cursor: "pointer", color: "blue" }}
           >
             {" "}
             {label}

@@ -69,7 +69,7 @@ class NewFund extends React.Component {
                 <div>
                   <Button
                     onClick={this.renderWhatsThis}
-                    className="ui button basic yellow"
+                    className="small ui button basic yellow"
                   >
                     What's this?
                   </Button>
