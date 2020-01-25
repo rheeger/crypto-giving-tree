@@ -65,7 +65,7 @@ class Send extends Component {
 		});
 	}
 
-	componentWillReceiveProps() {
+	UNSAFE_componentWillReceiveProps() {
 		this.recalcForm();
 	}
 
@@ -97,7 +97,7 @@ class Send extends Component {
 
 		const { value: inputBalance, decimals: inputDecimals } = selectors().getBalance(account, inputCurrency);
 
-		if (inputBalance.isLessThan(BN(inputValue * 10 ** inputDecimals))) {
+		if (inputBalance.isLessThan(BN(inputValue * (10 ** inputDecimals)))) {
 			inputError = this.props.t('insufficientBalance');
 		}
 
@@ -131,7 +131,7 @@ class Send extends Component {
 			exchangeAddresses.fromToken[inputCurrency]
 		);
 
-		if (label && allowance.isLessThan(BN(inputValue * 10 ** decimals || 0))) {
+		if (label && allowance.isLessThan(BN(inputValue * (10 ** decimals) || 0))) {
 			return true;
 		}
 

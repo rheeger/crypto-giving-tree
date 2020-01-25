@@ -15,7 +15,7 @@ import AdminClaimRow from "../components/tables/AdminClaimRow";
 import NavHeader from "../components/Header";
 
 class AdminPanel extends Component {
-  componentWillMount = () => {
+  componentDidMount = () => {
     const {
       fetchFunds,
       fetchDonations,

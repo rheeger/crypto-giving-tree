@@ -17,7 +17,7 @@ import moment from "moment";
 class OrgShow extends React.Component {
   initialState = {};
 
-  componentWillMount() {
+  componentDidMount() {
     const {
       selectOrg,
       fetchOrgApprovedGrants,
