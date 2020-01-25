@@ -4,6 +4,7 @@ import styled, { keyframes } from "styled-components";
 import { NotificationSpinner } from "../Spinner";
 import { Button } from "semantic-ui-react";
 import success from "../../assets/images/success.svg";
+import failure from "../../assets/images/failure.svg";
 import { updateNCStatus } from "../../store/actions";
 
 class NotificationCenter extends React.Component {
@@ -42,6 +43,10 @@ const StatusImage = ({ status }) => {
   }
   if (status === "success") {
     return <StatusImageWrapper src={success} />;
+  }
+
+  if (status === "failure") {
+    return <StatusImageWrapper src={failure} />;
   }
   return;
 };

@@ -12,3 +12,11 @@ const provider = new HDWalletProvider(mnemonic, infuraEndpoint);
 adminWeb3Wallet = new Web3(provider);
 
 export default adminWeb3Wallet;
+
+export const getAdminWalletPendingNonce = async () => {
+  const nonce = await adminWeb3Wallet.eth.getTransactionCount(
+    process.env.REACT_APP_GT_ADMIN,
+    "pending"
+  );
+  return nonce;
+};

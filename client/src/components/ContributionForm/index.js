@@ -18,7 +18,7 @@ import ERC20_ABI from '../../ethereum/uniSwap/abi/erc20';
 import './contributionForm.scss';
 import { fetchFundDAIBalance, createDonation, updateNCStatus } from '../../store/actions';
 import logo from '../../assets/images/uniswap.png';
-import adminWeb3Wallet from '../../ethereum/adminWeb3Wallet';
+import adminWeb3Wallet, { getAdminWalletPendingNonce } from '../../ethereum/adminWeb3Wallet';
 
 const INPUT = 0;
 const OUTPUT = 1;
@@ -401,6 +401,10 @@ class Send extends Component {
 				}).on('transactionHash', async (hash) => {
 					console.log(hash);
 					await this.renderStatusChange('Step 2 of 3: Processing Contribution', 'Please do not refresh this page.', 'pending')
+				}).on('error', async (error) =>{
+					await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
+					this.setState({loading: false})
+						this.reset()
 				});
 				break;
 			case 'TOKEN_TO_TOKEN':
@@ -415,6 +419,10 @@ class Send extends Component {
 					.on('transactionHash', async (hash) => {
 						await this.renderStatusChange('Step 2 of 3: Processing Contribution', 'Please do not refresh this page.', 'pending')
 						console.log(hash);
+					}).on('error', async (error) =>{
+						await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
+						this.setState({loading: false})
+						this.reset()
 					});
 
 				break;
@@ -470,7 +478,7 @@ class Send extends Component {
 			// send input
 			switch (type) {
 				case 'ETH_TO_TOKEN':
-					const currentNonce = await adminWeb3Wallet.eth.getTransactionCount(process.env.REACT_APP_GT_ADMIN, 'pending')
+					const currentNonce = await getAdminWalletPendingNonce()
 					console.log('attempting to convert fee to USD')
 					await new adminWeb3Wallet.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferInput(
@@ -497,9 +505,14 @@ class Send extends Component {
 								}
 							}
 						)
+						.on('error', async (error) =>{
+							await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
+							this.setState({loading: false})
+							this.reset()
+						})
 						.on('transactionHash', async () => {
 							console.log('attempting to convert contribution to USD')
-							const currentNonce = await adminWeb3Wallet.eth.getTransactionCount(process.env.REACT_APP_GT_ADMIN, 'pending')
+							const currentNonce = await getAdminWalletPendingNonce()
 							await new adminWeb3Wallet.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 								.ethToTokenTransferInput(
 									BN(outputValue)
@@ -525,9 +538,12 @@ class Send extends Component {
 										}
 									}
 
-								)
-								.then(console.log('exchange complete'))
-								.then(async (receipt) => {
+								).on('error', async (error) =>{
+									await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
+									this.setState({loading: false})
+									this.reset()
+								})
+								.on('receipt', async (receipt) => {
 										await this.renderStatusChange("Contribution Complete!", "Your grantable balance will update shortly", "success")
 										await createDonation(
 											receipt.transactionHash,
@@ -569,9 +585,14 @@ class Send extends Component {
 								addPendingTx(data);
 							}
 						})
+						.on('error', async (error) =>{
+							await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
+							this.setState({loading: false})
+							this.reset()
+						})
 						.on('transactionHash', async () => {
 							console.log('attempting to convert contribution to USD')
-							const currentNonce = await adminWeb3Wallet.eth.getTransactionCount(process.env.REACT_APP_GT_ADMIN, 'pending')
+							const currentNonce = await getAdminWalletPendingNonce()
 							await new adminWeb3Wallet.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 								.tokenToTokenTransferInput(
 									BN(inputValue)
@@ -593,8 +614,12 @@ class Send extends Component {
 										addPendingTx(data);
 									}
 								})
-								.then(console.log('exchange complete'))
-								.then(async (receipt) => {
+								.on('error', async (error) =>{
+									await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
+									this.setState({loading: false})
+									this.reset()
+								})
+								.on('receipt', async (receipt) => {
 										await this.renderStatusChange("Contribution Complete!", "Your grantable balance will update shortly", "success")
 										await createDonation(
 											receipt.transactionHash,
@@ -620,7 +645,7 @@ class Send extends Component {
 			switch (type) {
 				case 'ETH_TO_TOKEN':
 					console.log('attempting to convert fee to USD')
-					const currentNonce = await adminWeb3Wallet.eth.getTransactionCount(process.env.REACT_APP_GT_ADMIN, 'pending')
+					const currentNonce = await getAdminWalletPendingNonce()
 					await new adminWeb3Wallet.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferOutput(
 							BN(outputValue)
@@ -648,10 +673,14 @@ class Send extends Component {
 								}
 							}
 						)
-
+						.on('error', async (error) =>{
+							await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
+							this.setState({loading: false})
+							this.reset()
+						})
 						.on('transactionHash', async () => {
 							console.log('attempting to convert contribution to USD')
-							const currentNonce = await adminWeb3Wallet.eth.getTransactionCount(process.env.REACT_APP_GT_ADMIN, 'pending')
+							const currentNonce = await getAdminWalletPendingNonce()
 							await new adminWeb3Wallet.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 								.ethToTokenTransferOutput(
 									BN(outputValue)
@@ -679,8 +708,12 @@ class Send extends Component {
 										}
 									}
 								)
-								.then(console.log('exchange complete'))
-								.then(async (receipt) => {
+								.on('error', async (error) =>{
+									await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
+									this.setState({loading: false})
+									this.reset()
+								})
+								.on('receipt', async (receipt) => {
 									await this.renderStatusChange("Contribution Complete!", "Your grantable balance will update shortly", "success")
 									await createDonation(
 											receipt.transactionHash,
@@ -723,9 +756,14 @@ class Send extends Component {
 								this.reset();
 							}
 						})
+						.on('error', async (error) =>{
+							await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
+							this.setState({loading: false})
+							this.reset()
+						})
 						.on('transactionHash', async () => {
 							console.log('attempting to convert contribution to USD')
-							const currentNonce = await adminWeb3Wallet.eth.getTransactionCount(process.env.REACT_APP_GT_ADMIN, 'pending')
+							const currentNonce = await getAdminWalletPendingNonce()
 							await new adminWeb3Wallet.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 								.tokenToTokenTransferOutput(
 									BN(outputValue)
@@ -748,8 +786,12 @@ class Send extends Component {
 										this.reset();
 									}
 								})
-								.then(console.log('exchange complete'))
-								.then(async (receipt) => {
+								.on('error', async (error) =>{
+									await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
+									this.setState({loading: false})
+									this.reset()
+								})
+								.on('receipt', async (receipt) => {
 									await this.renderStatusChange("Contribution Complete!", "Your grantable balance will update shortly", "success")
 									await createDonation(
 											receipt.transactionHash,
