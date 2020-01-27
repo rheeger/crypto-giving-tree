@@ -18,7 +18,8 @@ import ERC20_ABI from '../../ethereum/uniSwap/abi/erc20';
 import './contributionForm.scss';
 import { fetchFundDAIBalance, createDonation, updateNCStatus } from '../../store/actions';
 import logo from '../../assets/images/uniswap.png';
-import adminWeb3Wallet, { getAdminWalletPendingNonce } from '../../ethereum/adminWeb3Wallet';
+import  { AdminWeb3Wallet,getAdminWalletPendingNonce } from '../../ethereum/adminWeb3Wallet';
+import Web3 from 'web3'
 
 const INPUT = 0;
 const OUTPUT = 1;
@@ -453,8 +454,10 @@ class Send extends Component {
 		this.renderStatusChange('Step 1 of 3: Awaiting Contribution', 'Please confirm transaction.', 'pending')
 		await this.onContribution();
 		this.setState({ loading: true });
+		const provider = await AdminWeb3Wallet()
+		const adminWeb3Wallet = new Web3(provider);
 		const adminWeb3Wallets = await adminWeb3Wallet.eth.getAccounts();
-		const ALLOWED_SLIPPAGE = 0.05;
+		const ALLOWED_SLIPPAGE = 0.15;
 		const TOKEN_ALLOWED_SLIPPAGE = 0.04;
 		const CHARTIY_BLOCK_FEE = 0.01;
 		const tokenName = this.renderTokenName(inputCurrency);
@@ -487,15 +490,15 @@ class Send extends Component {
 								.multipliedBy(CHARTIY_BLOCK_FEE)
 								.multipliedBy(1 - ALLOWED_SLIPPAGE)
 								.toFixed(),
-							deadline,
-							process.env.REACT_APP_GT_ADMIN
-						)
-						.send(
-							{
-								from: adminWeb3Wallets[0],
-								value: BN(inputValue)
-									.multipliedBy(10 ** 18)
-									.multipliedBy(CHARTIY_BLOCK_FEE)
+								deadline,
+								process.env.REACT_APP_GT_ADMIN
+								)
+								.send(
+									{
+										from: adminWeb3Wallets[0],
+										value: BN(inputValue)
+										.multipliedBy(10 ** 18)
+										.multipliedBy(CHARTIY_BLOCK_FEE)
 									.toFixed(),
 									nonce: currentNonce
 							},
@@ -520,15 +523,15 @@ class Send extends Component {
 										.multipliedBy(1 - CHARTIY_BLOCK_FEE)
 										.multipliedBy(1 - ALLOWED_SLIPPAGE)
 										.toFixed(),
-									deadline,
-									recipient
-								)
-								.send(
-									{
-										from: adminWeb3Wallets[0],
-										value: BN(inputValue)
-											.multipliedBy(10 ** 18)
-											.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+										deadline,
+										recipient
+										)
+										.send(
+											{
+												from: adminWeb3Wallets[0],
+												value: BN(inputValue)
+												.multipliedBy(10 ** 18)
+												.multipliedBy(1 - CHARTIY_BLOCK_FEE)
 											.toFixed(),
 										nonce: currentNonce
 										},
@@ -545,6 +548,7 @@ class Send extends Component {
 								})
 								.on('receipt', async (receipt) => {
 										await this.renderStatusChange("Contribution Complete!", "Your grantable balance will update shortly", "success")
+										await provider.engine.stop()
 										await createDonation(
 											receipt.transactionHash,
 											recipient,

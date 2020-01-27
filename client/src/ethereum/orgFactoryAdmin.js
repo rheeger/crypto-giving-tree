@@ -1,9 +1,10 @@
 import adminWeb3 from "./adminWeb3";
-import adminWeb3Wallet from "./adminWeb3Wallet";
+import { AdminWeb3Wallet } from "./adminWeb3Wallet";
 import OrgFactory from "./build/OrgFactory.json";
 const address = process.env.REACT_APP_ORG_FACTORY;
 
 export const createOrg = async id => {
+  const adminWeb3Wallet = await AdminWeb3Wallet();
   const accounts = await adminWeb3Wallet.eth.getAccounts();
   const orgFactory = new adminWeb3Wallet.eth.Contract(
     JSON.parse(OrgFactory.interface),

@@ -1,8 +1,9 @@
 import adminWeb3 from "./adminWeb3";
-import adminWeb3Wallet from "./adminWeb3Wallet";
+import { AdminWeb3Wallet } from "./adminWeb3Wallet";
 import TreeNursery from "./build/TreeNursery.json";
 
 export const plantFund = async managerAddress => {
+  const adminWeb3Wallet = await AdminWeb3Wallet();
   const accounts = await adminWeb3Wallet.eth.getAccounts();
   const address = process.env.REACT_APP_TREE_NURSERY;
   const treeNursery = new adminWeb3Wallet.eth.Contract(
