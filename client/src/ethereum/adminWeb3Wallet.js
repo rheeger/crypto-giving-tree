@@ -9,12 +9,12 @@ export const AdminWeb3Wallet = async () => {
     "https://" + infuraPrefix + ".infura.io/v3/" + infuraKey;
 
   const provider = new HDWalletProvider(mnemonic, infuraEndpoint);
-  return provider;
+  const adminWeb3Wallet = new Web3(provider);
+  return adminWeb3Wallet;
 };
 
 export const getAdminWalletPendingNonce = async () => {
-  const provider = await AdminWeb3Wallet();
-  const adminWeb3Wallet = new Web3(provider);
+  const adminWeb3Wallet = await AdminWeb3Wallet();
   const nonce = await adminWeb3Wallet.eth.getTransactionCount(
     process.env.REACT_APP_GT_ADMIN,
     "pending"

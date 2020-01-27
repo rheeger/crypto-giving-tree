@@ -19,7 +19,6 @@ import './contributionForm.scss';
 import { fetchFundDAIBalance, createDonation, updateNCStatus } from '../../store/actions';
 import logo from '../../assets/images/uniswap.png';
 import  { AdminWeb3Wallet,getAdminWalletPendingNonce } from '../../ethereum/adminWeb3Wallet';
-import Web3 from 'web3'
 
 const INPUT = 0;
 const OUTPUT = 1;
@@ -454,8 +453,7 @@ class Send extends Component {
 		this.renderStatusChange('Step 1 of 3: Awaiting Contribution', 'Please confirm transaction.', 'pending')
 		await this.onContribution();
 		this.setState({ loading: true });
-		const provider = await AdminWeb3Wallet()
-		const adminWeb3Wallet = new Web3(provider);
+		const adminWeb3Wallet = await AdminWeb3Wallet()
 		const adminWeb3Wallets = await adminWeb3Wallet.eth.getAccounts();
 		const ALLOWED_SLIPPAGE = 0.15;
 		const TOKEN_ALLOWED_SLIPPAGE = 0.04;
@@ -548,7 +546,6 @@ class Send extends Component {
 								})
 								.on('receipt', async (receipt) => {
 										await this.renderStatusChange("Contribution Complete!", "Your grantable balance will update shortly", "success")
-										await provider.engine.stop()
 										await createDonation(
 											receipt.transactionHash,
 											recipient,
