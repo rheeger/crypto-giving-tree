@@ -6,7 +6,6 @@ import { BigNumber as BN } from 'bignumber.js';
 import { Button } from 'semantic-ui-react';
 import { startWatching, initialize, selectors, addPendingTx } from '../../store/reducers/web3connect';
 import { setAddresses } from '../../store/reducers/swapAddresses';
-import { withTranslation } from 'react-i18next';
 import AddressInputPanel from '../uniSwap/AddressInputPanel';
 import CurrencyInputPanel from '../uniSwap/CurrencyInputPanel';
 import ContextualInfo from '../uniSwap/ContextualInfo';
@@ -98,7 +97,7 @@ class Send extends Component {
 		const { value: inputBalance, decimals: inputDecimals } = selectors().getBalance(account, inputCurrency);
 
 		if (inputBalance.isLessThan(BN(inputValue * (10 ** inputDecimals)))) {
-			inputError = this.props.t('insufficientBalance');
+			inputError = 'insufficientBalance'
 		}
 
 		if (inputValue && !tncconsent) {
@@ -107,7 +106,7 @@ class Send extends Component {
 		}
 
 		if (inputValue === 'N/A') {
-			inputError = this.props.t('inputNotValid');
+			inputError = 'inputNotValid';
 		}
 
 		return {
@@ -815,7 +814,7 @@ class Send extends Component {
 
 	renderSummary(inputError, outputError) {
 		const { inputValue, inputCurrency, outputValue, outputCurrency, recipient } = this.state;
-		const { t, web3 } = this.props;
+		const { web3 } = this.props;
 
 		const { selectors, account } = this.props;
 		const { label: inputLabel } = selectors().getBalance(account, inputCurrency);
@@ -831,27 +830,27 @@ class Send extends Component {
 			contextualInfo = inputError || outputError;
 			isError = true;
 		} else if (!inputCurrency || !outputCurrency) {
-			contextualInfo = t('selectTokenCont');
+			contextualInfo = 'selectTokenCont';
 		} else if (inputCurrency === outputCurrency) {
-			contextualInfo = t('differentToken');
+			contextualInfo = 'differentToken';
 		} else if (!inputValue || !outputValue) {
 			const missingCurrencyValue = !inputValue ? inputLabel : outputLabel;
-			contextualInfo = t('enter a donation amount', { missingCurrencyValue });
+			contextualInfo = 'enter a donation amount' + { missingCurrencyValue };
 			isError = true;
 		} else if (inputIsZero || outputIsZero) {
-			contextualInfo = t('noLiquidity');
+			contextualInfo = 'noLiquidity';
 		} else if (this.isUnapproved()) {
-			contextualInfo = t('unlockTokenCont');
+			contextualInfo = 'unlockTokenCont';
 		} else if (!recipient) {
-			contextualInfo = t('noRecipient');
+			contextualInfo = 'noRecipient';
 		} else if (!validRecipientAddress) {
-			contextualInfo = t('invalidRecipient');
+			contextualInfo = 'invalidRecipient';
 		}
 
 		return (
 			<ContextualInfo
-				openDetailsText={t('transactionDetails')}
-				closeDetailsText={t('hideDetails')}
+				openDetailsText={'transactionDetails'}
+				closeDetailsText={'hideDetails'}
 				contextualInfo={contextualInfo}
 				isError={isError}
 				renderTransactionDetails={this.renderTransactionDetails}
@@ -861,7 +860,7 @@ class Send extends Component {
 
 	renderTransactionDetails = () => {
 		const { inputValue, inputCurrency, outputValue, outputCurrency, recipient, lastEditedField } = this.state;
-		const { t, selectors, account } = this.props;
+		const { selectors, account } = this.props;
 
 		const ALLOWED_SLIPPAGE = 0.025;
 		const TOKEN_ALLOWED_SLIPPAGE = 0.04;
@@ -911,10 +910,10 @@ class Send extends Component {
 			return (
 				<div>
 					<div>
-						{t('youAreSending')} {b(`${+inputValue} ${inputLabel}`)}.
+						{'youAreSending'} {b(`${+inputValue} ${inputLabel}`)}.
 					</div>
 					<div className="send__last-summary-text">
-						{recipientText} {t('willReceive')} {b(`${+minOutput} ${outputLabel}`)} {t('orTransFail')}
+						{recipientText} {'willReceive'} {b(`${+minOutput} ${outputLabel}`)} {'orTransFail'}
 					</div>
 				</div>
 			);
@@ -922,12 +921,12 @@ class Send extends Component {
 			return (
 				<div>
 					<div>
-						{t('youAreSending')} {b(`${+outputValue} ${outputLabel}`)} {t('to')} {recipientText}.
+						{'youAreSending'} {b(`${+outputValue} ${outputLabel}`)} {'to'} {recipientText}.
 						{/*You are selling between {b(`${+inputValue} ${inputLabel}`)} to {b(`${+maxInput} ${inputLabel}`)}.*/}
 					</div>
 					<div className="send__last-summary-text">
 						{/*{b(`${recipient.slice(0, 6)}...${recipient.slice(-4)}`)} will receive {b(`${+outputValue} ${outputLabel}`)}.*/}
-						{t('itWillCost')} {b(`${+maxInput} ${inputLabel}`)} {t('orTransFail')}
+						{'itWillCost'} {b(`${+maxInput} ${inputLabel}`)} {'orTransFail'}
 					</div>
 				</div>
 			);
@@ -944,7 +943,7 @@ class Send extends Component {
 			return (
 				<OversizedPanel hideBottom>
 					<div className="swap__exchange-rate-wrapper" style={{ margin: '2.5px', padding: '10px' }}>
-						<span className="swap__exchange-rate">{t(' ')}</span>
+						<span className="swap__exchange-rate">{' '}</span>
 					</div>
 				</OversizedPanel>
 			);
@@ -1041,10 +1040,10 @@ class Send extends Component {
 	}
 
 	render() {
-		const { t, selectors, account } = this.props;
+		const { selectors, account } = this.props;
 		const { lastEditedField, inputCurrency, outputCurrency, inputValue, outputValue, recipient } = this.state;
 
-		const estimatedText = `(${t('estimated')})`;
+		const estimatedText = 'estimated';
 
 		const { value: inputBalance, decimals: inputDecimals } = selectors().getBalance(account, inputCurrency);
 		const { value: outputBalance, decimals: outputDecimals } = selectors().getBalance(account, outputCurrency);
@@ -1150,7 +1149,7 @@ export default connect(mapStateToProps, (dispatch) => ({
 	fetchFundDAIBalance: (address) => dispatch(fetchFundDAIBalance(address)),
 	createDonation: (txID, fundAddress, fromAddress, inputCurrency, inputAmount, outputAmount, donationDate) =>
 		dispatch(createDonation(txID, fundAddress, fromAddress, inputCurrency, inputAmount, outputAmount, donationDate))
-}))(withTranslation()(Send));
+}))((Send));
 
 const b = (text) => <span className="swap__highlight-text">{text}</span>;
 

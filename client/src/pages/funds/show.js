@@ -163,8 +163,13 @@ class FundShow extends Component {
   render() {
     const { Header, Row, HeaderCell, Body } = Table;
 
-    if (!this.props.gtFunds) {
-      return <div> Loading... </div>;
+    if (Object.keys(this.props.gtFunds).length < 1) {
+      return (
+        <div>
+          <NavHeader />
+          Loading...{" "}
+        </div>
+      );
     }
 
     if (!this.props.gtFunds[this.props.match.params.address]) {
