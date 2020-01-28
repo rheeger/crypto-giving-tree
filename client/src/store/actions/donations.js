@@ -23,7 +23,6 @@ export const createDonation = (
   });
 
   dispatch({ type: types.CREATE_DONATION, payload: response.data });
-  window.location.reload();
 };
 
 export const fetchDonations = () => async dispatch => {

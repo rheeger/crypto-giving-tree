@@ -1,7 +1,7 @@
 import * as types from "./types";
 import localDB from "../../helpers/apis/localDB";
 import history from "../../history";
-import { plantFund } from "../../ethereum/fundNursreyAdmin";
+import { plantFund } from "../../ethereum/adminWeb3Wallet";
 import { fundContract } from "../../ethereum/fund";
 
 //LOCAL DB ACTIONS: FUNDS
@@ -92,7 +92,7 @@ export const fetchGrantableDAIBalance = address => async dispatch => {
 export const fetchFund = id => async dispatch => {
   const response = await localDB.get(`/funds/${id}`);
 
-  dispatch({ type: types.FETCH_FUND, payload: response.data });
+  dispatch({ type: types.FETCH_FUND, payload: response });
 };
 
 export const editFund = (id, formValues) => async dispatch => {

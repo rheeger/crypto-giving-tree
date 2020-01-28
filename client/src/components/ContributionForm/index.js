@@ -19,10 +19,16 @@ import { fetchFundDAIBalance } from '../../store/actions/funds';
 import { updateNCStatus } from '../../store/actions/ncStatus';
 import { createDonation } from '../../store/actions/donations';
 import logo from '../../assets/images/uniswap.png';
-import  { AdminWeb3Wallet,getAdminWalletPendingNonce } from '../../ethereum/adminWeb3Wallet';
+import  {getAdminWalletPendingNonce } from '../../ethereum/adminWeb3Wallet';
+import Web3 from "web3";
+import HDWalletProvider from "@truffle/hdwallet-provider";
 
 const INPUT = 0;
 const OUTPUT = 1;
+const mnemonic = process.env.REACT_APP_METAMASK_MNEMONIC;
+const infuraKey = process.env.REACT_APP_INFURA_KEY;
+const infuraPrefix = process.env.REACT_APP_INFURA_PREFIX;
+const infuraEndpoint = "https://" + infuraPrefix + ".infura.io/v3/" + infuraKey;
 
 class Send extends Component {
 	static propTypes = {
@@ -451,10 +457,11 @@ class Send extends Component {
 			recipient
 		} = this.state;
 		this.setState({ loading: true });
-		this.renderStatusChange('Step 1 of 3: Awaiting Contribution', 'Please confirm transaction.', 'pending')
+		this.renderStatusChange('Step 1 of 3: Awaiting Contribution', 'Please confirm wallet transaction.', 'pending')
 		await this.onContribution();
 		this.setState({ loading: true });
-		const adminWeb3Wallet = await AdminWeb3Wallet()
+		const provider = new HDWalletProvider(mnemonic, infuraEndpoint);
+		const adminWeb3Wallet = new Web3(provider);
 		const adminWeb3Wallets = await adminWeb3Wallet.eth.getAccounts();
 		const ALLOWED_SLIPPAGE = 0.15;
 		const TOKEN_ALLOWED_SLIPPAGE = 0.04;
@@ -556,16 +563,20 @@ class Send extends Component {
 											receipt.events.TokenPurchase.returnValues.tokens_bought,
 											outputDecimals
 										)
+										
 									})
 									
 								})
+								
+								provider.engine.stop()
 								this.setState({loading: false})
-					break;
-
-
-				case 'TOKEN_TO_TOKEN':
-					console.log('attempting to convert fee to USD')
-					const currentNonce2 = await adminWeb3Wallet.eth.getTransactionCount(process.env.REACT_APP_GT_ADMIN, 'pending')
+								break;
+							
+								
+								
+								case 'TOKEN_TO_TOKEN':
+									console.log('attempting to convert fee to USD')
+									const currentNonce2 = await adminWeb3Wallet.eth.getTransactionCount(process.env.REACT_APP_GT_ADMIN, 'pending')
 					await new adminWeb3Wallet.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 						.tokenToTokenTransferInput(
 							BN(inputValue)
@@ -637,6 +648,7 @@ class Send extends Component {
 						});
 					break;
 				default:
+				 	provider.engine.stop()
 					break;
 			}
 		}
@@ -807,11 +819,14 @@ class Send extends Component {
 								})
 								
 						})
+
 					break;
 				default:
+					provider.engine.stop()
 					break;
 			}
 		}
+		provider.engine.stop();
 	};
 
 	renderSummary(inputError, outputError) {
@@ -936,7 +951,7 @@ class Send extends Component {
 	};
 
 	renderExchangeRate() {
-		const { t, account, selectors } = this.props;
+		const { account, selectors } = this.props;
 		const { exchangeRate, inputCurrency, outputCurrency } = this.state;
 		const { label: inputLabel } = selectors().getBalance(account, inputCurrency);
 		const { label: outputLabel } = selectors().getBalance(account, outputCurrency);
@@ -954,7 +969,7 @@ class Send extends Component {
 		return (
 			<OversizedPanel hideBottom>
 				<div className="swap__exchange-rate-wrapper" style={{ margin: '2.5px', padding: '10px' }}>
-					<span className="swap__exchange-rate">{t(' ')}</span>
+					<span className="swap__exchange-rate">{' '}</span>
 					<span>{`${inputLabel} = ${exchangeRate.toFixed(7)} ${outputLabel}`}</span>
 				</div>
 			</OversizedPanel>

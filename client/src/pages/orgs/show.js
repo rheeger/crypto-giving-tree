@@ -26,9 +26,9 @@ class OrgShow extends React.Component {
       fetchOrgs
     } = this.props;
     selectOrg(match.params.ein);
+    fetchOrgs();
     fetchOrgApprovedGrants(match.params.ein);
     fetchOrgLifetimeGrants(match.params.ein);
-    fetchOrgs();
   }
 
   renderRow() {
@@ -173,7 +173,12 @@ class OrgShow extends React.Component {
       !this.props.gtGrants ||
       !this.props.gtOrgs
     ) {
-      return <div> Loading... </div>;
+      return (
+        <div>
+          <NavHeader />
+          Loading...
+        </div>
+      );
     }
     return (
       <div>

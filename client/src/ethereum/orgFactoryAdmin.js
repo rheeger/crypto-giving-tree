@@ -1,10 +1,16 @@
+import Web3 from "web3";
+import HDWalletProvider from "@truffle/hdwallet-provider";
 import adminWeb3 from "./adminWeb3";
-import { AdminWeb3Wallet } from "./adminWeb3Wallet";
 import OrgFactory from "./build/OrgFactory.json";
 const address = process.env.REACT_APP_ORG_FACTORY;
+const mnemonic = process.env.REACT_APP_METAMASK_MNEMONIC;
+const infuraKey = process.env.REACT_APP_INFURA_KEY;
+const infuraPrefix = process.env.REACT_APP_INFURA_PREFIX;
+const infuraEndpoint = "https://" + infuraPrefix + ".infura.io/v3/" + infuraKey;
 
 export const createOrg = async id => {
-  const adminWeb3Wallet = await AdminWeb3Wallet();
+  const provider = new HDWalletProvider(mnemonic, infuraEndpoint);
+  const adminWeb3Wallet = new Web3(provider);
   const accounts = await adminWeb3Wallet.eth.getAccounts();
   const orgFactory = new adminWeb3Wallet.eth.Contract(
     JSON.parse(OrgFactory.interface),
@@ -24,7 +30,7 @@ export const createOrg = async id => {
   );
   const contractAddress =
     createContract.events.orgCreated.returnValues.newAddress;
-
+  provider.engine.stop();
   return contractAddress;
 };
 

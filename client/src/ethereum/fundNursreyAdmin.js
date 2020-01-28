@@ -1,9 +1,13 @@
 import adminWeb3 from "./adminWeb3";
-import { AdminWeb3Wallet } from "./adminWeb3Wallet";
 import TreeNursery from "./build/TreeNursery.json";
+const mnemonic = process.env.REACT_APP_METAMASK_MNEMONIC;
+const infuraKey = process.env.REACT_APP_INFURA_KEY;
+const infuraPrefix = process.env.REACT_APP_INFURA_PREFIX;
+const infuraEndpoint = "https://" + infuraPrefix + ".infura.io/v3/" + infuraKey;
 
 export const plantFund = async managerAddress => {
-  const adminWeb3Wallet = await AdminWeb3Wallet();
+  const provider = new HDWalletProvider(mnemonic, infuraEndpoint);
+  const adminWeb3Wallet = new Web3(provider);
   const accounts = await adminWeb3Wallet.eth.getAccounts();
   const address = process.env.REACT_APP_TREE_NURSERY;
   const treeNursery = new adminWeb3Wallet.eth.Contract(
@@ -23,6 +27,7 @@ export const plantFund = async managerAddress => {
       gasPrice: "1000000000",
       nonce: currentNonce
     });
+  provider.engine.stop();
   return { id: createContract.events.treePlanted.returnValues.newAddress };
 };
 
