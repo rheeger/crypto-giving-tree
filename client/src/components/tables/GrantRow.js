@@ -3,7 +3,7 @@ import { Table, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
 import { connect } from "react-redux";
-import { fetchOrg } from "../../store/actions";
+import { fetchOrg } from "../../store/actions/orgs";
 
 class GrantRow extends Component {
   state = {

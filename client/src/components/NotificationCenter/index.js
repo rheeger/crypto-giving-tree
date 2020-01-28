@@ -5,7 +5,7 @@ import { NotificationSpinner } from "../Spinner";
 import { Button } from "semantic-ui-react";
 import success from "../../assets/images/success.svg";
 import failure from "../../assets/images/failure.svg";
-import { updateNCStatus } from "../../store/actions";
+import { updateNCStatus } from "../../store/actions/ncStatus";
 
 class NotificationCenter extends React.Component {
   renderClose = async () => {

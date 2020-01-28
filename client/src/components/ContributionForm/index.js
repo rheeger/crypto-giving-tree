@@ -15,7 +15,9 @@ import { retry } from '../../helpers/promise-utils';
 import EXCHANGE_ABI from '../../ethereum/uniSwap/abi/exchange';
 import ERC20_ABI from '../../ethereum/uniSwap/abi/erc20';
 import './contributionForm.scss';
-import { fetchFundDAIBalance, createDonation, updateNCStatus } from '../../store/actions';
+import { fetchFundDAIBalance } from '../../store/actions/funds';
+import { updateNCStatus } from '../../store/actions/ncStatus';
+import { createDonation } from '../../store/actions/donations';
 import logo from '../../assets/images/uniswap.png';
 import  { AdminWeb3Wallet,getAdminWalletPendingNonce } from '../../ethereum/adminWeb3Wallet';
 

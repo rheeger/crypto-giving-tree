@@ -2,13 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 import { Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import { createOrgClaim } from "../../store/actions/claims";
+import { updateNCStatus } from "../../store/actions/ncStatus";
 import {
   selectOrg,
-  createOrgClaim,
   fetchOrgs,
-  createOrgAndContract,
-  updateNCStatus
-} from "../../store/actions";
+  createOrgAndContract
+} from "../../store/actions/orgs";
 import ClaimForm from "../../components/ClaimForm";
 import Header from "../../components/Header";
 import { orgContract } from "../../ethereum/org";

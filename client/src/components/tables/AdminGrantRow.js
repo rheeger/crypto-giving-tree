@@ -1,11 +1,11 @@
 import React, { Component } from "react";
+import history from "../../history";
+import Moment from "react-moment";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Table, Button } from "semantic-ui-react";
-import { approveGrant, deleteGrant } from "../../store/actions";
-import history from "../../history";
-import Moment from "react-moment";
-import { fetchOrg } from "../../store/actions";
+import { approveGrant, deleteGrant } from "../../store/actions/grants";
+import { fetchOrg } from "../../store/actions/orgs";
 
 class AdminGrantRow extends Component {
   state = {

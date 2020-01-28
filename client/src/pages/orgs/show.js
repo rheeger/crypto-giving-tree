@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Button, Card, Grid, Table } from "semantic-ui-react";
 import {
+  fetchOrgLifetimeGrants,
   selectOrg,
   fetchOrg,
-  fetchOrgLifetimeGrants,
-  fetchOrgApprovedGrants,
-  fetchOrgs,
-  createOrgWithdrawl
-} from "../../store/actions";
+  fetchOrgs
+} from "../../store/actions/orgs";
+import { fetchOrgApprovedGrants } from "../../store/actions/grants";
+import { createOrgWithdrawl } from "../../store/actions/withdrawls";
 import OrgGrantRow from "../../components/tables/OrgGrantRow";
 import NavHeader from "../../components/Header";
 import moment from "moment";

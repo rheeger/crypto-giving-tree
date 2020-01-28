@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 import {
   fetchFund,
   fetchFundDAIBalance,
-  fetchFundGrants,
-  fetchOrgs,
-  fetchGrantableDAIBalance,
-  fetchFundDonations
-} from "../../store/actions";
+  fetchGrantableDAIBalance
+} from "../../store/actions/funds";
+import { fetchFundDonations } from "../../store/actions/donations";
+import { fetchFundGrants } from "../../store/actions/grants";
+import { fetchOrgs } from "../../store/actions/orgs";
 import { Card, Grid, Table } from "semantic-ui-react";
 import ContributionForm from "../../components/ContributionForm";
 import GrantRow from "../../components/tables/GrantRow";

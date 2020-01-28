@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Table, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
-import { fetchFund } from "../../store/actions";
+import { fetchFund } from "../../store/actions/funds";
 import { connect } from "react-redux";
 
 class OrgGrantRow extends Component {

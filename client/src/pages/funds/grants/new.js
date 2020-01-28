@@ -2,13 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 import { Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import { createGrant } from "../../../store/actions/grants";
+import { updateNCStatus } from "../../../store/actions/ncStatus";
 import {
-  createGrant,
   selectOrg,
   fetchOrgs,
-  createOrgAndContract,
-  updateNCStatus
-} from "../../../store/actions";
+  createOrgAndContract
+} from "../../../store/actions/orgs";
 import GrantForm from "../../../components/GrantForm";
 import Header from "../../../components/Header";
 import { fundContract } from "../../../ethereum/fund";

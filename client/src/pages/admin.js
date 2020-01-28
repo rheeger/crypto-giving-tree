@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  fetchFunds,
-  fetchDonations,
-  fetchOrgs,
-  fetchUnapprovedGrants,
-  fetchUnapprovedClaims
-} from "../store/actions";
+import { fetchFunds } from "../store/actions/funds";
+import { fetchDonations } from "../store/actions/donations";
+import { fetchOrgs } from "../store/actions/orgs";
+import { fetchUnapprovedGrants } from "../store/actions/grants";
+import { fetchUnapprovedClaims } from "../store/actions/claims";
 import { Grid, Table } from "semantic-ui-react";
 import AdminDonationRow from "../components/tables/AdminDonationRow";
 import history from "../history";

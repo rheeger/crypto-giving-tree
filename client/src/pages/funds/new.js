@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Button } from "semantic-ui-react";
-import { plantFundAndContract, updateNCStatus } from "../../store/actions";
+import { updateNCStatus } from "../../store/actions/ncStatus";
+import { plantFundAndContract } from "../../store/actions/funds";
 import BranchForm from "../../components/BranchForm";
 import Header from "../../components/Header";
 

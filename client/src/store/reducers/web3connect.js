@@ -5,7 +5,7 @@ import { BigNumber as BN } from "bignumber.js";
 import Web3 from "web3";
 import ERC20_ABI from "../../ethereum/uniSwap/abi/erc20";
 import ERC20_WITH_BYTES_ABI from "../../ethereum/uniSwap/abi/erc20_symbol_bytes32";
-import { fetchUserFunds } from "../actions";
+import { fetchUserFunds } from "../actions/funds";
 
 export const INITIALIZE = "we3connect/initialize";
 export const UPDATE_ACCOUNT = "we3connect/updateAccount";

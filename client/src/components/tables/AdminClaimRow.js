@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Table, Button } from "semantic-ui-react";
-import { approveClaim, deleteClaim, claimOrg } from "../../store/actions";
+import { approveClaim, deleteClaim } from "../../store/actions/claims";
+import { claimOrg } from "../../store/actions/orgs";
 import history from "../../history";
 import Moment from "react-moment";
-import { fetchOrg } from "../../store/actions";
+import { fetchOrg } from "../../store/actions/orgs";
 
 class AdminGrantRow extends Component {
   state = {

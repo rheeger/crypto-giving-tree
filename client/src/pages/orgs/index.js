@@ -5,7 +5,7 @@ import { Button, Card } from "semantic-ui-react";
 import Header from "../../components/Header";
 import SearchBar from "../../components/SearchBar";
 import { connect } from "react-redux";
-import { searchOrgs, fetchOrgs } from "../../store/actions/index";
+import { searchOrgs, fetchOrgs } from "../../store/actions/orgs";
 
 class OrgIndex extends React.Component {
   componentDidMount() {
