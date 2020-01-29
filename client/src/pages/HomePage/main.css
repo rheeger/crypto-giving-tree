@@ -1,52 +1,5 @@
-button,
 h1,
 h2,
 h3 {
-	font-family: 'Cantarell', sans-serif;
-	text-transform: uppercase;
-	color: whitesmoke;
-}
-section {
-	background-color: forestgreen;
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-position: center;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 100vh;
-	text-align: center;
-}
-
-div {
-	display: flex;
-	flex-flow: column wrap;
-	align-items: center;
-	justify-content: center;
-}
-
-h2,
-button {
-	font-weight: 700;
-}
-h1 {
-	font-weight: 400;
-	font-size: 2rem;
-	margin: 2rem;
-}
-
-h3 {
-	font-weight: 400;
-	margin: .5rem;
-}
-
-button {
-	border: 1px solid lightgreen;
-	border-radius: 5px;
-	padding: .5rem 1rem;
-	margin: 1rem;
-}
-
-button:hover {
-	background-color: lightgreen;
+  font-family: "eb-Garamond", serif;
 }

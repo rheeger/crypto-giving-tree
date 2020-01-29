@@ -1,8 +1,8 @@
 import * as types from "./types";
 import localDB from "../../helpers/apis/localDB";
 import history from "../../history";
-import { plantFund } from "../../ethereum/adminWeb3Wallet";
 import { fundContract } from "../../ethereum/fund";
+import { plantFund } from "../../ethereum/fundNursreyAdmin";
 
 //LOCAL DB ACTIONS: FUNDS
 export const plantFundAndContract = formValues => async (

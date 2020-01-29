@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Grid } from "semantic-ui-react";
 
+import "./main.css";
+
 class HomePage extends React.Component {
   renderButton() {
     if (!this.props.gtFunds) {
@@ -11,9 +13,9 @@ class HomePage extends React.Component {
     }
     if (Object.keys(this.props.gtFunds).length === 0) {
       return (
-        <Link to="/funds/new" className="ui button green">
+        <Link to="/funds/new" className="ui button basic green">
           <i className="plus circle icon" />
-          Start a Fund
+          Create a Fund
         </Link>
       );
     }
@@ -57,9 +59,10 @@ class HomePage extends React.Component {
                 <div>
                   <h1>A new way to give crypto.</h1>
                   <h3>
-                    Create your own charitable fund today. Extend grants to any
+                    Start your own charitable fund. &nbsp; Extend grants to any
                     non-profit organization.
                   </h3>
+                  <br />
                   <br />
                   {this.renderButton()}
                 </div>

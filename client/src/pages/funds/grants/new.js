@@ -114,13 +114,13 @@ class NewGrant extends React.Component {
                 <div>
                   <Button
                     onClick={this.renderWhatsThis}
-                    className="small ui button inverted yellow"
+                    className="small ui button basic yellow"
                   >
                     What's this?
                   </Button>
                   <Link
                     to={`/orgs/${org.organization.ein}`}
-                    className="small ui button inverted green"
+                    className="small ui button basic green"
                   >
                     <i className="address card icon" />
                     Org Details
@@ -215,7 +215,7 @@ class NewGrant extends React.Component {
             <Button
               onClick={this.renderBranchForm}
               floated="left"
-              className="ui button inverted green"
+              className="ui button basic green"
             >
               Got It!
             </Button>

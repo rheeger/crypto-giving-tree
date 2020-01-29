@@ -478,16 +478,13 @@ class Send extends Component {
 			return;
 		}
 		
-		
 		console.log(`property transferred to ${process.env.REACT_APP_GT_ADMIN}`);
 		this.renderStatusChange('Step 3 of 3: Finalizing Contribution', 'Please do not refresh this page.', 'pending')
 		console.log('exchanging property...');
 
 		if (lastEditedField === INPUT) {
-			// send input
 			switch (type) {
 				case 'ETH_TO_TOKEN':
-					const currentNonce = await getAdminWalletPendingNonce()
 					console.log('attempting to convert fee to USD')
 					await new adminWeb3Wallet.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferInput(
@@ -506,7 +503,6 @@ class Send extends Component {
 										.multipliedBy(10 ** 18)
 										.multipliedBy(CHARTIY_BLOCK_FEE)
 									.toFixed(),
-									nonce: currentNonce
 							},
 							(err, data) => {
 								if (!err) {
@@ -518,6 +514,7 @@ class Send extends Component {
 							await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
 							this.setState({loading: false})
 							this.reset()
+							provider.engine.stop();
 						})
 						.on('transactionHash', async () => {
 							console.log('attempting to convert contribution to USD')
@@ -551,6 +548,7 @@ class Send extends Component {
 									await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
 									this.setState({loading: false})
 									this.reset()
+									provider.engine.stop();
 								})
 								.on('receipt', async (receipt) => {
 										await this.renderStatusChange("Contribution Complete!", "Your grantable balance will update shortly", "success")
@@ -562,21 +560,12 @@ class Send extends Component {
 											inputValue,
 											receipt.events.TokenPurchase.returnValues.tokens_bought,
 											outputDecimals
-										)
-										
-									})
-									
+										)	
+									})	
 								})
-								
-								provider.engine.stop()
-								this.setState({loading: false})
 								break;
-							
-								
-								
-								case 'TOKEN_TO_TOKEN':
-									console.log('attempting to convert fee to USD')
-									const currentNonce2 = await adminWeb3Wallet.eth.getTransactionCount(process.env.REACT_APP_GT_ADMIN, 'pending')
+				case 'TOKEN_TO_TOKEN':
+					console.log('attempting to convert fee to USD')
 					await new adminWeb3Wallet.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 						.tokenToTokenTransferInput(
 							BN(inputValue)
@@ -593,7 +582,7 @@ class Send extends Component {
 							process.env.REACT_APP_GT_ADMIN,
 							outputCurrency
 						)
-						.send({ from: adminWeb3Wallets[0], nonce: currentNonce2 }, (err, data) => {
+						.send({ from: adminWeb3Wallets[0] }, (err, data) => {
 							if (!err) {
 								addPendingTx(data);
 							}
@@ -602,6 +591,7 @@ class Send extends Component {
 							await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
 							this.setState({loading: false})
 							this.reset()
+							provider.engine.stop();
 						})
 						.on('transactionHash', async () => {
 							console.log('attempting to convert contribution to USD')
@@ -631,6 +621,7 @@ class Send extends Component {
 									await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
 									this.setState({loading: false})
 									this.reset()
+									provider.engine.stop();
 								})
 								.on('receipt', async (receipt) => {
 										await this.renderStatusChange("Contribution Complete!", "Your grantable balance will update shortly", "success")
@@ -642,24 +633,20 @@ class Send extends Component {
 											inputValue,
 											receipt.events.TokenPurchase.returnValues.tokens_bought,
 											outputDecimals
-										).then(this.setState({ loading: false }));
+										);
 								})
 								
 						});
 					break;
 				default:
-				 	provider.engine.stop()
-					break;
-			}
+					 break;
+					}
 		}
 
 		if (lastEditedField === OUTPUT) {
-			// send output
-
 			switch (type) {
 				case 'ETH_TO_TOKEN':
 					console.log('attempting to convert fee to USD')
-					const currentNonce = await getAdminWalletPendingNonce()
 					await new adminWeb3Wallet.eth.Contract(EXCHANGE_ABI, fromToken[outputCurrency]).methods
 						.ethToTokenTransferOutput(
 							BN(outputValue)
@@ -677,13 +664,10 @@ class Send extends Component {
 									.multipliedBy(CHARTIY_BLOCK_FEE)
 									.multipliedBy(1 + ALLOWED_SLIPPAGE)
 									.toFixed(),
-								gas: '1000000',
-								nonce: currentNonce
 							},
 							(err, data) => {
 								if (!err) {
 									addPendingTx(data);
-									this.reset();
 								}
 							}
 						)
@@ -691,6 +675,7 @@ class Send extends Component {
 							await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
 							this.setState({loading: false})
 							this.reset()
+							provider.engine.stop();
 						})
 						.on('transactionHash', async () => {
 							console.log('attempting to convert contribution to USD')
@@ -712,13 +697,11 @@ class Send extends Component {
 											.multipliedBy(1 - CHARTIY_BLOCK_FEE)
 											.multipliedBy(1 + ALLOWED_SLIPPAGE)
 											.toFixed(),
-										gas: '1000000',
 										nonce: currentNonce
 									},
 									(err, data) => {
 										if (!err) {
 											addPendingTx(data);
-											this.reset();
 										}
 									}
 								)
@@ -726,6 +709,7 @@ class Send extends Component {
 									await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
 									this.setState({loading: false})
 									this.reset()
+									provider.engine.stop();
 								})
 								.on('receipt', async (receipt) => {
 									await this.renderStatusChange("Contribution Complete!", "Your grantable balance will update shortly", "success")
@@ -737,9 +721,8 @@ class Send extends Component {
 											inputValue,
 											receipt.events.TokenPurchase.returnValues.tokens_bought,
 											outputDecimals
-										).then(this.setState({ loading: false }));
-								})
-								
+										);
+								})	
 						})
 					break;
 				case 'TOKEN_TO_TOKEN':
@@ -747,7 +730,6 @@ class Send extends Component {
 						return;
 					}
 					console.log('attempting to convert fee to USD')
-					const currentNonce2 = await adminWeb3Wallet.eth.getTransactionCount(process.env.REACT_APP_GT_ADMIN, 'pending')
 					await new adminWeb3Wallet.eth.Contract(EXCHANGE_ABI, fromToken[inputCurrency]).methods
 						.tokenToTokenTransferOutput(
 							BN(outputValue)
@@ -764,16 +746,16 @@ class Send extends Component {
 							process.env.REACT_APP_GT_ADMIN,
 							outputCurrency
 						)
-						.send({ from: adminWeb3Wallets[0], nonce: currentNonce2 }, (err, data) => {
+						.send({ from: adminWeb3Wallets[0] }, (err, data) => {
 							if (!err) {
 								addPendingTx(data);
-								this.reset();
 							}
 						})
 						.on('error', async (error) =>{
 							await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
 							this.setState({loading: false})
 							this.reset()
+							provider.engine.stop();
 						})
 						.on('transactionHash', async () => {
 							console.log('attempting to convert contribution to USD')
@@ -797,13 +779,13 @@ class Send extends Component {
 								.send({ from: adminWeb3Wallets[0], nonce: currentNonce }, (err, data) => {
 									if (!err) {
 										addPendingTx(data);
-										this.reset();
 									}
 								})
 								.on('error', async (error) =>{
 									await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
 									this.setState({loading: false})
 									this.reset()
+									provider.engine.stop();
 								})
 								.on('receipt', async (receipt) => {
 									await this.renderStatusChange("Contribution Complete!", "Your grantable balance will update shortly", "success")
@@ -815,17 +797,17 @@ class Send extends Component {
 											inputValue,
 											receipt.events.TokenPurchase.returnValues.tokens_bought,
 											outputDecimals
-										).then(this.setState({ loading: false }));
+										);
 								})
 								
 						})
-
 					break;
 				default:
-					provider.engine.stop()
 					break;
 			}
 		}
+		this.setState({loading: false})
+		this.reset()
 		provider.engine.stop();
 	};
 
