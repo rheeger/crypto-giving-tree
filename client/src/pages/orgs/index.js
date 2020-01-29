@@ -39,18 +39,15 @@ class OrgIndex extends React.Component {
         ),
         meta: <Card.Meta>TAX-ID: {index.strein}</Card.Meta>,
         extra: (
-          <div>
-            <Link to={`/orgs/${index.ein}`} className="ui two-buttons">
-              <Button floated="right" basic color="green">
+          <div className="ui two-buttons">
+            <Link to={`/orgs/${index.ein}`}>
+              <Button floated="right" compact color="blue">
                 <i className="address card icon" />
                 org details
               </Button>
             </Link>
-            <Link
-              to={`/orgs/${index.ein}/grants/new`}
-              className="ui two-buttons"
-            >
-              <Button floated="left" basic color="red">
+            <Link to={`/orgs/${index.ein}/grants/new`}>
+              <Button floated="left" compact color="green">
                 <i className="paper plane icon" />
                 offer grant
               </Button>

@@ -44,7 +44,7 @@ class FundShow extends Component {
           <Link
             to="/orgs"
             style={{ marginLeft: "1rem" }}
-            className="ui button basic blue"
+            className="ui button compact blue"
           >
             <i className="sistrix medium icon" />
             Organizations
@@ -64,12 +64,23 @@ class FundShow extends Component {
               amount={grant.grantAmount}
               date={grant.grantDate}
               description={grant.grantDescription}
+              transStatus={grant.transStatus}
             />
           );
         } else {
           return (
             <div style={{ textAlign: "center", padding: "10px" }}>
-              No grants reccommended.
+              <div style={{ textAlign: "center", padding: "10px" }}>
+                No grants reccommended, yet. &nbsp;
+                <Link
+                  to="/orgs"
+                  style={{ marginLeft: "1rem" }}
+                  className="ui button compact blue"
+                >
+                  <i className="sistrix medium icon" />
+                  Organizations
+                </Link>
+              </div>
             </div>
           );
         }
@@ -80,7 +91,7 @@ class FundShow extends Component {
     if (Object.keys(this.props.gtDonations).length === 0) {
       return (
         <div style={{ textAlign: "center", padding: "10px" }}>
-          No token donations received.
+          No donations found.
         </div>
       );
     }
@@ -97,6 +108,7 @@ class FundShow extends Component {
               date={donation.donationDate}
               key={key}
               id={donation.id}
+              transStatus={donation.transStatus}
             />
           );
         } else {
@@ -193,11 +205,11 @@ class FundShow extends Component {
               </h3>
               <br></br>
               <div>
-                <Link to={`/funds/new`} className="ui button basic green">
+                <Link to={`/funds/new`} className="ui button compact green">
                   <i className="plus circle icon" />
                   New Fund
                 </Link>
-                <Link to={`/funds`} className="ui button basic green">
+                <Link to={`/funds`} className="ui button compact green">
                   <i className="eye icon" />
                   My Funds
                 </Link>
@@ -240,11 +252,12 @@ class FundShow extends Component {
                   <Table>
                     <Header>
                       <Row>
-                        <HeaderCell>Request Date</HeaderCell>
-                        <HeaderCell>Recipient</HeaderCell>
-                        <HeaderCell>Description</HeaderCell>
-                        <HeaderCell>Amount</HeaderCell>
-                        <HeaderCell>Status</HeaderCell>
+                        <HeaderCell>Date:</HeaderCell>
+                        <HeaderCell>Recipient:</HeaderCell>
+                        <HeaderCell>Description:</HeaderCell>
+                        <HeaderCell>Amount:</HeaderCell>
+                        <HeaderCell></HeaderCell>
+                        <HeaderCell></HeaderCell>
                       </Row>
                     </Header>
                     <Body>{this.renderGrantRow()}</Body>
@@ -257,11 +270,12 @@ class FundShow extends Component {
                   <Table>
                     <Header>
                       <Row>
-                        <HeaderCell>Donation Date</HeaderCell>
-                        <HeaderCell>From</HeaderCell>
-                        <HeaderCell>Property Donated</HeaderCell>
-                        <HeaderCell>Exchanged Amount</HeaderCell>
-                        <HeaderCell>Status</HeaderCell>
+                        <HeaderCell>Date:</HeaderCell>
+                        <HeaderCell>From:</HeaderCell>
+                        <HeaderCell>Contribution:</HeaderCell>
+                        <HeaderCell>Proceeds:</HeaderCell>
+                        <HeaderCell></HeaderCell>
+                        <HeaderCell></HeaderCell>
                       </Row>
                     </Header>
                     <Body>{this.renderDonationRow()}</Body>

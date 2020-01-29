@@ -28,6 +28,17 @@ class DonationRow extends Component {
       }
     });
   }
+  renderStatus() {
+    const { transStatus } = this.props;
+
+    if (transStatus === "failure") {
+      return <i className="times circle icon red"></i>;
+    }
+
+    if (transStatus === "success") {
+      return <i className=" check circle icon green"></i>;
+    } else return <i className="check circle icon yellow"></i>;
+  }
 
   render() {
     const {
@@ -47,13 +58,15 @@ class DonationRow extends Component {
         <Table.Cell>
           {donationAmount} {inputCurrency}
         </Table.Cell>
-        <Table.Cell>${finalTradeOutput}</Table.Cell>
+        <Table.Cell>${finalTradeOutput} </Table.Cell>
+        <Table.Cell>{this.renderStatus()}</Table.Cell>
         <Table.Cell>
           <a
             href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}etherscan.io/tx/${id}`}
             target="blank"
           >
-            <Button color="green" basic>
+            <Button compact>
+              <i className="external alternarte icon" />
               View on Etherscan
             </Button>
           </a>

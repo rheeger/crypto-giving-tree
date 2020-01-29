@@ -72,7 +72,7 @@ class NewFund extends React.Component {
                 <div>
                   <Button
                     onClick={this.renderWhatsThis}
-                    className="small ui button basic yellow"
+                    className="small ui button compact"
                   >
                     What's this?
                   </Button>
@@ -155,9 +155,9 @@ class NewFund extends React.Component {
             <Button
               onClick={this.renderBranchForm}
               floated="left"
-              className="ui button basic forest green"
+              className="ui button compact forest green"
             >
-              Got It!
+              Got it
             </Button>
           </div>
         </div>

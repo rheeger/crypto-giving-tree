@@ -40,7 +40,7 @@ class OrgShow extends React.Component {
         <div style={{ textAlign: "center", padding: "10px" }}>
           No grants received. Be the first today! &nbsp;
           <Link to={`/orgs/${this.props.match.params.ein}/grants/new`}>
-            <Button basic color="red" style={{ marginLeft: "1rem" }}>
+            <Button compact color="green" style={{ marginLeft: "1rem" }}>
               <i className="paper plane icon" />
               send grant
             </Button>
@@ -63,6 +63,7 @@ class OrgShow extends React.Component {
               amount={grant.grantAmount}
               date={grant.grantDate}
               description={grant.grantDescription}
+              transStatus={grant.transStatus}
             />
           );
         } else {
@@ -138,7 +139,7 @@ class OrgShow extends React.Component {
     if (!gtOrgs[match.params.ein] || gtOrgs[match.params.ein].claimed === false)
       return (
         <Link to={`/orgs/${this.props.match.params.ein}/claim`}>
-          <Button basic color="yellow">
+          <Button compact color="blue">
             Claim Org
           </Button>
         </Link>
@@ -152,7 +153,7 @@ class OrgShow extends React.Component {
     }
     if (gtOrgs[match.params.ein].claimed)
       return (
-        <Button onClick={this.onCashOut} floated="left" basic color="green">
+        <Button onClick={this.onCashOut} floated="left" compact color="green">
           <i className="dollar icon" />
           Cash Out
         </Button>
@@ -188,12 +189,12 @@ class OrgShow extends React.Component {
         <NavHeader />
         <div style={{ display: "flex", justifyContent: "center" }}>
           <div style={{ maxWidth: "900px" }}>
+            <h2>Organization Details:</h2>
             <Grid style={{ margin: "0 auto" }} className="Container">
               <Grid.Column width={11}>{this.renderOrgDetails()}</Grid.Column>
               <Grid.Column width={5}>
-                <h3>Actions:</h3>
                 <Link to={`/orgs/${this.props.match.params.ein}/grants/new`}>
-                  <Button floated="left" basic color="red">
+                  <Button floated="left" compact color="green">
                     <i className="paper plane icon" />
                     send grant
                   </Button>
@@ -206,11 +207,12 @@ class OrgShow extends React.Component {
                   <Table>
                     <Header>
                       <Row>
-                        <HeaderCell>Request Date</HeaderCell>
-                        <HeaderCell>Issuing Tree</HeaderCell>
-                        <HeaderCell>Description</HeaderCell>
-                        <HeaderCell>Amount</HeaderCell>
-                        <HeaderCell>Status</HeaderCell>
+                        <HeaderCell>Date:</HeaderCell>
+                        <HeaderCell>From:</HeaderCell>
+                        <HeaderCell>Memo:</HeaderCell>
+                        <HeaderCell>Amount:</HeaderCell>
+                        <HeaderCell></HeaderCell>
+                        <HeaderCell></HeaderCell>
                       </Row>
                     </Header>
                     <Body>{this.renderRow()}</Body>

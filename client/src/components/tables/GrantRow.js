@@ -16,6 +16,20 @@ class GrantRow extends Component {
     const { fetchOrg, recipient } = this.props;
     fetchOrg(recipient);
   }
+  renderStatus() {
+    const { transStatus } = this.props;
+
+    if (transStatus === "failure") {
+      return <i className="times circle icon red"></i>;
+    }
+
+    if (transStatus === "success") {
+      return <i className=" check circle icon green"></i>;
+    }
+    if (transStatus === "review") {
+      return <i className="clock icon yellow"></i>;
+    } else return <i className="check circle icon yellow"></i>;
+  }
 
   render() {
     const { id, recipient, amount, description, date, gtOrgs } = this.props;
@@ -31,13 +45,15 @@ class GrantRow extends Component {
           <Link to={`/orgs/${recipient}`}>{gtOrgs[recipient].name} </Link>
         </Table.Cell>
         <Table.Cell>{description}</Table.Cell>
-        <Table.Cell>${amount}</Table.Cell>
+        <Table.Cell>${amount} </Table.Cell>
+        <Table.Cell>{this.renderStatus()}</Table.Cell>
         <Table.Cell>
           <a
             href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}etherscan.io/tx/${id}`}
             target="blank"
           >
-            <Button color="green" basic>
+            <Button compact>
+              <i className="external alternarte icon" />
               View on Etherscan
             </Button>
           </a>

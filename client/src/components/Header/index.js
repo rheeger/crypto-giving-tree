@@ -7,7 +7,6 @@ import { setAddresses } from "../../store/reducers/swapAddresses";
 import NotificationCenter from "../NotificationCenter";
 import endaoment from "../../assets/images/endaoment.svg";
 import history from "../../history";
-import { updateAppTab } from "../../store/actions/appTab";
 
 class Header extends React.Component {
   componentDidMount() {
@@ -52,7 +51,11 @@ class Header extends React.Component {
       return (
         <div>
           <Button
-            style={{ margin: "1rem 1rem 1rem auto", padding: "10px" }}
+            style={{
+              margin: "1rem 0rem 1rem 0",
+              padding: "10px",
+              borderRadius: "0px 5px 5px 0px"
+            }}
             className="ui button basic grey"
             loading
           >
@@ -63,15 +66,21 @@ class Header extends React.Component {
     }
 
     return (
-      <Link
-        className={`ui button ${
-          this.props.appTab === "funds" ? "" : "basic"
-        } green`}
-        to="/funds"
-        style={{ margin: "auto 1rem 1rem auto", padding: "10px" }}
-      >
-        <i className="user circle outline icon" />
-        {this.truncateAccount()}
+      <Link to={`/funds`} className={`ui two-buttons`}>
+        <Button
+          style={{
+            margin: "1rem 0rem 1rem 0",
+            padding: "10px",
+            borderRadius: "5px 0px 0 5px",
+            borderLeftWidth: "0px"
+          }}
+          floated="left"
+          color="green"
+          basic={this.props.appTab === "funds" ? false : true}
+        >
+          <i className="user circle icon" />
+          {this.truncateAccount()}
+        </Button>
       </Link>
     );
   }
@@ -101,7 +110,7 @@ class Header extends React.Component {
                 fontmargin: "0 auto",
                 fontSize: "2rem"
               }}
-            >
+              >
               endaoment
             </h1> */}
             <img
@@ -112,20 +121,34 @@ class Header extends React.Component {
           </Link>
 
           <Menu.Menu position="right">
-            <h6 style={{ paddingRight: "2rem", color: "red" }}>
-              THIS IS A DEMO, USE AT YOUR OWN RISK!
-            </h6>
-            <Link
-              to="/orgs"
-              style={{ margin: "1rem", padding: "10px" }}
-              className={`ui button ${
-                this.props.appTab === "orgs" ? "" : "basic"
-              } blue`}
-            >
-              <i className="sistrix medium icon" />
-              Organizations
-            </Link>
-            {this.renderAccount()}
+            <div style={{ margin: "0 auto" }}>
+              <h6 style={{ color: "red" }}>
+                <i className="exclamation triangle icon red" />
+                THIS IS A DEMO, USE AT YOUR OWN RISK
+              </h6>
+            </div>
+          </Menu.Menu>
+          <Menu.Menu position="right">
+            <div>
+              {this.renderAccount()}
+              <Link to={`/orgs`} className={`ui two-buttons`}>
+                <Button
+                  style={{
+                    margin: "1rem 1rem 1rem 0",
+
+                    padding: "10px",
+                    borderRadius: "0px 5px 5px 0px",
+                    borderRightWidth: "none"
+                  }}
+                  floated="right"
+                  color="blue"
+                  basic={this.props.appTab === "orgs" ? false : true}
+                >
+                  <i className="sistrix medium icon" />
+                  Organizations
+                </Button>
+              </Link>
+            </div>
           </Menu.Menu>
         </Menu>
 
@@ -148,6 +171,5 @@ const mapStateToProps = (state, ownProps) => {
 export default connect(mapStateToProps, dispatch => ({
   setAddresses: networkId => dispatch(setAddresses(networkId)),
   initialize: () => dispatch(initialize()),
-  startWatching: () => dispatch(startWatching()),
-  updateAppTab: appTab => dispatch(updateAppTab(appTab))
+  startWatching: () => dispatch(startWatching())
 }))(Header);

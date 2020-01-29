@@ -43,6 +43,20 @@ class AdminGrantRow extends Component {
       } else return null;
     });
   }
+  renderStatus() {
+    const { transStatus } = this.props;
+
+    if (transStatus === "failure") {
+      return <i className="times circle icon red"></i>;
+    }
+
+    if (transStatus === "success") {
+      return <i className=" check circle icon green"></i>;
+    }
+    if (transStatus === "review") {
+      return <i className=" clock icon yellow"></i>;
+    } else return <i className="check circle icon yellow"></i>;
+  }
 
   render() {
     const {
@@ -72,13 +86,15 @@ class AdminGrantRow extends Component {
           </Link>
         </Table.Cell>
         <Table.Cell>{description}</Table.Cell>
-        <Table.Cell>${amount}</Table.Cell>
+        <Table.Cell>${amount} </Table.Cell>
+        <Table.Cell>{this.renderStatus()}</Table.Cell>
         <Table.Cell>
           <a
             href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}etherscan.io/tx/${id}`}
             target="blank"
           >
-            <Button color="blue" basic>
+            <Button compact>
+              <i className="external alternarte icon" />
               View on Etherscan
             </Button>
           </a>
@@ -88,7 +104,7 @@ class AdminGrantRow extends Component {
             loading={this.state.approveloading}
             onClick={this.onApprove}
             color="green"
-            basic
+            compact
           >
             Approve
           </Button>
@@ -98,7 +114,7 @@ class AdminGrantRow extends Component {
             loading={this.state.rejectloading}
             onClick={this.onReject}
             color="red"
-            basic
+            compact
           >
             Reject
           </Button>

@@ -122,6 +122,7 @@ class AdminPanel extends Component {
           key={donation.id}
           id={donation.id}
           gtFunds={this.props.gtFunds}
+          transStatus="review"
         />
       );
     });
@@ -151,7 +152,7 @@ class AdminPanel extends Component {
       <div>
         <NavHeader />
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <div style={{ maxWidth: "900px" }}>
+          <div style={{ maxWidth: "90%" }}>
             <Grid className="Container">
               <Grid.Row>
                 <Grid.Column width={16}>
@@ -170,9 +171,10 @@ class AdminPanel extends Component {
                         <HeaderCell>Recipient</HeaderCell>
                         <HeaderCell>Description</HeaderCell>
                         <HeaderCell>Amount</HeaderCell>
-                        <HeaderCell>View</HeaderCell>
-                        <HeaderCell>Approve</HeaderCell>
-                        <HeaderCell>Reject</HeaderCell>
+                        <HeaderCell></HeaderCell>
+                        <HeaderCell></HeaderCell>
+                        <HeaderCell></HeaderCell>
+                        <HeaderCell></HeaderCell>
                       </Row>
                     </Header>
                     <Body>{this.renderGrantRow()}</Body>
@@ -189,9 +191,10 @@ class AdminPanel extends Component {
                         <HeaderCell>Requesting Organization</HeaderCell>
                         <HeaderCell>Requesting Admin</HeaderCell>
                         <HeaderCell>Contact</HeaderCell>
-                        <HeaderCell>View</HeaderCell>
-                        <HeaderCell>Approve</HeaderCell>
-                        <HeaderCell>Reject</HeaderCell>
+                        <HeaderCell></HeaderCell>
+                        <HeaderCell></HeaderCell>
+                        <HeaderCell></HeaderCell>
+                        <HeaderCell></HeaderCell>
                       </Row>
                     </Header>
                     <Body>{this.renderClaimRow()}</Body>
@@ -209,7 +212,8 @@ class AdminPanel extends Component {
                         <HeaderCell>To</HeaderCell>
                         <HeaderCell>Property Donated</HeaderCell>
                         <HeaderCell>Exchanged Amount</HeaderCell>
-                        <HeaderCell>Status</HeaderCell>
+                        <HeaderCell></HeaderCell>
+                        <HeaderCell></HeaderCell>
                       </Row>
                     </Header>
                     <Body>{this.renderDonationRow()}</Body>

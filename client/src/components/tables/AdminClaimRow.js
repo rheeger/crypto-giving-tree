@@ -87,14 +87,13 @@ class AdminGrantRow extends Component {
         <Table.Cell>
           <a href={`mailto:${contact}`}>{contact}</a>
         </Table.Cell>
+        <Table.Cell>status</Table.Cell>
         <Table.Cell>
           <a
             href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}etherscan.io/tx/${id}`}
             target="blank"
           >
-            <Button color="blue" basic>
-              View on Etherscan
-            </Button>
+            <Button compact>View on Etherscan</Button>
           </a>
         </Table.Cell>
         <Table.Cell>
@@ -102,7 +101,7 @@ class AdminGrantRow extends Component {
             loading={this.state.approveloading}
             onClick={this.onApprove}
             color="green"
-            basic
+            compact
           >
             Approve
           </Button>
@@ -112,7 +111,7 @@ class AdminGrantRow extends Component {
             loading={this.state.rejectloading}
             onClick={this.onReject}
             color="red"
-            basic
+            compact
           >
             Reject
           </Button>

@@ -23,7 +23,7 @@ class NewGrant extends React.Component {
 
   componentDidMount = async () => {
     const { selectOrg, fetchOrgs, match, updateAppTab } = this.props;
-    updateAppTab("orgs");
+    updateAppTab("funds");
     selectOrg(match.params.ein);
     fetchOrgs();
   };
@@ -116,13 +116,13 @@ class NewGrant extends React.Component {
                 <div>
                   <Button
                     onClick={this.renderWhatsThis}
-                    className="small ui button basic yellow"
+                    className=" ui button compact  "
                   >
                     What's this?
                   </Button>
                   <Link
                     to={`/orgs/${org.organization.ein}`}
-                    className="small ui button basic green"
+                    className=" ui button compact green"
                   >
                     <i className="address card icon" />
                     Org Details
@@ -217,9 +217,9 @@ class NewGrant extends React.Component {
             <Button
               onClick={this.renderBranchForm}
               floated="left"
-              className="ui button basic green"
+              className="ui button compact green"
             >
-              Got It!
+              Got it
             </Button>
           </div>
         </div>

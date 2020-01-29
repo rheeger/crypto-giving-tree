@@ -67,7 +67,7 @@ class Manager extends React.Component {
             <h3>Looks like this address hasn't created a fund yet.</h3>
             <br></br>
             <div>
-              <Link to={`/funds/new`} className="ui button basic green">
+              <Link to={`/funds/new`} className="ui button compact green">
                 <i className="plus circle icon" />
                 Create a Fund
               </Link>
@@ -97,7 +97,10 @@ class Manager extends React.Component {
             >
               <h2>My Funds:</h2>
               <div>
-                <Link to="/funds/new" className="ui button basic forest green">
+                <Link
+                  to="/funds/new"
+                  className="ui button compact forest green"
+                >
                   <i className="plus circle icon" />
                   New Fund
                 </Link>

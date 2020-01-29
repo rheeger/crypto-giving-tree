@@ -142,13 +142,13 @@ class Claim extends React.Component {
                 <div>
                   <Button
                     onClick={this.renderWhatsThis}
-                    className="small ui button basic yellow"
+                    className="small ui button compact"
                   >
                     What's this?
                   </Button>
                   <Link
                     to={`/orgs/${org.organization.ein}`}
-                    className="small ui button basic green"
+                    className="small ui button compact green"
                   >
                     <i className="address card icon" />
                     Org Details
@@ -210,9 +210,9 @@ class Claim extends React.Component {
             <Button
               onClick={this.renderClaimForm}
               floated="left"
-              className="ui button basic green"
+              className="ui button compact green"
             >
-              Got It!
+              Got it
             </Button>
           </div>
         </div>
