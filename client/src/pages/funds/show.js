@@ -113,11 +113,7 @@ class FundShow extends Component {
             />
           );
         } else {
-          return (
-            <div style={{ textAlign: "center", padding: "10px" }}>
-              No token donations received.
-            </div>
-          );
+          return;
         }
       });
   }
@@ -257,7 +253,7 @@ class FundShow extends Component {
                         <HeaderCell>Recipient:</HeaderCell>
                         <HeaderCell>Description:</HeaderCell>
                         <HeaderCell>Amount:</HeaderCell>
-                        <HeaderCell></HeaderCell>
+                        <HeaderCell>Status:</HeaderCell>
                         <HeaderCell></HeaderCell>
                       </Row>
                     </Header>
@@ -275,7 +271,7 @@ class FundShow extends Component {
                         <HeaderCell>From:</HeaderCell>
                         <HeaderCell>Contribution:</HeaderCell>
                         <HeaderCell>Proceeds:</HeaderCell>
-                        <HeaderCell></HeaderCell>
+                        <HeaderCell>Status:</HeaderCell>
                         <HeaderCell></HeaderCell>
                       </Row>
                     </Header>

@@ -173,7 +173,7 @@ class AdminPanel extends Component {
                         <HeaderCell>Recipient</HeaderCell>
                         <HeaderCell>Description</HeaderCell>
                         <HeaderCell>Amount</HeaderCell>
-                        <HeaderCell></HeaderCell>
+                        <HeaderCell>Status</HeaderCell>
                         <HeaderCell></HeaderCell>
                         <HeaderCell></HeaderCell>
                         <HeaderCell></HeaderCell>
@@ -193,7 +193,7 @@ class AdminPanel extends Component {
                         <HeaderCell>Requesting Organization</HeaderCell>
                         <HeaderCell>Requesting Admin</HeaderCell>
                         <HeaderCell>Contact</HeaderCell>
-                        <HeaderCell></HeaderCell>
+                        <HeaderCell>Status</HeaderCell>
                         <HeaderCell></HeaderCell>
                         <HeaderCell></HeaderCell>
                         <HeaderCell></HeaderCell>
@@ -214,7 +214,7 @@ class AdminPanel extends Component {
                         <HeaderCell>To</HeaderCell>
                         <HeaderCell>Property Donated</HeaderCell>
                         <HeaderCell>Exchanged Amount</HeaderCell>
-                        <HeaderCell></HeaderCell>
+                        <HeaderCell>Status</HeaderCell>
                         <HeaderCell></HeaderCell>
                       </Row>
                     </Header>

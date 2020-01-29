@@ -39,7 +39,7 @@ class DonationRow extends Component {
       );
     }
 
-    if (transStatus === "success") {
+    if (transStatus === "complete") {
       return (
         <div>
           <i className="check circle icon green"></i> Completed

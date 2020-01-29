@@ -9,11 +9,9 @@ export const createDonation = (
   fromAddress,
   inputCurrency,
   inputAmount,
-  outputAmount,
-  outputDecimals,
+  finalTradeOutput,
   transStatus
 ) => async dispatch => {
-  const finalTradeOutput = (outputAmount / 10 ** outputDecimals).toFixed(2);
   const response = await localDB.post(`/donations`, {
     id: txID,
     to: fundAddress,
@@ -51,8 +49,15 @@ export const fetchDonation = id => async dispatch => {
   dispatch({ type: types.FETCH_DONATION, payload: response.data });
 };
 
-export const editDonation = (id, formValues) => async dispatch => {
-  const response = await localDB.patch(`/donations/${id}`, formValues);
+export const finalizeDonation = (
+  id,
+  finalTradeOutput,
+  transStatus
+) => async dispatch => {
+  const response = await localDB.patch(`/donations/${id}`, {
+    finalTradeOutput,
+    transStatus
+  });
 
   dispatch({ type: types.EDIT_DONATION, payload: response.data });
 };

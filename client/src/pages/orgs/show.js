@@ -204,22 +204,20 @@ class OrgShow extends React.Component {
                 {this.renderCashOut()}
               </Grid.Column>
               <Grid.Row>
-                <Grid.Column width={16}>
-                  <h3>Completed Grants:</h3>
-                  <Table>
-                    <Header>
-                      <Row>
-                        <HeaderCell>Date:</HeaderCell>
-                        <HeaderCell>From:</HeaderCell>
-                        <HeaderCell>Memo:</HeaderCell>
-                        <HeaderCell>Amount:</HeaderCell>
-                        <HeaderCell></HeaderCell>
-                        <HeaderCell></HeaderCell>
-                      </Row>
-                    </Header>
-                    <Body>{this.renderRow()}</Body>
-                  </Table>
-                </Grid.Column>
+                <h3>Completed Grants:</h3>
+                <Table>
+                  <Header>
+                    <Row>
+                      <HeaderCell>Date:</HeaderCell>
+                      <HeaderCell>From:</HeaderCell>
+                      <HeaderCell>Memo:</HeaderCell>
+                      <HeaderCell>Amount:</HeaderCell>
+                      <HeaderCell>Status:</HeaderCell>
+                      <HeaderCell></HeaderCell>
+                    </Row>
+                  </Header>
+                  <Body>{this.renderRow()}</Body>
+                </Table>
               </Grid.Row>
             </Grid>
           </div>

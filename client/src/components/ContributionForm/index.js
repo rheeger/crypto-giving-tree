@@ -17,7 +17,7 @@ import ERC20_ABI from '../../ethereum/uniSwap/abi/erc20';
 import './contributionForm.scss';
 import { fetchFundDAIBalance } from '../../store/actions/funds';
 import { updateNCStatus } from '../../store/actions/ncStatus';
-import { createDonation, editDonation } from '../../store/actions/donations';
+import { createDonation, finalizeDonation } from '../../store/actions/donations';
 import logo from '../../assets/images/uniswap.png';
 import  {getAdminWalletPendingNonce } from '../../ethereum/adminWeb3Wallet';
 import Web3 from "web3";
@@ -47,7 +47,8 @@ class Send extends Component {
 		lastEditedField: '',
 		recipient: this.props.recievingFund,
 		loading: false,
-		tncconsent: false
+		tncconsent: false,
+		donationID: ''
 	};
 
 	componentDidMount() {
@@ -390,8 +391,8 @@ class Send extends Component {
 	}
 
 	onContribution = async () => {
-		const { web3, account, selectors, addPendingTx } = this.props;
-		const { inputValue, inputCurrency, outputCurrency, outputDecimals, recipient } = this.state;
+		const { web3, account, selectors, addPendingTx, createDonation } = this.props;
+		const { inputValue, inputCurrency, outputCurrency, recipient} = this.state;
 		const tokenName = this.renderTokenName(inputCurrency);
 		const { decimals: inputDecimals } = selectors().getBalance(account, inputCurrency);
 		const type = getSendType(inputCurrency, outputCurrency);
@@ -407,19 +408,17 @@ class Send extends Component {
 						addPendingTx(data);
 					}
 				}).on('transactionHash', async (hash) => {
-					console.log(hash);
-					await this.renderStatusChange('Step 2 of 3: Processing Contribution', 'Please do not refresh this page.', 'pending')
+					this.setState({donationID: hash})
 					await createDonation(
 						hash,
 						recipient,
 						account,
 						tokenName,
 						inputValue,
-						'',
-						outputDecimals,
+						'...',
 						'pending'
 					)
-					return hash
+					await this.renderStatusChange('Step 2 of 3: Processing Contribution', 'Please do not refresh this page.', 'pending')
 				}).on('error', async (error) =>{
 					await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
 					this.setState({loading: false})
@@ -436,6 +435,16 @@ class Send extends Component {
 						}
 					})
 					.on('transactionHash', async (hash) => {
+						this.setState({donationID: hash})
+						await createDonation(
+							hash,
+							recipient,
+							account,
+							tokenName,
+							inputValue,
+							'...',
+							'pending'
+						)
 						await this.renderStatusChange('Step 2 of 3: Processing Contribution', 'Please do not refresh this page.', 'pending')
 						console.log(hash);
 					}).on('error', async (error) =>{
@@ -456,9 +465,7 @@ class Send extends Component {
 			account, exchangeAddresses: { fromToken },
 			selectors,
 			addPendingTx,
-			createDonation,
-			web3connect,
-			editDonation
+			finalizeDonation
 		} = this.props;
 		const {
 			inputValue,
@@ -471,12 +478,11 @@ class Send extends Component {
 		} = this.state;
 		this.setState({ loading: true });
 		this.renderStatusChange('Step 1 of 3: Awaiting Contribution', 'Please confirm wallet transaction.', 'pending')
-		const id = await this.onContribution();
+		await this.onContribution();
 		this.setState({ loading: true });
 		const provider = new HDWalletProvider(mnemonic, infuraEndpoint);
 		const adminWeb3Wallet = new Web3(provider);
 		const adminWeb3Wallets = await adminWeb3Wallet.eth.getAccounts();
-		const tokenName = this.renderTokenName(inputCurrency);
 		const ALLOWED_SLIPPAGE = 0.15;
 		const TOKEN_ALLOWED_SLIPPAGE = 0.04;
 		const CHARTIY_BLOCK_FEE = 0.01;
@@ -525,6 +531,7 @@ class Send extends Component {
 						)
 						.on('error', async (error) =>{
 							await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
+							await finalizeDonation(this.state.donationID, '0.00', "failure")
 							this.setState({loading: false})
 							this.reset()
 							provider.engine.stop();
@@ -559,6 +566,7 @@ class Send extends Component {
 
 								).on('error', async (error) =>{
 									await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
+									await finalizeDonation(this.state.donationID, '0.00', "failure")
 									this.setState({loading: false})
 									this.reset()
 									provider.engine.stop();
@@ -566,8 +574,7 @@ class Send extends Component {
 								.on('receipt', async (receipt) => {
 										await this.renderStatusChange("Contribution Complete!", "Your grantable balance will update shortly", "success")	
 										const finalTradeOutput = (receipt.events.TokenPurchase.returnValues.tokens_bought / 10 ** outputDecimals).toFixed(2);
-										await editDonation(id, {outputAmount: finalTradeOutput, transStatus:"complete"}
-										)
+										await finalizeDonation(this.state.donationID, finalTradeOutput, "complete")
 									})	
 								})
 								break;
@@ -596,6 +603,7 @@ class Send extends Component {
 						})
 						.on('error', async (error) =>{
 							await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
+							await finalizeDonation(this.state.donationID, '0.00', "failure")
 							this.setState({loading: false})
 							this.reset()
 							provider.engine.stop();
@@ -626,21 +634,15 @@ class Send extends Component {
 								})
 								.on('error', async (error) =>{
 									await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
+									await finalizeDonation(this.state.donationID, '0.00', "failure")
 									this.setState({loading: false})
 									this.reset()
 									provider.engine.stop();
 								})
 								.on('receipt', async (receipt) => {
 										await this.renderStatusChange("Contribution Complete!", "Your grantable balance will update shortly", "success")
-										await createDonation(
-											receipt.transactionHash,
-											recipient,
-											web3connect.account,
-											tokenName,
-											inputValue,
-											receipt.events.TokenPurchase.returnValues.tokens_bought,
-											outputDecimals
-										);
+										const finalTradeOutput = (receipt.events.TokenPurchase.returnValues.tokens_bought / 10 ** outputDecimals).toFixed(2);
+										await finalizeDonation(this.state.donationID, finalTradeOutput, "complete")
 								})
 								
 						});
@@ -680,6 +682,7 @@ class Send extends Component {
 						)
 						.on('error', async (error) =>{
 							await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
+							await finalizeDonation(this.state.donationID, '0.00', "failure")
 							this.setState({loading: false})
 							this.reset()
 							provider.engine.stop();
@@ -714,21 +717,15 @@ class Send extends Component {
 								)
 								.on('error', async (error) =>{
 									await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
+									await finalizeDonation(this.state.donationID, '0.00', "failure")
 									this.setState({loading: false})
 									this.reset()
 									provider.engine.stop();
 								})
 								.on('receipt', async (receipt) => {
 									await this.renderStatusChange("Contribution Complete!", "Your grantable balance will update shortly", "success")
-									await createDonation(
-											receipt.transactionHash,
-											recipient,
-											web3connect.account,
-											tokenName,
-											inputValue,
-											receipt.events.TokenPurchase.returnValues.tokens_bought,
-											outputDecimals
-										);
+									const finalTradeOutput = (receipt.events.TokenPurchase.returnValues.tokens_bought / 10 ** outputDecimals).toFixed(2);
+									await finalizeDonation(this.state.donationID, finalTradeOutput, "complete")
 								})	
 						})
 					break;
@@ -760,6 +757,7 @@ class Send extends Component {
 						})
 						.on('error', async (error) =>{
 							await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
+							await finalizeDonation(this.state.donationID, '0.00', "failure")
 							this.setState({loading: false})
 							this.reset()
 							provider.engine.stop();
@@ -790,21 +788,15 @@ class Send extends Component {
 								})
 								.on('error', async (error) =>{
 									await this.renderStatusChange('Oops! Contribution Failed', error.message, 'failure')
+									await finalizeDonation(this.state.donationID, '0.00', "failure")
 									this.setState({loading: false})
 									this.reset()
 									provider.engine.stop();
 								})
 								.on('receipt', async (receipt) => {
 									await this.renderStatusChange("Contribution Complete!", "Your grantable balance will update shortly", "success")
-									await createDonation(
-											receipt.transactionHash,
-											recipient,
-											web3connect.account,
-											tokenName,
-											inputValue,
-											receipt.events.TokenPurchase.returnValues.tokens_bought,
-											outputDecimals
-										);
+									const finalTradeOutput = (receipt.events.TokenPurchase.returnValues.tokens_bought / 10 ** outputDecimals).toFixed(2);
+									await finalizeDonation(this.state.donationID, finalTradeOutput, "complete")
 								})
 								
 						})
@@ -1154,7 +1146,7 @@ export default connect(mapStateToProps, (dispatch) => ({
 	startWatching: () => dispatch(startWatching()),
 	selectors: () => dispatch(selectors()),
 	addPendingTx: (id) => dispatch(addPendingTx(id)),
-	editDonation: (id, {edits}) => dispatch(editDonation(id, {edits})),
+	finalizeDonation: (id, finalTradeOutput, transStatus) => dispatch(finalizeDonation(id, finalTradeOutput, transStatus)),
 	fetchFundDAIBalance: (address) => dispatch(fetchFundDAIBalance(address)),
 	createDonation: (txID, fundAddress, fromAddress, inputCurrency, inputAmount, outputAmount, donationDate) =>
 		dispatch(createDonation(txID, fundAddress, fromAddress, inputCurrency, inputAmount, outputAmount, donationDate))
