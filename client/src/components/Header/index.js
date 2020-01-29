@@ -6,6 +6,7 @@ import { startWatching, initialize } from "../../store/reducers/web3connect";
 import { setAddresses } from "../../store/reducers/swapAddresses";
 import NotificationCenter from "../NotificationCenter";
 import endaoment from "../../assets/images/endaoment.svg";
+import history from "../../history";
 
 class Header extends React.Component {
   componentDidMount() {
@@ -73,6 +74,17 @@ class Header extends React.Component {
   }
 
   render() {
+    if (
+      this.props.web3.account &&
+      this.props.web3.account !==
+        (process.env.REACT_APP_MEW_MAIN ||
+          process.env.REACT_APP_PEEP_ETH ||
+          process.env.REACT_APP_BRAVE_WALLET ||
+          process.env.REACT_APP_GT_ADMIN ||
+          process.env.REACT_APP_JCF_ADMIN)
+    ) {
+      history.push("/");
+    }
     return (
       <div>
         <Menu style={{ margin: "1rem" }}>

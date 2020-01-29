@@ -29,17 +29,6 @@ class HomePage extends React.Component {
   }
 
   render() {
-    // if (
-    //   this.props.web3.account &&
-    //   this.props.web3.account !==
-    //     (process.env.REACT_APP_MEW_MAIN ||
-    //       process.env.REACT_APP_PEEP_ETH ||
-    //       process.env.REACT_APP_BRAVE_WALLET ||
-    //       process.env.REACT_APP_GT_ADMIN ||
-    //       process.env.REACT_APP_JCF_ADMIN)
-    // ) {
-    //   history.push("/");
-    // }
     return (
       <div>
         <Header />
