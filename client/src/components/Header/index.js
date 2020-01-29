@@ -74,14 +74,15 @@ class Header extends React.Component {
   }
 
   render() {
+    const whitelist = [
+      process.env.REACT_APP_MEW_MAIN,
+      process.env.REACT_APP_PEEP_ETH,
+      process.env.REACT_APP_BRAVE_WALLET,
+      process.env.REACT_APP_GT_ADMIN
+    ];
     if (
       this.props.web3.account &&
-      this.props.web3.account !==
-        (process.env.REACT_APP_MEW_MAIN ||
-          process.env.REACT_APP_PEEP_ETH ||
-          process.env.REACT_APP_BRAVE_WALLET ||
-          process.env.REACT_APP_GT_ADMIN ||
-          process.env.REACT_APP_JCF_ADMIN)
+      !whitelist.includes(this.props.web3.account)
     ) {
       history.push("/");
     }
