@@ -39,17 +39,26 @@ class OrgIndex extends React.Component {
         ),
         meta: <Card.Meta>TAX-ID: {index.strein}</Card.Meta>,
         extra: (
-          <div className="ui two-buttons">
-            <Link to={`/orgs/${index.ein}`}>
-              <Button floated="right" compact color="blue">
-                <i className="address card icon" />
-                org details
+          <div
+            style={{
+              dlisplay: "flex",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <Link
+              style={{ marginLeft: ".4rem" }}
+              to={`/orgs/${index.ein}/grants/new`}
+            >
+              <Button compact color="green">
+                <i className="paper plane icon" />
+                Offer Grant
               </Button>
             </Link>
-            <Link to={`/orgs/${index.ein}/grants/new`}>
-              <Button floated="left" compact color="green">
-                <i className="paper plane icon" />
-                offer grant
+            <Link to={`/orgs/${index.ein}`}>
+              <Button compact color="blue">
+                <i className="address card icon" />
+                Org Details
               </Button>
             </Link>
           </div>
@@ -73,6 +82,7 @@ class OrgIndex extends React.Component {
         <Header />
         <div style={{ display: "flex", justifyContent: "center" }}>
           <div style={{ width: "900px" }}>
+            <h3>Search Organizations:</h3>
             <SearchBar onSearchTermChange={orgSearch} onSubmit={orgSearch} />
             <div style={{ margin: "0 auto", maxWidth: "80vw" }}>
               <p>Found {results} organizations</p>

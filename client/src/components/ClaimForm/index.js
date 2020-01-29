@@ -96,7 +96,8 @@ class ClaimForm extends React.Component {
           label="Terms and Conditions:"
         ></Field>
         <Button className="ui button primary" disabled={this.props.loading}>
-          Submit
+          <i className="paper plane icon" />
+          Submit Claim
         </Button>
       </form>
     );

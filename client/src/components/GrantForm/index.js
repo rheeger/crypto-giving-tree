@@ -101,8 +101,9 @@ class GrantForm extends React.Component {
           type="checkbox"
           label="Legal Verification:"
         ></Field>
-        <Button disabled={this.props.loading} className="ui button primary">
-          Submit
+        <Button disabled={this.props.loading} className="ui button green">
+          <i className="paper plane icon" />
+          Reccomend Grant
         </Button>
       </form>
     );

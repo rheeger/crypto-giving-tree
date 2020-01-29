@@ -157,6 +157,7 @@ class NewFund extends React.Component {
               floated="left"
               className="ui button compact forest green"
             >
+              <i className="check icon" />
               Got it
             </Button>
           </div>

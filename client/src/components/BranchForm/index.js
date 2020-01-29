@@ -254,8 +254,9 @@ class BranchForm extends React.Component {
           ></Field>
           <Field name="captcharesponse" component={this.Captcha} />
           <br />
-          <Button disabled={this.props.loading} className="ui button primary">
-            Submit
+          <Button disabled={this.props.loading} className="ui button green">
+            <i className="paper plane icon" />
+            Create Fund
           </Button>
         </form>
         {this.renderModal()}

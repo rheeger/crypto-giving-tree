@@ -965,12 +965,13 @@ class Send extends Component {
 		if (!outputValue) {
 			return (
 				<Button
-					className={classnames('primary centered', {
+					className={classnames('green centered', {
 						inactive: !this.props.isConnected
 					})}
 					disabled={!isValid || !tncconsent}
 					onClick={this.onSend}
 				>
+					<i className="paper plane icon" />
 					Donate
 				</Button>
 			);
@@ -979,12 +980,13 @@ class Send extends Component {
 		return (
 			<div>
 				<Button
-					className={classnames('primary centered', {
+					className={classnames('green centered', {
 						inactive: !this.props.isConnected
 					})}
 					disabled={!isValid || !tncconsent || this.state.loading}
 					onClick={this.onSend}
 				>
+					<i className="paper plane icon" />
 					Donate ~${outputValue.toLocaleString('en')}
 				</Button>
 			</div >

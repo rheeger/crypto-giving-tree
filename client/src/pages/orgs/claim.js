@@ -148,7 +148,7 @@ class Claim extends React.Component {
                   </Button>
                   <Link
                     to={`/orgs/${org.organization.ein}`}
-                    className="small ui button compact green"
+                    className="small ui button compact blue"
                   >
                     <i className="address card icon" />
                     Org Details
@@ -212,6 +212,7 @@ class Claim extends React.Component {
               floated="left"
               className="ui button compact green"
             >
+              <i className="check icon" />
               Got it
             </Button>
           </div>

@@ -122,7 +122,7 @@ class NewGrant extends React.Component {
                   </Button>
                   <Link
                     to={`/orgs/${org.organization.ein}`}
-                    className=" ui button compact green"
+                    className=" ui button compact blue"
                   >
                     <i className="address card icon" />
                     Org Details
@@ -219,6 +219,7 @@ class NewGrant extends React.Component {
               floated="left"
               className="ui button compact green"
             >
+              <i className="check icon" />
               Got it
             </Button>
           </div>

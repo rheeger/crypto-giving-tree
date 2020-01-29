@@ -140,6 +140,7 @@ class OrgShow extends React.Component {
       return (
         <Link to={`/orgs/${this.props.match.params.ein}/claim`}>
           <Button compact color="blue">
+            <i className="clipboard check icon" />
             Claim Org
           </Button>
         </Link>
