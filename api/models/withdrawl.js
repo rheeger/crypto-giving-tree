@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 //model
 const withdrawlSchema = new Schema({
-  id: { type: String, unique: true },
+  id: { type: String },
   selectedOrg: String,
   orgAdminWallet: String,
   withdrawlAmount: Number,

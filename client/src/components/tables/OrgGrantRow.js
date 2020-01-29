@@ -17,15 +17,29 @@ class OrgGrantRow extends Component {
     fetchFund(fund);
   }
   renderStatus() {
-    const { transStatus } = this.props;
-
-    if (transStatus === "failure") {
-      return <i className="times circle icon red"></i>;
+    const { grantApproval, approvalDetails } = this.props;
+    if (grantApproval === "false" && approvalDetails !== {}) {
+      return (
+        <div>
+          <i className="times circle icon red"></i>; Rejected
+        </div>
+      );
     }
 
-    if (transStatus === "success") {
-      return <i className=" check circle icon green"></i>;
-    } else return <i className="check circle icon yellow"></i>;
+    if (grantApproval === true) {
+      return (
+        <div>
+          <i className="check circle icon green"></i> Completed
+        </div>
+      );
+    }
+    if (grantApproval === false) {
+      return (
+        <div>
+          <i className="clock icon yellow"></i> In Review
+        </div>
+      );
+    }
   }
 
   render() {

@@ -63,7 +63,8 @@ class OrgShow extends React.Component {
               amount={grant.grantAmount}
               date={grant.grantDate}
               description={grant.grantDescription}
-              transStatus={grant.transStatus}
+              grantApproval={grant.grantApproval}
+              approvalDetails={grant.approvalDetails}
             />
           );
         } else {

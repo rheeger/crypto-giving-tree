@@ -31,8 +31,8 @@ class FundShow extends Component {
     updateAppTab("funds");
     fetchFundDAIBalance(match.params.address);
     fetchGrantableDAIBalance(match.params.address);
-    fetchFundDonations(match.params.address);
     fetchFundGrants(match.params.address);
+    fetchFundDonations(match.params.address);
     fetchOrgs();
   };
 
@@ -64,7 +64,8 @@ class FundShow extends Component {
               amount={grant.grantAmount}
               date={grant.grantDate}
               description={grant.grantDescription}
-              transStatus={grant.transStatus}
+              grantApproval={grant.grantApproval}
+              approvalDetails={grant.approvalDetails}
             />
           );
         } else {
@@ -219,7 +220,6 @@ class FundShow extends Component {
         </div>
       );
     }
-
     return (
       <div>
         <NavHeader />
@@ -248,7 +248,8 @@ class FundShow extends Component {
               </Grid.Row>
               <Grid.Row>
                 <Grid.Column width={16}>
-                  <h3>Extended Grants:</h3>
+                  <h3>Fund Activity:</h3>
+                  <h3>Grants:</h3>
                   <Table>
                     <Header>
                       <Row>
@@ -266,7 +267,7 @@ class FundShow extends Component {
               </Grid.Row>
               <Grid.Row>
                 <Grid.Column width={16}>
-                  <h3>Recieved Donations:</h3>
+                  <h3>Donations:</h3>
                   <Table>
                     <Header>
                       <Row>
@@ -282,17 +283,6 @@ class FundShow extends Component {
                   </Table>
                 </Grid.Column>
               </Grid.Row>
-              {/* 
-					<Link route={`/funds/${this.props.address}/grants`}>
-						<a>
-							<Button primary>View Grants</Button>
-						</a>
-					</Link>
-					<Link route={`/`}>
-						<a>
-							<Button secondary>See All</Button>
-						</a>
-					</Link> */}
             </Grid>
           </div>
         </div>

@@ -87,7 +87,6 @@ class AdminGrantRow extends Component {
         <Table.Cell>
           <a href={`mailto:${contact}`}>{contact}</a>
         </Table.Cell>
-        <Table.Cell>status</Table.Cell>
         <Table.Cell>
           <a
             href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}etherscan.io/tx/${id}`}

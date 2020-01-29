@@ -43,12 +43,25 @@ class AdminDonationRow extends Component {
     const { transStatus } = this.props;
 
     if (transStatus === "failure") {
-      return <i className="times circle icon red"></i>;
+      return (
+        <div>
+          <i className="times circle icon red"></i> Failure
+        </div>
+      );
     }
 
     if (transStatus === "success") {
-      return <i className=" check circle icon green"></i>;
-    } else return <i className="check circle icon yellow"></i>;
+      return (
+        <div>
+          <i className="check circle icon green"></i> Completed
+        </div>
+      );
+    } else
+      return (
+        <div>
+          <i className="clock icon yellow"></i> In Progress
+        </div>
+      );
   }
 
   render() {

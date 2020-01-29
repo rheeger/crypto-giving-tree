@@ -82,7 +82,7 @@ class OrgIndex extends React.Component {
         <Header />
         <div style={{ display: "flex", justifyContent: "center" }}>
           <div style={{ width: "900px" }}>
-            <h3>Search Organizations:</h3>
+            <h2>Search Organizations:</h2>
             <SearchBar onSearchTermChange={orgSearch} onSubmit={orgSearch} />
             <div style={{ margin: "0 auto", maxWidth: "80vw" }}>
               <p>Found {results} organizations</p>

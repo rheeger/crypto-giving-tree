@@ -58,6 +58,8 @@ class AdminPanel extends Component {
               grantIndex={grant.grantIndex}
               onSubmit={this.onApproveSubmit}
               gtFunds={this.props.gtFunds}
+              grantApproval={grant.grantApproval}
+              approvalDetails={grant.approvalDetails}
             />
           );
         } else {
@@ -122,7 +124,7 @@ class AdminPanel extends Component {
           key={donation.id}
           id={donation.id}
           gtFunds={this.props.gtFunds}
-          transStatus="review"
+          transStatus={donation.transStatus}
         />
       );
     });
