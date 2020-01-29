@@ -7,6 +7,7 @@ import { setAddresses } from "../../store/reducers/swapAddresses";
 import NotificationCenter from "../NotificationCenter";
 import endaoment from "../../assets/images/endaoment.svg";
 import history from "../../history";
+import { updateAppTab } from "../../store/actions/appTab";
 
 class Header extends React.Component {
   componentDidMount() {
@@ -16,7 +17,6 @@ class Header extends React.Component {
     } catch (err) {
       console.log(err);
     }
-    console.log(this.props);
   }
 
   componentDidUpdate() {
@@ -148,5 +148,6 @@ const mapStateToProps = (state, ownProps) => {
 export default connect(mapStateToProps, dispatch => ({
   setAddresses: networkId => dispatch(setAddresses(networkId)),
   initialize: () => dispatch(initialize()),
-  startWatching: () => dispatch(startWatching())
+  startWatching: () => dispatch(startWatching()),
+  updateAppTab: appTab => dispatch(updateAppTab(appTab))
 }))(Header);

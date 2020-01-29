@@ -3,10 +3,14 @@ import Header from "../../components/Header";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Grid } from "semantic-ui-react";
+import { updateAppTab } from "../../store/actions/appTab";
 
 import "./main.css";
 
 class HomePage extends React.Component {
+  componentDidMount() {
+    this.props.updateAppTab("");
+  }
   renderButton() {
     if (!this.props.gtFunds) {
       return;
@@ -68,4 +72,4 @@ const mapStateToProps = state => {
   return { gtFunds: state.gtFunds, web3: state.web3connect };
 };
 
-export default connect(mapStateToProps)(HomePage);
+export default connect(mapStateToProps, { updateAppTab })(HomePage);
