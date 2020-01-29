@@ -6,11 +6,13 @@ import Header from "../../components/Header";
 import SearchBar from "../../components/SearchBar";
 import { connect } from "react-redux";
 import { searchOrgs, fetchOrgs } from "../../store/actions/orgs";
+import { updateAppTab } from "../../store/actions/appTab";
 
 class OrgIndex extends React.Component {
   componentDidMount() {
     this.props.searchOrgs(null);
     this.props.fetchOrgs();
+    this.props.updateAppTab("orgs");
   }
 
   renderOrgs() {
@@ -90,4 +92,8 @@ const mapStateToProps = state => {
   return { orgs: state.orgs };
 };
 
-export default connect(mapStateToProps, { searchOrgs, fetchOrgs })(OrgIndex);
+export default connect(mapStateToProps, {
+  searchOrgs,
+  fetchOrgs,
+  updateAppTab
+})(OrgIndex);

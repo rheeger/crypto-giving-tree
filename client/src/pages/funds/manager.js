@@ -3,8 +3,13 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import { Card } from "semantic-ui-react";
+import { updateAppTab } from "../../store/actions/appTab";
 
 class Manager extends React.Component {
+  componentDidMount() {
+    this.props.updateAppTab("funds");
+  }
+
   truncateContract(address) {
     if (address) {
       return address.substring(0, 4) + "..." + address.substring(39, 42);
@@ -119,4 +124,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Manager);
+export default connect(mapStateToProps, { updateAppTab })(Manager);

@@ -16,6 +16,7 @@ class Header extends React.Component {
     } catch (err) {
       console.log(err);
     }
+    console.log(this.props);
   }
 
   componentDidUpdate() {
@@ -41,7 +42,7 @@ class Header extends React.Component {
 
   truncateAccount() {
     const { account } = this.props;
-    return account.substring(0, 4) + "..." + account.substring(39, 42);
+    return account.slice(0, 4) + "..." + account.slice(-4);
   }
 
   renderAccount() {
@@ -63,7 +64,9 @@ class Header extends React.Component {
 
     return (
       <Link
-        className="ui button basic black"
+        className={`ui button ${
+          this.props.appTab === "funds" ? "" : "basic"
+        } green`}
         to="/funds"
         style={{ margin: "auto 1rem 1rem auto", padding: "10px" }}
       >
@@ -115,7 +118,9 @@ class Header extends React.Component {
             <Link
               to="/orgs"
               style={{ margin: "1rem", padding: "10px" }}
-              className="ui button basic blue"
+              className={`ui button ${
+                this.props.appTab === "orgs" ? "" : "basic"
+              } blue`}
             >
               <i className="sistrix medium icon" />
               Organizations
@@ -130,8 +135,9 @@ class Header extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   return {
+    appTab: state.appTab,
     gtFunds: state.gtFunds,
     web3: state.web3connect,
     account: state.web3connect.account,

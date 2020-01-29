@@ -12,7 +12,7 @@ import {
 import ClaimForm from "../../components/ClaimForm";
 import Header from "../../components/Header";
 import { orgContract } from "../../ethereum/org";
-
+import { updateAppTab } from "../../store/actions/appTab";
 class Claim extends React.Component {
   state = {
     loading: false,
@@ -20,9 +20,10 @@ class Claim extends React.Component {
   };
 
   componentDidMount() {
-    const { selectOrg, match, fetchOrgs } = this.props;
+    const { selectOrg, match, fetchOrgs, updateAppTab } = this.props;
     selectOrg(match.params.ein);
     fetchOrgs();
+    updateAppTab("orgs");
   }
 
   setupOrg = async () => {
@@ -234,5 +235,6 @@ export default connect(mapStateToProps, {
   createOrgClaim,
   fetchOrgs,
   createOrgAndContract,
-  updateNCStatus
+  updateNCStatus,
+  updateAppTab
 })(Claim);

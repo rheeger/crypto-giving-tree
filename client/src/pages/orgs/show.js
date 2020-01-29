@@ -13,6 +13,7 @@ import { createOrgWithdrawl } from "../../store/actions/withdrawls";
 import OrgGrantRow from "../../components/tables/OrgGrantRow";
 import NavHeader from "../../components/Header";
 import moment from "moment";
+import { updateAppTab } from "../../store/actions/appTab";
 
 class OrgShow extends React.Component {
   initialState = {};
@@ -23,12 +24,14 @@ class OrgShow extends React.Component {
       fetchOrgApprovedGrants,
       match,
       fetchOrgLifetimeGrants,
-      fetchOrgs
+      fetchOrgs,
+      updateAppTab
     } = this.props;
     selectOrg(match.params.ein);
     fetchOrgs();
     fetchOrgApprovedGrants(match.params.ein);
     fetchOrgLifetimeGrants(match.params.ein);
+    updateAppTab("orgs");
   }
 
   renderRow() {
@@ -237,5 +240,6 @@ export default connect(mapStateToProps, {
   fetchOrg,
   fetchOrgLifetimeGrants,
   fetchOrgs,
-  createOrgWithdrawl
+  createOrgWithdrawl,
+  updateAppTab
 })(OrgShow);

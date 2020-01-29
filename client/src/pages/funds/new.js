@@ -5,6 +5,7 @@ import { updateNCStatus } from "../../store/actions/ncStatus";
 import { plantFundAndContract } from "../../store/actions/funds";
 import BranchForm from "../../components/BranchForm";
 import Header from "../../components/Header";
+import { updateAppTab } from "../../store/actions/appTab";
 
 class NewFund extends React.Component {
   state = {
@@ -15,6 +16,7 @@ class NewFund extends React.Component {
 
   componentDidMount() {
     this.setState({ ready: "false" });
+    this.props.updateAppTab("funds");
   }
 
   renderStatusChange = async (headline, message, status) => {
@@ -173,5 +175,6 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
   plantFundAndContract,
-  updateNCStatus
+  updateNCStatus,
+  updateAppTab
 })(NewFund);
