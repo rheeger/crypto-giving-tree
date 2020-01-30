@@ -575,6 +575,7 @@ class Send extends Component {
 										await this.renderStatusChange("Contribution Complete!", "Your grantable balance will update shortly", "success")	
 										const finalTradeOutput = (receipt.events.TokenPurchase.returnValues.tokens_bought / 10 ** outputDecimals).toFixed(2);
 										await finalizeDonation(this.state.donationID, finalTradeOutput, "complete")
+										// await this.props.onComplete()
 									})	
 								})
 								break;

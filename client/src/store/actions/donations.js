@@ -1,6 +1,7 @@
 import * as types from "./types";
 import localDB from "../../helpers/apis/localDB";
 import history from "../../history";
+import _ from "lodash";
 
 //ACTIONS: DONATIONS
 export const createDonation = (
@@ -60,6 +61,11 @@ export const finalizeDonation = (
   });
 
   dispatch({ type: types.EDIT_DONATION, payload: response.data });
+  if (transStatus === "complete") {
+    _.delay(function() {
+      window.location.reload();
+    }, 2000);
+  }
 };
 
 export const deleteDonation = id => async dispatch => {

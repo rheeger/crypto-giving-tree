@@ -4,10 +4,7 @@ import "./SearchBar.css";
 class SearchBar extends Component {
   constructor(props) {
     super(props);
-
     this.state = { term: "" };
-
-    console.log(this.props);
   }
 
   render() {
@@ -24,7 +21,6 @@ class SearchBar extends Component {
 
   onInputChange(term) {
     this.setState({ term });
-    console.log(this.props);
     this.props.onSearchTermChange(term);
   }
 }

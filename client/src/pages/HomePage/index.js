@@ -2,15 +2,9 @@ import React from "react";
 import Header from "../../components/Header";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Grid } from "semantic-ui-react";
 import { updateAppTab } from "../../store/actions/appTab";
 
-import "./main.css";
-
 class HomePage extends React.Component {
-  componentDidMount() {
-    this.props.updateAppTab("");
-  }
   renderButton() {
     if (!this.props.gtFunds) {
       return;
@@ -24,6 +18,7 @@ class HomePage extends React.Component {
       );
     }
     if (Object.keys(this.props.gtFunds).length > 0) {
+      this.props.updateAppTab("funds");
       return (
         <Link to="/funds" className="ui button compact green">
           See My Funds
@@ -37,31 +32,121 @@ class HomePage extends React.Component {
       <div>
         <Header />
         <div>
-          <Grid className="Container">
-            <Grid.Row>
-              <Grid.Column
+          <div style={{}}>
+            <div
+              style={{
+                height: "100vh",
+                display: "flex",
+                flexFlow: "column",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                maxWidth: "1000",
+                margin: "0 auto"
+              }}
+            >
+              <div
                 style={{
-                  margin: "5rem auto",
-                  textAlign: "center",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center"
+                  display: "flex-flow",
+                  alignItems: "center",
+                  margin: "4rem",
+                  justifyContent: "center"
                 }}
-                width={16}
               >
-                <div>
-                  <h1>A new way to give crypto.</h1>
-                  <h3>
-                    Start your own charitable fund. &nbsp; Extend grants to any
-                    non-profit organization.
-                  </h3>
-                  <br />
-                  <br />
+                <p
+                  style={{
+                    fontFamily: "all-round-gothic",
+                    fontWeight: "400",
+                    fontSize: "4rem",
+                    textAlign: "center"
+                  }}
+                >
+                  Hello, philanthropist.
+                </p>
+                <div
+                  style={{
+                    display: "flex-flow",
+                    justifyContent: "center",
+                    width: "360px",
+                    margin: "0 auto"
+                  }}
+                >
+                  <div style={{ display: "flex" }}>
+                    <p
+                      style={{
+                        fontFamily: "all-round-gothic",
+                        fontWeight: "600",
+                        fontSize: "1.25rem"
+                      }}
+                    >
+                      STEP 1:&nbsp;
+                    </p>
+                    <p
+                      style={{
+                        fontFamily: "all-round-gothic",
+                        fontWeight: "400",
+                        fontSize: "1.25rem"
+                      }}
+                    >
+                      Start your own donor-advised fund
+                    </p>
+                  </div>
+                  <div style={{ display: "flex" }}>
+                    <p
+                      style={{
+                        fontFamily: "all-round-gothic",
+                        fontWeight: "600",
+                        fontSize: "1.25rem"
+                      }}
+                    >
+                      STEP 2:&nbsp;
+                    </p>
+                    <p
+                      style={{
+                        fontFamily: "all-round-gothic",
+                        fontWeight: "400",
+                        fontSize: "1.25rem"
+                      }}
+                    >
+                      Contribute your cryptocurrency
+                    </p>
+                  </div>
+                  <div style={{ display: "flex" }}>
+                    <p
+                      style={{
+                        fontFamily: "all-round-gothic",
+                        fontWeight: "600",
+                        fontSize: "1.25rem"
+                      }}
+                    >
+                      STEP 3:&nbsp;
+                    </p>
+                    <p
+                      style={{
+                        fontFamily: "all-round-gothic",
+                        fontWeight: "400",
+                        fontSize: "1.25rem"
+                      }}
+                    >
+                      Extend grants to any organization
+                    </p>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: "3rem 0"
+                  }}
+                >
+                  <Link to="/about" className="ui button compact">
+                    Learn More
+                  </Link>
                   {this.renderButton()}
                 </div>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );

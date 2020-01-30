@@ -98,7 +98,7 @@ class NewFund extends React.Component {
             display: "flex",
             justifyContent: "flex-start",
             alignItems: "center",
-            maxWidth: "350px"
+            maxWidth: "450px"
           }}
         >
           <div>
@@ -132,7 +132,7 @@ class NewFund extends React.Component {
               </a>
             </h3>
             <h3>
-              3. Contributed tokens are exchanged by &nbsp;
+              3. Contributed tokens are exchanged by
               {"  "}
               <span
                 style={{
@@ -154,8 +154,7 @@ class NewFund extends React.Component {
 
             <Button
               onClick={this.renderBranchForm}
-              floated="left"
-              className="ui button compact forest green"
+              className="ui button compact green"
             >
               <i className="check icon" />
               Got it

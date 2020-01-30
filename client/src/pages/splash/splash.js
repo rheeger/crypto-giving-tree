@@ -1,7 +1,6 @@
 import React from "react";
-// import './style.css';
-import "./heegerreset.css";
 import endaoment from "../../assets/images/endaoment.svg";
+import { Link } from "react-router-dom";
 
 class Splash extends React.Component {
   render() {
@@ -13,39 +12,61 @@ class Splash extends React.Component {
               height: "100vh",
               display: "flex",
               flexFlow: "column",
-              justifyContent: "flex-start",
+              justifyContent: "center",
               alignItems: "center",
-              maxWidth: "750px",
+              maxWidth: "1000",
               margin: "0 auto"
             }}
           >
-            <h3
-              style={{
-                fontWeight: "2rem",
-                fontStyle: "italic",
-                fontSize: "1.25rem",
-                padding: "2rem",
-                margin: "2rem 2rem 0rem 2rem",
-                textAlign: "center"
-              }}
-            >
-              future home of:
-            </h3>
             <img
               alt="endaoment"
-              style={{ margin: "2rem 2rem 4rem 2rem" }}
+              style={{ width: "15rem" }}
               src={endaoment}
             ></img>
-            <div style={{ display: "flex", margin: "2rem" }}>
-              <h3
+            <div
+              style={{
+                display: "flex-flow",
+                alignItems: "center",
+                margin: "5rem",
+                justifyContent: "center"
+              }}
+            >
+              <p
                 style={{
-                  fontSize: "2rem",
-                  fontStyle: "italic",
+                  fontFamily: "all-round-gothic",
+                  fontWeight: "400",
+                  fontSize: "5rem",
                   textAlign: "center"
                 }}
               >
-                smart contract charitable funds
-              </h3>
+                A new way to give.
+              </p>
+              <p
+                style={{
+                  fontFamily: "all-round-gothic",
+                  fontWeight: "400",
+                  fontSize: "1.5rem",
+                  textAlign: "center",
+                  margin: "5rem 0"
+                }}
+              >
+                smart contract donor-advised funds
+              </p>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "8rem 0"
+                }}
+              >
+                <Link to="/about" className="ui button compact">
+                  Learn More
+                </Link>
+                <Link to="/alpha" className="ui button compact green">
+                  Try the Alpha
+                </Link>
+              </div>
             </div>
           </div>
         </div>

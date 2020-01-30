@@ -69,7 +69,7 @@ class OrgIndex extends React.Component {
   }
 
   render() {
-    const orgSearch = _.debounce(term => {
+    const orgSearch = _.delay(term => {
       this.props.searchOrgs(term);
     }, 800);
 

@@ -113,7 +113,7 @@ class FundShow extends Component {
             />
           );
         } else {
-          return;
+          return null;
         }
       });
   }
@@ -224,13 +224,13 @@ class FundShow extends Component {
             <Grid className="Container">
               <Grid.Row>
                 <Grid.Column width={10}>
-                  <h3>Fund details:</h3>
+                  <h2>Fund details:</h2>
                   {this.renderCards()}
                 </Grid.Column>
 
                 <Grid.Column width={6}>
                   <h3>
-                    Donate to{" "}
+                    Contribute to{" "}
                     {
                       this.props.gtFunds[this.props.match.params.address]
                         .branchName
@@ -244,7 +244,7 @@ class FundShow extends Component {
               </Grid.Row>
               <Grid.Row>
                 <Grid.Column width={16}>
-                  <h3>Fund Activity:</h3>
+                  <h2>Fund Activity:</h2>
                   <h3>Grants:</h3>
                   <Table>
                     <Header>

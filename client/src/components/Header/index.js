@@ -1,12 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Menu, Button } from "semantic-ui-react";
+import { Menu, Button, Message } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { startWatching, initialize } from "../../store/reducers/web3connect";
 import { setAddresses } from "../../store/reducers/swapAddresses";
 import NotificationCenter from "../NotificationCenter";
 import endaoment from "../../assets/images/endaoment.svg";
-// import history from "../../history";
+
+import "./main.css";
 
 class Header extends React.Component {
   componentDidMount() {
@@ -49,19 +50,21 @@ class Header extends React.Component {
 
     if (!account && !initialized) {
       return (
-        <div>
+        <Link>
           <Button
             style={{
               margin: "1rem 0rem 1rem 0",
               padding: "10px",
-              borderRadius: "0px 5px 5px 0px"
+              borderRadius: "5px 0px 0 5px",
+              borderLeftWidth: "0px"
             }}
+            floated="left"
             className="ui button basic grey"
             loading
           >
             Connecting
           </Button>
-        </div>
+        </Link>
       );
     }
 
@@ -102,43 +105,33 @@ class Header extends React.Component {
       <div>
         <Menu style={{ margin: "1rem" }}>
           <Link to="/alpha" className="item">
-            {/* <h1
-              style={{
-                fontFamily: "all-round-gothic, sans-serif",
-                fontWeight: "500",
-                fontStyle: "normal",
-                fontmargin: "0 auto",
-                fontSize: "2rem"
-              }}
-              >
-              endaoment
-            </h1> */}
             <img
               alt="endaoment"
-              style={{ width: "12rem", height: "3rem" }}
+              style={{ width: "10rem", height: "2rem" }}
               src={endaoment}
             ></img>
           </Link>
 
+          <Menu.Menu></Menu.Menu>
           <Menu.Menu position="right">
-            <div style={{ margin: "0 auto" }}>
-              <h6 style={{ color: "red" }}>
-                <i className="exclamation triangle icon red" />
-                THIS IS A DEMO, USE AT YOUR OWN RISK
-              </h6>
-            </div>
-          </Menu.Menu>
-          <Menu.Menu position="right">
+            <Message
+              negative
+              floating
+              size="mini"
+              style={{ padding: "10px", margin: "1rem 12rem 1rem 1rem" }}
+            >
+              <i className="exclamation triangle icon red" />
+              THIS IS A DEMO — USE AT YOUR OWN RISK
+            </Message>
             <div>
               {this.renderAccount()}
               <Link to={`/orgs`} className={`ui two-buttons`}>
                 <Button
                   style={{
                     margin: "1rem 1rem 1rem 0",
-
                     padding: "10px",
                     borderRadius: "0px 5px 5px 0px",
-                    borderRightWidth: "none"
+                    borderRightWidth: "0"
                   }}
                   floated="right"
                   color="blue"
