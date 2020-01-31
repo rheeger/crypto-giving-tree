@@ -56,7 +56,7 @@ class HomePage extends React.Component {
                   style={{
                     fontFamily: "all-round-gothic",
                     fontWeight: "400",
-                    fontSize: "4rem",
+                    fontSize: "3rem",
                     textAlign: "center"
                   }}
                 >
