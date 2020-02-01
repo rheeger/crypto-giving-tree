@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Button } from "semantic-ui-react";
 import { updateNCStatus } from "../../store/actions/ncStatus";
-import { plantFundAndContract } from "../../store/actions/funds";
+import { createFundAndContract } from "../../store/actions/funds";
 import BranchForm from "../../components/BranchForm";
 import Header from "../../components/Header";
 import { updateAppTab } from "../../store/actions/appTab";
@@ -32,7 +32,7 @@ class NewFund extends React.Component {
       "Please do not refresh this page.",
       "pending"
     );
-    await this.props.plantFundAndContract(formValues);
+    await this.props.createFundAndContract(formValues);
     await this.renderStatusChange(
       "Fund Created!",
       "You may now contribute tokens to your new fund.",
@@ -174,7 +174,7 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, {
-  plantFundAndContract,
+  createFundAndContract,
   updateNCStatus,
   updateAppTab
 })(NewFund);

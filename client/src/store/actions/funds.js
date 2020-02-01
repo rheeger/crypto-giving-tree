@@ -2,15 +2,15 @@ import * as types from "./types";
 import localDB from "../../helpers/apis/localDB";
 import history from "../../history";
 import { fundContract } from "../../ethereum/fund";
-import { plantFund } from "../../ethereum/fundNursreyAdmin";
+import { createFund } from "../../ethereum/fundFactoryAdmin";
 
 //LOCAL DB ACTIONS: FUNDS
-export const plantFundAndContract = formValues => async (
+export const createFundAndContract = formValues => async (
   dispatch,
   getState
 ) => {
   const { account } = getState().web3connect;
-  const createdContract = await plantFund(account);
+  const createdContract = await createFund(account);
   const response = await localDB.post("/funds", {
     ...formValues,
     managerAddress: account,

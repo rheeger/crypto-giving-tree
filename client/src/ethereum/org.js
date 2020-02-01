@@ -19,14 +19,15 @@ export const approveOrgClaim = async (orgAddress, claimNonce) => {
     JSON.parse(Org.interface),
     orgAddress
   );
-  const currentNonce = await adminWeb3Wallet.eth.getTransactionCount(
-    accounts[0],
-    "pending"
-  );
+  // const currentNonce = await adminWeb3Wallet.eth.getTransactionCount(
+  //   accounts[0],
+  //   "pending"
+  // );
 
   const approvedClaim = await org.methods
     .approveClaim(claimNonce)
-    .send({ from: accounts[0], nonce: currentNonce });
+    .send({ from: accounts[0] });
+
   provider.engine.stop();
   return approvedClaim.transactionHash;
 };

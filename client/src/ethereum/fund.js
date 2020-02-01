@@ -1,4 +1,4 @@
-import Tree from "./build/Tree.json";
+import Fund from "./build/Fund.json";
 import adminWeb3 from "./adminWeb3";
 import Web3 from "web3";
 import HDWalletProvider from "@truffle/hdwallet-provider";
@@ -8,7 +8,7 @@ const infuraPrefix = process.env.REACT_APP_INFURA_PREFIX;
 const infuraEndpoint = "https://" + infuraPrefix + ".infura.io/v3/" + infuraKey;
 
 export const fundContract = address => {
-  return new adminWeb3.eth.Contract(JSON.parse(Tree.interface), address);
+  return new adminWeb3.eth.Contract(JSON.parse(Fund.interface), address);
 };
 
 export const approveFundGrant = async (
@@ -20,7 +20,7 @@ export const approveFundGrant = async (
   const adminWeb3Wallet = new Web3(provider);
   const accounts = await adminWeb3Wallet.eth.getAccounts();
   const fund = new adminWeb3Wallet.eth.Contract(
-    JSON.parse(Tree.interface),
+    JSON.parse(Fund.interface),
     fundAddress
   );
   const currentNonce = await adminWeb3Wallet.eth.getTransactionCount(

@@ -11,10 +11,10 @@ class Splash extends React.Component {
             height: "100vh",
             display: "flex",
             flexFlow: "column",
-            justifyContent: "flex-start",
+            justifyContent: "center",
             alignItems: "center",
             maxWidth: "1000",
-            margin: "12rem auto"
+            margin: "-5rem auto"
           }}
         >
           <img alt="endaoment" style={{ width: "15rem" }} src={endaoment}></img>
@@ -47,7 +47,7 @@ class Splash extends React.Component {
               margin: "2rem"
             }}
           >
-            <Link to="/about" className="ui button compact">
+            <Link to="/about" className="ui button compact disabled">
               Learn More
             </Link>
             <Link to="/alpha" className="ui button compact green">

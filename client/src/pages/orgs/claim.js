@@ -36,7 +36,7 @@ class Claim extends React.Component {
     const { createOrgClaim, web3, gtOrgs, match } = this.props;
     this.setState({ loading: true });
     await this.renderStatusChange(
-      "Step 1 of 2: Awaiting Organization Claim...",
+      "Step 1 of 2: Awaiting Submission...",
       "Please approve smart contract interaction.",
       "pending"
     );
@@ -52,7 +52,7 @@ class Claim extends React.Component {
       .send({ from: web3.account })
       .on("transactionHash", async transId => {
         await this.renderStatusChange(
-          "Step 2 of 2: Submitting Organization Claim...",
+          "Step 2 of 2: Submitting Claim...",
           "Please do not refresh this page.",
           "pending"
         );
@@ -60,7 +60,7 @@ class Claim extends React.Component {
         return transId;
       });
     const index = await org.methods.getClaimsCount().call();
-    await createOrgClaim(formValues, id, index - 1, match.params.ein);
+    await createOrgClaim(formValues, id, index, match.params.ein);
     await this.renderStatusChange(
       "Claim Submitted!",
       "Our staff will review your claim for approval.",
