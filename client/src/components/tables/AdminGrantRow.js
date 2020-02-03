@@ -85,21 +85,21 @@ class AdminGrantRow extends Component {
 
     return (
       <Table.Row>
-        <Table.Cell>
+        <Table.Cell singleLine>
           <Moment>{date}</Moment>
         </Table.Cell>
         <Table.Cell>
           <Link to={`/funds/${selectedFund}`}>{this.state.fundName}</Link>
         </Table.Cell>
-        <Table.Cell>
+        <Table.Cell width={3}>
           <Link to={`/orgs/${recipient}`}>
             {gtOrgs[recipient].name} (EIN: {recipient})
           </Link>
         </Table.Cell>
         <Table.Cell>{description}</Table.Cell>
         <Table.Cell>${amount} </Table.Cell>
-        <Table.Cell>{this.renderStatus()}</Table.Cell>
-        <Table.Cell>
+        <Table.Cell singleLine>{this.renderStatus()}</Table.Cell>
+        <Table.Cell singleLine>
           <a
             href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}etherscan.io/tx/${id}`}
             target="blank"
@@ -110,25 +110,26 @@ class AdminGrantRow extends Component {
             </Button>
           </a>
         </Table.Cell>
-        <Table.Cell>
-          <Button
-            loading={this.state.approveloading}
-            onClick={this.onApprove}
-            color="green"
-            compact
-          >
-            Approve
-          </Button>
-        </Table.Cell>
-        <Table.Cell>
-          <Button
-            loading={this.state.rejectloading}
-            onClick={this.onReject}
-            color="red"
-            compact
-          >
-            Reject
-          </Button>
+        <Table.Cell textAlign="left">
+          <Button.Group>
+            <Button
+              loading={this.state.approveloading}
+              onClick={this.onApprove}
+              color="green"
+              compact
+            >
+              Approve
+            </Button>
+            <Button.Or />
+            <Button
+              loading={this.state.rejectloading}
+              onClick={this.onReject}
+              color="red"
+              compact
+            >
+              Reject
+            </Button>
+          </Button.Group>
         </Table.Cell>
       </Table.Row>
     );

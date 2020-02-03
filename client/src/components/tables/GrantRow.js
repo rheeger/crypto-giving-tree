@@ -49,7 +49,7 @@ class GrantRow extends Component {
     }
     return (
       <Table.Row>
-        <Table.Cell>
+        <Table.Cell singleLine>
           <Moment>{date}</Moment>
         </Table.Cell>
         <Table.Cell>
@@ -57,8 +57,8 @@ class GrantRow extends Component {
         </Table.Cell>
         <Table.Cell>{description}</Table.Cell>
         <Table.Cell>${amount} </Table.Cell>
-        <Table.Cell>{this.renderStatus()}</Table.Cell>
-        <Table.Cell>
+        <Table.Cell singleLine>{this.renderStatus()}</Table.Cell>
+        <Table.Cell singleLine>
           <a
             href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}etherscan.io/tx/${id}`}
             target="blank"

@@ -76,10 +76,10 @@ class AdminDonationRow extends Component {
 
     return (
       <Table.Row>
-        <Table.Cell>
+        <Table.Cell singleLine>
           <Moment>{date}</Moment>
         </Table.Cell>
-        <Table.Cell>{this.state.donorName}</Table.Cell>
+        <Table.Cell singleLine>{this.state.donorName}</Table.Cell>
         <Table.Cell>
           <Link to={`/funds/${recipient}`}>{this.state.fundName}</Link>
         </Table.Cell>
@@ -87,8 +87,8 @@ class AdminDonationRow extends Component {
           {donationAmount} {inputCurrency}
         </Table.Cell>
         <Table.Cell>${finalTradeOutput}</Table.Cell>
-        <Table.Cell>{this.renderStatus()}</Table.Cell>
-        <Table.Cell>
+        <Table.Cell singleLine>{this.renderStatus()}</Table.Cell>
+        <Table.Cell singleLine>
           <a
             href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}etherscan.io/tx/${id}`}
             target="blank"

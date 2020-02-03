@@ -176,7 +176,6 @@ class AdminPanel extends Component {
                         <HeaderCell>Status</HeaderCell>
                         <HeaderCell></HeaderCell>
                         <HeaderCell></HeaderCell>
-                        <HeaderCell></HeaderCell>
                       </Row>
                     </Header>
                     <Body>{this.renderGrantRow()}</Body>
@@ -191,10 +190,9 @@ class AdminPanel extends Component {
                       <Row>
                         <HeaderCell>Request Date</HeaderCell>
                         <HeaderCell>Requesting Organization</HeaderCell>
-                        <HeaderCell>Requesting Admin</HeaderCell>
+                        <HeaderCell singleLine>Requesting Admin</HeaderCell>
                         <HeaderCell>Contact</HeaderCell>
                         <HeaderCell>Status</HeaderCell>
-                        <HeaderCell></HeaderCell>
                         <HeaderCell></HeaderCell>
                         <HeaderCell></HeaderCell>
                       </Row>
@@ -212,8 +210,8 @@ class AdminPanel extends Component {
                         <HeaderCell>Donation Date</HeaderCell>
                         <HeaderCell>From</HeaderCell>
                         <HeaderCell>To</HeaderCell>
-                        <HeaderCell>Property Donated</HeaderCell>
-                        <HeaderCell>Exchanged Amount</HeaderCell>
+                        <HeaderCell>Donated</HeaderCell>
+                        <HeaderCell>Proceeds</HeaderCell>
                         <HeaderCell>Status</HeaderCell>
                         <HeaderCell></HeaderCell>
                       </Row>

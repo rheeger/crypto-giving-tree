@@ -5,6 +5,10 @@ import { Link } from "react-router-dom";
 import { updateAppTab } from "../../store/actions/appTab";
 
 class HomePage extends React.Component {
+  componentDidMount() {
+    this.props.updateAppTab("");
+  }
+
   renderButton() {
     if (!this.props.gtFunds) {
       return;
@@ -18,7 +22,6 @@ class HomePage extends React.Component {
       );
     }
     if (Object.keys(this.props.gtFunds).length > 0) {
-      this.props.updateAppTab("funds");
       return (
         <Link to="/funds" className="ui button compact green">
           See My Funds
@@ -139,7 +142,7 @@ class HomePage extends React.Component {
                     margin: "3rem 0"
                   }}
                 >
-                  <Link to="/about" className="ui button compact">
+                  <Link to="/about" className="ui button compact disabled">
                     Learn More
                   </Link>
                   {this.renderButton()}

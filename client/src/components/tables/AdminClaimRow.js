@@ -71,7 +71,7 @@ class AdminGrantRow extends Component {
 
     return (
       <Table.Row>
-        <Table.Cell>
+        <Table.Cell singleLine>
           <Moment>{date}</Moment>
         </Table.Cell>
         <Table.Cell>
@@ -79,7 +79,7 @@ class AdminGrantRow extends Component {
             {gtOrgs[selectedOrg].name} (EIN: {selectedOrg})
           </Link>
         </Table.Cell>
-        <Table.Cell>
+        <Table.Cell singleLine>
           <a
             href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}etherscan.io/address/${wallet}`}
           >{`${fname} ${lname}`}</a>
@@ -87,33 +87,37 @@ class AdminGrantRow extends Component {
         <Table.Cell>
           <a href={`mailto:${contact}`}>{contact}</a>
         </Table.Cell>
-        <Table.Cell>
+        <Table.Cell singleLine>
           <a
             href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}etherscan.io/tx/${id}`}
             target="blank"
           >
-            <Button compact>View on Etherscan</Button>
+            <Button compact>
+              <i className="external alternarte icon" />
+              View on Etherscan
+            </Button>
           </a>
         </Table.Cell>
         <Table.Cell>
-          <Button
-            loading={this.state.approveloading}
-            onClick={this.onApprove}
-            color="green"
-            compact
-          >
-            Approve
-          </Button>
-        </Table.Cell>
-        <Table.Cell>
-          <Button
-            loading={this.state.rejectloading}
-            onClick={this.onReject}
-            color="red"
-            compact
-          >
-            Reject
-          </Button>
+          <Button.Group>
+            <Button
+              loading={this.state.approveloading}
+              onClick={this.onApprove}
+              color="green"
+              compact
+            >
+              Approve
+            </Button>
+            <Button.Or />
+            <Button
+              loading={this.state.rejectloading}
+              onClick={this.onReject}
+              color="red"
+              compact
+            >
+              Reject
+            </Button>
+          </Button.Group>
         </Table.Cell>
       </Table.Row>
     );

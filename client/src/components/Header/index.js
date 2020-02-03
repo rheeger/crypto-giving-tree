@@ -50,39 +50,44 @@ class Header extends React.Component {
 
     if (!account && !initialized) {
       return (
-        <Link>
-          <Button
-            style={{
-              margin: "1rem 0rem 1rem 0",
-              padding: "10px",
-              borderRadius: "5px 0px 0 5px",
-              borderLeftWidth: "0px"
-            }}
-            floated="left"
-            className="ui button basic grey"
-            loading
-          >
-            Connecting
-          </Button>
-        </Link>
+        <Button
+          style={{
+            margin: "1rem 0rem 1rem 0",
+            padding: "10px 0px 10px 15px",
+            borderRadius: "5px 0px 0 5px",
+            borderLeftWidth: "0px"
+          }}
+          floated="left"
+          className="ui button basic grey"
+          loading
+        >
+          Connecting
+        </Button>
       );
     }
 
     return (
-      <Link to={`/funds`} className={`ui two-buttons`}>
+      <Link to={`/funds`}>
         <Button
+          animated
           style={{
             margin: "1rem 0rem 1rem 0",
-            padding: "10px",
+            padding: "10px 20px 10px 20px",
             borderRadius: "5px 0px 0 5px",
             borderLeftWidth: "0px"
           }}
           floated="left"
           color="green"
-          basic={this.props.appTab === "funds" ? false : true}
+          // basic={this.props.appTab === "funds" ? false : true}
         >
-          <i className="user circle icon" />
-          {this.truncateAccount()}
+          <Button.Content visible>
+            <i className="user circle icon" />
+            {this.truncateAccount()}
+          </Button.Content>
+          <Button.Content hidden>
+            <i className="arrow right icon" />
+            View Account
+          </Button.Content>
         </Button>
       </Link>
     );
@@ -118,30 +123,37 @@ class Header extends React.Component {
               negative
               floating
               size="mini"
-              style={{ padding: "10px", margin: "1rem 12rem 1rem 1rem" }}
+              style={{ padding: "10px", margin: "1rem 8.5rem 1rem 1rem" }}
             >
               <i className="exclamation triangle icon red" />
               THIS IS A DEMO — USE AT YOUR OWN RISK
             </Message>
-            <div>
+            <Button.Group>
               {this.renderAccount()}
-              <Link to={`/orgs`} className={`ui two-buttons`}>
+              <Link to={`/orgs`}>
                 <Button
+                  animated
                   style={{
                     margin: "1rem 1rem 1rem 0",
-                    padding: "10px",
+                    padding: "10px 20px 10px 17px",
                     borderRadius: "0px 5px 5px 0px",
                     borderRightWidth: "0"
                   }}
                   floated="right"
                   color="blue"
-                  basic={this.props.appTab === "orgs" ? false : true}
+                  // basic={this.props.appTab === "orgs" ? false : true}
                 >
-                  <i className="sistrix medium icon" />
-                  Organizations
+                  <Button.Content visible>
+                    <i className="sistrix medium icon" />
+                    Organizations
+                  </Button.Content>
+                  <Button.Content hidden color="blue">
+                    <i className="arrow right icon" />
+                    Search Orgs
+                  </Button.Content>
                 </Button>
               </Link>
-            </div>
+            </Button.Group>
           </Menu.Menu>
         </Menu>
 
@@ -151,7 +163,7 @@ class Header extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
     appTab: state.appTab,
     gtFunds: state.gtFunds,
