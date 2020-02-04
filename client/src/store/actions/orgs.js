@@ -106,7 +106,7 @@ export const claimOrg = (id, claimId) => async dispatch => {
   });
 
   dispatch({ type: types.EDIT_ORG, payload: response.data });
-  history.push(`/admin`);
+  window.location.reload();
 };
 
 export const editOrg = (id, formValues) => async dispatch => {

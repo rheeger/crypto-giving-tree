@@ -101,6 +101,7 @@ class Claim extends React.Component {
           <div className="ui container">
             <div
               style={{
+                margin: "5rem auto",
                 textAlign: "center",
                 display: "flex-flow",
                 alignContent: "center"
@@ -125,7 +126,7 @@ class Claim extends React.Component {
 
           <div
             style={{
-              margin: "0px auto",
+              margin: "1rem auto",
               marginBottom: "5rem",
               textAlign: "left",
               display: "flex",

@@ -56,7 +56,7 @@ class NewFund extends React.Component {
 
           <div
             style={{
-              margin: "0px auto",
+              margin: "1rem auto",
               marginBottom: "5rem",
               textAlign: "left",
               display: "flex",

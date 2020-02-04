@@ -109,7 +109,12 @@ class NewGrant extends React.Component {
             }}
           >
             <div
-              style={{ padding: "1rem", marginBottom: "1rem", width: "600px" }}
+              style={{
+                padding: "1rem",
+                marginBottom: "1rem",
+                width: "600px",
+                margin: "1rem auto"
+              }}
             >
               <h4>You're reccomending a grant to:</h4>
               <div style={{ display: "flex", justifyContent: "space-between" }}>

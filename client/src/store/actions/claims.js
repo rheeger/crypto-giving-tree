@@ -94,7 +94,6 @@ export const approveClaim = (id, orgAddress, claimNonce) => async (
   console.log("claim details updated on /claims");
 
   dispatch({ type: types.EDIT_CLAIM, payload: response.data });
-  window.location.reload();
 };
 
 export const editClaim = (id, formValues) => async dispatch => {

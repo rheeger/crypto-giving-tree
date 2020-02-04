@@ -34,7 +34,6 @@ class AdminGrantRow extends Component {
     await claimOrg(selectedOrg, id);
     this.setState({ approveloading: false });
     this.props.onSubmit();
-    history.push("/admin");
   };
 
   onReject = async () => {

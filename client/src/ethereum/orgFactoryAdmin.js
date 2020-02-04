@@ -16,14 +16,10 @@ export const createOrg = async id => {
     JSON.parse(OrgFactory.interface),
     address
   );
-  const currentNonce = await adminWeb3Wallet.eth.getTransactionCount(
-    accounts[0],
-    "pending"
-  );
 
   const createContract = await orgFactory.methods
-    .createOrg(id, address)
-    .send({ from: accounts[0], nonce: currentNonce });
+    .createOrg(id, process.env.REACT_APP_ENDAOMENT_ADMIN)
+    .send({ from: accounts[0] });
   console.log(
     "Created contract:" +
       createContract.events.orgCreated.returnValues.newAddress
