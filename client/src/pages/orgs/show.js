@@ -51,10 +51,7 @@ class OrgShow extends React.Component {
     return Object.values(this.props.gtGrants)
       .reverse()
       .map((grant, index) => {
-        if (
-          grant.selectedOrg === this.props.match.params.ein &&
-          grant.grantApproval === true
-        ) {
+        if (grant.grantApproval === true) {
           return (
             <OrgGrantRow
               key={grant.id}

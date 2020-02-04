@@ -68,23 +68,7 @@ class FundShow extends Component {
               approvalDetails={grant.approvalDetails}
             />
           );
-        } else {
-          return (
-            <div style={{ textAlign: "center", padding: "10px" }}>
-              <div style={{ textAlign: "center", padding: "10px" }}>
-                No grants reccommended, yet. &nbsp;
-                <Link
-                  to="/orgs"
-                  style={{ marginLeft: "1rem" }}
-                  className="ui button compact blue"
-                >
-                  <i className="sistrix medium icon" />
-                  Organizations
-                </Link>
-              </div>
-            </div>
-          );
-        }
+        } else return null;
       });
   }
 

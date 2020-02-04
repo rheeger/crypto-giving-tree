@@ -12,10 +12,6 @@ class OrgGrantRow extends Component {
     errorMessage: ""
   };
 
-  componentDidMount() {
-    const { fund, fetchFund } = this.props;
-    fetchFund(fund);
-  }
   renderStatus() {
     const { grantApproval, approvalDetails } = this.props;
     if (grantApproval === "false" && approvalDetails !== {}) {
@@ -44,22 +40,23 @@ class OrgGrantRow extends Component {
 
   render() {
     const { id, fund, amount, description, date, gtFunds } = this.props;
-    if (!gtFunds[fund]) {
-      return <div>Loading...</div>;
-    }
 
     return (
       <Table.Row>
-        <Table.Cell>
+        <Table.Cell singleLine>
           <Moment>{date}</Moment>
         </Table.Cell>
         <Table.Cell>
-          <Link to={`/funds/${fund}`}>{gtFunds[fund].branchName}</Link>
+          <Link to={`/funds/${fund}`}>
+            {gtFunds[fund]
+              ? gtFunds[fund].branchName
+              : fund.slice(0, 6) + "..." + fund.slice(-6)}
+          </Link>
         </Table.Cell>
         <Table.Cell>{description}</Table.Cell>
         <Table.Cell>${amount} </Table.Cell>
-        <Table.Cell>{this.renderStatus()}</Table.Cell>
-        <Table.Cell>
+        <Table.Cell singleLine>{this.renderStatus()}</Table.Cell>
+        <Table.Cell singleLine>
           <a
             href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}etherscan.io/tx/${id}`}
             target="blank"

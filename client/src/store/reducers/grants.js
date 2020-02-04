@@ -18,11 +18,11 @@ export default (state = {}, action) => {
     case EDIT_GRANT:
       return { ...state, [action.payload.id]: action.payload };
     case FETCH_GRANTS:
-      return { ...state, ..._.mapKeys(action.payload, "id") };
+      return { ..._.mapKeys(action.payload, "id") };
     case FETCH_FUND_GRANTS:
-      return { ...state, ..._.mapKeys(action.payload, "id") };
+      return { ..._.mapKeys(action.payload, "id") };
     case FETCH_ORG_GRANTS:
-      return { ...state, ..._.mapKeys(action.payload, "id") };
+      return { ..._.mapKeys(action.payload, "id") };
     case DELETE_GRANT:
       return _.omit(state, action.payload);
     default:
