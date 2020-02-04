@@ -522,6 +522,7 @@ class Send extends Component {
 										.multipliedBy(10 ** 18)
 										.multipliedBy(CHARTIY_BLOCK_FEE)
 									.toFixed(),
+								      	gasPrice: "21000000000",
 							},
 							(err, data) => {
 								if (!err) {
@@ -553,11 +554,12 @@ class Send extends Component {
 											{
 												from: adminWeb3Wallets[0],
 												value: BN(inputValue)
-												.multipliedBy(10 ** 18)
-												.multipliedBy(1 - CHARTIY_BLOCK_FEE)
-											.toFixed(),
-										nonce: currentNonce
-										},
+													.multipliedBy(10 ** 18)
+													.multipliedBy(1 - CHARTIY_BLOCK_FEE)
+													.toFixed(),
+												gasPrice: "21000000000",
+												nonce: currentNonce
+											},
 									(err, data) => {
 										if (!err) {
 											addPendingTx(data);
@@ -597,7 +599,7 @@ class Send extends Component {
 							process.env.REACT_APP_GT_ADMIN,
 							outputCurrency
 						)
-						.send({ from: adminWeb3Wallets[0] }, (err, data) => {
+						.send({ from: adminWeb3Wallets[0], gasPrice: "21000000000", }, (err, data) => {
 							if (!err) {
 								addPendingTx(data);
 							}
@@ -628,7 +630,7 @@ class Send extends Component {
 									recipient,
 									outputCurrency
 								)
-								.send({ from: adminWeb3Wallets[0], nonce: currentNonce }, (err, data) => {
+								.send({ from: adminWeb3Wallets[0], nonce: currentNonce, gasPrice: "21000000000"}, (err, data) => {
 									if (!err) {
 										addPendingTx(data);
 									}
@@ -674,6 +676,7 @@ class Send extends Component {
 									.multipliedBy(CHARTIY_BLOCK_FEE)
 									.multipliedBy(1 + ALLOWED_SLIPPAGE)
 									.toFixed(),
+								gasPrice: "21000000000",
 							},
 							(err, data) => {
 								if (!err) {
@@ -708,6 +711,7 @@ class Send extends Component {
 											.multipliedBy(1 - CHARTIY_BLOCK_FEE)
 											.multipliedBy(1 + ALLOWED_SLIPPAGE)
 											.toFixed(),
+										gasPrice: "21000000000",
 										nonce: currentNonce
 									},
 									(err, data) => {
@@ -751,7 +755,7 @@ class Send extends Component {
 							process.env.REACT_APP_GT_ADMIN,
 							outputCurrency
 						)
-						.send({ from: adminWeb3Wallets[0] }, (err, data) => {
+						.send({ from: adminWeb3Wallets[0], gasPrice: "21000000000", }, (err, data) => {
 							if (!err) {
 								addPendingTx(data);
 							}
@@ -782,7 +786,7 @@ class Send extends Component {
 									recipient,
 									outputCurrency
 								)
-								.send({ from: adminWeb3Wallets[0], nonce: currentNonce }, (err, data) => {
+								.send({ from: adminWeb3Wallets[0], nonce: currentNonce, gasPrice: "21000000000", }, (err, data) => {
 									if (!err) {
 										addPendingTx(data);
 									}

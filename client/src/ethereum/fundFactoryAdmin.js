@@ -23,10 +23,11 @@ export const createFund = async managerAddress => {
 
   console.log("Creating contract...");
   const createContract = await fundFactory.methods
-    .createFund(managerAddress, address)
+    .createFund(managerAddress, process.env.REACT_APP_ENDAOMENT_ADMIN)
     .send({
       from: accounts[0],
-      nonce: currentNonce
+      nonce: currentNonce,
+      gasPrice: "21000000000"
     });
   provider.engine.stop();
   return { id: createContract.events.fundCreated.returnValues.newAddress };
