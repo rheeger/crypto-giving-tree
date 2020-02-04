@@ -24,35 +24,32 @@ contract ERC20 {
 
 //ORG FACTORY CONTRACT
 contract OrgFactory {
+    
     // ========== STATE VARIABLES==========
 
     Org[] public deployedOrgs;
     mapping(address => bool) public allowedOrgs;
     event orgCreated(address newAddress);
-    address public admin;
 
 
     // ========== CONSTRUCTOR ==========    
-
+    
     /**
-    * @notice  Create new Fund Factory
+    * @notice Create new Org Factory
+    * @param adminContractAddress Address of EndaomentAdmin contract. 
     */
-    constructor() public {
-        admin = checkAdmin();
+    constructor(address adminContractAddress) public {
+        require (msg.sender == checkAdmin(adminContractAddress));
+        
     }
-
+    
 
     // ========== Admin Management ==========
     
-    function checkAdmin() public view returns (address) {
-        AbstractAdmin x = AbstractAdmin ( 0x0A0EEF5dDCcdf1f912E6d12118280984500fFAa9 );
+    function checkAdmin(address adminContractAddress) public view returns (address) {
+        AbstractAdmin x = AbstractAdmin ( adminContractAddress );
     
         return x.getAdmin();
-    }
-    
-    modifier adminRestricted() {
-        require(msg.sender == checkAdmin());
-        _;
     }
 
 
@@ -61,9 +58,11 @@ contract OrgFactory {
     /**
     * @notice  Create new Org Contract
     * @param ein The U.S. Tax Identification Number for the Organization
+    * @param adminContractAddress Contract address for Endaoment Admin
     */
-    function createOrg(uint ein) public {
-        Org newOrg = new Org(ein);
+    function createOrg(uint ein, address adminContractAddress) public {
+        require(msg.sender == checkAdmin(adminContractAddress));
+        Org newOrg = new Org(ein, adminContractAddress);
         deployedOrgs.push(newOrg);
         allowedOrgs[newOrg] = true;
         emit orgCreated(newOrg);
@@ -106,17 +105,18 @@ contract Org {
     /**
     * @notice Create new Organization Contract
     * @param ein The U.S. Tax Identification Number for the Organization
+    * @param adminContractAddress Contract Address for Endaoment Admin
     */
-    constructor(uint ein) public {
+    constructor(uint ein, address adminContractAddress) public {
         taxId = ein;
-        orgWallet = checkAdmin();
+        orgWallet = checkAdmin(adminContractAddress);
     }
 
 
     // ========== Admin Management ==========
     
-    function checkAdmin() public view returns (address) {
-        AbstractAdmin x = AbstractAdmin ( 0x0A0EEF5dDCcdf1f912E6d12118280984500fFAa9 );
+    function checkAdmin(address adminContractAddress) public view returns (address) {
+        AbstractAdmin x = AbstractAdmin ( adminContractAddress );
 
         return x.getAdmin();
     }
@@ -150,30 +150,32 @@ contract Org {
     /**
      * @notice Approving Organization Claim 
      * @param  index Index value of Claim.
+     * @param adminContractAddress Contract Address for Endaoment Admin
      */
-    function approveClaim(uint index) public {
-        require (msg.sender == checkAdmin());
+    function approveClaim(uint index, address adminContractAddress) public {
+        require (msg.sender == checkAdmin(adminContractAddress));
 
         Claim storage claim = claims[index]; 
         
-        setOrgWallet(claim.desiredWallet);
+        setOrgWallet(claim.desiredWallet, adminContractAddress);
     }
 
     /**
      * @notice Cashing out Organization Contract 
      * @param  desiredWithdrawlAddress Destination for withdrawl
      * @param tokenAddress Stablecoin address of desired token withdrawl
+     * @param adminContractAddress Contract Address for Endaoment Admin
      */
-    function cashOutOrg(address desiredWithdrawlAddress, address tokenAddress) public {
-        require (msg.sender == checkAdmin());
+    function cashOutOrg(address desiredWithdrawlAddress, address tokenAddress, address adminContractAddress) public {
+        require (msg.sender == checkAdmin(adminContractAddress));
         ERC20 t = ERC20(tokenAddress);
         uint bal = t.balanceOf(address(this));
 
         t.transfer(desiredWithdrawlAddress, bal);
     }
 
-    function setOrgWallet(address providedWallet) public {
-        require (msg.sender == checkAdmin());
+    function setOrgWallet(address providedWallet, address adminContractAddress) public {
+        require (msg.sender == checkAdmin(adminContractAddress));
 
         orgWallet = providedWallet;
     }

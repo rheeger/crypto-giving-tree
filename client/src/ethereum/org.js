@@ -25,7 +25,7 @@ export const approveOrgClaim = async (orgAddress, claimNonce) => {
   // );
 
   const approvedClaim = await org.methods
-    .approveClaim(claimNonce)
+    .approveClaim(claimNonce, process.env.REACT_APP_ORG_FACTORY)
     .send({ from: accounts[0] });
 
   provider.engine.stop();

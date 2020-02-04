@@ -49,7 +49,8 @@ class NewGrant extends React.Component {
         BN(formValues.grantAmount)
           .multipliedBy(10 ** process.env.REACT_APP_STABLECOIN_DECIMALS)
           .toFixed(),
-        gtOrgs[match.params.ein].contractAddress
+        gtOrgs[match.params.ein].contractAddress,
+        process.env.REACT_APP_ORG_FACTORY
       )
       .send({ from: web3.account })
       .on("transactionHash", async tx => {

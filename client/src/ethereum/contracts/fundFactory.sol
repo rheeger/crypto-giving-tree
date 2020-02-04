@@ -28,34 +28,31 @@ contract ERC20 {
 
 // FUND FACTORY 
 contract FundFactory {
+    
     // ========== STATE VARIABLES ==========
     
     Fund[] public createdFunds;
-    address public admin;
     event fundCreated(address newAddress);
     
-
+    
     // ========== CONSTRUCTOR ==========    
-
+    
     /**
-    * @notice  Create new Fund Factory
+    * @notice Create new Fund Factory
+    * @param adminContractAddress Address of EndaomentAdmin contract. 
     */
-    constructor() public {
-        admin = checkAdmin();
+    constructor(address adminContractAddress) public {
+        require (msg.sender == checkAdmin(adminContractAddress));
+        
     }
-
-
+    
+    
     // ========== Admin Management ==========
     
-    function checkAdmin() public view returns (address) {
-        AbstractAdmin x = AbstractAdmin ( 0x0A0EEF5dDCcdf1f912E6d12118280984500fFAa9 );
+    function checkAdmin(address adminContractAddress) public view returns (address) {
+        AbstractAdmin x = AbstractAdmin ( adminContractAddress );
     
         return x.getAdmin();
-    }
-    
-    modifier adminRestricted() {
-        require(msg.sender == checkAdmin());
-        _;
     }
 
 
@@ -64,8 +61,10 @@ contract FundFactory {
     /**
     * @notice  Create new Fund
     * @param managerAddress The address of the Fund's Primary Advisor
+    * @param adminContractAddress Address of EndaomentAdmin contract. 
     */
-    function createFund(address managerAddress) public adminRestricted {
+    function createFund(address managerAddress, address adminContractAddress) public {
+        require(msg.sender == checkAdmin(adminContractAddress));
         Fund newFund = new Fund(managerAddress);
         createdFunds.push(newFund);
         emit fundCreated(newFund);
@@ -96,7 +95,6 @@ contract Fund {
     }
     
     address public manager;
-    address public admin;
     mapping(address => bool) public contributors;
     Grant[] public grants;
     uint public totalContributors;
@@ -110,7 +108,6 @@ contract Fund {
     */
     constructor(address creator) public {
         manager = creator;
-        admin = checkAdmin();
 
     }
     
@@ -121,14 +118,9 @@ contract Fund {
         require(msg.sender == manager);
         _;
     }
-    
-    modifier adminRestricted() {
-        require(msg.sender == checkAdmin());
-        _;
-    }
      
-    function checkAdmin() public view returns (address) {
-        AbstractAdmin x = AbstractAdmin ( 0x0A0EEF5dDCcdf1f912E6d12118280984500fFAa9 );
+    function checkAdmin(address adminContractAddress) public view returns (address) {
+        AbstractAdmin x = AbstractAdmin ( adminContractAddress );
     
         return x.getAdmin();
     }
@@ -139,14 +131,16 @@ contract Fund {
     /**
      * @notice Change Fund Primary Advisor
      * @param  newManager The address of the new PrimaryAdvisor.
+     * @param  adminContractAddress Address of the EndaomentAdmin contract. 
      */
-    function changeManager (address newManager) public adminRestricted {
+    function changeManager (address newManager, address adminContractAddress) public {
+        require(msg.sender == checkAdmin(adminContractAddress));
         manager = newManager;
 
     }
 
-    function checkRecipient(address recipient) public view returns (bool) {
-        AbstractOrgFactory x = AbstractOrgFactory ( 0x095a27Ccc6B34c5EB4C8fF7951826338c42d5Cb5 );
+    function checkRecipient(address recipient, address orgFactoryContractAddress) public view returns (bool) {
+        AbstractOrgFactory x = AbstractOrgFactory ( orgFactoryContractAddress );
     
         return x.getAllowedOrgs(recipient);
 
@@ -167,9 +161,12 @@ contract Fund {
     /**
      * @notice Create new Grant Reccomendation
      * @param  description The address of the Owner.
+     * @param  value The value of the grant in base units.
+     * @param  recipient The address of the recieving organization's contract.
+     * @param  orgFactoryContractAddress Address of the orgFactory Contract.
      */
-    function createGrant(string memory description, uint value, address recipient) public restricted {
-        require(checkRecipient(recipient) == true);
+    function createGrant(string memory description, uint value, address recipient, address orgFactoryContractAddress) public restricted {
+        require(checkRecipient(recipient, orgFactoryContractAddress) == true);
 
         Grant memory newGrant = Grant({
             description: description,
@@ -185,15 +182,16 @@ contract Fund {
      * @notice Approve Grant Reccomendation
      * @param  index This Grant's index position
      * @param  tokenAddress The stablecoin's token address. 
+     * @param  adminContractAddress Address of the EndaomentAdmin contract. 
      */
-    function finalizeGrant(uint index, address tokenAddress) public adminRestricted {
+    function finalizeGrant(uint index, address tokenAddress, address adminContractAddress) public {
+        require(msg.sender == checkAdmin(adminContractAddress));
         require(grant.complete == false);
-        admin = checkAdmin();
         ERC20 t = ERC20(tokenAddress);
         
         Grant storage grant = grants[index];
 
-        // //donation based fees
+        // //Donation based fees:
         // uint fee = (grant.value)/100;
         // uint finalGrant = (grant.value * 99)/100;
         // t.transfer(admin, fee);

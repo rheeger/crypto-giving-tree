@@ -23,7 +23,7 @@ export const createFund = async managerAddress => {
 
   console.log("Creating contract...");
   const createContract = await fundFactory.methods
-    .createFund(managerAddress)
+    .createFund(managerAddress, address)
     .send({
       from: accounts[0],
       nonce: currentNonce

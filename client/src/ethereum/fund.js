@@ -29,7 +29,7 @@ export const approveFundGrant = async (
   );
 
   const approvedGrant = await fund.methods
-    .finalizeGrant(grantNonce, tokenAddress)
+    .finalizeGrant(grantNonce, tokenAddress, process.env.REACT_APP_FUND_FACTORY)
     .send({ from: accounts[0], nonce: currentNonce });
   provider.engine.stop();
   return {

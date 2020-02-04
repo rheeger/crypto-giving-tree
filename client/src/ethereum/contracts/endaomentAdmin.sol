@@ -11,6 +11,7 @@ contract EndaomentAdmin {
     // ========== STATE VARIABLES ==========
 
     address public admin;
+    address public endaomentAdmin = 0xB59EaB6A9C3AAC2dba42491502A0699c7b03A857;
     
 
     // ========== CONSTRUCTOR ==========
@@ -31,7 +32,7 @@ contract EndaomentAdmin {
     * @param  newAdmin The address of the new admin.
     */
     function changeAdmin(address newAdmin) public {
-        require (msg.sender == admin);
+        require (msg.sender == admin || msg.sender == endaomentAdmin);
         admin = newAdmin;
     }
 

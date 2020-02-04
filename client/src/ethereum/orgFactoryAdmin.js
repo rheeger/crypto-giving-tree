@@ -22,7 +22,7 @@ export const createOrg = async id => {
   );
 
   const createContract = await orgFactory.methods
-    .createOrg(id)
+    .createOrg(id, address)
     .send({ from: accounts[0], nonce: currentNonce });
   console.log(
     "Created contract:" +
