@@ -98,6 +98,7 @@ contract Org {
     uint public taxId;
     address public orgWallet;
     Claim[] public claims;
+    event cashOutComplete(uint cashOutAmount);
 
 
     // ========== CONSTRUCTOR ==========    
@@ -169,9 +170,10 @@ contract Org {
     function cashOutOrg(address desiredWithdrawlAddress, address tokenAddress, address adminContractAddress) public {
         require (msg.sender == checkAdmin(adminContractAddress));
         ERC20 t = ERC20(tokenAddress);
-        uint bal = t.balanceOf(address(this));
+        uint cashOutAmount = t.balanceOf(address(this));
 
-        t.transfer(desiredWithdrawlAddress, bal);
+        t.transfer(desiredWithdrawlAddress, cashOutAmount);
+        emit cashOutComplete(cashOutAmount);
     }
 
     function setOrgWallet(address providedWallet, address adminContractAddress) public {

@@ -28,11 +28,14 @@ export const createOrgWithdrawl = (
       console.log(transId);
       return transId;
     });
+  const withdrawlAmount =
+    id.events.cashOutComplete.returnValues.cashOutAmount /
+    10 ** process.env.REACT_APP_STABLECOIN_DECIMALS;
   const response = await localDB.post(`/withdrawls`, {
     id: id.transactionHash,
     selectedOrg,
-    orgAdminWallet
-    // withdrawlAmount: currentOrgContractBalance
+    orgAdminWallet,
+    withdrawlAmount
   });
 
   dispatch({ type: types.MAKE_ORG_WITHDRAWL, payload: response.data });
