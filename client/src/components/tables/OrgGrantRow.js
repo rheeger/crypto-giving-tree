@@ -56,7 +56,7 @@ class OrgGrantRow extends Component {
         <Table.Cell>{description}</Table.Cell>
         <Table.Cell>${amount} </Table.Cell>
         <Table.Cell singleLine>{this.renderStatus()}</Table.Cell>
-        <Table.Cell singleLine>
+        <Table.Cell singleLine textAlign="center">
           <a
             href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}etherscan.io/tx/${id}`}
             target="blank"

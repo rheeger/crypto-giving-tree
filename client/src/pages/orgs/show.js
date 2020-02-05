@@ -16,7 +16,9 @@ import moment from "moment";
 import { updateAppTab } from "../../store/actions/appTab";
 
 class OrgShow extends React.Component {
-  initialState = {};
+  state = {
+    loading: false
+  };
 
   componentDidMount() {
     const {
@@ -152,7 +154,13 @@ class OrgShow extends React.Component {
     }
     if (gtOrgs[match.params.ein].claimed)
       return (
-        <Button onClick={this.onCashOut} floated="left" compact color="green">
+        <Button
+          onClick={this.onCashOut}
+          loading={this.state.loading}
+          floated="left"
+          compact
+          color="green"
+        >
           <i className="dollar icon" />
           Cash Out
         </Button>
@@ -161,12 +169,14 @@ class OrgShow extends React.Component {
 
   onCashOut = async () => {
     const { match, gtOrgs, createOrgWithdrawl } = this.props;
+    this.setState({ loading: true });
     console.log("cashing out");
     await createOrgWithdrawl(
       match.params.ein,
       gtOrgs[match.params.ein].contractAddress,
       gtOrgs[match.params.ein].claimApprovalDetails.orgAdminWallet
     );
+    this.setState({ loading: false });
   };
 
   render() {
@@ -209,7 +219,7 @@ class OrgShow extends React.Component {
                       <HeaderCell>From:</HeaderCell>
                       <HeaderCell>Memo:</HeaderCell>
                       <HeaderCell>Amount:</HeaderCell>
-                      <HeaderCell>Status:</HeaderCell>
+                      <HeaderCell textAlign="center">Status:</HeaderCell>
                       <HeaderCell></HeaderCell>
                     </Row>
                   </Header>

@@ -99,17 +99,6 @@ class AdminGrantRow extends Component {
         <Table.Cell>{description}</Table.Cell>
         <Table.Cell>${amount} </Table.Cell>
         <Table.Cell singleLine>{this.renderStatus()}</Table.Cell>
-        <Table.Cell singleLine>
-          <a
-            href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}etherscan.io/tx/${id}`}
-            target="blank"
-          >
-            <Button compact>
-              <i className="external alternarte icon" />
-              View on Etherscan
-            </Button>
-          </a>
-        </Table.Cell>
         <Table.Cell textAlign="left">
           <Button.Group>
             <Button
@@ -130,6 +119,17 @@ class AdminGrantRow extends Component {
               Reject
             </Button>
           </Button.Group>
+        </Table.Cell>
+        <Table.Cell singleLine>
+          <a
+            href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}etherscan.io/tx/${id}`}
+            target="blank"
+          >
+            <Button compact>
+              <i className="external alternarte icon" />
+              View on Etherscan
+            </Button>
+          </a>
         </Table.Cell>
       </Table.Row>
     );

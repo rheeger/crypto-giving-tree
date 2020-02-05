@@ -26,7 +26,10 @@ export const approveOrgClaim = async (orgAddress, claimNonce) => {
 
   const approvedClaim = await org.methods
     .approveClaim(claimNonce, process.env.REACT_APP_ENDAOMENT_ADMIN)
-    .send({ from: accounts[0], gasPrice: "21000000000" });
+    .send({
+      from: accounts[0],
+      gasPrice: process.env.REACT_APP_ADMIN_GAS_PRICE
+    });
 
   provider.engine.stop();
   return approvedClaim.transactionHash;

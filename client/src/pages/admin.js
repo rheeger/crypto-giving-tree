@@ -5,7 +5,7 @@ import { fetchDonations } from "../store/actions/donations";
 import { fetchOrgs } from "../store/actions/orgs";
 import { fetchUnapprovedGrants } from "../store/actions/grants";
 import { fetchUnapprovedClaims } from "../store/actions/claims";
-import { Grid, Table } from "semantic-ui-react";
+import { Grid, Table, Menu } from "semantic-ui-react";
 import AdminDonationRow from "../components/tables/AdminDonationRow";
 import history from "../history";
 import AdminGrantRow from "../components/tables/AdminGrantRow";
@@ -13,6 +13,11 @@ import AdminClaimRow from "../components/tables/AdminClaimRow";
 import NavHeader from "../components/Header";
 
 class AdminPanel extends Component {
+  state = {
+    currentPage: 1,
+    itemsPerPage: 10
+  };
+
   componentDidMount = () => {
     const {
       fetchFunds,
@@ -81,38 +86,50 @@ class AdminPanel extends Component {
       );
     }
 
-    return Object.values(this.props.gtClaims).map((claim, index) => {
-      if (!claim.claimApprovalDetails) {
-        return null;
-      }
-      if (claim.claimApprovalDetails.claimApproval === false) {
-        return (
-          <AdminClaimRow
-            key={claim.id}
-            id={claim.id}
-            selectedOrg={claim.selectedOrg}
-            date={claim.claimDate}
-            fname={claim.orgAdminFirstName}
-            lname={claim.orgAdminLastName}
-            contact={claim.orgAdminEmail}
-            wallet={claim.orgAdminWallet}
-            claimIndex={claim.claimIndex}
-            onSubmit={this.onApproveSubmit}
-            gtOrgs={this.props.gtOrgs}
-          />
-        );
-      } else {
-        return (
-          <div style={{ textAlign: "center", padding: "10px" }}>
-            Nothing to approve.
-          </div>
-        );
-      }
-    });
+    return Object.values(this.props.gtClaims)
+      .reverse()
+      .map((claim, index) => {
+        if (!claim.claimApprovalDetails) {
+          return null;
+        }
+        if (claim.claimApprovalDetails.claimApproval === false) {
+          return (
+            <AdminClaimRow
+              key={claim.id}
+              id={claim.id}
+              selectedOrg={claim.selectedOrg}
+              date={claim.claimDate}
+              fname={claim.orgAdminFirstName}
+              lname={claim.orgAdminLastName}
+              contact={claim.orgAdminEmail}
+              wallet={claim.orgAdminWallet}
+              claimIndex={claim.claimIndex}
+              onSubmit={this.onApproveSubmit}
+              gtOrgs={this.props.gtOrgs}
+            />
+          );
+        } else {
+          return (
+            <div style={{ textAlign: "center", padding: "10px" }}>
+              Nothing to approve.
+            </div>
+          );
+        }
+      });
   }
 
-  renderDonationRow() {
-    return Object.values(this.props.gtDonations).map((donation, index) => {
+  renderDonationsPaginationItems() {
+    const { Header, Row, HeaderCell, Body } = Table;
+    const { currentPage, itemsPerPage } = this.state;
+
+    // Logic for displaying items
+    const indexOfLastTodo = currentPage * itemsPerPage;
+    const indexOfFirstTodo = indexOfLastTodo - itemsPerPage;
+    const currentDonations = Object.values(this.props.gtDonations)
+      .reverse()
+      .slice(indexOfFirstTodo, indexOfLastTodo);
+
+    const renderDonations = currentDonations.map((donation, index) => {
       return (
         <AdminDonationRow
           from={donation.from}
@@ -128,21 +145,92 @@ class AdminPanel extends Component {
         />
       );
     });
+
+    // Logic for displaying page numbers
+
+    const handleClick = event => {
+      this.setState({
+        currentPage: Number(event.target.id)
+      });
+    };
+
+    const pageNumbers = [];
+    for (
+      let i = 1;
+      i <= Math.ceil(Object.keys(this.props.gtDonations).length / itemsPerPage);
+      i++
+    ) {
+      pageNumbers.push(i);
+    }
+
+    const renderPageNumbers = pageNumbers.map(number => {
+      return (
+        <Menu.Item key={number} id={number} onClick={handleClick}>
+          {number}
+        </Menu.Item>
+      );
+    });
+
+    return (
+      <Table width={16}>
+        <Header>
+          <Row>
+            <HeaderCell>Donation Date</HeaderCell>
+            <HeaderCell>From</HeaderCell>
+            <HeaderCell>To</HeaderCell>
+            <HeaderCell>Donated</HeaderCell>
+            <HeaderCell>Proceeds</HeaderCell>
+            <HeaderCell textAlign="center">Status</HeaderCell>
+            <HeaderCell></HeaderCell>
+          </Row>
+        </Header>
+        <Body>{renderDonations}</Body>
+        <Table.Footer textAlign="center">
+          <Table.Row>
+            <Table.HeaderCell colSpan="16">
+              <Menu floated="right" pagination>
+                {renderPageNumbers}
+              </Menu>
+            </Table.HeaderCell>
+          </Table.Row>
+        </Table.Footer>
+      </Table>
+    );
   }
 
   render() {
     const { Header, Row, HeaderCell, Body } = Table;
 
     if (!this.props.gtFunds) {
-      return <div> Loading... </div>;
+      return (
+        <div>
+          <NavHeader /> Loading...{" "}
+        </div>
+      );
     } else if (Object.values(this.props.gtFunds).length < 1) {
-      return <div> Loading...</div>;
+      return (
+        <div>
+          <NavHeader /> Loading...
+        </div>
+      );
     } else if (!this.props.gtClaims) {
-      return <div> Loading... </div>;
+      return (
+        <div>
+          <NavHeader /> Loading...{" "}
+        </div>
+      );
     } else if (Object.values(this.props.gtDonations).length < 1) {
-      return <div> Loading... </div>;
+      return (
+        <div>
+          <NavHeader /> Loading...{" "}
+        </div>
+      );
     } else if (this.props.web3 === "null") {
-      return <div> Loading... </div>;
+      return (
+        <div>
+          <NavHeader /> Loading...{" "}
+        </div>
+      );
     } else if (
       this.props.web3.account &&
       this.props.web3.account !== process.env.REACT_APP_GT_ADMIN
@@ -159,7 +247,6 @@ class AdminPanel extends Component {
               <Grid.Row>
                 <Grid.Column width={16}>
                   <h3>Admin Panel:</h3>
-                  {/* {this.renderCards()} */}
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -173,7 +260,7 @@ class AdminPanel extends Component {
                         <HeaderCell>Recipient</HeaderCell>
                         <HeaderCell>Description</HeaderCell>
                         <HeaderCell>Amount</HeaderCell>
-                        <HeaderCell>Status</HeaderCell>
+                        <HeaderCell textAlign="center">Status</HeaderCell>
                         <HeaderCell></HeaderCell>
                         <HeaderCell></HeaderCell>
                       </Row>
@@ -192,8 +279,7 @@ class AdminPanel extends Component {
                         <HeaderCell>Requesting Organization</HeaderCell>
                         <HeaderCell singleLine>Requesting Admin</HeaderCell>
                         <HeaderCell>Contact</HeaderCell>
-                        <HeaderCell>Status</HeaderCell>
-                        <HeaderCell></HeaderCell>
+                        <HeaderCell textAlign="center">Status</HeaderCell>
                         <HeaderCell></HeaderCell>
                       </Row>
                     </Header>
@@ -204,33 +290,9 @@ class AdminPanel extends Component {
               <Grid.Row>
                 <Grid.Column width={16}>
                   <h3>Recieved Donations:</h3>
-                  <Table>
-                    <Header>
-                      <Row>
-                        <HeaderCell>Donation Date</HeaderCell>
-                        <HeaderCell>From</HeaderCell>
-                        <HeaderCell>To</HeaderCell>
-                        <HeaderCell>Donated</HeaderCell>
-                        <HeaderCell>Proceeds</HeaderCell>
-                        <HeaderCell>Status</HeaderCell>
-                        <HeaderCell></HeaderCell>
-                      </Row>
-                    </Header>
-                    <Body>{this.renderDonationRow()}</Body>
-                  </Table>
+                  {this.renderDonationsPaginationItems()}
                 </Grid.Column>
               </Grid.Row>
-              {/* 
-					<Link route={`/funds/${this.props.address}/grants`}>
-						<a>
-							<Button primary>View Grants</Button>
-						</a>
-					</Link>
-					<Link route={`/`}>
-						<a>
-							<Button secondary>See All</Button>
-						</a>
-					</Link> */}
             </Grid>
           </div>
         </div>

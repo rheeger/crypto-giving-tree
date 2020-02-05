@@ -72,8 +72,8 @@ class DonationRow extends Component {
           {donationAmount} {inputCurrency}
         </Table.Cell>
         <Table.Cell>${finalTradeOutput} </Table.Cell>
-        <Table.Cell>{this.renderStatus()}</Table.Cell>
-        <Table.Cell>
+        <Table.Cell singleLine>{this.renderStatus()}</Table.Cell>
+        <Table.Cell singleLine textAlign="center">
           <a
             href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}etherscan.io/tx/${id}`}
             target="blank"

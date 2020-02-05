@@ -18,7 +18,11 @@ export const createOrgWithdrawl = (
     "pending"
   );
   const id = await org.methods
-    .cashOutOrg(orgAdminWallet, process.env.REACT_APP_STABLECOIN_ADDRESS)
+    .cashOutOrg(
+      orgAdminWallet,
+      process.env.REACT_APP_STABLECOIN_ADDRESS,
+      process.env.REACT_APP_ENDAOMENT_ADMIN
+    )
     .send({ from: process.env.REACT_APP_GT_ADMIN, nonce: currentNonce })
     .on("transactionHash", function(transId) {
       console.log(transId);

@@ -19,7 +19,10 @@ export const createOrg = async id => {
 
   const createContract = await orgFactory.methods
     .createOrg(id, process.env.REACT_APP_ENDAOMENT_ADMIN)
-    .send({ from: accounts[0], gasPrice: "21000000000" });
+    .send({
+      from: accounts[0],
+      gasPrice: process.env.REACT_APP_ADMIN_GAS_PRICE
+    });
   console.log(
     "Created contract:" +
       createContract.events.orgCreated.returnValues.newAddress

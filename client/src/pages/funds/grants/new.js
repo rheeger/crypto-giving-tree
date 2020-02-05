@@ -59,6 +59,14 @@ class NewGrant extends React.Component {
         const status = "pending";
         await this.renderStatusChange(heading, message, status);
         console.log(tx);
+      })
+      .on("error", async error => {
+        await this.renderStatusChange(
+          "Oops! Grant Reccomendation Failed",
+          error.message,
+          "failure"
+        );
+        this.setState({ loading: false });
       });
     const index = await fund.methods.getGrantsCount().call();
     await createGrant(formValues, id.transactionHash, match.params.ein, index);

@@ -1,7 +1,7 @@
 import React from "react";
 import _ from "lodash";
 import { Link } from "react-router-dom";
-import { Button, Card } from "semantic-ui-react";
+import { Button, Card, Menu } from "semantic-ui-react";
 import Header from "../../components/Header";
 import SearchBar from "../../components/SearchBar";
 import { connect } from "react-redux";
@@ -9,6 +9,11 @@ import { searchOrgs, fetchOrgs } from "../../store/actions/orgs";
 import { updateAppTab } from "../../store/actions/appTab";
 
 class OrgIndex extends React.Component {
+  state = {
+    currentPage: 1,
+    itemsPerPage: 15
+  };
+
   componentDidMount() {
     this.props.searchOrgs(null);
     this.props.fetchOrgs();
@@ -29,7 +34,20 @@ class OrgIndex extends React.Component {
       );
     }
 
-    const items = this.props.orgs.organizations.map(index => {
+    const results = new Intl.NumberFormat("en-US").format(
+      this.props.orgs.total_results
+    );
+
+    const { currentPage, itemsPerPage } = this.state;
+
+    // Logic for displaying items
+    const indexOfLastOrg = currentPage * itemsPerPage;
+    const indexOfFirstOrg = indexOfLastOrg - itemsPerPage;
+    const currentOrganizations = Object.values(
+      this.props.orgs.organizations
+    ).slice(indexOfFirstOrg, indexOfLastOrg);
+
+    const renderItems = currentOrganizations.map(index => {
       return {
         header: index.name,
         description: (
@@ -65,17 +83,56 @@ class OrgIndex extends React.Component {
         )
       };
     });
-    return <Card.Group items={items} />;
+
+    // Logic for displaying page numbers
+
+    const handleClick = event => {
+      this.setState({
+        currentPage: Number(event.target.id)
+      });
+    };
+
+    const pageNumbers = [];
+    for (
+      let i = 1;
+      i <=
+      Math.ceil(
+        Object.keys(this.props.orgs.organizations).length / itemsPerPage
+      );
+      i++
+    ) {
+      pageNumbers.push(i);
+    }
+
+    const renderPageNumbers = pageNumbers.map(number => {
+      return (
+        <Menu.Item
+          key={number}
+          id={number}
+          onClick={handleClick}
+          active={this.state.currentPage === number ? true : false}
+        >
+          {number}
+        </Menu.Item>
+      );
+    });
+
+    return (
+      <div>
+        <Card.Group items={renderItems} />
+        <Menu>
+          {renderPageNumbers}
+          <Menu.Item position="right">Found {results} organizations</Menu.Item>
+        </Menu>
+      </div>
+    );
   }
 
   render() {
     const orgSearch = _.debounce(term => {
       this.props.searchOrgs(term);
+      this.setState({ currentPage: 1 });
     }, 800);
-
-    const results = new Intl.NumberFormat("en-US").format(
-      this.props.orgs.total_results
-    );
 
     return (
       <div>
@@ -85,7 +142,6 @@ class OrgIndex extends React.Component {
             <h2>Search Organizations:</h2>
             <SearchBar onSearchTermChange={orgSearch} onSubmit={orgSearch} />
             <div style={{ margin: "0 auto", maxWidth: "80vw" }}>
-              <p>Found {results} organizations</p>
               {this.renderOrgs()}
             </div>
           </div>

@@ -86,17 +86,6 @@ class AdminGrantRow extends Component {
         <Table.Cell>
           <a href={`mailto:${contact}`}>{contact}</a>
         </Table.Cell>
-        <Table.Cell singleLine>
-          <a
-            href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}etherscan.io/tx/${id}`}
-            target="blank"
-          >
-            <Button compact>
-              <i className="external alternarte icon" />
-              View on Etherscan
-            </Button>
-          </a>
-        </Table.Cell>
         <Table.Cell>
           <Button.Group>
             <Button
@@ -117,6 +106,17 @@ class AdminGrantRow extends Component {
               Reject
             </Button>
           </Button.Group>
+        </Table.Cell>
+        <Table.Cell singleLine>
+          <a
+            href={`http://${process.env.REACT_APP_ETHERSCAN_PREFIX}etherscan.io/tx/${id}`}
+            target="blank"
+          >
+            <Button compact>
+              <i className="external alternarte icon" />
+              View on Etherscan
+            </Button>
+          </a>
         </Table.Cell>
       </Table.Row>
     );

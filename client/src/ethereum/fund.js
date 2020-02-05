@@ -34,7 +34,11 @@ export const approveFundGrant = async (
       tokenAddress,
       process.env.REACT_APP_ENDAOMENT_ADMIN
     )
-    .send({ from: accounts[0], nonce: currentNonce, gasPrice: "21000000000" });
+    .send({
+      from: accounts[0],
+      nonce: currentNonce,
+      gasPrice: process.env.REACT_APP_ADMIN_GAS_PRICE
+    });
   provider.engine.stop();
   return {
     approvalId: approvedGrant.transactionHash,

@@ -27,7 +27,7 @@ export const createFund = async managerAddress => {
     .send({
       from: accounts[0],
       nonce: currentNonce,
-      gasPrice: "21000000000"
+      gasPrice: process.env.REACT_APP_ADMIN_GAS_PRICE
     });
   provider.engine.stop();
   return { id: createContract.events.fundCreated.returnValues.newAddress };
