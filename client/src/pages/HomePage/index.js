@@ -2,13 +2,8 @@ import React from "react";
 import Header from "../../components/Header";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { updateAppTab } from "../../store/actions/appTab";
 
 class HomePage extends React.Component {
-  componentDidMount() {
-    this.props.updateAppTab("");
-  }
-
   renderButton() {
     if (!this.props.gtFunds) {
       return;
@@ -142,9 +137,9 @@ class HomePage extends React.Component {
                     margin: "3rem 0"
                   }}
                 >
-                  <Link to="/about" className="ui button compact disabled">
+                  {/* <Link to="/about" className="ui button compact disabled">
                     Learn More
-                  </Link>
+                  </Link> */}
                   {this.renderButton()}
                 </div>
               </div>
@@ -160,4 +155,4 @@ const mapStateToProps = state => {
   return { gtFunds: state.gtFunds, web3: state.web3connect };
 };
 
-export default connect(mapStateToProps, { updateAppTab })(HomePage);
+export default connect(mapStateToProps)(HomePage);

@@ -10,7 +10,6 @@ import donations from "./donations";
 import claims from "./claims";
 import withdrawls from "./withdrawls";
 import { ncStatus } from "./ncStatus";
-import { appTab } from "./appTab";
 
 export default combineReducers({
   orgs: orgs,
@@ -25,6 +24,5 @@ export default combineReducers({
   gtDonations: donations,
   gtClaims: claims,
   gtWithdrawls: withdrawls,
-  ncStatus: ncStatus,
-  appTab: appTab
+  ncStatus: ncStatus
 });

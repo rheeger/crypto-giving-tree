@@ -13,7 +13,6 @@ import GrantForm from "../../../components/GrantForm";
 import Header from "../../../components/Header";
 import { fundContract } from "../../../ethereum/fund";
 import { BigNumber as BN } from "bignumber.js";
-import { updateAppTab } from "../../../store/actions/appTab";
 
 class NewGrant extends React.Component {
   state = {
@@ -22,8 +21,7 @@ class NewGrant extends React.Component {
   };
 
   componentDidMount = async () => {
-    const { selectOrg, fetchOrgs, match, updateAppTab } = this.props;
-    updateAppTab("funds");
+    const { selectOrg, fetchOrgs, match } = this.props;
     selectOrg(match.params.ein);
     fetchOrgs();
   };
@@ -257,6 +255,5 @@ export default connect(mapStateToProps, {
   fetchOrgs,
   createOrgAndContract,
   createGrant,
-  updateNCStatus,
-  updateAppTab
+  updateNCStatus
 })(NewGrant);

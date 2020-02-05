@@ -35,7 +35,7 @@ export const createOrgWithdrawl = (
     id: id.transactionHash,
     selectedOrg,
     orgAdminWallet,
-    withdrawlAmount
+    withdrawlAmount: withdrawlAmount
   });
 
   dispatch({ type: types.MAKE_ORG_WITHDRAWL, payload: response.data });

@@ -11,33 +11,15 @@ import "./main.css";
 
 class Header extends React.Component {
   componentDidMount() {
-    const { initialize, startWatching } = this.props;
+    const { initialize, startWatching, setAddresses } = this.props;
     try {
-      initialize().then(startWatching);
+      initialize()
+        .then(startWatching)
+        .then(setAddresses(process.env.REACT_APP_NETWORK_ID));
     } catch (err) {
       console.log(err);
     }
-  }
-
-  componentDidUpdate() {
-    const { web3, setAddresses } = this.props;
-
-    if (
-      this.hasSetNetworkId ||
-      !web3 ||
-      !web3.eth ||
-      !web3.eth.net ||
-      !web3.eth.net.getId
-    ) {
-      return;
-    }
-
-    web3.eth.net.getId((err, networkId) => {
-      if (!err && !this.hasSetNetworkId) {
-        setAddresses(networkId);
-        this.hasSetNetworkId = true;
-      }
-    });
+    this.hasSetNetworkId = true;
   }
 
   truncateAccount() {
@@ -123,10 +105,11 @@ class Header extends React.Component {
               negative
               floating
               size="mini"
-              style={{ padding: "10px", margin: "1rem 8.5rem 1rem 1rem" }}
+              style={{ padding: "10px", margin: "1rem 6.5rem 1rem 1rem" }}
             >
               <i className="exclamation triangle icon red" />
-              THIS IS A DEMO — USE AT YOUR OWN RISK
+              THIS IS A {process.env.REACT_APP_NETWORK_NAME} DEMO — USE AT YOUR
+              OWN RISK
             </Message>
             <Button.Group>
               {this.renderAccount()}

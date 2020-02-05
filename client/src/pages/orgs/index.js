@@ -6,7 +6,6 @@ import Header from "../../components/Header";
 import SearchBar from "../../components/SearchBar";
 import { connect } from "react-redux";
 import { searchOrgs, fetchOrgs } from "../../store/actions/orgs";
-import { updateAppTab } from "../../store/actions/appTab";
 
 class OrgIndex extends React.Component {
   state = {
@@ -17,7 +16,6 @@ class OrgIndex extends React.Component {
   componentDidMount() {
     this.props.searchOrgs(null);
     this.props.fetchOrgs();
-    this.props.updateAppTab("orgs");
   }
 
   renderOrgs() {
@@ -118,7 +116,7 @@ class OrgIndex extends React.Component {
     });
 
     return (
-      <div>
+      <div style={{ marginBottom: "5rem" }}>
         <Card.Group items={renderItems} />
         <Menu>
           {renderPageNumbers}
@@ -157,6 +155,5 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
   searchOrgs,
-  fetchOrgs,
-  updateAppTab
+  fetchOrgs
 })(OrgIndex);

@@ -15,7 +15,6 @@ import GrantRow from "../../components/tables/GrantRow";
 import DonationRow from "../../components/tables/DonationRow";
 import NavHeader from "../../components/Header";
 import moment from "moment";
-import { updateAppTab } from "../../store/actions/appTab";
 
 class FundShow extends Component {
   componentDidMount = () => {
@@ -25,10 +24,8 @@ class FundShow extends Component {
       fetchFundGrants,
       fetchOrgs,
       fetchGrantableDAIBalance,
-      fetchFundDonations,
-      updateAppTab
+      fetchFundDonations
     } = this.props;
-    updateAppTab("funds");
     fetchFundDAIBalance(match.params.address);
     fetchGrantableDAIBalance(match.params.address);
     fetchFundGrants(match.params.address);
@@ -204,7 +201,7 @@ class FundShow extends Component {
       <div>
         <NavHeader />
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <div style={{ maxWidth: "900px" }}>
+          <div style={{ maxWidth: "900px", marginBottom: "5rem" }}>
             <Grid className="Container">
               <Grid.Row>
                 <Grid.Column width={10}>
@@ -287,6 +284,5 @@ export default connect(mapStateToProps, {
   fetchFundGrants,
   fetchOrgs,
   fetchGrantableDAIBalance,
-  fetchFundDonations,
-  updateAppTab
+  fetchFundDonations
 })(FundShow);

@@ -5,7 +5,6 @@ import { Button, Card, Grid, Table } from "semantic-ui-react";
 import {
   fetchOrgLifetimeGrants,
   selectOrg,
-  fetchOrg,
   fetchOrgs
 } from "../../store/actions/orgs";
 import { fetchOrgApprovedGrants } from "../../store/actions/grants";
@@ -13,7 +12,6 @@ import { createOrgWithdrawl } from "../../store/actions/withdrawls";
 import OrgGrantRow from "../../components/tables/OrgGrantRow";
 import NavHeader from "../../components/Header";
 import moment from "moment";
-import { updateAppTab } from "../../store/actions/appTab";
 
 class OrgShow extends React.Component {
   state = {
@@ -25,15 +23,12 @@ class OrgShow extends React.Component {
       selectOrg,
       fetchOrgApprovedGrants,
       match,
-      fetchOrgLifetimeGrants,
-      fetchOrgs,
-      updateAppTab
+      fetchOrgLifetimeGrants
     } = this.props;
     selectOrg(match.params.ein);
     fetchOrgs();
     fetchOrgApprovedGrants(match.params.ein);
     fetchOrgLifetimeGrants(match.params.ein);
-    updateAppTab("orgs");
   }
 
   renderRow() {
@@ -246,9 +241,7 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   selectOrg,
   fetchOrgApprovedGrants,
-  fetchOrg,
   fetchOrgLifetimeGrants,
   fetchOrgs,
-  createOrgWithdrawl,
-  updateAppTab
+  createOrgWithdrawl
 })(OrgShow);

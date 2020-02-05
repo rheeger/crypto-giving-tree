@@ -47,9 +47,9 @@ class Splash extends React.Component {
               margin: "2rem"
             }}
           >
-            <Link to="/about" className="ui button compact disabled">
+            {/* <Link to="/about" className="ui button compact disabled">
               Learn More
-            </Link>
+            </Link> */}
             <Link to="/alpha" className="ui button compact green">
               Try the Alpha
             </Link>
