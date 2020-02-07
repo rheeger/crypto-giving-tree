@@ -5,6 +5,7 @@ import grant from "../../assets/images/grant.png";
 import contribute from "../../assets/images/contribute.png";
 import fund from "../../assets/images/fund.png";
 import tax from "../../assets/images/tax.png";
+import endaomentfund from "../../assets/images/endaomentfund.png";
 import styled from "styled-components";
 
 class Splash extends React.Component {
@@ -25,7 +26,7 @@ class Splash extends React.Component {
           </ButtonBlock>
         </FullscreenWrapper>
         <LearnMoreWrapper id="about">
-          <Subtitle>
+          <SectionSubtitle>
             how{" "}
             <span
               style={{
@@ -37,13 +38,13 @@ class Splash extends React.Component {
               endaoment
             </span>{" "}
             works:
-          </Subtitle>
+          </SectionSubtitle>
           <LeftSectionWrapper>
             <EmojiImage alt="fund" src={fund}></EmojiImage>
             <ContentWrapper>
               <SmallLabel>STEP 1</SmallLabel>
               <SectionHeader>Open a fund</SectionHeader>
-              <Subtitle>become the Primary Advisor of your own fund</Subtitle>
+              <Subtitle>become the primary advisor of your own fund</Subtitle>
             </ContentWrapper>
           </LeftSectionWrapper>
           <RightSectionWrapper>
@@ -60,7 +61,7 @@ class Splash extends React.Component {
               <SmallLabel>STEP 3</SmallLabel>
               <SectionHeader>Offer grants</SectionHeader>
               <Subtitle>
-                make grant reccomendations to almost any
+                make grant reccomendations to almost every
                 <br />
                 501(c)(3) organization
               </Subtitle>
@@ -76,9 +77,16 @@ class Splash extends React.Component {
           </SectionWrapper>
           <SectionWrapper>
             <EmojiImage alt="Taxes" src={tax}></EmojiImage>
-            <Header>You minimize taxes</Header>
+            <Header>Minimize your taxes</Header>
             <Subtitle>
               contribute long-term capital gains holdings for maximum deductions
+            </Subtitle>
+          </SectionWrapper>
+          <SectionWrapper>
+            <EmojiImage alt="Endaoment Fund" src={endaomentfund}></EmojiImage>
+            <Header>Coming Soon</Header>
+            <Subtitle>
+              philanthropic DAO governed by fund primary advisors
             </Subtitle>
           </SectionWrapper>
         </LearnMoreWrapper>
@@ -113,13 +121,13 @@ class Splash extends React.Component {
 export default Splash;
 
 const HomePageWrapper = styled.div`
-  min-width: 588px;
+  min-width: 660px;
   background-color: whitesmoke;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 5rem 0;
+  padding-bottom: 10rem 0;
 `;
 
 const FullscreenWrapper = styled.div`
@@ -130,7 +138,7 @@ const FullscreenWrapper = styled.div`
   align-items: center;
   max-width: 1400px;
   text-align: center;
-  margin: -5rem auto 5rem auto;
+  margin: 0 auto;
 `;
 
 const Header = styled.p`
@@ -145,6 +153,7 @@ const BigHeader = styled.p`
   font-weight: 400;
   font-size: 5rem;
   margin-top: 3rem;
+  padding: 2rem;
 `;
 
 const Subtitle = styled.p`
@@ -154,6 +163,12 @@ const Subtitle = styled.p`
   margin-top: -3rem;
 `;
 
+const SectionSubtitle = styled.p`
+  font-family: all-round-gothic;
+  font-weight: 400;
+  font-size: 1.5rem;
+`;
+
 const ButtonBlock = styled.div`
   display: flex;
   justify-content: center;
@@ -161,6 +176,7 @@ const ButtonBlock = styled.div`
 `;
 
 const LearnMoreWrapper = styled.div`
+  margin: 10rem auto 0rem auto;
   padding: 8rem 0;
   display: flex;
   flex-flow: column;
@@ -176,7 +192,7 @@ const LeftSectionWrapper = styled.div`
   justify-content: space-around;
   align-items: center;
   text-align: left;
-  margin: 5rem;
+  margin: 8rem auto;
 `;
 
 const RightSectionWrapper = styled.div`
@@ -186,7 +202,7 @@ const RightSectionWrapper = styled.div`
   align-items: center;
   justify-content: space-around;
   text-align: left;
-  margin: 5rem;
+  margin: 8rem auto;
 `;
 
 const SectionWrapper = styled.div`
@@ -195,7 +211,7 @@ const SectionWrapper = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
-  margin: 5rem;
+  margin: 4rem;
 `;
 
 const SmallLabel = styled.p`
