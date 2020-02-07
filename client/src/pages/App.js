@@ -5,6 +5,7 @@ import history from "../history";
 import asyncComponent from "./AsyncComponents";
 import * as moment from "moment";
 import Moment from "react-moment";
+import Splash from "./splash/splash";
 
 // Sets the moment instance to use.
 Moment.globalMoment = moment;
@@ -27,7 +28,7 @@ const AsyncOrgShow = asyncComponent(() => import("./orgs/show"));
 const AsyncNewClaim = asyncComponent(() => import("./orgs/claim"));
 const AsyncNewGrant = asyncComponent(() => import("./funds/grants/new"));
 const AsyncAdminPanel = asyncComponent(() => import("./admin"));
-const AsyncSplash = asyncComponent(() => import("./splash/splash"));
+// const AsyncSplash = asyncComponent(() => import("./splash/splash"));
 
 class App extends React.Component {
   componentDidMount() {
@@ -36,29 +37,20 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="ui container">
-        <Router history={history}>
-          {/* <Header /> */}
-          <div className="app__wrapper">
-            <Switch>
-              <Route path="/" exact component={AsyncSplash} />
-              <Route path="/alpha" exact component={AsyncHome} />
-              <Route path="/funds" exact component={AsyncManager} />
-              <Route path="/funds/new" exact component={AsyncNewFund} />
-              <Route path="/funds/:address" exact component={AsyncFundShow} />
-              <Route path="/orgs" exact component={AsyncOrgIndex} />
-              <Route path="/orgs/:ein" exact component={AsyncOrgShow} />
-              <Route
-                path="/orgs/:ein/grants/new"
-                exact
-                component={AsyncNewGrant}
-              />
-              <Route path="/orgs/:ein/claim" exact component={AsyncNewClaim} />
-              <Route path="/admin" exact component={AsyncAdminPanel} />
-            </Switch>
-          </div>
-        </Router>
-      </div>
+      <Router history={history}>
+        <Switch>
+          <Route path="/" exact component={Splash} />
+          <Route path="/alpha" exact component={AsyncHome} />
+          <Route path="/funds" exact component={AsyncManager} />
+          <Route path="/funds/new" exact component={AsyncNewFund} />
+          <Route path="/funds/:address" exact component={AsyncFundShow} />
+          <Route path="/orgs" exact component={AsyncOrgIndex} />
+          <Route path="/orgs/:ein" exact component={AsyncOrgShow} />
+          <Route path="/orgs/:ein/grants/new" exact component={AsyncNewGrant} />
+          <Route path="/orgs/:ein/claim" exact component={AsyncNewClaim} />
+          <Route path="/admin" exact component={AsyncAdminPanel} />
+        </Switch>
+      </Router>
     );
   }
 }
