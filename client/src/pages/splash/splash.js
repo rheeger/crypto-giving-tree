@@ -37,7 +37,7 @@ class Splash extends React.Component {
               <ReactTypeformEmbed
                 popup={false}
                 url="https://robbie974107.typeform.com/to/lLyuy4"
-                style={{ borderRadius: "1rem" }}
+                class="typeform-modal"
               />
             </div>
           </div>
@@ -50,13 +50,13 @@ class Splash extends React.Component {
     return (
       <div>
         <HomePageWrapper>
-          <FullscreenWrapper>
+          <div className="fullscreen-wrapper">
             <img
               alt="endaoment"
-              style={{ width: "15rem" }}
+              style={{ maxWidth: "15rem" }}
               src={endaoment}
             ></img>
-            <BigHeader>A new way to give.</BigHeader>
+            <p className="big-header">A new way to give.</p>
             <Subtitle>smart contract donor-advised funds</Subtitle>
             <ButtonBlock>
               <a href="#about" className="ui button compact">
@@ -72,7 +72,7 @@ class Splash extends React.Component {
                 Request Access
               </p>
             </ButtonBlock>
-          </FullscreenWrapper>
+          </div>
           <LearnMoreWrapper id="about">
             <SectionSubtitle>
               how{" "}

@@ -1,15 +1,14 @@
 @import "../../components/uniSwap/variables.scss";
 
 .token-modal {
-  background-color: $white;
+  background-color: whitesmoke;
   position: fixed;
   top: 50%;
   left: 50%;
   width: 100%;
   height: 60rem;
   z-index: 2000;
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
+  border-radius: 2rem;
   transition: 250ms ease-in-out;
 
   &__search-container {
@@ -103,32 +102,28 @@
     color: $dove-gray;
   }
 
-  @media only screen and (min-width: 768px) {
-    max-width: 560px;
-    max-height: 768px;
+  @media only screen and (min-width: 811px) {
+    max-width: 660px;
+    max-height: 700px;
     position: fixed;
     margin-left: auto;
     margin-right: auto;
-    border-radius: 1rem;
-    padding-bottom: 1rem;
     left: 0;
     right: 0;
     bottom: 0;
     top: 0;
     margin-top: 10vh;
+    margin-top: 10vh;
   }
-  @media only screen and (max-width: 768px) {
-    max-height: 80vh;
+  @media only screen and (max-width: 811px) {
+    max-height: 50vh;
+    max-width: 80vw;
     position: fixed;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 1rem;
-    padding-bottom: 1rem;
     left: 0;
     right: 0;
     bottom: 0;
     top: 0;
-    margin: 10vh 0;
+    margin: 40% auto;
   }
 }
 
@@ -138,4 +133,48 @@
 
 .token-modal-appear.modal-container-appear-active {
   bottom: 0;
+}
+
+.fullscreen-wrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  max-width: 1400px;
+  text-align: center;
+  margin-top: 20vh;
+
+  @media only screen and (max-width: 811px) {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 1400px;
+    text-align: center;
+    margin-top: 3rem;
+  }
+}
+
+.big-header {
+  font-family: all-round-gothic;
+  font-weight: 400;
+  font-size: 5rem;
+  margin-top: 3rem;
+  padding: 2rem;
+  @media only screen and (max-width: 768px) {
+    margin-top: 1rem;
+    font-size: 4rem;
+    padding: 1rem;
+  }
+}
+
+.typeform-modal {
+  max-width: 620px;
+  max-height: 650px;
+  @media only screen and (max-width: 811px) {
+    max-width: 30vw;
+    max-height: 30vh;
+  }
 }
