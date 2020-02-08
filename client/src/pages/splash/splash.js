@@ -69,7 +69,7 @@ class Splash extends React.Component {
                 }}
                 style={{ cursor: "pointer" }}
               >
-                Request Beta Access
+                Request Access
               </p>
             </ButtonBlock>
           </FullscreenWrapper>
@@ -87,40 +87,54 @@ class Splash extends React.Component {
               </span>{" "}
               works:
             </SectionSubtitle>
-            <LeftSectionWrapper>
+            <RightSectionWrapper>
               <EmojiImage alt="fund" src={fund}></EmojiImage>
               <ContentWrapper>
                 <SmallLabel>STEP 1</SmallLabel>
                 <SectionHeader>Open a fund</SectionHeader>
-                <Subtitle>become the primary advisor of your own fund</Subtitle>
+                <Subtitle>
+                  provide basic info and become your fund's primary advisor in
+                  seconds
+                </Subtitle>
               </ContentWrapper>
-            </LeftSectionWrapper>
-            <RightSectionWrapper>
+            </RightSectionWrapper>
+            <LeftSectionWrapper>
               <EmojiImage alt="contribute" src={contribute}></EmojiImage>
               <ContentWrapper>
                 <SmallLabel>STEP 2</SmallLabel>
                 <SectionHeader>Give some crypto</SectionHeader>
-                <Subtitle>funds accept any token traded on Uniswap</Subtitle>
+                <Subtitle>
+                  funds accept any token traded on Uniswap and are exchanged by{" "}
+                  <span
+                    style={{
+                      fontFamily: "all-round-gothic",
+                      fontWeight: "600",
+                      fontSize: "1.5rem"
+                    }}
+                  >
+                    endaoment
+                  </span>{" "}
+                  into USDC
+                </Subtitle>
               </ContentWrapper>
-            </RightSectionWrapper>
-            <LeftSectionWrapper>
+            </LeftSectionWrapper>
+            <RightSectionWrapper>
               <EmojiImage alt="grant" src={grant}></EmojiImage>
               <ContentWrapper>
                 <SmallLabel>STEP 3</SmallLabel>
                 <SectionHeader>Offer grants</SectionHeader>
                 <Subtitle>
-                  make grant reccomendations to almost every
-                  <br />
-                  501(c)(3) organization
+                  make grant reccomendations to approved 501(c)(3) organizations
+                  (no hate groups allowed)
                 </Subtitle>
               </ContentWrapper>
-            </LeftSectionWrapper>
+            </RightSectionWrapper>
             <SectionWrapper>
               <EmojiImage alt="Orgs" src={orgs}></EmojiImage>
               <Header>Orgs recieve USDC</Header>
               <Subtitle>
-                funds are easily transfered by organizations out to US bank
-                accounts
+                approved grant proceeds are easily transfered by organizations
+                out to US bank accounts
               </Subtitle>
             </SectionWrapper>
             <SectionWrapper>
@@ -135,28 +149,29 @@ class Splash extends React.Component {
               <EmojiImage alt="Endaoment Fund" src={endaomentfund}></EmojiImage>
               <Header>Coming Soon</Header>
               <Subtitle>
-                philanthropic DAO governed by fund primary advisors
+                a community philanthropic DAO governed by you: fund primary
+                advisors
               </Subtitle>
             </SectionWrapper>
             <SectionWrapper>
               <p
-                className="ui button huge green"
+                className="ui button massive green"
                 onClick={() => {
                   this.setState({ isShowingModal: true });
                 }}
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer", margin: "-2rem auto 2rem auto" }}
               >
-                Request Beta Access
+                Request Access
               </p>
-              <Header>Be the first</Header>
+              <Header>Keep in touch</Header>
               <Subtitle>
-                sign up and recieve notice when our public beta launches
+                sign up to recieve notice when our public beta launches
               </Subtitle>
             </SectionWrapper>
           </LearnMoreWrapper>
           <img
             alt="endaoment"
-            style={{ width: "10rem", margin: "0 auto" }}
+            style={{ maxWidth: "10rem", margin: "0 auto" }}
             src={endaoment}
           ></img>
           <ButtonBlock>
@@ -187,24 +202,27 @@ class Splash extends React.Component {
 export default Splash;
 
 const HomePageWrapper = styled.div`
-  min-width: 660px;
   background-color: whitesmoke;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-bottom: 10rem 0;
+  padding-bottom: 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 const FullscreenWrapper = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   max-width: 1400px;
   text-align: center;
-  margin: -10rem auto 5rem auto;
+  margin-top: 10vh;
 `;
 
 const Header = styled.p`
@@ -243,33 +261,37 @@ const ButtonBlock = styled.div`
 `;
 
 const LearnMoreWrapper = styled.div`
-  margin: 10rem auto 0rem auto;
-  padding: 8rem 0;
+  background-color: whitesmoke;
+  width: 1300px;
+  max-width: 100vw;
   display: flex;
   flex-flow: column;
   justify-content: center;
   align-items: center;
+  padding: 5rem 0;
 `;
 
 const LeftSectionWrapper = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: row-reverse;
   flex-wrap: wrap;
-  justify-content: space-around;
   align-items: center;
+  justify-content: center;
   text-align: left;
-  margin: 8rem auto;
+  max-width: 100vw;
+  margin: 5rem auto;
+  padding: 1rem;
 `;
 
 const RightSectionWrapper = styled.div`
-  width: 100%;
   display: flex;
   flex-flow: wrap;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   text-align: left;
-  margin: 8rem auto;
+  max-width: 100vw;
+  margin: 5rem auto;
+  padding: 1rem;
 `;
 
 const SectionWrapper = styled.div`
@@ -278,7 +300,9 @@ const SectionWrapper = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
-  margin: 5rem;
+  max-width: 100vw;
+  margin: 5rem auto;
+  padding: 2rem;
 `;
 
 const SmallLabel = styled.p`
@@ -295,9 +319,16 @@ const SectionHeader = styled.p`
   text-align: left;
 `;
 
-const ContentWrapper = styled.div``;
+const ContentWrapper = styled.div`
+  padding: 1rem;
+  width: 500px;
+  height: auto;
+  max-width: 100vw;
+`;
 
 const EmojiImage = styled.img`
-  width: 30rem;
-  margin-left: 1rem;
+  width: 100vw;
+  height: auto;
+  padding: 1rem 0rem 1rem 1rem;
+  max-width: 30rem;
 `;
