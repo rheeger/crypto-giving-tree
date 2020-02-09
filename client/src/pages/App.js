@@ -6,6 +6,7 @@ import asyncComponent from "./AsyncComponents";
 import * as moment from "moment";
 import Moment from "react-moment";
 import Splash from "./splash/splash";
+import SignUp from "./splash/signup";
 
 // Sets the moment instance to use.
 Moment.globalMoment = moment;
@@ -28,7 +29,6 @@ const AsyncOrgShow = asyncComponent(() => import("./orgs/show"));
 const AsyncNewClaim = asyncComponent(() => import("./orgs/claim"));
 const AsyncNewGrant = asyncComponent(() => import("./funds/grants/new"));
 const AsyncAdminPanel = asyncComponent(() => import("./admin"));
-// const AsyncSplash = asyncComponent(() => import("./splash/splash"));
 
 class App extends React.Component {
   componentDidMount() {
@@ -40,6 +40,7 @@ class App extends React.Component {
       <Router history={history}>
         <Switch>
           <Route path="/" exact component={Splash} />
+          <Route path="/signup" exact component={SignUp} />
           <Route path="/alpha" exact component={AsyncHome} />
           <Route path="/funds" exact component={AsyncManager} />
           <Route path="/funds/new" exact component={AsyncNewFund} />

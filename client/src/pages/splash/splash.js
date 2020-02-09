@@ -7,45 +7,10 @@ import fund from "../../assets/images/fund.png";
 import tax from "../../assets/images/tax.png";
 import endaomentfund from "../../assets/images/endaomentfund.png";
 import styled from "styled-components";
-import Modal from "../../components/uniSwap/Modal";
-import { ReactTypeformEmbed } from "react-typeform-embed";
-import { CSSTransitionGroup } from "react-transition-group";
 import "./splash.scss";
+import { Link } from "react-router-dom";
 
 class Splash extends React.Component {
-  state = {
-    isShowingModal: false
-  };
-
-  renderModal = () => {
-    if (!this.state.isShowingModal) {
-      return null;
-    }
-
-    return (
-      <Modal onClose={() => this.setState({ isShowingModal: false })}>
-        <CSSTransitionGroup
-          transitionName="token-modal"
-          transitionAppear={true}
-          transitionLeave={true}
-          transitionAppearTimeout={200}
-          transitionLeaveTimeout={200}
-          transitionEnterTimeout={200}
-        >
-          <div className="token-modal">
-            <div className="token-modal__token-list">
-              <ReactTypeformEmbed
-                popup={false}
-                url="https://robbie974107.typeform.com/to/lLyuy4"
-                class="typeform-modal"
-              />
-            </div>
-          </div>
-        </CSSTransitionGroup>
-      </Modal>
-    );
-  };
-
   render() {
     return (
       <div>
@@ -62,15 +27,13 @@ class Splash extends React.Component {
               <a href="#about" className="ui button compact">
                 Learn More
               </a>
-              <p
+              <a
                 className="ui button compact green"
-                onClick={() => {
-                  this.setState({ isShowingModal: true });
-                }}
-                style={{ cursor: "pointer" }}
+                target="blank"
+                href="./signup"
               >
                 Request Access
-              </p>
+              </a>
             </ButtonBlock>
           </div>
           <LearnMoreWrapper id="about">
@@ -93,8 +56,8 @@ class Splash extends React.Component {
                 <SmallLabel>STEP 1</SmallLabel>
                 <SectionHeader>Open a fund</SectionHeader>
                 <Subtitle>
-                  provide basic info and become your fund's primary advisor in
-                  seconds
+                  provide minimal basic info about yourself and we'll set up
+                  your new fund's smart contract in seconds
                 </Subtitle>
               </ContentWrapper>
             </RightSectionWrapper>
@@ -104,17 +67,17 @@ class Splash extends React.Component {
                 <SmallLabel>STEP 2</SmallLabel>
                 <SectionHeader>Give some crypto</SectionHeader>
                 <Subtitle>
-                  funds accept any token traded on Uniswap and are exchanged by{" "}
+                  funds accept any token with a Uniswap excahnge contract and
+                  are traded by{" "}
                   <span
                     style={{
                       fontFamily: "all-round-gothic",
-                      fontWeight: "600",
-                      fontSize: "1.5rem"
+                      fontWeight: "600"
                     }}
                   >
                     endaoment
                   </span>{" "}
-                  into USDC
+                  for USDC when donated
                 </Subtitle>
               </ContentWrapper>
             </LeftSectionWrapper>
@@ -124,8 +87,9 @@ class Splash extends React.Component {
                 <SmallLabel>STEP 3</SmallLabel>
                 <SectionHeader>Offer grants</SectionHeader>
                 <Subtitle>
-                  make grant reccomendations to approved 501(c)(3) organizations
-                  (no hate groups allowed)
+                  use the proceeds of your donations to make grant
+                  reccomendations to any non-profit organization (some
+                  restrictions apply)
                 </Subtitle>
               </ContentWrapper>
             </RightSectionWrapper>
@@ -133,36 +97,42 @@ class Splash extends React.Component {
               <EmojiImage alt="Orgs" src={orgs}></EmojiImage>
               <Header>Orgs recieve USDC</Header>
               <Subtitle>
-                approved grant proceeds are easily transfered by organizations
-                out to US bank accounts
+                approved grants are easily transfered out to US bank accounts by
+                an organization's leadership
               </Subtitle>
             </SectionWrapper>
             <SectionWrapper>
               <EmojiImage alt="Taxes" src={tax}></EmojiImage>
               <Header>Minimize your taxes</Header>
               <Subtitle>
-                contribute long-term capital gains holdings for maximum
+                contribute your long-term capital gains holdings for maximum
                 deductions
               </Subtitle>
             </SectionWrapper>
             <SectionWrapper>
               <EmojiImage alt="Endaoment Fund" src={endaomentfund}></EmojiImage>
-              <Header>Coming Soon</Header>
+              <Header>Coming Soon...</Header>
               <Subtitle>
-                a community philanthropic DAO governed by you: fund primary
-                advisors
+                a community philanthropic DAO governed by you:{" "}
+                <span
+                  style={{
+                    fontFamily: "all-round-gothic",
+                    fontWeight: "600"
+                  }}
+                >
+                  endaoment
+                </span>
+                's primary advisors
               </Subtitle>
             </SectionWrapper>
             <SectionWrapper>
-              <p
+              <a
                 className="ui button massive green"
-                onClick={() => {
-                  this.setState({ isShowingModal: true });
-                }}
-                style={{ cursor: "pointer", margin: "-2rem auto 2rem auto" }}
+                target="blank"
+                href="./signup"
               >
                 Request Access
-              </p>
+              </a>
               <Header>Keep in touch</Header>
               <Subtitle>
                 sign up to recieve notice when our public beta launches
@@ -193,7 +163,6 @@ class Splash extends React.Component {
             </a>
           </ButtonBlock>
         </HomePageWrapper>
-        {this.renderModal()}
       </div>
     );
   }
@@ -214,30 +183,16 @@ const HomePageWrapper = styled.div`
   box-sizing: border-box;
 `;
 
-const FullscreenWrapper = styled.div`
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  max-width: 1400px;
-  text-align: center;
-  margin-top: 10vh;
-`;
-
 const Header = styled.p`
   font-family: all-round-gothic;
   font-weight: 400;
   font-size: 4rem;
   margin-top: 3rem;
-`;
-
-const BigHeader = styled.p`
-  font-family: all-round-gothic;
-  font-weight: 400;
-  font-size: 5rem;
-  margin-top: 3rem;
-  padding: 2rem;
+  @media only screen and (max-width: 811px) {
+    margin-top: 2rem;
+    padding: 1rem;
+    font-size: 2rem;
+  }
 `;
 
 const Subtitle = styled.p`
@@ -245,6 +200,10 @@ const Subtitle = styled.p`
   font-weight: 400;
   font-size: 1.5rem;
   margin-top: -3rem;
+  @media only screen and (max-width: 811px) {
+    font-size: 1rem;
+    margin-top: -2rem;
+  }
 `;
 
 const SectionSubtitle = styled.p`
@@ -262,7 +221,7 @@ const ButtonBlock = styled.div`
 
 const LearnMoreWrapper = styled.div`
   background-color: whitesmoke;
-  width: 1300px;
+  width: 1200px;
   max-width: 100vw;
   display: flex;
   flex-flow: column;
@@ -281,6 +240,9 @@ const LeftSectionWrapper = styled.div`
   max-width: 100vw;
   margin: 5rem auto;
   padding: 1rem;
+  @media only screen and (max-width: 811px) {
+    margin: 2rem auto;
+  }
 `;
 
 const RightSectionWrapper = styled.div`
@@ -292,6 +254,9 @@ const RightSectionWrapper = styled.div`
   max-width: 100vw;
   margin: 5rem auto;
   padding: 1rem;
+  @media only screen and (max-width: 811px) {
+    margin: 2rem auto;
+  }
 `;
 
 const SectionWrapper = styled.div`
@@ -300,9 +265,13 @@ const SectionWrapper = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
+  width: 800px;
   max-width: 100vw;
   margin: 5rem auto;
   padding: 2rem;
+  @media only screen and (max-width: 811px) {
+    margin: 2rem auto;
+  }
 `;
 
 const SmallLabel = styled.p`
@@ -310,6 +279,10 @@ const SmallLabel = styled.p`
   font-weight: 700;
   font-size: 1.5rem;
   margin-top: 3rem;
+  @media only screen and (max-width: 811px) {
+    font-size: 1rem;
+    margin-top: 2rem;
+  }
 `;
 
 const SectionHeader = styled.p`
@@ -317,6 +290,10 @@ const SectionHeader = styled.p`
   font-weight: 400;
   font-size: 4rem;
   text-align: left;
+  @media only screen and (max-width: 811px) {
+    font-size: 2rem;
+    padding-bottom: 1rem;
+  }
 `;
 
 const ContentWrapper = styled.div`
