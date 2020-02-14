@@ -17,7 +17,8 @@ const orgSchema = new Schema({
 });
 
 //modelClass
-const ModelClass = mongoose.model("org", orgSchema);
+const Org = mongoose.model("org", orgSchema);
+const RinkebyOrg = mongoose.model("rinkebyorg", orgSchema);
 
 //export
-module.exports = ModelClass;
+module.exports = { Org, RinkebyOrg };

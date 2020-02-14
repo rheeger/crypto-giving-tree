@@ -16,7 +16,8 @@ const grantSchema = new Schema({
 });
 
 //modelClass
-const ModelClass = mongoose.model("grant", grantSchema);
+const Grant = mongoose.model("grant", grantSchema);
+const RinkebyGrant = mongoose.model("rinkebygrant", grantSchema);
 
 //export
-module.exports = ModelClass;
+module.exports = { Grant, RinkebyGrant };

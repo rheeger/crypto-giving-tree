@@ -23,7 +23,8 @@ const claimSchema = new Schema({
 });
 
 //modelClass
-const ModelClass = mongoose.model("claim", claimSchema);
+const Claim = mongoose.model("claim", claimSchema);
+const RinkebyClaim = mongoose.model("rinkebyclaim", claimSchema);
 
 //export
-module.exports = ModelClass;
+module.exports = { Claim, RinkebyClaim };

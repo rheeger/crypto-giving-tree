@@ -20,7 +20,8 @@ const fundSchema = new Schema({
 });
 
 //modelClass
-const ModelClass = mongoose.model("fund", fundSchema);
+const Fund = mongoose.model("fund", fundSchema);
+const RinkebyFund = mongoose.model("rinkebyfund", fundSchema);
 
 //export
-module.exports = ModelClass;
+module.exports = { Fund, RinkebyFund };

@@ -9,30 +9,37 @@ export const createOrgClaim = (formValues, id, index, taxID) => async (
   dispatch,
   getState
 ) => {
-  const response = await localDB.post(`/claims`, {
-    id: id.transactionHash,
-    selectedOrg: taxID,
-    ...formValues,
-    claimIndex: index - 1,
-    claimApprovalDetails: {
-      claimApproval: false,
-      dateApproved: null,
-      transactionHash: ""
+  const response = await localDB.post(
+    `/${process.env.REACT_APP_INFURA_PREFIX}claims`,
+    {
+      id: id.transactionHash,
+      selectedOrg: taxID,
+      ...formValues,
+      claimIndex: index - 1,
+      claimApprovalDetails: {
+        claimApproval: false,
+        dateApproved: null,
+        transactionHash: ""
+      }
     }
-  });
+  );
 
   dispatch({ type: types.MAKE_ORG_CLAIM, payload: response.data });
   history.push(`/orgs/${taxID}`);
 };
 
 export const fetchClaims = () => async dispatch => {
-  const response = await localDB.get("/claims");
+  const response = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}claims`
+  );
 
   dispatch({ type: types.FETCH_CLAIMS, payload: response.data });
 };
 
 export const fetchOrgApprovedClaims = ein => async dispatch => {
-  const allClaims = await localDB.get("/claims");
+  const allClaims = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}claims`
+  );
   const response = allClaims.data.filter(claim => {
     if (
       claim.claimApprovalDetails.claimApproval === true &&
@@ -47,7 +54,9 @@ export const fetchOrgApprovedClaims = ein => async dispatch => {
 };
 
 export const fetchUnapprovedClaims = () => async dispatch => {
-  const allClaims = await localDB.get("/claims");
+  const allClaims = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}claims`
+  );
   const response = allClaims.data.filter(claim => {
     if (claim.claimApprovalDetails.claimApproval === false) {
       return { claim };
@@ -59,7 +68,9 @@ export const fetchUnapprovedClaims = () => async dispatch => {
 };
 
 export const fetchOrgClaims = ein => async dispatch => {
-  const allClaims = await localDB.get("/claims");
+  const allClaims = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}claims`
+  );
   const response = allClaims.data.filter(claim => {
     if (claim.selectedOrg === ein) {
       return { claim };
@@ -71,7 +82,9 @@ export const fetchOrgClaims = ein => async dispatch => {
 };
 
 export const fetchClaim = id => async dispatch => {
-  const response = await localDB.get(`/claims/${id}`);
+  const response = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}claims/${id}`
+  );
 
   dispatch({ type: types.FETCH_CLAIM, payload: response.data });
 };
@@ -90,21 +103,29 @@ export const approveClaim = (id, orgAddress, claimNonce) => async (
       transactionHash: trans
     }
   };
-  const response = await localDB.patch(`/claims/${id}`, claimApprovalDetails);
-  console.log("claim details updated on /claims");
+  const response = await localDB.patch(
+    `/${process.env.REACT_APP_INFURA_PREFIX}claims/${id}`,
+    claimApprovalDetails
+  );
+  console.log(
+    "claim details updated on /${process.env.REACT_APP_INFURA_PREFIX}claims"
+  );
 
   dispatch({ type: types.EDIT_CLAIM, payload: response.data });
 };
 
 export const editClaim = (id, formValues) => async dispatch => {
-  const response = await localDB.patch(`/claims/${id}`, formValues);
+  const response = await localDB.patch(
+    `/${process.env.REACT_APP_INFURA_PREFIX}claims/${id}`,
+    formValues
+  );
 
   dispatch({ type: types.EDIT_CLAIM, payload: response.data });
   history.push("/admin");
 };
 
 export const deleteClaim = id => async dispatch => {
-  await localDB.delete(`/claims/${id}`);
+  await localDB.delete(`/${process.env.REACT_APP_INFURA_PREFIX}claims/${id}`);
 
   dispatch({ type: types.DELETE_CLAIM, payload: id });
   history.push("/admin");

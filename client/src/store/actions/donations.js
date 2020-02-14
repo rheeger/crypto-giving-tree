@@ -13,39 +13,42 @@ export const createDonation = (
   finalTradeOutput,
   transStatus
 ) => async dispatch => {
-  const response = await localDB.post(`/donations`, {
-    id: txID,
-    to: fundAddress,
-    from: fromAddress,
-    inputCurrency,
-    inputAmount,
-    finalTradeOutput,
-    transStatus
-  });
+  const response = await localDB.post(
+    `/${process.env.REACT_APP_INFURA_PREFIX}donations`,
+    {
+      id: txID,
+      to: fundAddress,
+      from: fromAddress,
+      inputCurrency,
+      inputAmount,
+      finalTradeOutput,
+      transStatus
+    }
+  );
 
   dispatch({ type: types.CREATE_DONATION, payload: response.data });
 };
 
 export const fetchDonations = () => async dispatch => {
-  const response = await localDB.get("/donations");
+  const response = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}donations`
+  );
 
   dispatch({ type: types.FETCH_DONATIONS, payload: response.data });
 };
 
-export const fetchFundDonations = address => async dispatch => {
-  const allDonations = await localDB.get("/donations");
-  const response = allDonations.data.filter(donation => {
-    if (donation.to === address) {
-      return { donation };
-    }
-    return "";
-  });
+export const fetchFundDonations = fund => async dispatch => {
+  const response = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}donations/${fund}`
+  );
 
-  dispatch({ type: types.FETCH_FUND_DONATIONS, payload: response });
+  dispatch({ type: types.FETCH_FUND_DONATIONS, payload: response.data });
 };
 
 export const fetchDonation = id => async dispatch => {
-  const response = await localDB.get(`/donations/${id}`);
+  const response = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}donations/${id}`
+  );
 
   dispatch({ type: types.FETCH_DONATION, payload: response.data });
 };
@@ -55,10 +58,13 @@ export const finalizeDonation = (
   finalTradeOutput,
   transStatus
 ) => async dispatch => {
-  const response = await localDB.patch(`/donations/${id}`, {
-    finalTradeOutput,
-    transStatus
-  });
+  const response = await localDB.patch(
+    `/${process.env.REACT_APP_INFURA_PREFIX}donations/${id}`,
+    {
+      finalTradeOutput,
+      transStatus
+    }
+  );
 
   dispatch({ type: types.EDIT_DONATION, payload: response.data });
   if (transStatus === "complete") {
@@ -69,7 +75,9 @@ export const finalizeDonation = (
 };
 
 export const deleteDonation = id => async dispatch => {
-  await localDB.delete(`/donations/${id}`);
+  await localDB.delete(
+    `/${process.env.REACT_APP_INFURA_PREFIX}donations/${id}`
+  );
 
   dispatch({ type: types.DELETE_DONATION, payload: id });
   history.push("/");

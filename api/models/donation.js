@@ -14,7 +14,8 @@ const donationSchema = new Schema({
 });
 
 //modelClass
-const ModelClass = mongoose.model("donation", donationSchema);
+const Donation = mongoose.model("donation", donationSchema);
+const RinkebyDonation = mongoose.model("rinkebydonation", donationSchema);
 
 //export
-module.exports = ModelClass;
+module.exports = { Donation, RinkebyDonation };

@@ -11,7 +11,8 @@ const withdrawlSchema = new Schema({
 });
 
 //modelClass
-const ModelClass = mongoose.model("withdrawl", withdrawlSchema);
+const Withdrawl = mongoose.model("withdrawl", withdrawlSchema);
+const RinkebyWithdrawl = mongoose.model("rinkebywithdrawl", withdrawlSchema);
 
 //export
-module.exports = ModelClass;
+module.exports = { Withdrawl, RinkebyWithdrawl };

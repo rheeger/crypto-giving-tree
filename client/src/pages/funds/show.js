@@ -15,6 +15,7 @@ import GrantRow from "../../components/tables/GrantRow";
 import DonationRow from "../../components/tables/DonationRow";
 import NavHeader from "../../components/Header";
 import moment from "moment";
+import _ from "lodash";
 
 class FundShow extends Component {
   componentDidMount = () => {
@@ -99,6 +100,56 @@ class FundShow extends Component {
       });
   }
 
+  refreshDAI = async () => {
+    const { fetchFundDAIBalance, match } = this.props;
+    _.debounce(() => {
+      fetchFundDAIBalance(match.params.address);
+    }, 500);
+  };
+
+  renderBalance() {
+    const { fundDAI } = this.props.gtFunds[this.props.match.params.address];
+
+    if (Object.keys(this.props.gtDonations).length === 0) {
+      return fundDAI;
+    }
+
+    const finishedContributions = Object.values(this.props.gtDonations).filter(
+      donation => {
+        if (
+          donation.to === this.props.match.params.address &&
+          donation.transStatus === "complete"
+        ) {
+          return { donation };
+        }
+        return "";
+      }
+    );
+
+    const finishedContributionsTotal = Object.values(finishedContributions)
+      .reduce((a, b) => a + (parseFloat(b["finalTradeOutput"]) || 0), 0)
+      .toFixed(2);
+
+    const finishedGrants = Object.values(this.props.gtGrants).filter(grant => {
+      if (
+        grant.selectedFund === this.props.match.params.address &&
+        grant.grantApproval === "true"
+      ) {
+        return { grant };
+      }
+      return "";
+    });
+
+    const finishedGrantsTotal = Object.values(finishedGrants)
+      .reduce((a, b) => a + (parseFloat(b["grantAmount"]) || 0), 0)
+      .toFixed(2);
+
+    if (fundDAI - (finishedContributionsTotal - finishedGrantsTotal) > 0.01) {
+      this.refreshDAI();
+      return <div className="ui button compact loading"></div>;
+    } else return fundDAI;
+  }
+
   renderCards() {
     const {
       id,
@@ -126,7 +177,7 @@ class FundShow extends Component {
       },
       {
         style: { overflowWrap: "break-word" },
-        header: "$" + fundDAI,
+        header: "$" + this.renderBalance(),
         meta: "Fund Balance",
         description: "Available to Grant: $" + grantableDAI
       },

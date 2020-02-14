@@ -46,34 +46,43 @@ export const createOrgAndContract = (id, name) => async (
 ) => {
   const contractAddress = await createOrg(id);
 
-  const response = await localDB.post(`/orgs`, {
-    id,
-    name,
-    contractAddress,
-    lifetimeGrants: 0,
-    claimed: false,
-    claimApprovalDetails: {}
-  });
+  const response = await localDB.post(
+    `/${process.env.REACT_APP_INFURA_PREFIX}orgs`,
+    {
+      id,
+      name,
+      contractAddress,
+      lifetimeGrants: 0,
+      claimed: false,
+      claimApprovalDetails: {}
+    }
+  );
 
   dispatch({ type: types.CREATE_CONTRACT_ADDRESS, payload: response.data });
 };
 
 export const fetchOrgs = () => async dispatch => {
-  const response = await localDB.get("/orgs");
+  const response = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}orgs`
+  );
 
   dispatch({ type: types.FETCH_ORGS, payload: response.data });
 };
 
 export const fetchOrg = id => async dispatch => {
-  const response = await localDB.get(`/orgs/${id}`);
+  const response = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}orgs/${id}`
+  );
 
   dispatch({ type: types.FETCH_ORG, payload: response.data });
 };
 
-export const fetchOrgLifetimeGrants = id => async dispatch => {
-  const allGrants = await localDB.get("/grants");
+export const fetchOrgLifetimeGrants = org => async dispatch => {
+  const allGrants = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}grants/${org}`
+  );
   const orgGrants = allGrants.data.filter(grant => {
-    if (grant.selectedOrg === id && grant.grantApproval === true) {
+    if (grant.grantApproval === true) {
       return { grant };
     }
     return "";
@@ -83,41 +92,52 @@ export const fetchOrgLifetimeGrants = id => async dispatch => {
     .reduce((a, b) => a + (parseFloat(b["grantAmount"]) || 0), 0)
     .toFixed(2);
 
-  const response = await localDB.patch(`/orgs/${id}`, {
-    lifetimeGrants: completedGrants
-  });
+  const response = await localDB.patch(
+    `/${process.env.REACT_APP_INFURA_PREFIX}orgs/${org}`,
+    {
+      lifetimeGrants: completedGrants
+    }
+  );
 
   dispatch({ type: types.EDIT_ORG, payload: response.data });
 };
 
 export const claimOrg = (id, claimId) => async dispatch => {
   console.log("getting details for: " + claimId);
-  const claimDetails = await localDB.get(`/claims/${claimId}`);
+  const claimDetails = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}claims/${claimId}`
+  );
   console.log("final claim details grabbed:");
   console.log(claimDetails.data);
-  const response = await localDB.patch(`/orgs/${id}`, {
-    claimed: true,
-    claimApprovalDetails: {
-      dateApproved: claimDetails.data.claimApprovalDetails.dateApproved,
-      orgAdminWallet: claimDetails.data.orgAdminWallet,
-      claimId: claimDetails.data.id,
-      transactionHash: claimDetails.data.claimApprovalDetails.transactionHash
+  const response = await localDB.patch(
+    `/${process.env.REACT_APP_INFURA_PREFIX}orgs/${id}`,
+    {
+      claimed: true,
+      claimApprovalDetails: {
+        dateApproved: claimDetails.data.claimApprovalDetails.dateApproved,
+        orgAdminWallet: claimDetails.data.orgAdminWallet,
+        claimId: claimDetails.data.id,
+        transactionHash: claimDetails.data.claimApprovalDetails.transactionHash
+      }
     }
-  });
+  );
 
   dispatch({ type: types.EDIT_ORG, payload: response.data });
   window.location.reload();
 };
 
 export const editOrg = (id, formValues) => async dispatch => {
-  const response = await localDB.patch(`/orgs/${id}`, formValues);
+  const response = await localDB.patch(
+    `/${process.env.REACT_APP_INFURA_PREFIX}orgs/${id}`,
+    formValues
+  );
 
   dispatch({ type: types.EDIT_ORG, payload: response.data });
   history.push("/");
 };
 
 export const deleteOrg = id => async dispatch => {
-  await localDB.delete(`/orgs/${id}`);
+  await localDB.delete(`/${process.env.REACT_APP_INFURA_PREFIX}orgs/${id}`);
 
   dispatch({ type: types.DELETE_ORG, payload: id });
   history.push("/");

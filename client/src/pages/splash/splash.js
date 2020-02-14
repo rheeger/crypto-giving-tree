@@ -67,7 +67,7 @@ class Splash extends React.Component {
                 <SmallLabel>STEP 2</SmallLabel>
                 <SectionHeader>Give some crypto</SectionHeader>
                 <Subtitle>
-                  funds accept any token with a Uniswap excahnge contract and
+                  funds accept any token with a Uniswap exchange contract and
                   are traded by{" "}
                   <span
                     style={{

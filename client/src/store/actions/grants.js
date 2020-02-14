@@ -11,18 +11,21 @@ export const createGrant = (
   recipientEIN,
   index
 ) => async (dispatch, getState) => {
-  const response = await localDB.post(`/grants`, {
-    id: transactionHash,
-    selectedOrg: recipientEIN,
-    selectedFund: formValues.selectedFund.id,
-    grantAmount: formValues.grantAmount,
-    grantDescription: formValues.grantDescription,
-    grantMemo: formValues.grantMemo,
-    grantApproval: false,
-    grantIndex: index - 1,
-    approvalDetails: {},
-    dateApproved: null
-  });
+  const response = await localDB.post(
+    `/${process.env.REACT_APP_INFURA_PREFIX}grants`,
+    {
+      id: transactionHash,
+      selectedOrg: recipientEIN,
+      selectedFund: formValues.selectedFund.id,
+      grantAmount: formValues.grantAmount,
+      grantDescription: formValues.grantDescription,
+      grantMemo: formValues.grantMemo,
+      grantApproval: false,
+      grantIndex: index - 1,
+      approvalDetails: {},
+      dateApproved: null
+    }
+  );
 
   dispatch({ type: types.CREATE_GRANT, payload: response.data });
   history.push(`/funds/${formValues.selectedFund.id}`);
@@ -37,12 +40,17 @@ export const approveGrant = (id, fundAddress, grantNonce) => async (
     grantNonce,
     process.env.REACT_APP_STABLECOIN_ADDRESS
   );
-  const response = await localDB.patch(`/grants/${id}`, {
-    grantApproval: true,
-    approvalDetails,
-    dateApproved: Date.now()
-  });
-  const grantDetails = await localDB.get(`/grants/${id}`);
+  const response = await localDB.patch(
+    `/${process.env.REACT_APP_INFURA_PREFIX}grants/${id}`,
+    {
+      grantApproval: true,
+      approvalDetails,
+      dateApproved: Date.now()
+    }
+  );
+  const grantDetails = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}grants/${id}`
+  );
   await fetchOrgLifetimeGrants(grantDetails.selectedOrg);
 
   dispatch({ type: types.EDIT_GRANT, payload: response.data });
@@ -50,15 +58,19 @@ export const approveGrant = (id, fundAddress, grantNonce) => async (
 };
 
 export const fetchGrants = () => async dispatch => {
-  const response = await localDB.get("/grants");
+  const response = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}grants`
+  );
 
   dispatch({ type: types.FETCH_GRANTS, payload: response.data });
 };
 
-export const fetchOrgApprovedGrants = ein => async dispatch => {
-  const allGrants = await localDB.get("/grants");
+export const fetchOrgApprovedGrants = org => async dispatch => {
+  const allGrants = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}grants/${org}`
+  );
   const response = allGrants.data.filter(grant => {
-    if (grant.grantApproval === true && grant.selectedOrg === ein) {
+    if (grant.grantApproval === true) {
       return { grant };
     }
     return "";
@@ -68,7 +80,9 @@ export const fetchOrgApprovedGrants = ein => async dispatch => {
 };
 
 export const fetchUnapprovedGrants = () => async dispatch => {
-  const allGrants = await localDB.get("/grants");
+  const allGrants = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}grants`
+  );
   const response = allGrants.data.filter(grant => {
     if (grant.grantApproval === false) {
       return { grant };
@@ -79,45 +93,42 @@ export const fetchUnapprovedGrants = () => async dispatch => {
   dispatch({ type: types.FETCH_GRANTS, payload: response });
 };
 
-export const fetchFundGrants = address => async dispatch => {
-  const allGrants = await localDB.get("/grants");
-  const response = allGrants.data.filter(grant => {
-    if (grant.selectedFund === address) {
-      return { grant };
-    }
-    return "";
-  });
+export const fetchFundGrants = fund => async dispatch => {
+  const response = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}grants/${fund}`
+  );
 
-  dispatch({ type: types.FETCH_FUND_GRANTS, payload: response });
+  dispatch({ type: types.FETCH_FUND_GRANTS, payload: response.data });
 };
 
-export const fetchOrgGrants = ein => async dispatch => {
-  const allGrants = await localDB.get("/grants");
-  const response = allGrants.data.filter(grant => {
-    if (grant.selectedOrg === ein) {
-      return { grant };
-    }
-    return "";
-  });
+export const fetchOrgGrants = org => async dispatch => {
+  const response = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}grants/${org}`
+  );
 
-  dispatch({ type: types.FETCH_ORG_GRANTS, payload: response });
+  dispatch({ type: types.FETCH_ORG_GRANTS, payload: response.data });
 };
 
 export const fetchGrant = id => async dispatch => {
-  const response = await localDB.get(`/grants/${id}`);
+  const response = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}grants/${id}`
+  );
 
   dispatch({ type: types.FETCH_GRANT, payload: response.data });
 };
 
 export const editGrant = (id, formValues) => async dispatch => {
-  const response = await localDB.patch(`/grants/${id}`, formValues);
+  const response = await localDB.patch(
+    `/${process.env.REACT_APP_INFURA_PREFIX}grants/${id}`,
+    formValues
+  );
 
   dispatch({ type: types.EDIT_GRANT, payload: response.data });
   history.push("/admin");
 };
 
 export const deleteGrant = id => async dispatch => {
-  await localDB.delete(`/grants/${id}`);
+  await localDB.delete(`/${process.env.REACT_APP_INFURA_PREFIX}grants/${id}`);
 
   dispatch({ type: types.DELETE_GRANT, payload: id });
   history.push("/admin");

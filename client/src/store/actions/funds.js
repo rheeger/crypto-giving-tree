@@ -11,34 +11,35 @@ export const createFundAndContract = formValues => async (
 ) => {
   const { account } = getState().web3connect;
   const createdContract = await createFund(account);
-  const response = await localDB.post("/funds", {
-    ...formValues,
-    managerAddress: account,
-    id: createdContract.id,
-    fundDAI: "0.00",
-    grantableDAI: 0.0
-  });
+  const response = await localDB.post(
+    `/${process.env.REACT_APP_INFURA_PREFIX}funds`,
+    {
+      ...formValues,
+      managerAddress: account,
+      id: createdContract.id,
+      fundDAI: "0.00",
+      grantableDAI: 0.0
+    }
+  );
 
   dispatch({ type: types.PLANT_FUND, payload: response.data });
   history.push(`/funds/${createdContract.id}`);
 };
 
 export const fetchFunds = () => async dispatch => {
-  const response = await localDB.get("/funds");
+  const response = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}funds`
+  );
 
   dispatch({ type: types.FETCH_FUNDS, payload: response.data });
 };
 
-export const fetchUserFunds = address => async dispatch => {
-  const allFunds = await localDB.get("/funds");
-  const response = allFunds.data.filter(fund => {
-    if (fund.managerAddress === address) {
-      return { fund };
-    }
-    return "";
-  });
+export const fetchUserFunds = managerAddress => async dispatch => {
+  const response = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}funds/${managerAddress}`
+  );
 
-  dispatch({ type: types.FETCH_FUNDS, payload: response });
+  dispatch({ type: types.FETCH_FUNDS, payload: response.data });
 };
 
 export const fetchFundDAIBalance = address => async dispatch => {
@@ -51,16 +52,19 @@ export const fetchFundDAIBalance = address => async dispatch => {
     10 ** process.env.REACT_APP_STABLECOIN_DECIMALS
   ).toFixed(2);
 
-  const response = await localDB.patch(`/funds/${address}`, {
-    fundDAI: fundDAI
-  });
+  const response = await localDB.patch(
+    `/${process.env.REACT_APP_INFURA_PREFIX}funds/${address}`,
+    {
+      fundDAI: fundDAI
+    }
+  );
 
   dispatch({ type: types.FETCH_FUND_DAI, payload: response.data });
 };
 
-export const fetchGrantableDAIBalance = address => async dispatch => {
-  const fund = fundContract(address);
-  const fundDAIBalance = await fund.methods
+export const fetchGrantableDAIBalance = fund => async dispatch => {
+  const fundContractInstance = fundContract(fund);
+  const fundDAIBalance = await fundContractInstance.methods
     .getSummary(process.env.REACT_APP_STABLECOIN_ADDRESS)
     .call();
   const fundDAI = (
@@ -69,9 +73,11 @@ export const fetchGrantableDAIBalance = address => async dispatch => {
     0.01
   ).toFixed(2);
 
-  const allGrants = await localDB.get("/grants");
+  const allGrants = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}grants/${fund}`
+  );
   const fundGrants = allGrants.data.filter(grant => {
-    if (grant.selectedFund === address && grant.grantApproval === false) {
+    if (grant.grantApproval === false) {
       return { grant };
     }
     return "";
@@ -83,27 +89,35 @@ export const fetchGrantableDAIBalance = address => async dispatch => {
   );
   const grantableDAI = (fundDAI - pendingGrants).toFixed(2);
 
-  const response = await localDB.patch(`/funds/${address}`, {
-    grantableDAI: grantableDAI
-  });
+  const response = await localDB.patch(
+    `/${process.env.REACT_APP_INFURA_PREFIX}funds/${fund}`,
+    {
+      grantableDAI: grantableDAI
+    }
+  );
 
   dispatch({ type: types.FETCH_GRANTABLE_DAI, payload: response.data });
 };
 export const fetchFund = id => async dispatch => {
-  const response = await localDB.get(`/funds/${id}`);
+  const response = await localDB.get(
+    `/${process.env.REACT_APP_INFURA_PREFIX}funds/${id}`
+  );
 
   dispatch({ type: types.FETCH_FUND, payload: response });
 };
 
 export const editFund = (id, formValues) => async dispatch => {
-  const response = await localDB.patch(`/funds/${id}`, formValues);
+  const response = await localDB.patch(
+    `/${process.env.REACT_APP_INFURA_PREFIX}funds/${id}`,
+    formValues
+  );
 
   dispatch({ type: types.EDIT_FUND, payload: response.data });
   history.push("/");
 };
 
 export const deleteFund = id => async dispatch => {
-  await localDB.delete(`/funds/${id}`);
+  await localDB.delete(`/${process.env.REACT_APP_INFURA_PREFIX}funds/${id}`);
 
   dispatch({ type: types.DELETE_FUND, payload: id });
   history.push("/");
