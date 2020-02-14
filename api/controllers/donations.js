@@ -18,15 +18,6 @@ exports.fundDonations = function(req, res, next) {
     res.json(donations); // return all donations in JSON format
   });
 };
-exports.orgDonations = function(req, res, next) {
-  // use mongoose to get all donations in the database
-  models.Donation.find({ org: req.params.org }, function(err, donations) {
-    // if there is an error retrieving, send the error. nothing after res.send(err) will execute
-    if (err) res.send(err);
-
-    res.json(donations); // return all donations in JSON format
-  });
-};
 
 exports.oneDonation = function(req, res, next) {
   // use mongoose to get one donation in the database
@@ -95,19 +86,6 @@ exports.allRinkebyDonations = function(req, res, next) {
 exports.fundRinkebyDonations = function(req, res, next) {
   // use mongoose to get all donations in the database
   models.RinkebyDonation.find({ fund: req.params.fund }, function(
-    err,
-    donations
-  ) {
-    // if there is an error retrieving, send the error. nothing after res.send(err) will execute
-    if (err) res.send(err);
-
-    res.json(donations); // return all donations in JSON format
-  });
-};
-
-exports.orgRinkebyDonations = function(req, res, next) {
-  // use mongoose to get all donations in the database
-  models.RinkebyDonation.find({ org: req.params.org }, function(
     err,
     donations
   ) {
