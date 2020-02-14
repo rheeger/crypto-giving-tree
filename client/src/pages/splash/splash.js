@@ -32,9 +32,17 @@ class Splash extends React.Component {
                 target="blank"
                 href="./signup"
               >
-                Request Access
+                Request Mainnet Access
               </a>
             </ButtonBlock>
+
+            <a
+              className="ui button massive blue"
+              href="https://rinkeby.endaoment.org"
+            >
+              <i className="external alternarte icon" />
+              Test on Rinkeby
+            </a>
           </div>
           <LearnMoreWrapper id="about">
             <SectionSubtitle>

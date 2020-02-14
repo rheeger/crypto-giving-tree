@@ -14,7 +14,7 @@ export const createDonation = (
   transStatus
 ) => async dispatch => {
   const response = await localDB.post(
-    `/${process.env.REACT_APP_INFURA_PREFIX}donations`,
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}donations`,
     {
       id: txID,
       to: fundAddress,
@@ -31,7 +31,7 @@ export const createDonation = (
 
 export const fetchDonations = () => async dispatch => {
   const response = await localDB.get(
-    `/${process.env.REACT_APP_INFURA_PREFIX}donations`
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}donations`
   );
 
   dispatch({ type: types.FETCH_DONATIONS, payload: response.data });
@@ -39,7 +39,7 @@ export const fetchDonations = () => async dispatch => {
 
 export const fetchFundDonations = fund => async dispatch => {
   const response = await localDB.get(
-    `/${process.env.REACT_APP_INFURA_PREFIX}donations/${fund}`
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}donations/${fund}`
   );
 
   dispatch({ type: types.FETCH_FUND_DONATIONS, payload: response.data });
@@ -47,7 +47,7 @@ export const fetchFundDonations = fund => async dispatch => {
 
 export const fetchDonation = id => async dispatch => {
   const response = await localDB.get(
-    `/${process.env.REACT_APP_INFURA_PREFIX}donations/${id}`
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}donations/${id}`
   );
 
   dispatch({ type: types.FETCH_DONATION, payload: response.data });
@@ -59,7 +59,7 @@ export const finalizeDonation = (
   transStatus
 ) => async dispatch => {
   const response = await localDB.patch(
-    `/${process.env.REACT_APP_INFURA_PREFIX}donations/${id}`,
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}donations/${id}`,
     {
       finalTradeOutput,
       transStatus
@@ -76,7 +76,7 @@ export const finalizeDonation = (
 
 export const deleteDonation = id => async dispatch => {
   await localDB.delete(
-    `/${process.env.REACT_APP_INFURA_PREFIX}donations/${id}`
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}donations/${id}`
   );
 
   dispatch({ type: types.DELETE_DONATION, payload: id });

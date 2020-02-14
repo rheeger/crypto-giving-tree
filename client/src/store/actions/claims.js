@@ -10,7 +10,7 @@ export const createOrgClaim = (formValues, id, index, taxID) => async (
   getState
 ) => {
   const response = await localDB.post(
-    `/${process.env.REACT_APP_INFURA_PREFIX}claims`,
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}claims`,
     {
       id: id.transactionHash,
       selectedOrg: taxID,
@@ -30,7 +30,7 @@ export const createOrgClaim = (formValues, id, index, taxID) => async (
 
 export const fetchClaims = () => async dispatch => {
   const response = await localDB.get(
-    `/${process.env.REACT_APP_INFURA_PREFIX}claims`
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}claims`
   );
 
   dispatch({ type: types.FETCH_CLAIMS, payload: response.data });
@@ -38,7 +38,7 @@ export const fetchClaims = () => async dispatch => {
 
 export const fetchOrgApprovedClaims = ein => async dispatch => {
   const allClaims = await localDB.get(
-    `/${process.env.REACT_APP_INFURA_PREFIX}claims`
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}claims`
   );
   const response = allClaims.data.filter(claim => {
     if (
@@ -55,7 +55,7 @@ export const fetchOrgApprovedClaims = ein => async dispatch => {
 
 export const fetchUnapprovedClaims = () => async dispatch => {
   const allClaims = await localDB.get(
-    `/${process.env.REACT_APP_INFURA_PREFIX}claims`
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}claims`
   );
   const response = allClaims.data.filter(claim => {
     if (claim.claimApprovalDetails.claimApproval === false) {
@@ -69,7 +69,7 @@ export const fetchUnapprovedClaims = () => async dispatch => {
 
 export const fetchOrgClaims = ein => async dispatch => {
   const allClaims = await localDB.get(
-    `/${process.env.REACT_APP_INFURA_PREFIX}claims`
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}claims`
   );
   const response = allClaims.data.filter(claim => {
     if (claim.selectedOrg === ein) {
@@ -83,7 +83,7 @@ export const fetchOrgClaims = ein => async dispatch => {
 
 export const fetchClaim = id => async dispatch => {
   const response = await localDB.get(
-    `/${process.env.REACT_APP_INFURA_PREFIX}claims/${id}`
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}claims/${id}`
   );
 
   dispatch({ type: types.FETCH_CLAIM, payload: response.data });
@@ -104,11 +104,11 @@ export const approveClaim = (id, orgAddress, claimNonce) => async (
     }
   };
   const response = await localDB.patch(
-    `/${process.env.REACT_APP_INFURA_PREFIX}claims/${id}`,
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}claims/${id}`,
     claimApprovalDetails
   );
   console.log(
-    "claim details updated on /${process.env.REACT_APP_INFURA_PREFIX}claims"
+    "claim details updated on /${process.env.REACT_APP_ETHERSCAN_PREFIX}claims"
   );
 
   dispatch({ type: types.EDIT_CLAIM, payload: response.data });
@@ -116,7 +116,7 @@ export const approveClaim = (id, orgAddress, claimNonce) => async (
 
 export const editClaim = (id, formValues) => async dispatch => {
   const response = await localDB.patch(
-    `/${process.env.REACT_APP_INFURA_PREFIX}claims/${id}`,
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}claims/${id}`,
     formValues
   );
 
@@ -125,7 +125,9 @@ export const editClaim = (id, formValues) => async dispatch => {
 };
 
 export const deleteClaim = id => async dispatch => {
-  await localDB.delete(`/${process.env.REACT_APP_INFURA_PREFIX}claims/${id}`);
+  await localDB.delete(
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}claims/${id}`
+  );
 
   dispatch({ type: types.DELETE_CLAIM, payload: id });
   history.push("/admin");

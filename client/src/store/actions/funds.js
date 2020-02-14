@@ -12,7 +12,7 @@ export const createFundAndContract = formValues => async (
   const { account } = getState().web3connect;
   const createdContract = await createFund(account);
   const response = await localDB.post(
-    `/${process.env.REACT_APP_INFURA_PREFIX}funds`,
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}funds`,
     {
       ...formValues,
       managerAddress: account,
@@ -28,7 +28,7 @@ export const createFundAndContract = formValues => async (
 
 export const fetchFunds = () => async dispatch => {
   const response = await localDB.get(
-    `/${process.env.REACT_APP_INFURA_PREFIX}funds`
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}funds`
   );
 
   dispatch({ type: types.FETCH_FUNDS, payload: response.data });
@@ -36,7 +36,7 @@ export const fetchFunds = () => async dispatch => {
 
 export const fetchUserFunds = managerAddress => async dispatch => {
   const response = await localDB.get(
-    `/${process.env.REACT_APP_INFURA_PREFIX}funds/${managerAddress}`
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}funds/${managerAddress}`
   );
 
   dispatch({ type: types.FETCH_FUNDS, payload: response.data });
@@ -53,7 +53,7 @@ export const fetchFundDAIBalance = address => async dispatch => {
   ).toFixed(2);
 
   const response = await localDB.patch(
-    `/${process.env.REACT_APP_INFURA_PREFIX}funds/${address}`,
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}funds/${address}`,
     {
       fundDAI: fundDAI
     }
@@ -74,7 +74,7 @@ export const fetchGrantableDAIBalance = fund => async dispatch => {
   ).toFixed(2);
 
   const allGrants = await localDB.get(
-    `/${process.env.REACT_APP_INFURA_PREFIX}grants/${fund}`
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}grants/${fund}`
   );
   const fundGrants = allGrants.data.filter(grant => {
     if (grant.grantApproval === false) {
@@ -90,7 +90,7 @@ export const fetchGrantableDAIBalance = fund => async dispatch => {
   const grantableDAI = (fundDAI - pendingGrants).toFixed(2);
 
   const response = await localDB.patch(
-    `/${process.env.REACT_APP_INFURA_PREFIX}funds/${fund}`,
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}funds/${fund}`,
     {
       grantableDAI: grantableDAI
     }
@@ -100,7 +100,7 @@ export const fetchGrantableDAIBalance = fund => async dispatch => {
 };
 export const fetchFund = id => async dispatch => {
   const response = await localDB.get(
-    `/${process.env.REACT_APP_INFURA_PREFIX}funds/${id}`
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}funds/${id}`
   );
 
   dispatch({ type: types.FETCH_FUND, payload: response });
@@ -108,7 +108,7 @@ export const fetchFund = id => async dispatch => {
 
 export const editFund = (id, formValues) => async dispatch => {
   const response = await localDB.patch(
-    `/${process.env.REACT_APP_INFURA_PREFIX}funds/${id}`,
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}funds/${id}`,
     formValues
   );
 
@@ -117,7 +117,7 @@ export const editFund = (id, formValues) => async dispatch => {
 };
 
 export const deleteFund = id => async dispatch => {
-  await localDB.delete(`/${process.env.REACT_APP_INFURA_PREFIX}funds/${id}`);
+  await localDB.delete(`/${process.env.REACT_APP_ETHERSCAN_PREFIX}funds/${id}`);
 
   dispatch({ type: types.DELETE_FUND, payload: id });
   history.push("/");

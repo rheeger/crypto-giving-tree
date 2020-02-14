@@ -50,45 +50,45 @@ module.exports = function(app) {
   app.delete("/withdrawls/:id", Withdrawls.deleteWithdrawl);
 
   //RINKEBY DB
-  //rinkebyfunds
-  app.get("/rinkebyfunds", Funds.allRinkebyFunds);
-  app.get("/rinkebyfunds/:managerAddress", Funds.managerRinkebyFunds);
-  app.get("/rinkebyfunds/:id", Funds.oneRinkebyFund);
-  app.post("/rinkebyfunds", Funds.createRinkebyFund);
-  app.patch("/rinkebyfunds/:id", Funds.updateRinkebyFund);
-  app.delete("/rinkebyfunds/:id", Funds.deleteRinkebyFund);
-  //rinkebyorgs
-  app.get("/rinkebyorgs", Orgs.allRinkebyOrgs);
-  app.get("/rinkebyorgs/:id", Orgs.oneRinkebyOrg);
-  app.post("/rinkebyorgs", Orgs.createRinkebyOrg);
-  app.patch("/rinkebyorgs/:id", Orgs.updateRinkebyOrg);
-  app.delete("/rinkebyorgs/:id", Orgs.deleteRinkebyOrg);
-  //rinkebygrants
-  app.get("/rinkebygrants", Grants.allRinkebyGrants);
-  app.get("/rinkebygrants/:fund", Grants.fundRinkebyGrants);
-  app.get("/rinkebygrants/:org", Grants.orgRinkebyGrants);
-  app.get("/rinkebygrants/:id", Grants.oneRinkebyGrant);
-  app.post("/rinkebygrants", Grants.createRinkebyGrant);
-  app.patch("/rinkebygrants/:id", Grants.updateRinkebyGrant);
-  app.delete("/rinkebygrants/:id", Grants.deleteRinkebyGrant);
-  //rinkebydonations
-  app.get("/rinkebydonations", Donations.allRinkebyDonations);
-  app.get("/rinkebydonations/:fund", Donations.fundRinkebyDonations);
-  app.get("/rinkebydonations/:id", Donations.oneRinkebyDonation);
-  app.post("/rinkebydonations", Donations.createRinkebyDonation);
-  app.patch("/rinkebydonations/:id", Donations.updateRinkebyDonation);
-  app.delete("/rinkebydonations/:id", Donations.deleteRinkebyDonation);
-  //rinkebyclaims
-  app.get("/rinkebyclaims", Claims.allRinkebyClaims);
-  app.get("/rinkebyclaims/:id", Claims.oneRinkebyClaim);
-  app.post("/rinkebyclaims", Claims.createRinkebyClaim);
-  app.patch("/rinkebyclaims/:id", Claims.updateRinkebyClaim);
-  app.delete("/rinkebyclaims/:id", Claims.deleteRinkebyClaim);
-  //rinkebywithdrawls
-  app.get("/rinkebywithdrawls", Withdrawls.allRinkebyWithdrawls);
-  app.get("/rinkebywithdrawls/:org", Withdrawls.orgRinkebyWithdrawls);
-  app.get("/rinkebywithdrawls/:id", Withdrawls.oneRinkebyWithdrawl);
-  app.post("/rinkebywithdrawls", Withdrawls.createRinkebyWithdrawl);
-  app.patch("/rinkebywithdrawls/:id", Withdrawls.updateRinkebyWithdrawl);
-  app.delete("/rinkebywithdrawls/:id", Withdrawls.deleteRinkebyWithdrawl);
+  //rinkeby.funds
+  app.get("/rinkeby.funds", Funds.allRinkebyFunds);
+  app.get("/rinkeby.funds/:managerAddress", Funds.managerRinkebyFunds);
+  app.get("/rinkeby.funds/:id", Funds.oneRinkebyFund);
+  app.post("/rinkeby.funds", Funds.createRinkebyFund);
+  app.patch("/rinkeby.funds/:id", Funds.updateRinkebyFund);
+  app.delete("/rinkeby.funds/:id", Funds.deleteRinkebyFund);
+  //rinkeby.orgs
+  app.get("/rinkeby.orgs", Orgs.allRinkebyOrgs);
+  app.get("/rinkeby.orgs/:id", Orgs.oneRinkebyOrg);
+  app.post("/rinkeby.orgs", Orgs.createRinkebyOrg);
+  app.patch("/rinkeby.orgs/:id", Orgs.updateRinkebyOrg);
+  app.delete("/rinkeby.orgs/:id", Orgs.deleteRinkebyOrg);
+  //rinkeby.grants
+  app.get("/rinkeby.grants", Grants.allRinkebyGrants);
+  app.get("/rinkeby.grants/:fund", Grants.fundRinkebyGrants);
+  app.get("/rinkeby.grants/:org", Grants.orgRinkebyGrants);
+  app.get("/rinkeby.grants/:id", Grants.oneRinkebyGrant);
+  app.post("/rinkeby.grants", Grants.createRinkebyGrant);
+  app.patch("/rinkeby.grants/:id", Grants.updateRinkebyGrant);
+  app.delete("/rinkeby.grants/:id", Grants.deleteRinkebyGrant);
+  //rinkeby.donations
+  app.get("/rinkeby.donations", Donations.allRinkebyDonations);
+  app.get("/rinkeby.donations/:fund", Donations.fundRinkebyDonations);
+  app.get("/rinkeby.donations/:id", Donations.oneRinkebyDonation);
+  app.post("/rinkeby.donations", Donations.createRinkebyDonation);
+  app.patch("/rinkeby.donations/:id", Donations.updateRinkebyDonation);
+  app.delete("/rinkeby.donations/:id", Donations.deleteRinkebyDonation);
+  //rinkeby.claims
+  app.get("/rinkeby.claims", Claims.allRinkebyClaims);
+  app.get("/rinkeby.claims/:id", Claims.oneRinkebyClaim);
+  app.post("/rinkeby.claims", Claims.createRinkebyClaim);
+  app.patch("/rinkeby.claims/:id", Claims.updateRinkebyClaim);
+  app.delete("/rinkeby.claims/:id", Claims.deleteRinkebyClaim);
+  //rinkeby.withdrawls
+  app.get("/rinkeby.withdrawls", Withdrawls.allRinkebyWithdrawls);
+  app.get("/rinkeby.withdrawls/:org", Withdrawls.orgRinkebyWithdrawls);
+  app.get("/rinkeby.withdrawls/:id", Withdrawls.oneRinkebyWithdrawl);
+  app.post("/rinkeby.withdrawls", Withdrawls.createRinkebyWithdrawl);
+  app.patch("/rinkeby.withdrawls/:id", Withdrawls.updateRinkebyWithdrawl);
+  app.delete("/rinkeby.withdrawls/:id", Withdrawls.deleteRinkebyWithdrawl);
 };

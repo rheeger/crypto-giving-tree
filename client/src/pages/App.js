@@ -39,9 +39,9 @@ class App extends React.Component {
     return (
       <Router history={history}>
         <Switch>
-          <Route path="/" exact component={Splash} />
-          <Route path="/signup" exact component={SignUp} />
-          <Route path="/alpha" exact component={AsyncHome} />
+          {/* <Route path="/" exact component={Splash} />
+          <Route path="/signup" exact component={SignUp} /> */}
+          <Route path="/" exact component={AsyncHome} />
           <Route path="/funds" exact component={AsyncManager} />
           <Route path="/funds/new" exact component={AsyncNewFund} />
           <Route path="/funds/:address" exact component={AsyncFundShow} />

@@ -47,7 +47,7 @@ export const createOrgAndContract = (id, name) => async (
   const contractAddress = await createOrg(id);
 
   const response = await localDB.post(
-    `/${process.env.REACT_APP_INFURA_PREFIX}orgs`,
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}orgs`,
     {
       id,
       name,
@@ -63,7 +63,7 @@ export const createOrgAndContract = (id, name) => async (
 
 export const fetchOrgs = () => async dispatch => {
   const response = await localDB.get(
-    `/${process.env.REACT_APP_INFURA_PREFIX}orgs`
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}orgs`
   );
 
   dispatch({ type: types.FETCH_ORGS, payload: response.data });
@@ -71,7 +71,7 @@ export const fetchOrgs = () => async dispatch => {
 
 export const fetchOrg = id => async dispatch => {
   const response = await localDB.get(
-    `/${process.env.REACT_APP_INFURA_PREFIX}orgs/${id}`
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}orgs/${id}`
   );
 
   dispatch({ type: types.FETCH_ORG, payload: response.data });
@@ -79,7 +79,7 @@ export const fetchOrg = id => async dispatch => {
 
 export const fetchOrgLifetimeGrants = org => async dispatch => {
   const allGrants = await localDB.get(
-    `/${process.env.REACT_APP_INFURA_PREFIX}grants/${org}`
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}grants/${org}`
   );
   const orgGrants = allGrants.data.filter(grant => {
     if (grant.grantApproval === true) {
@@ -93,7 +93,7 @@ export const fetchOrgLifetimeGrants = org => async dispatch => {
     .toFixed(2);
 
   const response = await localDB.patch(
-    `/${process.env.REACT_APP_INFURA_PREFIX}orgs/${org}`,
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}orgs/${org}`,
     {
       lifetimeGrants: completedGrants
     }
@@ -105,12 +105,12 @@ export const fetchOrgLifetimeGrants = org => async dispatch => {
 export const claimOrg = (id, claimId) => async dispatch => {
   console.log("getting details for: " + claimId);
   const claimDetails = await localDB.get(
-    `/${process.env.REACT_APP_INFURA_PREFIX}claims/${claimId}`
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}claims/${claimId}`
   );
   console.log("final claim details grabbed:");
   console.log(claimDetails.data);
   const response = await localDB.patch(
-    `/${process.env.REACT_APP_INFURA_PREFIX}orgs/${id}`,
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}orgs/${id}`,
     {
       claimed: true,
       claimApprovalDetails: {
@@ -128,7 +128,7 @@ export const claimOrg = (id, claimId) => async dispatch => {
 
 export const editOrg = (id, formValues) => async dispatch => {
   const response = await localDB.patch(
-    `/${process.env.REACT_APP_INFURA_PREFIX}orgs/${id}`,
+    `/${process.env.REACT_APP_ETHERSCAN_PREFIX}orgs/${id}`,
     formValues
   );
 
@@ -137,7 +137,7 @@ export const editOrg = (id, formValues) => async dispatch => {
 };
 
 export const deleteOrg = id => async dispatch => {
-  await localDB.delete(`/${process.env.REACT_APP_INFURA_PREFIX}orgs/${id}`);
+  await localDB.delete(`/${process.env.REACT_APP_ETHERSCAN_PREFIX}orgs/${id}`);
 
   dispatch({ type: types.DELETE_ORG, payload: id });
   history.push("/");

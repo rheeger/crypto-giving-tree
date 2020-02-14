@@ -77,22 +77,22 @@ class Header extends React.Component {
   }
 
   render() {
-    const whitelist = [
-      process.env.REACT_APP_MEW_MAIN,
-      process.env.REACT_APP_PEEP_ETH,
-      process.env.REACT_APP_BRAVE_WALLET,
-      process.env.REACT_APP_GT_ADMIN
-    ];
-    if (
-      this.props.web3.account &&
-      !whitelist.includes(this.props.web3.account)
-    ) {
-      history.push("/");
-    }
+    // const whitelist = [
+    //   process.env.REACT_APP_MEW_MAIN,
+    //   process.env.REACT_APP_PEEP_ETH,
+    //   process.env.REACT_APP_BRAVE_WALLET,
+    //   process.env.REACT_APP_GT_ADMIN
+    // ];
+    // if (
+    //   this.props.web3.account &&
+    //   !whitelist.includes(this.props.web3.account)
+    // ) {
+    //   history.push("/");
+    // }
     return (
       <div className="ui container">
         <Menu style={{ margin: "1rem" }}>
-          <Link to="/alpha" className="item">
+          <Link to="/" className="item">
             <img
               alt="endaoment"
               style={{ width: "10rem", height: "2rem" }}
@@ -106,11 +106,10 @@ class Header extends React.Component {
               negative
               floating
               size="mini"
-              style={{ padding: "10px", margin: "1rem 6.5rem 1rem 1rem" }}
+              style={{ padding: "10px", margin: "1rem 8.5rem 1rem 1rem" }}
             >
               <i className="exclamation triangle icon red" />
-              THIS IS A {process.env.REACT_APP_NETWORK_NAME} DEMO — USE AT YOUR
-              OWN RISK
+              YOU'RE CURRENTLY IN THE {process.env.REACT_APP_NETWORK_NAME} DEMO
             </Message>
             <Button.Group>
               {this.renderAccount()}
