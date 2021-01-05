@@ -5,7 +5,7 @@
   "dependencies": {
     "@truffle/hdwallet-provider": "^1.0.30",
     "acorn": "^6.3.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "axios-jsonp": "^1.0.2",
     "axios-jsonp-pro": "^1.1.7",
     "bignumber.js": "^8.1.1",
